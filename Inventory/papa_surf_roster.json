@@ -1,0 +1,1010 @@
+[
+  {
+    "Item Name": "Seasoning, Tajin",
+    "Category": "Grocery / Dry Goods",
+    "Unit Type": "each",
+    "Unit Size": "",
+    "Case Size": ""
+  },
+  {
+    "Item Name": "Athletic Upside Dawn Golden 12oz Can",
+    "Category": "Beer Cost",
+    "Unit Type": "can",
+    "Unit Size": "12oz",
+    "Case Size": 24
+  },
+  {
+    "Item Name": "Coors Light 12oz Can",
+    "Category": "Beer Cost",
+    "Unit Type": "can",
+    "Unit Size": "12oz",
+    "Case Size": 24
+  },
+  {
+    "Item Name": "Corona 12oz Can",
+    "Category": "Beer Cost",
+    "Unit Type": "can",
+    "Unit Size": "12oz",
+    "Case Size": 24
+  },
+  {
+    "Item Name": "Grayton Beach 30A Ros\u00e9 12oz Can",
+    "Category": "Beer Cost",
+    "Unit Type": "can",
+    "Unit Size": "12oz",
+    "Case Size": 24
+  },
+  {
+    "Item Name": "Grayton Beach Blonde 12oz Can",
+    "Category": "Beer Cost",
+    "Unit Type": "can",
+    "Unit Size": "12oz",
+    "Case Size": 24
+  },
+  {
+    "Item Name": "Grayton IPA 12oz Can",
+    "Category": "Beer Cost",
+    "Unit Type": "can",
+    "Unit Size": "12oz",
+    "Case Size": 24
+  },
+  {
+    "Item Name": "High Rise Blood Orange 12oz Can",
+    "Category": "Beer Cost",
+    "Unit Type": "can",
+    "Unit Size": "12oz",
+    "Case Size": 24
+  },
+  {
+    "Item Name": "High Rise Pineapple 12oz Can",
+    "Category": "Beer Cost",
+    "Unit Type": "can",
+    "Unit Size": "12oz",
+    "Case Size": 24
+  },
+  {
+    "Item Name": "Kona Big Wave 12oz Can",
+    "Category": "Beer Cost",
+    "Unit Type": "can",
+    "Unit Size": "12oz",
+    "Case Size": 24
+  },
+  {
+    "Item Name": "Michelob Ultra 12oz Can",
+    "Category": "Beer Cost",
+    "Unit Type": "can",
+    "Unit Size": "12oz",
+    "Case Size": 24
+  },
+  {
+    "Item Name": "Miller High Life 12oz Can",
+    "Category": "Beer Cost",
+    "Unit Type": "can",
+    "Unit Size": "12oz",
+    "Case Size": 24
+  },
+  {
+    "Item Name": "Miller Lite 12oz Can",
+    "Category": "Beer Cost",
+    "Unit Type": "can",
+    "Unit Size": "12oz",
+    "Case Size": 24
+  },
+  {
+    "Item Name": "Mom Water Linda 12oz Can",
+    "Category": "Beer Cost",
+    "Unit Type": "can",
+    "Unit Size": "12oz",
+    "Case Size": 24
+  },
+  {
+    "Item Name": "Pacifico 12oz Can",
+    "Category": "Beer Cost",
+    "Unit Type": "can",
+    "Unit Size": "12oz",
+    "Case Size": 24
+  },
+  {
+    "Item Name": "Yuengling Lager 12oz Can",
+    "Category": "Beer Cost",
+    "Unit Type": "can",
+    "Unit Size": "12oz",
+    "Case Size": 24
+  },
+  {
+    "Item Name": "Fairhope I Drink Therefore I Amber Keg",
+    "Category": "Beer Cost",
+    "Unit Type": "keg",
+    "Unit Size": "1/6 BBL",
+    "Case Size": ""
+  },
+  {
+    "Item Name": "Goose Island IPA Keg",
+    "Category": "Beer Cost",
+    "Unit Type": "keg",
+    "Unit Size": "1/6 BBL",
+    "Case Size": ""
+  },
+  {
+    "Item Name": "Grayton 30A Beach Blonde Keg",
+    "Category": "Beer Cost",
+    "Unit Type": "keg",
+    "Unit Size": "1/2 BBL",
+    "Case Size": ""
+  },
+  {
+    "Item Name": "Idyll Hands Joe Coffee Keg",
+    "Category": "Beer Cost",
+    "Unit Type": "keg",
+    "Unit Size": "1/6 BBL",
+    "Case Size": ""
+  },
+  {
+    "Item Name": "Idyll Hounds Batch 500 Keg",
+    "Category": "Beer Cost",
+    "Unit Type": "keg",
+    "Unit Size": "1/6 BBL",
+    "Case Size": ""
+  },
+  {
+    "Item Name": "Kona Big Wave Keg",
+    "Category": "Beer Cost",
+    "Unit Type": "keg",
+    "Unit Size": "1/6 BBL",
+    "Case Size": ""
+  },
+  {
+    "Item Name": "Perfect Plain Yachtside Keg",
+    "Category": "Beer Cost",
+    "Unit Type": "keg",
+    "Unit Size": "1/6 BBL",
+    "Case Size": ""
+  },
+  {
+    "Item Name": "Stella Artois Keg",
+    "Category": "Beer Cost",
+    "Unit Type": "keg",
+    "Unit Size": "1/6 BBL",
+    "Case Size": ""
+  },
+  {
+    "Item Name": "Urban South Holy Roller Hazy IPA Keg",
+    "Category": "Beer Cost",
+    "Unit Type": "keg",
+    "Unit Size": "1/6 BBL",
+    "Case Size": ""
+  },
+  {
+    "Item Name": "Urban South Mardi Gras Pils Keg",
+    "Category": "Beer Cost",
+    "Unit Type": "keg",
+    "Unit Size": "1/6 BBL",
+    "Case Size": ""
+  },
+  {
+    "Item Name": "Urban South Paradise Park Keg",
+    "Category": "Beer Cost",
+    "Unit Type": "keg",
+    "Unit Size": "1/6 BBL",
+    "Case Size": ""
+  },
+  {
+    "Item Name": "30A Cabernet Sauvignon 750ml",
+    "Category": "Wine Cost",
+    "Unit Type": "bottle",
+    "Unit Size": "750ml",
+    "Case Size": 12
+  },
+  {
+    "Item Name": "30A Chardonnay 750ml",
+    "Category": "Wine Cost",
+    "Unit Type": "bottle",
+    "Unit Size": "750ml",
+    "Case Size": 12
+  },
+  {
+    "Item Name": "30A Pinot Noir 750ml",
+    "Category": "Wine Cost",
+    "Unit Type": "bottle",
+    "Unit Size": "750ml",
+    "Case Size": 12
+  },
+  {
+    "Item Name": "30A Provence Ros\u00e9 750ml",
+    "Category": "Wine Cost",
+    "Unit Type": "bottle",
+    "Unit Size": "750ml",
+    "Case Size": 12
+  },
+  {
+    "Item Name": "30A Sauvignon Blanc 750ml",
+    "Category": "Wine Cost",
+    "Unit Type": "bottle",
+    "Unit Size": "750ml",
+    "Case Size": 12
+  },
+  {
+    "Item Name": "Avarus Chardonnay 750ml",
+    "Category": "Wine Cost",
+    "Unit Type": "bottle",
+    "Unit Size": "750ml",
+    "Case Size": 12
+  },
+  {
+    "Item Name": "Canoe Ridge Merlot 750ml",
+    "Category": "Wine Cost",
+    "Unit Type": "bottle",
+    "Unit Size": "750ml",
+    "Case Size": 12
+  },
+  {
+    "Item Name": "Carter's Lot Ros\u00e9 of Pinot Noir 750ml",
+    "Category": "Wine Cost",
+    "Unit Type": "bottle",
+    "Unit Size": "750ml",
+    "Case Size": 12
+  },
+  {
+    "Item Name": "Caymus Suisun The Walking Fool Red Blend 750ml",
+    "Category": "Wine Cost",
+    "Unit Type": "bottle",
+    "Unit Size": "750ml",
+    "Case Size": 12
+  },
+  {
+    "Item Name": "Charles De Fere Brut 750ml",
+    "Category": "Wine Cost",
+    "Unit Type": "bottle",
+    "Unit Size": "750ml",
+    "Case Size": 12
+  },
+  {
+    "Item Name": "Decoded Russian River Pinot Noir 750ml",
+    "Category": "Wine Cost",
+    "Unit Type": "bottle",
+    "Unit Size": "750ml",
+    "Case Size": 12
+  },
+  {
+    "Item Name": "Domaine St Michelle Brut 750ml",
+    "Category": "Wine Cost",
+    "Unit Type": "bottle",
+    "Unit Size": "750ml",
+    "Case Size": 12
+  },
+  {
+    "Item Name": "Gearbox California Pinot Noir 750ml",
+    "Category": "Wine Cost",
+    "Unit Type": "bottle",
+    "Unit Size": "750ml",
+    "Case Size": 12
+  },
+  {
+    "Item Name": "Justin Cabernet Sauvignon 750ml",
+    "Category": "Wine Cost",
+    "Unit Type": "bottle",
+    "Unit Size": "750ml",
+    "Case Size": 12
+  },
+  {
+    "Item Name": "Marques De Caceres Cava NV 750ml",
+    "Category": "Wine Cost",
+    "Unit Type": "bottle",
+    "Unit Size": "750ml",
+    "Case Size": 12
+  },
+  {
+    "Item Name": "Matua Lighter Sauvignon Blanc 750ml",
+    "Category": "Wine Cost",
+    "Unit Type": "bottle",
+    "Unit Size": "750ml",
+    "Case Size": 12
+  },
+  {
+    "Item Name": "Scarpetta Pinot Grigio 750ml",
+    "Category": "Wine Cost",
+    "Unit Type": "bottle",
+    "Unit Size": "750ml",
+    "Case Size": 12
+  },
+  {
+    "Item Name": "Sonoma Cutrer Chardonnay 750ml",
+    "Category": "Wine Cost",
+    "Unit Type": "bottle",
+    "Unit Size": "750ml",
+    "Case Size": 12
+  },
+  {
+    "Item Name": "Squealing Pig Sauvignon Blanc 750ml",
+    "Category": "Wine Cost",
+    "Unit Type": "bottle",
+    "Unit Size": "750ml",
+    "Case Size": 12
+  },
+  {
+    "Item Name": "The Shaker Red Blend 750ml",
+    "Category": "Wine Cost",
+    "Unit Type": "bottle",
+    "Unit Size": "750ml",
+    "Case Size": 12
+  },
+  {
+    "Item Name": "Windstorm Central Coast Chardonnay 750ml",
+    "Category": "Wine Cost",
+    "Unit Type": "bottle",
+    "Unit Size": "750ml",
+    "Case Size": 12
+  },
+  {
+    "Item Name": "Windstorm Red Hills Cabernet Sauvignon 750ml",
+    "Category": "Wine Cost",
+    "Unit Type": "bottle",
+    "Unit Size": "750ml",
+    "Case Size": 12
+  },
+  {
+    "Item Name": "Angostura Bitters 4oz",
+    "Category": "Liquor Cost",
+    "Unit Type": "bottle",
+    "Unit Size": "4oz",
+    "Case Size": ""
+  },
+  {
+    "Item Name": "Aperol 1L",
+    "Category": "Liquor Cost",
+    "Unit Type": "bottle",
+    "Unit Size": "1L",
+    "Case Size": ""
+  },
+  {
+    "Item Name": "Blue Curacao 1L",
+    "Category": "Liquor Cost",
+    "Unit Type": "bottle",
+    "Unit Size": "1L",
+    "Case Size": ""
+  },
+  {
+    "Item Name": "Bols Elderflower Liqueur 1L",
+    "Category": "Liquor Cost",
+    "Unit Type": "bottle",
+    "Unit Size": "1L",
+    "Case Size": ""
+  },
+  {
+    "Item Name": "Bols Elderflower Liqueur 750ml",
+    "Category": "Liquor Cost",
+    "Unit Type": "bottle",
+    "Unit Size": "750ml",
+    "Case Size": ""
+  },
+  {
+    "Item Name": "Campari 1L",
+    "Category": "Liquor Cost",
+    "Unit Type": "bottle",
+    "Unit Size": "1L",
+    "Case Size": ""
+  },
+  {
+    "Item Name": "Caravella Limoncello 750ml",
+    "Category": "Liquor Cost",
+    "Unit Type": "bottle",
+    "Unit Size": "750ml",
+    "Case Size": ""
+  },
+  {
+    "Item Name": "Chambord 700ml",
+    "Category": "Liquor Cost",
+    "Unit Type": "bottle",
+    "Unit Size": "700ml",
+    "Case Size": ""
+  },
+  {
+    "Item Name": "Faretti Espresso Liqueur 750ml",
+    "Category": "Liquor Cost",
+    "Unit Type": "bottle",
+    "Unit Size": "750ml",
+    "Case Size": ""
+  },
+  {
+    "Item Name": "Gran Gala 1L",
+    "Category": "Liquor Cost",
+    "Unit Type": "bottle",
+    "Unit Size": "1L",
+    "Case Size": ""
+  },
+  {
+    "Item Name": "Grand Marnier 1L",
+    "Category": "Liquor Cost",
+    "Unit Type": "bottle",
+    "Unit Size": "1L",
+    "Case Size": ""
+  },
+  {
+    "Item Name": "Romana Amaro 750ml",
+    "Category": "Liquor Cost",
+    "Unit Type": "bottle",
+    "Unit Size": "750ml",
+    "Case Size": ""
+  },
+  {
+    "Item Name": "Rumple Minze Peppermint 1L",
+    "Category": "Liquor Cost",
+    "Unit Type": "bottle",
+    "Unit Size": "1L",
+    "Case Size": ""
+  },
+  {
+    "Item Name": "Tia Maria Coffee Liqueur 1L",
+    "Category": "Liquor Cost",
+    "Unit Type": "bottle",
+    "Unit Size": "1L",
+    "Case Size": ""
+  },
+  {
+    "Item Name": "Toschi Nocello Walnut Liqueur 700ml",
+    "Category": "Liquor Cost",
+    "Unit Type": "bottle",
+    "Unit Size": "700ml",
+    "Case Size": ""
+  },
+  {
+    "Item Name": "Triple Sec 1L",
+    "Category": "Liquor Cost",
+    "Unit Type": "bottle",
+    "Unit Size": "1L",
+    "Case Size": ""
+  },
+  {
+    "Item Name": "Bar Mix, Margarita 750ml",
+    "Category": "Liquor Cost",
+    "Unit Type": "bottle",
+    "Unit Size": "750ml",
+    "Case Size": ""
+  },
+  {
+    "Item Name": "Bar Mix, Mojito 750ml",
+    "Category": "Liquor Cost",
+    "Unit Type": "bottle",
+    "Unit Size": "750ml",
+    "Case Size": ""
+  },
+  {
+    "Item Name": "Bar Mix, Watermelon 750ml",
+    "Category": "Liquor Cost",
+    "Unit Type": "bottle",
+    "Unit Size": "750ml",
+    "Case Size": ""
+  },
+  {
+    "Item Name": "Crop Cucumber Vodka 750ml",
+    "Category": "Liquor Cost",
+    "Unit Type": "bottle",
+    "Unit Size": "750ml",
+    "Case Size": ""
+  },
+  {
+    "Item Name": "Crop Cucumber Vodka 1L",
+    "Category": "Liquor Cost",
+    "Unit Type": "bottle",
+    "Unit Size": "1L",
+    "Case Size": ""
+  },
+  {
+    "Item Name": "Crop Harvest Organic Meyer Lemon Vodka 1L",
+    "Category": "Liquor Cost",
+    "Unit Type": "bottle",
+    "Unit Size": "1L",
+    "Case Size": ""
+  },
+  {
+    "Item Name": "Grey Goose Vodka 750ml",
+    "Category": "Liquor Cost",
+    "Unit Type": "bottle",
+    "Unit Size": "750ml",
+    "Case Size": ""
+  },
+  {
+    "Item Name": "Grey Goose Vodka 1L",
+    "Category": "Liquor Cost",
+    "Unit Type": "bottle",
+    "Unit Size": "1L",
+    "Case Size": ""
+  },
+  {
+    "Item Name": "Tito's Vodka 1L",
+    "Category": "Liquor Cost",
+    "Unit Type": "bottle",
+    "Unit Size": "1L",
+    "Case Size": ""
+  },
+  {
+    "Item Name": "Wheatley Vodka 1L",
+    "Category": "Liquor Cost",
+    "Unit Type": "bottle",
+    "Unit Size": "1L",
+    "Case Size": ""
+  },
+  {
+    "Item Name": "Casamigos Blanco Tequila 750ml",
+    "Category": "Liquor Cost",
+    "Unit Type": "bottle",
+    "Unit Size": "750ml",
+    "Case Size": ""
+  },
+  {
+    "Item Name": "Casamigos Blanco Tequila 1L",
+    "Category": "Liquor Cost",
+    "Unit Type": "bottle",
+    "Unit Size": "1L",
+    "Case Size": ""
+  },
+  {
+    "Item Name": "El Jimador Cristalino Tequila 750ml",
+    "Category": "Liquor Cost",
+    "Unit Type": "bottle",
+    "Unit Size": "750ml",
+    "Case Size": ""
+  },
+  {
+    "Item Name": "Fortaleza Blanco Tequila 750ml",
+    "Category": "Liquor Cost",
+    "Unit Type": "bottle",
+    "Unit Size": "750ml",
+    "Case Size": ""
+  },
+  {
+    "Item Name": "Herradura Anejo Tequila 750ml",
+    "Category": "Liquor Cost",
+    "Unit Type": "bottle",
+    "Unit Size": "750ml",
+    "Case Size": ""
+  },
+  {
+    "Item Name": "Herradura Blanco Tequila 700ml",
+    "Category": "Liquor Cost",
+    "Unit Type": "bottle",
+    "Unit Size": "700ml",
+    "Case Size": ""
+  },
+  {
+    "Item Name": "Herradura Legend Anejo Tequila 750ml",
+    "Category": "Liquor Cost",
+    "Unit Type": "bottle",
+    "Unit Size": "750ml",
+    "Case Size": ""
+  },
+  {
+    "Item Name": "Herradura Reposado Tequila 1L",
+    "Category": "Liquor Cost",
+    "Unit Type": "bottle",
+    "Unit Size": "1L",
+    "Case Size": ""
+  },
+  {
+    "Item Name": "Herradura Silver Tequila 1L",
+    "Category": "Liquor Cost",
+    "Unit Type": "bottle",
+    "Unit Size": "1L",
+    "Case Size": ""
+  },
+  {
+    "Item Name": "Herradura Ultra Anejo Tequila 750ml",
+    "Category": "Liquor Cost",
+    "Unit Type": "bottle",
+    "Unit Size": "750ml",
+    "Case Size": ""
+  },
+  {
+    "Item Name": "Milagro Anejo Cristalino 750ml",
+    "Category": "Liquor Cost",
+    "Unit Type": "bottle",
+    "Unit Size": "750ml",
+    "Case Size": ""
+  },
+  {
+    "Item Name": "Milagro Reposado 1L",
+    "Category": "Liquor Cost",
+    "Unit Type": "bottle",
+    "Unit Size": "1L",
+    "Case Size": ""
+  },
+  {
+    "Item Name": "Milagro Silver 1L",
+    "Category": "Liquor Cost",
+    "Unit Type": "bottle",
+    "Unit Size": "1L",
+    "Case Size": ""
+  },
+  {
+    "Item Name": "Pueblo Viejo Blanco Tequila 1L",
+    "Category": "Liquor Cost",
+    "Unit Type": "bottle",
+    "Unit Size": "1L",
+    "Case Size": ""
+  },
+  {
+    "Item Name": "Siete Misterios Dobayej Mezcal 4500ml case",
+    "Category": "Liquor Cost",
+    "Unit Type": "bottle",
+    "Unit Size": "4500ml",
+    "Case Size": ""
+  },
+  {
+    "Item Name": "Siete Misterios Dobayej Mezcal 750ml",
+    "Category": "Liquor Cost",
+    "Unit Type": "bottle",
+    "Unit Size": "750ml",
+    "Case Size": ""
+  },
+  {
+    "Item Name": "Yave Coconut Tequila 750ml",
+    "Category": "Liquor Cost",
+    "Unit Type": "bottle",
+    "Unit Size": "750ml",
+    "Case Size": ""
+  },
+  {
+    "Item Name": "Campesino Aged Rum 750ml",
+    "Category": "Liquor Cost",
+    "Unit Type": "bottle",
+    "Unit Size": "750ml",
+    "Case Size": ""
+  },
+  {
+    "Item Name": "Campesino Silver Rum 750ml",
+    "Category": "Liquor Cost",
+    "Unit Type": "bottle",
+    "Unit Size": "750ml",
+    "Case Size": ""
+  },
+  {
+    "Item Name": "Diplomatico 8yr Mantuano Rum 750ml",
+    "Category": "Liquor Cost",
+    "Unit Type": "bottle",
+    "Unit Size": "750ml",
+    "Case Size": ""
+  },
+  {
+    "Item Name": "Myers\u2019s Dark Rum 1L",
+    "Category": "Liquor Cost",
+    "Unit Type": "bottle",
+    "Unit Size": "1L",
+    "Case Size": ""
+  },
+  {
+    "Item Name": "Papa\u2019s Pilar 24yr Sherry Cask Rum 750ml",
+    "Category": "Liquor Cost",
+    "Unit Type": "bottle",
+    "Unit Size": "750ml",
+    "Case Size": ""
+  },
+  {
+    "Item Name": "Parrot Bay Coconut Rum 1L",
+    "Category": "Liquor Cost",
+    "Unit Type": "bottle",
+    "Unit Size": "1L",
+    "Case Size": ""
+  },
+  {
+    "Item Name": "Parrot Bay White Rum 1L",
+    "Category": "Liquor Cost",
+    "Unit Type": "bottle",
+    "Unit Size": "1L",
+    "Case Size": ""
+  },
+  {
+    "Item Name": "Balvenie 14yr Caribbean Cask Scotch 750ml",
+    "Category": "Liquor Cost",
+    "Unit Type": "bottle",
+    "Unit Size": "750ml",
+    "Case Size": ""
+  },
+  {
+    "Item Name": "Blanton's Bourbon 750ml",
+    "Category": "Liquor Cost",
+    "Unit Type": "bottle",
+    "Unit Size": "750ml",
+    "Case Size": ""
+  },
+  {
+    "Item Name": "Crown Royal Whiskey 1L",
+    "Category": "Liquor Cost",
+    "Unit Type": "bottle",
+    "Unit Size": "1L",
+    "Case Size": ""
+  },
+  {
+    "Item Name": "Eagle Rare 10yr Bourbon 750ml",
+    "Category": "Liquor Cost",
+    "Unit Type": "bottle",
+    "Unit Size": "750ml",
+    "Case Size": ""
+  },
+  {
+    "Item Name": "EH Taylor Small Batch Bourbon 750ml",
+    "Category": "Liquor Cost",
+    "Unit Type": "bottle",
+    "Unit Size": "750ml",
+    "Case Size": ""
+  },
+  {
+    "Item Name": "Glenglassaugh 12yr Scotch 700ml",
+    "Category": "Liquor Cost",
+    "Unit Type": "bottle",
+    "Unit Size": "700ml",
+    "Case Size": ""
+  },
+  {
+    "Item Name": "Jack Daniel's Black Label 1L",
+    "Category": "Liquor Cost",
+    "Unit Type": "bottle",
+    "Unit Size": "1L",
+    "Case Size": ""
+  },
+  {
+    "Item Name": "Jack Daniel's Blackberry 1L",
+    "Category": "Liquor Cost",
+    "Unit Type": "bottle",
+    "Unit Size": "1L",
+    "Case Size": ""
+  },
+  {
+    "Item Name": "Jagermeister 1L",
+    "Category": "Liquor Cost",
+    "Unit Type": "bottle",
+    "Unit Size": "1L",
+    "Case Size": ""
+  },
+  {
+    "Item Name": "Jameson Irish Whiskey 1L",
+    "Category": "Liquor Cost",
+    "Unit Type": "bottle",
+    "Unit Size": "1L",
+    "Case Size": ""
+  },
+  {
+    "Item Name": "Jim Beam Bourbon 1L",
+    "Category": "Liquor Cost",
+    "Unit Type": "bottle",
+    "Unit Size": "1L",
+    "Case Size": ""
+  },
+  {
+    "Item Name": "Maker's Mark Bourbon 750ml",
+    "Category": "Liquor Cost",
+    "Unit Type": "bottle",
+    "Unit Size": "750ml",
+    "Case Size": ""
+  },
+  {
+    "Item Name": "Maker's Mark Bourbon 1L",
+    "Category": "Liquor Cost",
+    "Unit Type": "bottle",
+    "Unit Size": "1L",
+    "Case Size": ""
+  },
+  {
+    "Item Name": "Monkey Shoulder Scotch 750ml",
+    "Category": "Liquor Cost",
+    "Unit Type": "bottle",
+    "Unit Size": "750ml",
+    "Case Size": ""
+  },
+  {
+    "Item Name": "Paul Sutton Bourbon 750ml",
+    "Category": "Liquor Cost",
+    "Unit Type": "bottle",
+    "Unit Size": "750ml",
+    "Case Size": ""
+  },
+  {
+    "Item Name": "Redwood Empire Lost Monarch 750ml",
+    "Category": "Liquor Cost",
+    "Unit Type": "bottle",
+    "Unit Size": "750ml",
+    "Case Size": ""
+  },
+  {
+    "Item Name": "Tullamore Dew Irish Whiskey 1L",
+    "Category": "Liquor Cost",
+    "Unit Type": "bottle",
+    "Unit Size": "1L",
+    "Case Size": ""
+  },
+  {
+    "Item Name": "Woodford Reserve Bourbon 1L",
+    "Category": "Liquor Cost",
+    "Unit Type": "bottle",
+    "Unit Size": "1L",
+    "Case Size": ""
+  },
+  {
+    "Item Name": "Woodford Reserve Double Oaked Bourbon 1L",
+    "Category": "Liquor Cost",
+    "Unit Type": "bottle",
+    "Unit Size": "1L",
+    "Case Size": ""
+  },
+  {
+    "Item Name": "Agave Nectar",
+    "Category": "NA Beverage",
+    "Unit Type": "bottle",
+    "Unit Size": "",
+    "Case Size": ""
+  },
+  {
+    "Item Name": "Bar Mix, Bloody Mary",
+    "Category": "NA Beverage",
+    "Unit Type": "bottle",
+    "Unit Size": "",
+    "Case Size": ""
+  },
+  {
+    "Item Name": "Bar Mix, Lime Juice",
+    "Category": "NA Beverage",
+    "Unit Type": "bottle",
+    "Unit Size": "",
+    "Case Size": ""
+  },
+  {
+    "Item Name": "Bar Mix, Margarita Strawberry",
+    "Category": "NA Beverage",
+    "Unit Type": "bottle",
+    "Unit Size": "64oz",
+    "Case Size": ""
+  },
+  {
+    "Item Name": "Bar Mix, Pina Colada 1L",
+    "Category": "NA Beverage",
+    "Unit Type": "bottle",
+    "Unit Size": "1L",
+    "Case Size": ""
+  },
+  {
+    "Item Name": "Cream of Coconut",
+    "Category": "NA Beverage",
+    "Unit Type": "bottle",
+    "Unit Size": "",
+    "Case Size": ""
+  },
+  {
+    "Item Name": "Ginger Ale (BIB)",
+    "Category": "NA Beverage",
+    "Unit Type": "bottle",
+    "Unit Size": "",
+    "Case Size": ""
+  },
+  {
+    "Item Name": "Ginger Beer 12oz Can",
+    "Category": "NA Beverage",
+    "Unit Type": "bottle",
+    "Unit Size": "12oz",
+    "Case Size": ""
+  },
+  {
+    "Item Name": "Grenadine",
+    "Category": "NA Beverage",
+    "Unit Type": "bottle",
+    "Unit Size": "",
+    "Case Size": ""
+  },
+  {
+    "Item Name": "Hot Chocolate",
+    "Category": "NA Beverage",
+    "Unit Type": "bottle",
+    "Unit Size": "",
+    "Case Size": ""
+  },
+  {
+    "Item Name": "Juice, Cucumber Lime 64oz",
+    "Category": "NA Beverage",
+    "Unit Type": "bottle",
+    "Unit Size": "64oz",
+    "Case Size": ""
+  },
+  {
+    "Item Name": "Juice, Grapefruit",
+    "Category": "NA Beverage",
+    "Unit Type": "bottle",
+    "Unit Size": "",
+    "Case Size": ""
+  },
+  {
+    "Item Name": "Juice, Olive",
+    "Category": "NA Beverage",
+    "Unit Type": "bottle",
+    "Unit Size": "",
+    "Case Size": ""
+  },
+  {
+    "Item Name": "Juice, Orange 32oz",
+    "Category": "NA Beverage",
+    "Unit Type": "bottle",
+    "Unit Size": "32oz",
+    "Case Size": ""
+  },
+  {
+    "Item Name": "Juice, Orange 46oz",
+    "Category": "NA Beverage",
+    "Unit Type": "bottle",
+    "Unit Size": "46oz",
+    "Case Size": ""
+  },
+  {
+    "Item Name": "Juice, Orange 56oz",
+    "Category": "NA Beverage",
+    "Unit Type": "bottle",
+    "Unit Size": "56oz",
+    "Case Size": ""
+  },
+  {
+    "Item Name": "Juice, Pomegranate 64oz",
+    "Category": "NA Beverage",
+    "Unit Type": "bottle",
+    "Unit Size": "64oz",
+    "Case Size": ""
+  },
+  {
+    "Item Name": "Lemonade (BIB)",
+    "Category": "NA Beverage",
+    "Unit Type": "bottle",
+    "Unit Size": "",
+    "Case Size": ""
+  },
+  {
+    "Item Name": "Syrup, Jalape\u00f1o 1L",
+    "Category": "NA Beverage",
+    "Unit Type": "bottle",
+    "Unit Size": "1L",
+    "Case Size": ""
+  },
+  {
+    "Item Name": "Syrup, Pineapple 1L",
+    "Category": "NA Beverage",
+    "Unit Type": "bottle",
+    "Unit Size": "1L",
+    "Case Size": ""
+  },
+  {
+    "Item Name": "Syrup, Simple 1L",
+    "Category": "NA Beverage",
+    "Unit Type": "bottle",
+    "Unit Size": "1L",
+    "Case Size": ""
+  },
+  {
+    "Item Name": "Tea, Sweet Bag",
+    "Category": "NA Beverage",
+    "Unit Type": "bottle",
+    "Unit Size": "",
+    "Case Size": ""
+  },
+  {
+    "Item Name": "Tea, Sweet (BIB)",
+    "Category": "NA Beverage",
+    "Unit Type": "bottle",
+    "Unit Size": "",
+    "Case Size": ""
+  },
+  {
+    "Item Name": "Tea, Unsweet",
+    "Category": "NA Beverage",
+    "Unit Type": "bottle",
+    "Unit Size": "",
+    "Case Size": ""
+  },
+  {
+    "Item Name": "Tonic (BIB)",
+    "Category": "NA Beverage",
+    "Unit Type": "bottle",
+    "Unit Size": "",
+    "Case Size": ""
+  },
+  {
+    "Item Name": "Fresh Victor Cucumber Lime 64oz",
+    "Category": "NA Beverage",
+    "Unit Type": "bottle",
+    "Unit Size": "64oz",
+    "Case Size": ""
+  }
+]

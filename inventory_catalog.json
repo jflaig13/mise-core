@@ -1,0 +1,303 @@
+{
+  "schema_version": "2.0-enterprise",
+  "meta": {
+    "description": "Papa Surf Inventory Catalog — Enterprise Grade",
+    "supports_fuzzy_matching": true,
+    "supports_phonetic_matching": true,
+    "supports_auto_growth": true,
+    "default_units": ["bottle", "can", "keg", "unit"],
+    "note": "This catalog is designed for AI-driven parsing, fuzzy logic, self-training, and cross-inventory consistency."
+  },
+
+  "global_rules": {
+    "fuzzy_match_threshold": 0.78,
+    "phonetic_match_threshold": 0.72,
+    "auto_add_new_items": false,
+    "auto_add_new_keywords": true,
+    "case_sizes": {
+      "beer_12pk": 12,
+      "beer_24pk": 24,
+      "wine_case": 12,
+      "liquor_case": 12,
+      "stirrings_case": 6
+    },
+    "fraction_words": {
+      "half": 0.5,
+      "quarter": 0.25,
+      "three quarters": 0.75,
+      "three-quarter": 0.75,
+      "fifth": 0.2,
+      "tenth": 0.1,
+      "eighth": 0.125
+    },
+    "negative_keywords": ["not", "zero", "none", "don’t count", "do not count"]
+  },
+
+  "grocery_drygoods": [
+    {
+      "item": "Tajin Seasoning",
+      "keywords": ["tajin", "seasoning", "tajín", "tahine"],
+      "phonetic": ["tah-jeen", "tay-jin"],
+      "category": "Grocery & Dry Goods",
+      "unit": "unit",
+      "fuzzy_weight": 0.90
+    }
+  ],
+
+  "beer_cost": [
+    {
+      "item": "Grayton 30A Beach Blonde Keg",
+      "keywords": ["beach blonde", "30a blonde", "grayton 30a blonde", "grayton blonde"],
+      "phonetic": ["gray-ton blonde", "thirty-a blonde"],
+      "category": "Beer Cost",
+      "unit": "keg",
+      "sizes": ["1/2 BBL", "1/6 BBL"],
+      "fuzzy_weight": 0.95
+    },
+    {
+      "item": "Kona Big Wave Keg",
+      "keywords": ["kona", "big wave", "kona big wave", "kona keg"],
+      "phonetic": ["koh-nuh", "big wayv"],
+      "category": "Beer Cost",
+      "unit": "keg",
+      "sizes": ["1/2 BBL"],
+      "fuzzy_weight": 0.95
+    },
+    {
+      "item": "Urban South Paradise Park Keg (1/6BBL)",
+      "keywords": ["paradise park", "urban south", "paradise keg"],
+      "phonetic": ["pair-uh-dice park"],
+      "category": "Beer Cost",
+      "unit": "keg",
+      "sizes": ["1/6 BBL"],
+      "fuzzy_weight": 0.92
+    },
+    {
+      "item": "Urban South Holy Roller Hazy IPA Keg (1/6BBL)",
+      "keywords": ["holy roller", "urban south", "hazy ipa", "roller ipa"],
+      "phonetic": ["holy row-ler", "hazy eye-pee-ay"],
+      "category": "Beer Cost",
+      "unit": "keg",
+      "fuzzy_weight": 0.92
+    },
+    {
+      "item": "Perfect Plain Yachtside Keg (1/6BBL)",
+      "keywords": ["yachtside", "perfect plain", "yacht side"],
+      "phonetic": ["yot-side"],
+      "category": "Beer Cost",
+      "unit": "keg",
+      "fuzzy_weight": 0.93
+    },
+    {
+      "item": "Stella Artois Keg",
+      "keywords": ["stella", "stella artois", "stella trois", "stella keg"],
+      "phonetic": ["stell-uh", "ar-twah"],
+      "category": "Beer Cost",
+      "unit": "keg",
+      "fuzzy_weight": 0.96
+    },
+    {
+      "item": "Athletic Upside Dawn NA (cans)",
+      "keywords": ["athletic", "upside dawn", "athletic brewing"],
+      "phonetic": ["ath-leh-tik"],
+      "category": "Beer Cost",
+      "unit": "can",
+      "fuzzy_weight": 0.85
+    },
+    {
+      "item": "Coors Light (cans)",
+      "keywords": ["coors", "coors light", "coors can"],
+      "phonetic": ["cores"],
+      "category": "Beer Cost",
+      "unit": "can",
+      "fuzzy_weight": 0.90
+    },
+    {
+      "item": "Miller Lite (cans)",
+      "keywords": ["miller", "miller lite", "miller light"],
+      "phonetic": ["mil-ler"],
+      "category": "Beer Cost",
+      "unit": "can",
+      "fuzzy_weight": 0.90
+    },
+    {
+      "item": "Michelob Ultra (cans)",
+      "keywords": ["michelob", "ultra", "michelob ultra"],
+      "phonetic": ["mick-uh-lobe"],
+      "category": "Beer Cost",
+      "unit": "can",
+      "fuzzy_weight": 0.90
+    },
+    {
+      "item": "Yuengling (cans)",
+      "keywords": ["yuengling", "yingling", "yuen gling"],
+      "phonetic": ["ying-ling"],
+      "category": "Beer Cost",
+      "unit": "can",
+      "fuzzy_weight": 0.88
+    },
+    {
+      "item": "Pacifico (cans)",
+      "keywords": ["pacifico", "pacific", "paseefeco"],
+      "phonetic": ["pah-see-fee-ko"],
+      "category": "Beer Cost",
+      "unit": "can",
+      "fuzzy_weight": 0.88
+    },
+    {
+      "item": "High Noon (cans)",
+      "keywords": ["high noon", "highnoon"],
+      "phonetic": ["hi noon"],
+      "category": "Beer Cost",
+      "unit": "can",
+      "fuzzy_weight": 0.90
+    },
+    {
+      "item": "Grayton Gose (cans)",
+      "keywords": ["gose", "grayton gose"],
+      "phonetic": ["go-zuh"],
+      "category": "Beer Cost",
+      "unit": "can"
+    },
+    {
+      "item": "Grayton IPA (cans)",
+      "keywords": ["grayton ipa", "ipa"],
+      "phonetic": ["eye-pee-ay"],
+      "category": "Beer Cost",
+      "unit": "can"
+    },
+    {
+      "item": "High Rise Pineapple THC Seltzer (cans)",
+      "keywords": ["high rise", "thc seltzer", "pineapple thc"],
+      "phonetic": ["hi rize"],
+      "category": "Beer Cost",
+      "unit": "can"
+    },
+    {
+      "item": "Mom Water (cans)",
+      "keywords": ["mom water", "momwater", "louise", "linda", "karen", "susan", "nancy", "carol", "strawberry kiwi"],
+      "phonetic": ["mom wah-ter"],
+      "category": "Liquor Cost",
+      "unit": "can",
+      "notes": "RTD cocktails belong to Liquor Cost."
+    }
+  ],
+
+  "wine_cost": [
+    {
+      "item": "30A Chardonnay",
+      "keywords": ["30a chardonnay", "30 a chardonnay"],
+      "phonetic": ["thirty-a shard-oh-nay"],
+      "category": "Wine Cost",
+      "unit": "bottle"
+    },
+    {
+      "item": "30A Rosé",
+      "keywords": ["30a rose", "30a rosé", "thirty a rose"],
+      "phonetic": ["row-zay"],
+      "category": "Wine Cost",
+      "unit": "bottle"
+    },
+    {
+      "item": "30A Pinot Noir",
+      "keywords": ["30a pinot", "pinot noir", "30 a pinot noir"],
+      "phonetic": ["pee-no nwar"],
+      "category": "Wine Cost",
+      "unit": "bottle"
+    },
+    {
+      "item": "30A Cabernet Sauvignon",
+      "keywords": ["30a cab", "cabernet", "cabernet sauvignon"],
+      "phonetic": ["cab-er-nay sovin-yawn"],
+      "category": "Wine Cost",
+      "unit": "bottle"
+    },
+    {
+      "item": "30A Sauvignon Blanc",
+      "keywords": ["30a sauv blanc", "sauvignon blanc"],
+      "phonetic": ["saw-vin-yawn blahnk"],
+      "category": "Wine Cost",
+      "unit": "bottle"
+    },
+    {
+      "item": "Canoe Ridge Merlot",
+      "keywords": ["canoe ridge", "canoe merlot"],
+      "phonetic": ["kuh-noo ridge"],
+      "category": "Wine Cost",
+      "unit": "bottle"
+    },
+    {
+      "item": "Scarpetta Pinot Grigio",
+      "keywords": ["scarpetta", "pinot grigio"],
+      "phonetic": ["pin-oh gree-jee-oh"],
+      "category": "Wine Cost",
+      "unit": "bottle"
+    },
+    {
+      "item": "Squealing Pig Sauvignon Blanc",
+      "keywords": ["squealing pig", "pig sauv blanc"],
+      "phonetic": ["skwee-ling pig"],
+      "category": "Wine Cost",
+      "unit": "bottle"
+    },
+    {
+      "item": "Charles De Fere Prosecco",
+      "keywords": ["charles de fere", "prosecco"],
+      "phonetic": ["pro-sek-oh"],
+      "category": "Wine Cost",
+      "unit": "bottle"
+    },
+    {
+      "item": "Marqués de Cáceres Rosé",
+      "keywords": ["marques de caceres", "caceres rose"],
+      "phonetic": ["mar-kess"],
+      "category": "Wine Cost",
+      "unit": "bottle"
+    },
+    {
+      "item": "Marqués de Cáceres Cava Brút",
+      "keywords": ["cava", "marques cava", "caceres cava"],
+      "phonetic": ["cah-vah"],
+      "category": "Wine Cost",
+      "unit": "bottle"
+    },
+    {
+      "item": "Windstorm Chardonnay",
+      "keywords": ["windstorm chardonnay"],
+      "phonetic": ["wind-storm"],
+      "category": "Wine Cost",
+      "unit": "bottle"
+    },
+    {
+      "item": "Windstorm Cabernet Sauvignon",
+      "keywords": ["windstorm cabernet", "windstorm cab"],
+      "phonetic": ["cab-er-nay"],
+      "category": "Wine Cost",
+      "unit": "bottle"
+    },
+    {
+      "item": "Gearbox Pinot Noir",
+      "keywords": ["gearbox", "gearbox pinot"],
+      "phonetic": ["gear-box"],
+      "category": "Wine Cost",
+      "unit": "bottle"
+    },
+    {
+      "item": "Domaine Ste. Michelle Brut",
+      "keywords": ["michelle brut", "domaine ste michelle"],
+      "phonetic": ["mee-shell"],
+      "category": "Wine Cost",
+      "unit": "bottle"
+    },
+    {
+      "item": "The Shaker Red Blend",
+      "keywords": ["shaker red", "the shaker"],
+      "phonetic": ["shay-ker"],
+      "category": "Wine Cost",
+      "unit": "bottle"
+    }
+    ],
+    "liquor_cost": [],
+    "na_bev_cost": []
+  }
+    

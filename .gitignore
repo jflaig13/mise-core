@@ -1,0 +1,35 @@
+# macOS system files
+.DS_Store
+
+# Virtual environments
+venv/
+venv311/
+.env/
+.env*/
+
+# Python cache
+__pycache__/
+*.pyc
+
+# Logs
+*.log
+
+# Audio folders
+Payroll Voice Recordings/
+
+# Binary or temp files
+*.xlsx
+*.csv
+*.pdf
+*.wav
+*.m4a
+
+# Docker artifacts
+*.dockerignore
+
+# Misc
+Icon?
+
+folder.txt
+
+.tmp.driveupload/
