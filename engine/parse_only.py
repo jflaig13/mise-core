@@ -14,13 +14,13 @@ async def parse_only_endpoint(
     # Import inside the function to avoid circular imports at module load time
     from .app import transcribe_audio, parse_transcript_to_rows, TranscriptIn
 
-    # Transcribe the audio via the transcriber service
-    transcript = await transcribe_audio(audio)
+    # Transcribe and clean the audio via the transcriber service
+    cleaned_transcript = await transcribe_audio(audio)
 
     # Build payload for the parser
     payload = TranscriptIn(
         filename=filename or (audio.filename or "shift.wav"),
-        transcript=transcript,
+        transcript=cleaned_transcript,
     )
 
     # Parse into structured rows
@@ -28,6 +28,6 @@ async def parse_only_endpoint(
 
     return {
         "filename": payload.filename,
-        "transcript": transcript,
+        "transcript": cleaned_transcript,
         "rows": [r.dict() for r in rows],
     }
