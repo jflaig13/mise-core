@@ -1,4 +1,5 @@
-cd ~/ps-auto
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+cd "$SCRIPT_DIR"
 
 PROJECT_ID="automation-station-478103"
 REGION="us-central1"

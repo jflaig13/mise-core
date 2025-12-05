@@ -5,11 +5,12 @@
 WATCH_DIR="/Users/jonathanflaig/Library/CloudStorage/GoogleDrive-jonathan@papasurf.com/My Drive/Papa Staff Resources/Payroll Voice Recordings"
 ARCHIVE_DIR="/Users/jonathanflaig/Library/CloudStorage/GoogleDrive-jonathan@papasurf.com/My Drive/Papa Staff Resources/Payroll Voice Recordings Archive"
 ENGINE_URL="https://payroll-engine-147422626167.us-central1.run.app"
+PYTHON_BIN="${PYTHON_BIN:-$HOME/mise-core/venv/bin/python3}"
 
 pretty_print_preview() {
   local json="$1"
 
-  "$HOME/ps-auto/venv/bin/python3" - "$json" << 'PYCODE'
+  "$PYTHON_BIN" - "$json" << 'PYCODE'
 import sys, json
 
 if len(sys.argv) < 2:
