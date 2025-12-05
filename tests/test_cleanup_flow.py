@@ -45,12 +45,14 @@ class CleanupFlowTest(unittest.TestCase):
         self._engine_app = None
 
     def load_engine_app(self):
-        """Reload engine.app with BigQuery stubbed so tests stay offline."""
+        """Reload payroll engine with BigQuery stubbed so tests stay offline."""
 
         if self._engine_app is None:
             with mock.patch("google.cloud.bigquery.Client") as client_mock:
                 client_mock.return_value = mock.Mock()
-                self._engine_app = importlib.reload(importlib.import_module("engine.app"))
+                self._engine_app = importlib.reload(
+                    importlib.import_module("engine.payroll_engine")
+                )
         return self._engine_app
 
     def test_transcribe_runs_cleanup_before_returning(self):
