@@ -118,6 +118,17 @@ ROSTER = {
     "austin k": "Austin Kelley",
     "auston": "Austin Kelley",
 
+    # Atticus Usseglio
+    "atticus usseglio": "Atticus Usseglio",
+    "atticus": "Atticus Usseglio",
+    "aticus": "Atticus Usseglio",
+    "attikus": "Atticus Usseglio",
+    "addicus": "Atticus Usseglio",
+    "atticus ussegio": "Atticus Usseglio",
+    "atticus usseglo": "Atticus Usseglio",
+    "atticus uceglio": "Atticus Usseglio",
+    "atticus usceglio": "Atticus Usseglio",
+
 
     "janel baki": "Janel Baki",
     "janelle baki": "Janel Baki",
