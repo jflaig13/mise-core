@@ -111,3 +111,20 @@ def test_fiona_dodson_normalization_and_support_category():
     fiona_row = next(r for r in rows if r.employee == "Fiona Dodson")
     assert fiona_row.category == "support"
     assert abs(fiona_row.amount_final - 75.04) < 1e-6
+
+
+def test_lost_him_variants_map_to_austin_kelley():
+    with mock.patch("google.cloud.bigquery.Client") as client_mock:
+        client_mock.return_value = mock.Mock()
+        engine = importlib.reload(importlib.import_module("engine.payroll_engine"))
+
+    payload = engine.TranscriptIn(
+        filename="112825_AM.wav",
+        transcript="November 28 2025 AM shift Kevin $364.30 lost him $364.30 Ryan $130.94",
+    )
+
+    rows = engine.parse_transcript_to_rows(payload)
+    amounts = {r.employee: r.amount_final for r in rows}
+    assert amounts["Kevin Worley"] == 364.30
+    assert amounts["Austin Kelley"] == 364.30
+    assert amounts["Ryan Alexander"] == 130.94

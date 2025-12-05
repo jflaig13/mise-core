@@ -112,6 +112,9 @@ ROSTER = {
     "orson": "Austin Kelley",
     "lost him": "Austin Kelley",
     "lost em": "Austin Kelley",
+    "lost": "Austin Kelley",
+    "lost him": "Austin Kelley",
+    "lost em": "Austin Kelley",
     "austin k": "Austin Kelley",
     "auston": "Austin Kelley",
 
