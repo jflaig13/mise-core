@@ -141,24 +141,41 @@ fswatch -0 "$WATCH_DIR" | while IFS= read -r -d "" path; do
     fi
 
     if [ -z "$EDIT_CMD" ]; then
-      echo "🔧 No editor found; opening inline editor (Ctrl+D to save)."
+      echo "🔧 No editor found; opening inline guided editor."
       /usr/bin/python3 - "$TMP_EDIT" <<'PYCODE'
-import sys, json
+import json, sys
+from typing import Any
+
 path = sys.argv[1]
 with open(path, "r", encoding="utf-8") as f:
-    data = f.read()
-try:
-    obj = json.loads(data)
-    formatted = json.dumps(obj, indent=2)
-except Exception:
-    formatted = data
-print("# Edit the JSON below. Press Ctrl+D to save and exit.\n")
-print(formatted)
-buf = sys.stdin.read()
-if not buf.strip():
-    buf = formatted
+    data = json.load(f)
+
+def prompt(msg: str, default: Any) -> str:
+    raw = input(f"{msg} [{default}]: ").strip()
+    return raw if raw else str(default)
+
+print("\n=== Inline Edit ===")
+transcript = data.get("transcript", "")
+transcript = input(f"Transcript (leave blank to keep): [{transcript}] ").strip() or transcript
+data["transcript"] = transcript
+
+rows = data.get("rows", [])
+for i, row in enumerate(rows):
+    print(f"\nRow {i}:")
+    for key in ("employee", "role", "shift", "date", "category"):
+        row[key] = prompt(f"  {key}", row.get(key, ""))
+    amt_default = row.get("amount_final", "")
+    amt_in = input(f"  amount_final [{amt_default}]: ").strip()
+    if amt_in:
+        try:
+            row["amount_final"] = float(amt_in)
+        except Exception:
+            print("    (invalid amount, keeping original)")
+    rows[i] = row
+
 with open(path, "w", encoding="utf-8") as f:
-    f.write(buf.strip() + "\n")
+    json.dump(data, f, indent=2)
+    f.write("\n")
 PYCODE
     else
       "$EDIT_CMD" "$TMP_EDIT"
