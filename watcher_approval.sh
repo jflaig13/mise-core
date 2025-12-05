@@ -126,18 +126,28 @@ fswatch -0 "$WATCH_DIR" | while IFS= read -r -d "" path; do
     TMP_EDIT=$(command -v mktemp >/dev/null 2>&1 && mktemp /tmp/shift_edit_XXXX.json || echo "/tmp/shift_edit_manual.json")
     echo "$PREVIEW_JSON" > "$TMP_EDIT"
 
-    EDIT_CMD="${EDITOR:-nano}"
+    # Pick an editor in order: $EDITOR, nano, vim, vi, ed
+    EDIT_CMD="${EDITOR:-}"
     if ! command -v "$EDIT_CMD" >/dev/null 2>&1; then
-      EDIT_CMD="vi"
+      for cand in nano vim vi ed; do
+        if command -v "$cand" >/dev/null 2>&1; then
+          EDIT_CMD="$cand"
+          break
+        fi
+      done
     fi
 
-    "$EDIT_CMD" "$TMP_EDIT"
-
-    if [ -f "$TMP_EDIT" ]; then
-      EDITED_JSON=$(cat "$TMP_EDIT")
-      rm -f "$TMP_EDIT"
-    else
+    if [ -z "$EDIT_CMD" ]; then
+      echo "❌ No editor found (tried \$EDITOR, nano, vim, vi, ed). Skipping edit."
       EDITED_JSON=""
+    else
+      "$EDIT_CMD" "$TMP_EDIT"
+      if [ -f "$TMP_EDIT" ]; then
+        EDITED_JSON=$(/bin/cat "$TMP_EDIT")
+        /bin/rm -f "$TMP_EDIT"
+      else
+        EDITED_JSON=""
+      fi
     fi
 
     if [[ -z "$EDITED_JSON" ]]; then
