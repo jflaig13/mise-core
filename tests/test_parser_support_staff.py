@@ -45,3 +45,20 @@ def test_full_phrase_amounts_are_not_truncated():
     assert amounts["Ryan Alexander"][0] == 34.72
     assert amounts["Ryan Alexander"][1] == "utility"
     assert amounts["Ryan Alexander"][2] == "support"
+
+
+def test_dollar_tokens_with_punctuation_are_parsed():
+    with mock.patch("google.cloud.bigquery.Client") as client_mock:
+        client_mock.return_value = mock.Mock()
+        engine = importlib.reload(importlib.import_module("engine.payroll_engine"))
+
+    payload = engine.TranscriptIn(
+        filename="113025_PM.wav",
+        transcript="Kevin $16.80 mic $16.86. Ryan $7.35.",
+    )
+
+    rows = engine.parse_transcript_to_rows(payload)
+    amounts = {r.employee: r.amount_final for r in rows}
+    assert amounts["Kevin Worley"] == 16.80
+    assert amounts["Mike Walton"] == 16.86
+    assert amounts["Ryan Alexander"] == 7.35

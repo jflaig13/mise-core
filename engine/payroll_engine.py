@@ -136,6 +136,7 @@ ROSTER = {
     "mike walton": "Mike Walton",
     "michael walton": "Mike Walton",
     "mike": "Mike Walton",
+    "mic": "Mike Walton",
 
     # Ryan Alexander
     "ryan alexander": "Ryan Alexander",
@@ -769,6 +770,36 @@ def parse_transcript_to_rows(payload: TranscriptIn) -> List[ShiftRow]:
 
         print(f"DEBUG: Fallback candidate: '{raw_nm}' normalized as '{nm}', tokens: {tokens[i:i+4]}")
         log.debug(f"DEBUG: Fallback candidate: '{raw_nm}' normalized as '{nm}', tokens: {tokens[i:i+4]}")
+
+        # Case 0: token after name includes a $-amount (e.g., "$16.80" or "$16.86.")
+        if i + 1 < len(tokens) and re.search(r"\d", tokens[i + 1]):
+            raw_amt_token = tokens[i + 1].strip(",.")
+            if "$" in raw_amt_token or raw_amt_token.replace(".", "", 1).isdigit():
+                try:
+                    val = parse_amount_fragment(raw_amt_token)
+                except Exception:
+                    val = None
+                if val is not None:
+                    role = "FOH"
+                    if nm == "Ryan Alexander":
+                        role = "utility"
+                    category = "support" if nm in SUPPORT_STAFF else "foh"
+                    already = any(r.employee == nm and r.date == d and r.shift == sh for r in rows)
+                    if not already:
+                        rows.append(
+                            ShiftRow(
+                                date=d,
+                                shift=sh,
+                                employee=nm,
+                                role=role,
+                                category=category,
+                                amount_final=val,
+                                filename=payload.filename,
+                                file_id=payload.file_id,
+                                parsed_confidence=0.9,
+                            )
+                        )
+                    continue
 
         # Prefer full-phrase parsing like "111 dollars and 12 cents" before shorter numeric heuristics.
         if (
