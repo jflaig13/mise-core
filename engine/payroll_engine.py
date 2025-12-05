@@ -770,6 +770,38 @@ def parse_transcript_to_rows(payload: TranscriptIn) -> List[ShiftRow]:
         print(f"DEBUG: Fallback candidate: '{raw_nm}' normalized as '{nm}', tokens: {tokens[i:i+4]}")
         log.debug(f"DEBUG: Fallback candidate: '{raw_nm}' normalized as '{nm}', tokens: {tokens[i:i+4]}")
 
+        # Prefer full-phrase parsing like "111 dollars and 12 cents" before shorter numeric heuristics.
+        if (
+            i + 3 < len(tokens)
+            and tokens[i + 1].isdigit()
+            and tokens[i + 2].lower().startswith("dollar")
+        ):
+            fragment = " ".join(tokens[i + 1 : i + 5])
+            try:
+                val = parse_amount_fragment(fragment)
+            except Exception:
+                val = None
+            if val is not None:
+                if nm == "Ryan Alexander":
+                    role = "utility"
+                category = "support" if nm in SUPPORT_STAFF else "foh"
+                already = any(r.employee == nm and r.date == d and r.shift == sh for r in rows)
+                if not already:
+                    rows.append(
+                        ShiftRow(
+                            date=d,
+                            shift=sh,
+                            employee=nm,
+                            role=role,
+                            category=category,
+                            amount_final=val,
+                            filename=payload.filename,
+                            file_id=payload.file_id,
+                            parsed_confidence=0.9,
+                        )
+                    )
+                continue
+
         # Case 1: amount like "219 68"
         if i + 2 < len(tokens) and tokens[i+1].isdigit() and tokens[i+2].isdigit() and len(tokens[i+2]) == 2:
             try:
