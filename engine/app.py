@@ -50,7 +50,7 @@ TRANSCRIBE_BASE = os.getenv(
 
 async def transcribe_audio(upload: UploadFile) -> str:
     """
-    Send the uploaded audio file to the transcriber service and return the transcript text.
+    Send the uploaded audio file to the transcriber service and return the cleaned transcript text.
     """
     url = TRANSCRIBE_BASE + "/transcribe"
     files = {
@@ -70,10 +70,16 @@ async def transcribe_audio(upload: UploadFile) -> str:
         )
 
     data = resp.json()
-    text = (data or {}).get("text", "").strip()
-    if not text:
+    cleaned_text = ((data or {}).get("text") or (data or {}).get("cleaned_text") or "").strip()
+    raw_text = (data or {}).get("raw_text", "").strip()
+
+    if not cleaned_text:
         raise HTTPException(status_code=422, detail="transcriber returned empty text")
-    return text
+
+    if raw_text and cleaned_text != raw_text:
+        log.debug("Transcript cleaned before parsing: '%s' -> '%s'", raw_text, cleaned_text)
+
+    return cleaned_text
 
 # ----------------------------------------------------
 # Roster + All Normalization Patches
@@ -179,7 +185,7 @@ ROSTER = {
     "COBIN": "Coben Cross",
 }
 
-SUPPORT_STAFF == {"Ryan Alexander", "Coben Cross", "Maddox Porter"}
+SUPPORT_STAFF = {"Ryan Alexander", "Coben Cross", "Maddox Porter"}
 
 
 def normalize_name(raw: str) -> Optional[str]:
@@ -411,7 +417,7 @@ def infer_shift_from_filename(fn: str) -> Optional[str]:
 # ----------------------------------------------------
 class TranscriptIn(BaseModel):
     filename: str
-    transcript: str
+    transcript: str  # cleaned text that already passed through the Whisper cleanup layer
     file_id: Optional[str] = None
     date: Optional[str] = None
     shift: Optional[str] = None
