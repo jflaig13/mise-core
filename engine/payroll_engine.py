@@ -772,7 +772,11 @@ def parse_transcript_to_rows(payload: TranscriptIn) -> List[ShiftRow]:
         log.debug(f"DEBUG: Fallback candidate: '{raw_nm}' normalized as '{nm}', tokens: {tokens[i:i+4]}")
 
         # Case 0: token after name includes a $-amount (e.g., "$16.80" or "$16.86.")
-        if i + 1 < len(tokens) and re.search(r"\d", tokens[i + 1]):
+        if (
+            i + 1 < len(tokens)
+            and re.search(r"\d", tokens[i + 1])
+            and not (i + 2 < len(tokens) and "dollar" in tokens[i + 2].lower())
+        ):
             raw_amt_token = tokens[i + 1].strip(",.")
             if "$" in raw_amt_token or raw_amt_token.replace(".", "", 1).isdigit():
                 try:

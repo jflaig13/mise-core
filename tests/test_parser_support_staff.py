@@ -62,3 +62,20 @@ def test_dollar_tokens_with_punctuation_are_parsed():
     assert amounts["Kevin Worley"] == 16.80
     assert amounts["Mike Walton"] == 16.86
     assert amounts["Ryan Alexander"] == 7.35
+
+
+def test_full_phrase_amounts_with_dollars_and_cents_are_kept():
+    with mock.patch("google.cloud.bigquery.Client") as client_mock:
+        client_mock.return_value = mock.Mock()
+        engine = importlib.reload(importlib.import_module("engine.payroll_engine"))
+
+    payload = engine.TranscriptIn(
+        filename="113025_AM.wav",
+        transcript="Sunday, November 30th 2025 AM shift Kevin 111 dollars and 12 cents Mike 111 dollars and 12 cents Ryan 34 dollars and 72 cents",
+    )
+
+    rows = engine.parse_transcript_to_rows(payload)
+    amounts = {r.employee: r.amount_final for r in rows}
+    assert amounts["Kevin Worley"] == 111.12
+    assert amounts["Mike Walton"] == 111.12
+    assert amounts["Ryan Alexander"] == 34.72
