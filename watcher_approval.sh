@@ -150,13 +150,20 @@ path = sys.argv[1]
 with open(path, "r", encoding="utf-8") as f:
     data = json.load(f)
 
+# Ensure prompts read from TTY even when stdin is piped
+tty = open("/dev/tty", "r")
 def prompt(msg: str, default: Any) -> str:
-    raw = input(f"{msg} [{default}]: ").strip()
+    sys.stdout.write(f"{msg} [{default}]: ")
+    sys.stdout.flush()
+    line = tty.readline()
+    if not line:
+        return str(default)
+    raw = line.strip()
     return raw if raw else str(default)
 
 print("\n=== Inline Edit ===")
 transcript = data.get("transcript", "")
-transcript = input(f"Transcript (leave blank to keep): [{transcript}] ").strip() or transcript
+transcript = prompt("Transcript (leave blank to keep)", transcript)
 data["transcript"] = transcript
 
 rows = data.get("rows", [])
@@ -165,7 +172,7 @@ for i, row in enumerate(rows):
     for key in ("employee", "role", "shift", "date", "category"):
         row[key] = prompt(f"  {key}", row.get(key, ""))
     amt_default = row.get("amount_final", "")
-    amt_in = input(f"  amount_final [{amt_default}]: ").strip()
+    amt_in = prompt("  amount_final", amt_default)
     if amt_in:
         try:
             row["amount_final"] = float(amt_in)
@@ -173,6 +180,7 @@ for i, row in enumerate(rows):
             print("    (invalid amount, keeping original)")
     rows[i] = row
 
+tty.close()
 with open(path, "w", encoding="utf-8") as f:
     json.dump(data, f, indent=2)
     f.write("\n")
