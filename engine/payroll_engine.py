@@ -1,21 +1,31 @@
-"""Compatibility shim for legacy imports.
+import logging
 
-The main payroll engine now lives in ``engine.payroll_engine``. This file keeps
-``engine.app`` imports working while the rest of the codebase migrates.
-"""
+# Set up root logger for all output
+logging.basicConfig(
+    level=logging.DEBUG,
+    format="%(asctime)s %(levelname)s %(message)s",
+    handlers=[
+        logging.StreamHandler(),
+        logging.FileHandler("/tmp/payroll_engine.log"),
+    ],
+)
+log = logging.getLogger("payroll_engine")
+import os
+import re
+from typing import List, Optional
+from datetime import date, datetime
 
-from .payroll_engine import *  # noqa: F401,F403
 import requests
 from fastapi import FastAPI, UploadFile, HTTPException, File
 from pydantic import BaseModel
 from google.cloud import bigquery
 
 from dateutil import parser as dtp
-from .parse_only import router as ParseOnlyRouter
+from .parse_shift import router as ParseShiftRouter
 from .commit_shift import router as CommitShiftRouter
 
 app = FastAPI()
-app.include_router(ParseOnlyRouter)
+app.include_router(ParseShiftRouter)
 app.include_router(CommitShiftRouter)
 log = logging.getLogger("uvicorn")
 
@@ -40,7 +50,7 @@ TRANSCRIBE_BASE = os.getenv(
 
 async def transcribe_audio(upload: UploadFile) -> str:
     """
-    Send the uploaded audio file to the transcriber service and return the cleaned transcript text.
+    Send the uploaded audio file to the transcriber service and return the transcript text.
     """
     url = TRANSCRIBE_BASE + "/transcribe"
     files = {
@@ -60,16 +70,10 @@ async def transcribe_audio(upload: UploadFile) -> str:
         )
 
     data = resp.json()
-    cleaned_text = ((data or {}).get("text") or (data or {}).get("cleaned_text") or "").strip()
-    raw_text = (data or {}).get("raw_text", "").strip()
-
-    if not cleaned_text:
+    text = (data or {}).get("text", "").strip()
+    if not text:
         raise HTTPException(status_code=422, detail="transcriber returned empty text")
-
-    if raw_text and cleaned_text != raw_text:
-        log.debug("Transcript cleaned before parsing: '%s' -> '%s'", raw_text, cleaned_text)
-
-    return cleaned_text
+    return text
 
 # ----------------------------------------------------
 # Roster + All Normalization Patches
@@ -175,7 +179,7 @@ ROSTER = {
     "COBIN": "Coben Cross",
 }
 
-SUPPORT_STAFF = {"Ryan Alexander", "Coben Cross", "Maddox Porter"}
+SUPPORT_STAFF == {"Ryan Alexander", "Coben Cross", "Maddox Porter"}
 
 
 def normalize_name(raw: str) -> Optional[str]:
@@ -407,7 +411,7 @@ def infer_shift_from_filename(fn: str) -> Optional[str]:
 # ----------------------------------------------------
 class TranscriptIn(BaseModel):
     filename: str
-    transcript: str  # cleaned text that already passed through the Whisper cleanup layer
+    transcript: str
     file_id: Optional[str] = None
     date: Optional[str] = None
     shift: Optional[str] = None
