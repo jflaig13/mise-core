@@ -1,0 +1,18 @@
+# Example configuration values for Mise.
+# Copy this file to `config/settings.yaml` and adjust as needed.
+
+# Google Cloud project settings
+project:
+  id: "automation-station-478103"  # mirrors PROJECT_ID
+
+bigquery:
+  dataset: "payroll"               # mirrors BQ_DATASET
+  shifts_table: "shifts"           # mirrors BQ_TABLE_SHIFTS
+
+# Payroll transcriber service
+transcribe:
+  base_url: "https://payroll-transcribe-147422626167.us-central1.run.app"  # mirrors TRANSCRIBE_BASE
+
+# Whisper model cache location for transcription
+whisper:
+  cache_dir: "/app/whisper-models"  # mirrors WHISPER_CACHE_DIR
