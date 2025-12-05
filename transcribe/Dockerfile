@@ -20,6 +20,6 @@ ENV WHISPER_CACHE_DIR=/app/whisper-models
 RUN python -c "import whisper, os; whisper.load_model('tiny.en', download_root=os.environ.get('WHISPER_CACHE_DIR'))" \
  && echo 'Whisper model cached.'
 
-COPY app.py .
+COPY transcriber.py .
 ENV PORT=8080
-CMD ["python","-m","uvicorn","app:app","--host","0.0.0.0","--port","8080","--workers","1"]
+CMD ["python","-m","uvicorn","transcriber:app","--host","0.0.0.0","--port","8080","--workers","1"]
