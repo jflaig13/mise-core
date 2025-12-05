@@ -21,11 +21,11 @@ from pydantic import BaseModel
 from google.cloud import bigquery
 
 from dateutil import parser as dtp
-from .parse_only import router as ParseOnlyRouter
+from .parse_shift import router as ParseShiftRouter
 from .commit_shift import router as CommitShiftRouter
 
 app = FastAPI()
-app.include_router(ParseOnlyRouter)
+app.include_router(ParseShiftRouter)
 app.include_router(CommitShiftRouter)
 log = logging.getLogger("uvicorn")
 
@@ -179,7 +179,7 @@ ROSTER = {
     "COBIN": "Coben Cross",
 }
 
-SUPPORT_STAFF == {"Ryan Alexander", "Coben Cross", "Maddox Porter"}
+SUPPORT_STAFF = {"Ryan Alexander", "Coben Cross", "Maddox Porter"}
 
 
 def normalize_name(raw: str) -> Optional[str]:

@@ -4,6 +4,8 @@ import re
 from unidecode import unidecode
 from rapidfuzz import fuzz, process
 
+from .catalog_loader import load_catalog
+
 def normalize(text):
     """Lowercase, unidecode, strip."""
     return unidecode(text).strip().lower()
@@ -79,12 +81,11 @@ def parse_line(line, catalog, global_rules):
 
 def main():
     if len(sys.argv) != 4:
-        print("Usage: python inventory_parser.py <transcript.txt> <inventory_catalog.json> <output.json>")
+        print("Usage: python -m mise_inventory.parser <transcript.txt> <inventory_catalog.json> <output.json>")
         sys.exit(1)
 
     transcript_path, catalog_path, output_json = sys.argv[1:4]
-    with open(catalog_path, "r") as f:
-        catalog_data = json.load(f)
+    catalog_data = load_catalog(catalog_path)
     global_rules = catalog_data.get("global_rules", {})
 
     # Read transcript and process

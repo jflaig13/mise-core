@@ -12,7 +12,7 @@ async def parse_only_endpoint(
     Does NOT write anything to BigQuery.
     """
     # Import inside the function to avoid circular imports at module load time
-    from .app import transcribe_audio, parse_transcript_to_rows, TranscriptIn
+    from .payroll_engine import transcribe_audio, parse_transcript_to_rows, TranscriptIn
 
     # Transcribe the audio via the transcriber service
     transcript = await transcribe_audio(audio)

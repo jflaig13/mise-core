@@ -1,0 +1,14 @@
+# Example configuration for Mise
+# Copy to settings.yaml and adjust values for your environment.
+
+project:
+  name: "mise"
+  environment: "development"
+
+services:
+  payroll_engine:
+    host: "0.0.0.0"
+    port: 8080
+  transcribe:
+    host: "0.0.0.0"
+    port: 8080

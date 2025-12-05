@@ -31,6 +31,6 @@ def make_excel(json_path):
 
 if __name__ == "__main__":
     if len(sys.argv) != 2:
-        print("Usage: python generate_inventory_file.py <json_file>")
+        print("Usage: python -m mise_inventory.generate_inventory_file <json_file>")
         sys.exit(1)
     make_excel(sys.argv[1])
