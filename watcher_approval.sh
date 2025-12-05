@@ -4,6 +4,7 @@
 
 WATCH_DIR="/Users/jonathanflaig/Library/CloudStorage/GoogleDrive-jonathan@papasurf.com/My Drive/Papa Staff Resources/Payroll Voice Recordings"
 ARCHIVE_DIR="/Users/jonathanflaig/Library/CloudStorage/GoogleDrive-jonathan@papasurf.com/My Drive/Papa Staff Resources/Payroll Voice Recordings Archive"
+PENDING_DIR="/Users/jonathanflaig/Library/CloudStorage/GoogleDrive-jonathan@papasurf.com/My Drive/Papa Staff Resources/Payroll Voice Recordings Pending"
 ENGINE_URL="https://payroll-engine-147422626167.us-central1.run.app"
 
 pretty_print_preview() {
@@ -53,13 +54,14 @@ PYCODE
 
 echo "👀 Watching for new .wav files in:"
 echo "   $WATCH_DIR"
+echo "   (pending queue: $PENDING_DIR)"
 echo ""
 
-mkdir -p "$ARCHIVE_DIR"
+mkdir -p "$ARCHIVE_DIR" "$PENDING_DIR"
 
 # ===== MAIN LOOP =====
 
-fswatch -0 "$WATCH_DIR" | while IFS= read -r -d "" path; do
+fswatch -0 "$WATCH_DIR" "$PENDING_DIR" | while IFS= read -r -d "" path; do
   # Ignore m4a files
   if [[ "$path" == *.m4a ]]; then
     continue
@@ -110,6 +112,8 @@ fswatch -0 "$WATCH_DIR" | while IFS= read -r -d "" path; do
   read ACTION < /dev/tty
   ACTION=${ACTION:-s}
 
+  DID_COMMIT="no"
+
   if [[ "$ACTION" == "a" || "$ACTION" == "A" ]]; then
     echo ""
     echo "🚀 Committing to BigQuery via /commit_shift..."
@@ -119,6 +123,7 @@ fswatch -0 "$WATCH_DIR" | while IFS= read -r -d "" path; do
 
     echo "🔁 Commit response:"
     echo "$COMMIT_RESPONSE"
+    DID_COMMIT="yes"
 
   elif [[ "$ACTION" == "e" || "$ACTION" == "E" ]]; then
     echo ""
@@ -213,6 +218,7 @@ PYCODE
           -d "$EDITED_JSON")
         echo "🔁 Commit response:"
         echo "$COMMIT_RESPONSE"
+        DID_COMMIT="yes"
       else
         echo ""
         echo "⏹ Skipping commit for $name (edited payload not approved)."
@@ -225,9 +231,20 @@ PYCODE
   fi
 
   echo ""
-  echo "📦 Archiving file: $name"
-  /bin/mv "$file" "$ARCHIVE_DIR"/
-  echo "✅ Archived to: $ARCHIVE_DIR"
+  if [[ "$DID_COMMIT" == "yes" ]]; then
+    echo "📦 Archiving file: $name"
+    /bin/mv "$file" "$ARCHIVE_DIR"/
+    echo "✅ Archived to: $ARCHIVE_DIR"
+  else
+    # Move to pending queue if not already there
+    if [[ "$file" != "$PENDING_DIR/"* ]]; then
+      echo "⏳ Moving to pending for later review: $name"
+      /bin/mv "$file" "$PENDING_DIR"/
+      echo "✅ Moved to: $PENDING_DIR"
+    else
+      echo "⏳ Left in pending: $name"
+    fi
+  fi
   echo "---------------------------------------------"
   echo ""
 done
