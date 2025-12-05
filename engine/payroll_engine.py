@@ -226,8 +226,8 @@ def parse_amount_fragment(fragment: str) -> float:
         "five": 5, "six": 6, "seven": 7, "eight": 8, "nine": 9
     }
 
-    # NEW: "$120." → 120.00
-    m = re.search(r"\$?\s*(\d+)\.?\s*$", s)
+    # NEW: "$120." → 120.00 (only when the entire fragment is a single integer amount)
+    m = re.fullmatch(r"\$?\s*(\d+)\.?", s)
     if m:
         return float(f"{m.group(1)}.00")
 
