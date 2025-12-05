@@ -138,6 +138,18 @@ ROSTER = {
     "mike": "Mike Walton",
     "mic": "Mike Walton",
 
+    # Fiona Dodson
+    "fiona dodson": "Fiona Dodson",
+    "fiona": "Fiona Dodson",
+    "fionna": "Fiona Dodson",
+    "fianna": "Fiona Dodson",
+    "fion": "Fiona Dodson",
+    "feeona": "Fiona Dodson",
+    "fiona dotson": "Fiona Dodson",
+    "fiona dawson": "Fiona Dodson",
+    "fiona dodsen": "Fiona Dodson",
+    "fiona dodgson": "Fiona Dodson",
+
     # Ryan Alexander
     "ryan alexander": "Ryan Alexander",
     "ryan": "Ryan Alexander",
@@ -181,7 +193,7 @@ ROSTER = {
 }
 
 # Employees who should be tagged as support staff (expo/utility/busser buckets)
-SUPPORT_STAFF = {"Ryan Alexander", "Coben Cross", "Maddox Porter"}
+SUPPORT_STAFF = {"Ryan Alexander", "Coben Cross", "Maddox Porter", "Fiona Dodson"}
 
 
 def normalize_name(raw: str) -> Optional[str]:

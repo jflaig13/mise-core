@@ -94,3 +94,20 @@ def test_plain_dollar_amounts_with_trailing_dot_parse_to_whole_dollars():
     rows = engine.parse_transcript_to_rows(payload)
     amounts = {r.employee: r.amount_final for r in rows}
     assert amounts["Austin Kelley"] == 120.00
+
+
+def test_fiona_dodson_normalization_and_support_category():
+    with mock.patch("google.cloud.bigquery.Client") as client_mock:
+        client_mock.return_value = mock.Mock()
+        engine = importlib.reload(importlib.import_module("engine.payroll_engine"))
+
+    payload = engine.TranscriptIn(
+        filename="120425_PM.wav",
+        transcript="Fiona 75 04",
+    )
+
+    rows = engine.parse_transcript_to_rows(payload)
+    assert any(r.employee == "Fiona Dodson" for r in rows)
+    fiona_row = next(r for r in rows if r.employee == "Fiona Dodson")
+    assert fiona_row.category == "support"
+    assert abs(fiona_row.amount_final - 75.04) < 1e-6
