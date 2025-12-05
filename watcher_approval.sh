@@ -126,9 +126,12 @@ fswatch -0 "$WATCH_DIR" | while IFS= read -r -d "" path; do
     TMP_EDIT=$(command -v mktemp >/dev/null 2>&1 && mktemp /tmp/shift_edit_XXXX.json || echo "/tmp/shift_edit_manual.json")
     echo "$PREVIEW_JSON" > "$TMP_EDIT"
 
-    # Pick an editor in order: $EDITOR, nano, vim, vi, ed
+    # Pick an editor in order: $EDITOR, nano, vim, vi, ed; if none found, use inline Python editor
     EDIT_CMD="${EDITOR:-}"
-    if ! command -v "$EDIT_CMD" >/dev/null 2>&1; then
+    if [ -n "$EDIT_CMD" ] && ! command -v "$EDIT_CMD" >/dev/null 2>&1; then
+      EDIT_CMD=""
+    fi
+    if [ -z "$EDIT_CMD" ]; then
       for cand in nano vim vi ed; do
         if command -v "$cand" >/dev/null 2>&1; then
           EDIT_CMD="$cand"
@@ -138,16 +141,32 @@ fswatch -0 "$WATCH_DIR" | while IFS= read -r -d "" path; do
     fi
 
     if [ -z "$EDIT_CMD" ]; then
-      echo "❌ No editor found (tried \$EDITOR, nano, vim, vi, ed). Skipping edit."
-      EDITED_JSON=""
+      echo "🔧 No editor found; opening inline editor (Ctrl+D to save)."
+      /usr/bin/python3 - "$TMP_EDIT" <<'PYCODE'
+import sys, json
+path = sys.argv[1]
+with open(path, "r", encoding="utf-8") as f:
+    data = f.read()
+try:
+    obj = json.loads(data)
+    formatted = json.dumps(obj, indent=2)
+except Exception:
+    formatted = data
+print("# Edit the JSON below. Press Ctrl+D to save and exit.\n")
+print(formatted)
+buf = sys.stdin.read()
+with open(path, "w", encoding="utf-8") as f:
+    f.write(buf.strip() + "\n")
+PYCODE
     else
       "$EDIT_CMD" "$TMP_EDIT"
-      if [ -f "$TMP_EDIT" ]; then
-        EDITED_JSON=$(/bin/cat "$TMP_EDIT")
-        /bin/rm -f "$TMP_EDIT"
-      else
-        EDITED_JSON=""
-      fi
+    fi
+
+    if [ -f "$TMP_EDIT" ]; then
+      EDITED_JSON=$(/bin/cat "$TMP_EDIT")
+      /bin/rm -f "$TMP_EDIT"
+    else
+      EDITED_JSON=""
     fi
 
     if [[ -z "$EDITED_JSON" ]]; then
