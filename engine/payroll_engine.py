@@ -807,7 +807,7 @@ def parse_transcript_to_rows(payload: TranscriptIn) -> List[ShiftRow]:
             and tokens[i + 1].isdigit()
             and tokens[i + 2].lower().startswith("dollar")
         ):
-            fragment = " ".join(tokens[i + 1 : i + 5])
+            fragment = " ".join(tokens[i + 1 : i + 7])  # include cents token if present
             try:
                 val = parse_amount_fragment(fragment)
             except Exception:
