@@ -155,6 +155,8 @@ except Exception:
 print("# Edit the JSON below. Press Ctrl+D to save and exit.\n")
 print(formatted)
 buf = sys.stdin.read()
+if not buf.strip():
+    buf = formatted
 with open(path, "w", encoding="utf-8") as f:
     f.write(buf.strip() + "\n")
 PYCODE
