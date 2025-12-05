@@ -1,0 +1,7 @@
+{
+  "title": "Payroll Shift Schema",
+  "description": "TODO: define the validated shape for parsed payroll shift rows.",
+  "type": "object",
+  "properties": {},
+  "additionalProperties": true
+}
