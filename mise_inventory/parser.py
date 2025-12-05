@@ -1,45 +1,83 @@
-import json
-import sys
-import re
-from unidecode import unidecode
-from rapidfuzz import fuzz, process
+"""Inventory transcript parser utilities.
 
-def normalize(text):
-    """Lowercase, unidecode, strip."""
+This module handles reading a transcript of spoken inventory counts,
+matching each line against the catalog, and writing out a structured
+JSON summary. It can be used as a script or imported by other parts of
+the Mise inventory package.
+"""
+
+from __future__ import annotations
+
+import json
+import re
+import sys
+from pathlib import Path
+
+from rapidfuzz import fuzz
+from unidecode import unidecode
+
+from .catalog_loader import DEFAULT_CATALOG_PATH, load_catalog
+
+
+def normalize(text: str) -> str:
+    """Lowercase, remove accents, and strip whitespace for matching."""
+
     return unidecode(text).strip().lower()
 
-def parse_quantity(phrase, global_rules):
-    """Extract float quantity from a phrase, e.g. 'half', '1.5', 'three-quarters'"""
+
+def parse_quantity(phrase: str, global_rules: dict) -> float | None:
+    """Extract a numeric quantity from a phrase.
+
+    Supports decimals ("1.5"), simple integers ("2"), and common words
+    like "half" or "quarter" that map to fractional values.
+    """
+
     fraction_words = global_rules.get("fraction_words", {})
     phrase = normalize(phrase)
-    # Check for decimal numbers
+
     match = re.match(r"^([0-9]+(\.[0-9]+)?)", phrase)
     if match:
         return float(match.group(1))
-    # Check for 'half', 'quarter', etc.
+
     for word, value in fraction_words.items():
         if word in phrase:
             return value
-    # Written out numbers (one, two, three, etc.)
+
     numbers = {
-        "zero": 0, "one": 1, "two": 2, "three": 3, "four": 4, "five": 5,
-        "six": 6, "seven": 7, "eight": 8, "nine": 9, "ten": 10
+        "zero": 0,
+        "one": 1,
+        "two": 2,
+        "three": 3,
+        "four": 4,
+        "five": 5,
+        "six": 6,
+        "seven": 7,
+        "eight": 8,
+        "nine": 9,
+        "ten": 10,
     }
     words = phrase.split()
     if words and words[0] in numbers:
         return float(numbers[words[0]])
+
     return None
 
-def parse_line(line, catalog, global_rules):
-    """Returns: (category, canonical_name, qty, match_score, matched_keyword) or (None, None, None, None, None)"""
+
+def parse_line(line: str, catalog: dict, global_rules: dict):
+    """Return details for a transcript line if it matches the catalog.
+
+    Returns a tuple of:
+        (category, canonical_name, qty, match_score, matched_keyword)
+    or a tuple of Nones when the line does not match.
+    """
+
     line = normalize(line)
-    # Quick negative logic (don't count/zero)
+
     if any(nk in line for nk in global_rules.get("negative_keywords", [])):
         return None, None, None, None, None
 
     qty = parse_quantity(line, global_rules)
     if qty is None:
-        # try for 'full', 'empty', etc.
         if "full" in line:
             qty = 1.0
         elif "empty" in line:
@@ -47,66 +85,79 @@ def parse_line(line, catalog, global_rules):
         else:
             return None, None, None, None, None
 
-    # Match to catalog
     best_score = 0
     best_item = None
     best_cat = None
     best_keyword = None
+
     for cat, items in catalog.items():
-        if not isinstance(items, list): continue
+        if not isinstance(items, list):
+            continue
         for obj in items:
-            # Fuzzy/phonetic/keyword match
             keywords = obj.get("keywords", [])
             phonetics = obj.get("phonetic", [])
-            fuzzy_weight = obj.get("fuzzy_weight", 0.85)
-            # Try all keywords
+
             for kw in keywords + phonetics + [obj["item"].lower()]:
-                score = fuzz.partial_ratio(line, normalize(kw))/100
+                score = fuzz.partial_ratio(line, normalize(kw)) / 100
                 if score > best_score:
                     best_score = score
                     best_item = obj["item"]
                     best_cat = cat
                     best_keyword = kw
-            # Early stop if perfect
+
             if best_score == 1.0:
                 break
         if best_score == 1.0:
             break
+
     threshold = global_rules.get("fuzzy_match_threshold", 0.78)
     if best_score < threshold:
         return None, None, None, best_score, None
+
     return best_cat, best_item, qty, best_score, best_keyword
 
-def main():
-    if len(sys.argv) != 4:
-        print("Usage: python inventory_parser.py <transcript.txt> <inventory_catalog.json> <output.json>")
+
+def main() -> None:
+    """CLI entry point for parsing an inventory transcript."""
+
+    if len(sys.argv) not in (3, 4):
+        print(
+            "Usage: python -m mise_inventory.parser <transcript.txt> [catalog.json] <output.json>"
+        )
         sys.exit(1)
 
-    transcript_path, catalog_path, output_json = sys.argv[1:4]
-    with open(catalog_path, "r") as f:
-        catalog_data = json.load(f)
+    transcript_path = Path(sys.argv[1])
+    if len(sys.argv) == 4:
+        catalog_path = Path(sys.argv[2])
+        output_json = Path(sys.argv[3])
+    else:
+        catalog_path = DEFAULT_CATALOG_PATH
+        output_json = Path(sys.argv[2])
+
+    catalog_data = load_catalog(catalog_path)
     global_rules = catalog_data.get("global_rules", {})
 
-    # Read transcript and process
     results = {cat: {} for cat in catalog_data if isinstance(catalog_data[cat], list)}
     unmatched = []
-    with open(transcript_path, "r") as f:
+
+    with transcript_path.open("r") as f:
         for line in f:
             line = line.strip()
-            if not line: continue
+            if not line:
+                continue
             cat, canonical, qty, score, kw = parse_line(line, catalog_data, global_rules)
             if cat and canonical and qty is not None:
-                # Add up any repeated counts (aggregate)
                 results[cat][canonical] = results[cat].get(canonical, 0) + qty
             else:
                 unmatched.append({"line": line, "score": score})
 
-    # Convert results to JSON format
     out_json = {}
     for cat in results:
-        out_json[cat] = [{"Item": item, "Count": count} for item, count in sorted(results[cat].items())]
+        out_json[cat] = [
+            {"Item": item, "Count": count} for item, count in sorted(results[cat].items())
+        ]
 
-    with open(output_json, "w") as f:
+    with output_json.open("w") as f:
         json.dump(out_json, f, indent=2)
     print(f"✔ Inventory JSON generated: {output_json}")
 
@@ -114,6 +165,7 @@ def main():
         print("\n⚠️ Unmatched lines (review these for catalog growth):")
         for entry in unmatched:
             print(f"  {entry['line']} (score: {entry['score']})")
+
 
 if __name__ == "__main__":
     main()
