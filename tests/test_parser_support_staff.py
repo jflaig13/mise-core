@@ -38,7 +38,10 @@ def test_full_phrase_amounts_are_not_truncated():
 
     rows = engine.parse_transcript_to_rows(payload)
 
-    amounts = {r.employee: r.amount_final for r in rows}
-    assert amounts["Kevin Worley"] == 111.12
-    assert amounts["Mike Walton"] == 111.12
-    assert amounts["Ryan Alexander"] == 34.72
+    amounts = {r.employee: (r.amount_final, r.role, r.category) for r in rows}
+    assert amounts["Kevin Worley"][0] == 111.12
+    assert amounts["Kevin Worley"][1] == "FOH"
+    assert amounts["Mike Walton"][0] == 111.12
+    assert amounts["Ryan Alexander"][0] == 34.72
+    assert amounts["Ryan Alexander"][1] == "utility"
+    assert amounts["Ryan Alexander"][2] == "support"

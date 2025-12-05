@@ -782,6 +782,7 @@ def parse_transcript_to_rows(payload: TranscriptIn) -> List[ShiftRow]:
             except Exception:
                 val = None
             if val is not None:
+                role = "FOH"
                 if nm == "Ryan Alexander":
                     role = "utility"
                 category = "support" if nm in SUPPORT_STAFF else "foh"
