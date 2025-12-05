@@ -211,7 +211,7 @@ ROSTER = {
 }
 
 # Employees who should be tagged as support staff (expo/utility/busser buckets)
-SUPPORT_STAFF = {"Ryan Alexander", "Coben Cross", "Maddox Porter", "Fiona Dodson"}
+SUPPORT_STAFF = {"Ryan Alexander", "Coben Cross", "Maddox Porter", "Fiona Dodson", "Atticus Usseglio"}
 
 
 def normalize_name(raw: str) -> Optional[str]:
@@ -528,6 +528,15 @@ def parse_transcript_to_rows(payload: TranscriptIn) -> List[ShiftRow]:
     lowered = text.lower()
     rows: List[ShiftRow] = []
 
+    def resolve_role_category(name: str, default_role: str = "FOH"):
+        role = default_role
+        if name == "Ryan Alexander":
+            role = "utility"
+        elif name == "Atticus Usseglio":
+            role = "expo"
+        category = "support" if name in SUPPORT_STAFF else "foh"
+        return role, category
+
 
     # -------------------------------
     # UTILITY SECTION FIRST
@@ -818,27 +827,24 @@ def parse_transcript_to_rows(payload: TranscriptIn) -> List[ShiftRow]:
                     val = parse_amount_fragment(raw_amt_token)
                 except Exception:
                     val = None
-                if val is not None:
-                    role = "FOH"
-                    if nm == "Ryan Alexander":
-                        role = "utility"
-                    category = "support" if nm in SUPPORT_STAFF else "foh"
-                    already = any(r.employee == nm and r.date == d and r.shift == sh for r in rows)
-                    if not already:
-                        rows.append(
-                            ShiftRow(
-                                date=d,
-                                shift=sh,
-                                employee=nm,
-                                role=role,
-                                category=category,
-                                amount_final=val,
-                                filename=payload.filename,
-                                file_id=payload.file_id,
-                                parsed_confidence=0.9,
-                            )
-                        )
-                    continue
+        if val is not None:
+            role, category = resolve_role_category(nm, "FOH")
+            already = any(r.employee == nm and r.date == d and r.shift == sh for r in rows)
+            if not already:
+                rows.append(
+                    ShiftRow(
+                        date=d,
+                        shift=sh,
+                        employee=nm,
+                        role=role,
+                        category=category,
+                        amount_final=val,
+                        filename=payload.filename,
+                        file_id=payload.file_id,
+                        parsed_confidence=0.9,
+                    )
+                )
+            continue
 
         # Case 0b: amount appears two tokens after name (e.g., "lost him $364.30")
         if i + 2 < len(tokens) and re.search(r"\d", tokens[i + 2]) and tokens[i + 2].startswith("$"):
@@ -847,10 +853,7 @@ def parse_transcript_to_rows(payload: TranscriptIn) -> List[ShiftRow]:
             except Exception:
                 val = None
             if val is not None:
-                role = "FOH"
-                if nm == "Ryan Alexander":
-                    role = "utility"
-                category = "support" if nm in SUPPORT_STAFF else "foh"
+                role, category = resolve_role_category(nm, "FOH")
                 already = any(r.employee == nm and r.date == d and r.shift == sh for r in rows)
                 if not already:
                     rows.append(
@@ -875,10 +878,7 @@ def parse_transcript_to_rows(payload: TranscriptIn) -> List[ShiftRow]:
         except Exception:
             val = None
         if val is not None:
-            role = "FOH"
-            if nm == "Ryan Alexander":
-                role = "utility"
-            category = "support" if nm in SUPPORT_STAFF else "foh"
+            role, category = resolve_role_category(nm, "FOH")
             already = any(r.employee == nm and r.date == d and r.shift == sh for r in rows)
             if not already:
                 rows.append(
@@ -908,10 +908,7 @@ def parse_transcript_to_rows(payload: TranscriptIn) -> List[ShiftRow]:
             except Exception:
                 val = None
             if val is not None:
-                role = "FOH"
-                if nm == "Ryan Alexander":
-                    role = "utility"
-                category = "support" if nm in SUPPORT_STAFF else "foh"
+                role, category = resolve_role_category(nm, "FOH")
                 already = any(r.employee == nm and r.date == d and r.shift == sh for r in rows)
                 if not already:
                     rows.append(
