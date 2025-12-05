@@ -226,6 +226,11 @@ def parse_amount_fragment(fragment: str) -> float:
         "five": 5, "six": 6, "seven": 7, "eight": 8, "nine": 9
     }
 
+    # NEW: "$120." → 120.00
+    m = re.search(r"\$?\s*(\d+)\.?\s*$", s)
+    if m:
+        return float(f"{m.group(1)}.00")
+
     # 1) "$52. $03." → 52.03
     two_nums = re.findall(r"(\d+)\.?", s)
     if len(two_nums) == 2:
