@@ -123,11 +123,22 @@ fswatch -0 "$WATCH_DIR" | while IFS= read -r -d "" path; do
   elif [[ "$ACTION" == "e" || "$ACTION" == "E" ]]; then
     echo ""
     echo "✏️  Opening preview JSON for edit..."
-    TMP_EDIT=$(mktemp /tmp/shift_edit_XXXX.json)
+    TMP_EDIT=$(command -v mktemp >/dev/null 2>&1 && mktemp /tmp/shift_edit_XXXX.json || echo "/tmp/shift_edit_manual.json")
     echo "$PREVIEW_JSON" > "$TMP_EDIT"
-    ${EDITOR:-nano} "$TMP_EDIT"
-    EDITED_JSON=$(cat "$TMP_EDIT")
-    rm -f "$TMP_EDIT"
+
+    EDIT_CMD="${EDITOR:-nano}"
+    if ! command -v "$EDIT_CMD" >/dev/null 2>&1; then
+      EDIT_CMD="vi"
+    fi
+
+    "$EDIT_CMD" "$TMP_EDIT"
+
+    if [ -f "$TMP_EDIT" ]; then
+      EDITED_JSON=$(cat "$TMP_EDIT")
+      rm -f "$TMP_EDIT"
+    else
+      EDITED_JSON=""
+    fi
 
     if [[ -z "$EDITED_JSON" ]]; then
       echo "❌ Edited JSON is empty. Skipping."
