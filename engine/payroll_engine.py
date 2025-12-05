@@ -797,9 +797,37 @@ def parse_transcript_to_rows(payload: TranscriptIn) -> List[ShiftRow]:
                                 filename=payload.filename,
                                 file_id=payload.file_id,
                                 parsed_confidence=0.9,
-                            )
                         )
-                    continue
+                    )
+                continue
+
+        # Broad lookahead: try to parse any nearby amount fragment before heuristics
+        fragment = " ".join(tokens[i + 1 : i + 8])
+        try:
+            val = parse_amount_fragment(fragment)
+        except Exception:
+            val = None
+        if val is not None:
+            role = "FOH"
+            if nm == "Ryan Alexander":
+                role = "utility"
+            category = "support" if nm in SUPPORT_STAFF else "foh"
+            already = any(r.employee == nm and r.date == d and r.shift == sh for r in rows)
+            if not already:
+                rows.append(
+                    ShiftRow(
+                        date=d,
+                        shift=sh,
+                        employee=nm,
+                        role=role,
+                        category=category,
+                        amount_final=val,
+                        filename=payload.filename,
+                        file_id=payload.file_id,
+                        parsed_confidence=0.9,
+                    )
+                )
+            continue
 
         # Prefer full-phrase parsing like "111 dollars and 12 cents" before shorter numeric heuristics.
         if (
