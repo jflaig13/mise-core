@@ -165,7 +165,7 @@ ROSTER = {
     "co-bin cross": "Coben Cross",
     "co-bin": "Coben Cross",
 
-    # Whisper hallucination → Coben
+# Whisper hallucination → Coben
     "covid": "Coben Cross",
     "covid19": "Coben Cross",
     "covid-19": "Coben Cross",
@@ -179,7 +179,8 @@ ROSTER = {
     "COBIN": "Coben Cross",
 }
 
-SUPPORT_STAFF == {"Ryan Alexander", "Coben Cross", "Maddox Porter"}
+# Employees who should be tagged as support staff (expo/utility/busser buckets)
+SUPPORT_STAFF = {"Ryan Alexander", "Coben Cross", "Maddox Porter"}
 
 
 def normalize_name(raw: str) -> Optional[str]:
