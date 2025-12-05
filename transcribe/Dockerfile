@@ -15,11 +15,14 @@ RUN python -m pip install --no-cache-dir --upgrade pip \
 COPY requirements.txt .
 RUN python -m pip install --no-cache-dir -r requirements.txt
 
+# Copy the full transcribe package into the image
+COPY . /app/transcribe
+ENV PYTHONPATH=/app
+
 # Pre-download tiny English Whisper model into the image
 ENV WHISPER_CACHE_DIR=/app/whisper-models
-RUN python -c "import whisper, os; whisper.load_model('tiny.en', download_root=os.environ.get('WHISPER_CACHE_DIR'))" \
+RUN python -c "import transcribe.app, whisper, os; whisper.load_model('tiny.en', download_root=os.environ.get('WHISPER_CACHE_DIR'))" \
  && echo 'Whisper model cached.'
 
-COPY app.py .
 ENV PORT=8080
-CMD ["python","-m","uvicorn","app:app","--host","0.0.0.0","--port","8080","--workers","1"]
+CMD ["python","-m","uvicorn","transcribe.app:app","--host","0.0.0.0","--port","8080","--workers","1"]

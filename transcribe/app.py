@@ -3,7 +3,7 @@ from typing import Optional
 import os, tempfile, logging
 import whisper
 
-from .cleanup.llm_cleanup import LlmCleanupClient
+from transcribe.cleanup.llm_cleanup import LlmCleanupClient
 
 app = FastAPI()
 log = logging.getLogger("uvicorn")
