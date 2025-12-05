@@ -17,5 +17,5 @@ COPY engine ./engine
 # Cloud Run will send traffic to $PORT
 ENV PORT=8080
 
-# Start the FastAPI app from engine.app:app
-CMD ["python", "-m", "uvicorn", "engine.app:app", "--host", "0.0.0.0", "--port", "8080"]
+# Start the FastAPI app from engine.payroll_engine:app
+CMD ["python", "-m", "uvicorn", "engine.payroll_engine:app", "--host", "0.0.0.0", "--port", "8080"]
