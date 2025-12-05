@@ -105,11 +105,12 @@ fswatch -0 "$WATCH_DIR" | while IFS= read -r -d "" path; do
   pretty_print_preview "$PREVIEW_JSON"
   echo ""
 
-  # Ask for approval
-  echo -n "✅ Approve and commit this shift to BigQuery? [y/N]: "
-  read APPROVE < /dev/tty
+  # Ask for action
+  echo -n "Choose action: [a]pprove, [e]dit, [s]kip (default s): "
+  read ACTION < /dev/tty
+  ACTION=${ACTION:-s}
 
-  if [[ "$APPROVE" == "y" || "$APPROVE" == "Y" ]]; then
+  if [[ "$ACTION" == "a" || "$ACTION" == "A" ]]; then
     echo ""
     echo "🚀 Committing to BigQuery via /commit_shift..."
     COMMIT_RESPONSE=$(/usr/bin/curl -sS -X POST "$ENGINE_URL/commit_shift" \
@@ -118,9 +119,42 @@ fswatch -0 "$WATCH_DIR" | while IFS= read -r -d "" path; do
 
     echo "🔁 Commit response:"
     echo "$COMMIT_RESPONSE"
+
+  elif [[ "$ACTION" == "e" || "$ACTION" == "E" ]]; then
+    echo ""
+    echo "✏️  Opening preview JSON for edit..."
+    TMP_EDIT=$(mktemp /tmp/shift_edit_XXXX.json)
+    echo "$PREVIEW_JSON" > "$TMP_EDIT"
+    ${EDITOR:-nano} "$TMP_EDIT"
+    EDITED_JSON=$(cat "$TMP_EDIT")
+    rm -f "$TMP_EDIT"
+
+    if [[ -z "$EDITED_JSON" ]]; then
+      echo "❌ Edited JSON is empty. Skipping."
+    else
+      echo ""
+      echo "🔎 Preview AFTER edits:"
+      pretty_print_preview "$EDITED_JSON"
+      echo ""
+      echo -n "✅ Commit edited shift to BigQuery? [y/N]: "
+      read APPROVE_EDIT < /dev/tty
+      if [[ "$APPROVE_EDIT" == "y" || "$APPROVE_EDIT" == "Y" ]]; then
+        echo ""
+        echo "🚀 Committing edited payload to BigQuery via /commit_shift..."
+        COMMIT_RESPONSE=$(/usr/bin/curl -sS -X POST "$ENGINE_URL/commit_shift" \
+          -H "Content-Type: application/json" \
+          -d "$EDITED_JSON")
+        echo "🔁 Commit response:"
+        echo "$COMMIT_RESPONSE"
+      else
+        echo ""
+        echo "⏹ Skipping commit for $name (edited payload not approved)."
+      fi
+    fi
+
   else
     echo ""
-    echo "⏹ Skipping commit for $name (not approved)."
+    echo "⏹ Skipping commit for $name."
   fi
 
   echo ""
