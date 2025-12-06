@@ -143,3 +143,21 @@ def test_atticus_usseglo_normalization():
     rows = engine.parse_transcript_to_rows(payload)
     amounts = {r.employee: r.amount_final for r in rows}
     assert amounts["Atticus Usseglio"] == 85.25
+
+
+def test_allston_alias_and_fiona_support_role():
+    with mock.patch("google.cloud.bigquery.Client") as client_mock:
+        client_mock.return_value = mock.Mock()
+        engine = importlib.reload(importlib.import_module("engine.payroll_engine"))
+
+    payload = engine.TranscriptIn(
+        filename="120525_PM.wav",
+        transcript="December 5th 2025 PM shift, Allston $49.33, Fiona $10.04.",
+    )
+
+    rows = engine.parse_transcript_to_rows(payload)
+    amounts = {r.employee: (r.amount_final, r.role, r.category) for r in rows}
+    assert amounts["Austin Kelley"][0] == 49.33
+    assert amounts["Fiona Dodson"][0] == 10.04
+    assert amounts["Fiona Dodson"][1] == "expo"
+    assert amounts["Fiona Dodson"][2] == "support"

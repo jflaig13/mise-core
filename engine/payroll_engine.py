@@ -117,6 +117,7 @@ ROSTER = {
     "lost em": "Austin Kelley",
     "austin k": "Austin Kelley",
     "auston": "Austin Kelley",
+    "allston": "Austin Kelley",
 
     # Atticus Usseglio
     "atticus usseglio": "Atticus Usseglio",
@@ -533,6 +534,8 @@ def parse_transcript_to_rows(payload: TranscriptIn) -> List[ShiftRow]:
         if name == "Ryan Alexander":
             role = "utility"
         elif name == "Atticus Usseglio":
+            role = "expo"
+        elif name == "Fiona Dodson":
             role = "expo"
         category = "support" if name in SUPPORT_STAFF else "foh"
         return role, category
