@@ -1,0 +1,85 @@
+{
+  "out_base": "TipReport_111725_112325",
+  "header": "Week of November 17–23, 2025",
+  "shift_cols": ["MAM","MPM","TAM","TPM","WAM","WPM","ThAM","ThPM","FAM","FPM","SaAM","SaPM","SuAM","SuPM"],
+  "per_shift": {
+    "John Neal":     {"MAM": 120.20, "TAM": 97.43, "WAM": 48.88},
+    "Austin Kelley": {"MPM": 146.23, "ThPM": 168.50, "FAM": 178.83, "FPM": 230.17, "SaAM": 117.31, "SuPM": 361.00},
+    "Mark Buryanek": {"SaAM": 117.31, "SaPM": 219.68, "SuPM": 361.00},
+    "Heather Martin":{"ThPM": 168.51},
+    "Kevin Worley":  {"WPM": 84.47, "FPM": 230.17, "SaPM": 219.68, "SuAM": 209.98, "SuPM": 361.00},
+    "Mike Walton":   {"TPM": 133.43, "WPM": 84.47, "SuAM": 209.98},
+    "Janel Baki":    {"SuPM": 361.00},
+    "Coben Cross":   {"TPM": 35.32, "WPM": 29.70},
+    "Ryan Alexander":{"FPM": 65.17, "SaAM": 41.29, "SaPM": 75.04, "SuAM": 76.96, "SuPM": 100.00},
+    "Maddox Porter": {"MPM": 16.46, "ThPM": 48.00}
+  },
+  "cook_tips": {
+    "Slayde Walker": 17.18,
+    "Tori Wells": 1.08,
+    "Warren Lewis": 22.14
+  },
+  "weekly_totals": {
+    "Austin Kelley": 1194.05,
+    "Kevin Worley": 1106.30,
+    "John Neal": 266.51,
+    "Mark Buryanek": 698.00,
+    "Janel Baki": 361.00,
+    "Heather Martin": 168.51,
+    "Mike Walton": 427.88,
+    "Maddox Porter": 64.46,
+    "Coben Cross": 65.02,
+    "Ryan Alexander": 358.46,
+    "Slayde Walker": 17.18,
+    "Tori Wells": 1.08,
+    "Warren Lewis": 22.14
+  },
+  "detail_blocks": [
+    ["Mon Nov 17 — AM", [
+      "John Neal final $120.20 (no tip-out)"
+    ]],
+    ["Mon Nov 17 — PM", [
+      "Austin Kelley pre-tip $162.69 – Maddox Porter $16.46 = Austin Kelley $146.23",
+      "Utility: Maddox Porter $16.46"
+    ]],
+    ["Tue Nov 18 — AM (final)", [
+      "John Neal $97.43 (no tip-out)"
+    ]],
+    ["Tue Nov 18 — PM (finals)", [
+      "Mike Walton $133.43, John Neal $133.43, Coben Cross $35.32"
+    ]],
+    ["Wed Nov 19 — AM (final)", [
+      "John Neal $48.88 (no tip-out)"
+    ]],
+    ["Wed Nov 19 — PM (finals)", [
+      "Kevin Worley $84.47, Mike Walton $84.47, Coben Cross $29.70"
+    ]],
+    ["Thu Nov 20 — AM (final)", [
+      "Kevin Worley $93.29 (no tip-out)"
+    ]],
+    ["Thu Nov 20 — PM (tip pool)", [
+      "Heather Martin & Austin Kelley pool: net $337.01 split → Heather Martin $168.51, Austin Kelley $168.50",
+      "Utility: Maddox Porter $48.00"
+    ]],
+    ["Fri Nov 21 — AM (final)", [
+      "Austin Kelley $178.83 (no tip-out)"
+    ]],
+    ["Fri Nov 21 — PM (finals)", [
+      "Kevin Worley $230.17, Austin Kelley $230.17, Ryan Alexander $65.17"
+    ]],
+    ["Sat Nov 22 — AM (tip pool)", [
+      "Austin Kelley & Mark Buryanek pool: net $234.62 split → $117.31 each",
+      "Utility: Ryan Alexander $41.29"
+    ]],
+    ["Sat Nov 22 — PM (finals)", [
+      "Kevin Worley $219.68, Mark Buryanek $219.68, Ryan Alexander $75.04"
+    ]],
+    ["Sun Nov 23 — AM (finals)", [
+      "Mike Walton $209.98, Kevin Worley $209.98, Ryan Alexander $76.96"
+    ]],
+    ["Sun Nov 23 — PM (finals)", [
+      "Janel Baki $361.00, Austin Kelley $361.00, Kevin Worley $361.00, Ryan Alexander $100.00",
+      "Cooks: Slayde Walker $17.18, Tori Wells $1.08, Warren Lewis $22.14"
+    ]]
+  ]
+}

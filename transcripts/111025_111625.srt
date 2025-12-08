@@ -1,0 +1,220 @@
+1
+00:00:00,000 --> 00:00:14,000
+This is the payroll recording for pay period Monday November 10th 2025 to Sunday November 16th 2025.
+
+2
+00:00:14,000 --> 00:00:20,000
+Starting off here with the Monday AM shift, it's John Neal.
+
+3
+00:00:20,000 --> 00:00:24,000
+No Busser or Expo.
+
+4
+00:00:24,000 --> 00:00:30,000
+Total tips and fees, this is the final number, $70.09.
+
+5
+00:00:30,000 --> 00:00:39,000
+Again, that's $70.09.
+
+6
+00:00:39,000 --> 00:00:46,000
+Okay, Monday PM shift.
+
+7
+00:00:46,000 --> 00:00:56,000
+Austin Kelly, and this is going to be before tip-out, so we need to subtract Coban's tip-out from this number.
+
+8
+00:00:57,000 --> 00:01:16,000
+Kelly did $164.82 in total tips and fees, and we need to subtract out $21.02 for Coban Cross, who was the utility guy.
+
+9
+00:01:16,000 --> 00:01:22,000
+Next is Tuesday November 11th, this is the AM shift.
+
+10
+00:01:22,000 --> 00:01:27,000
+No Busser or Expo or utility.
+
+11
+00:01:27,000 --> 00:01:38,000
+So, Brooks final tips should be $39.65.
+
+12
+00:01:38,000 --> 00:01:50,000
+Tuesday November 11th 2025 PM shift, it was Kevin and Janelle.
+
+13
+00:01:50,000 --> 00:01:58,000
+And these are the final numbers, Kevin and Janelle each made $88.59.
+
+14
+00:01:58,000 --> 00:02:09,000
+Coban Cross needs to make $25.05.
+
+15
+00:02:09,000 --> 00:02:19,000
+Okay, now Wednesday AM shift.
+
+16
+00:02:19,000 --> 00:02:35,000
+No utility, the server was John Neal, and his final tips were $176.69.
+
+17
+00:02:35,000 --> 00:02:45,000
+And now on to the Wednesday November 12th 2025 PM shift.
+
+18
+00:02:45,000 --> 00:02:51,000
+It was Austin Kelly.
+
+19
+00:02:51,000 --> 00:02:58,000
+No utility guy, total tips and fees were $164.14.
+
+20
+00:02:58,000 --> 00:03:05,000
+Again, that's $164.14.
+
+21
+00:03:05,000 --> 00:03:12,000
+Okay, so the utility guy was Coban Cross on this one, so we need to do that math.
+
+22
+00:03:12,000 --> 00:03:28,000
+So, Austin Kelly before tip out made $164.14, and we need to subtract $23.85 as Coban's tip out.
+
+23
+00:03:28,000 --> 00:03:31,000
+He was the utility guy.
+
+24
+00:03:31,000 --> 00:03:37,000
+Okay, on to Thursday November 13th 2025, this is the AM shift.
+
+25
+00:03:37,000 --> 00:03:43,000
+It was Austin Kelly solo with no expo, bus or utility guy.
+
+26
+00:03:43,000 --> 00:03:50,000
+So this is the final number $160.92.
+
+27
+00:03:50,000 --> 00:04:01,000
+Now on to Thursday PM, again November 13th 2025, Austin Kelly was the server.
+
+28
+00:04:01,000 --> 00:04:04,000
+Maddox was the utility guy.
+
+29
+00:04:04,000 --> 00:04:09,000
+This is the before tip out number for Austin, so we need to do the calculation.
+
+30
+00:04:09,000 --> 00:04:15,000
+Before tip out, Austin Kelly made $253.93.
+
+31
+00:04:15,000 --> 00:04:24,000
+Then he needs to tip out Maddox Porter, $27.39.
+
+32
+00:04:24,000 --> 00:04:31,000
+Now on to Friday November 14th, this is the AM shift.
+
+33
+00:04:31,000 --> 00:04:49,000
+It was Austin Kelly with no utility guy.
+
+34
+00:04:49,000 --> 00:04:55,000
+Scratch that, I'm totally starting over on Friday November 11th 2025.
+
+35
+00:04:55,000 --> 00:04:57,000
+This is the AM shift.
+
+36
+00:04:57,000 --> 00:05:08,000
+It was Austin Kelly and the utility guy was Maddox Porter.
+
+37
+00:05:08,000 --> 00:05:14,000
+So before tip out, Austin Kelly made $202.86.
+
+38
+00:05:14,000 --> 00:05:26,000
+Then we need to do the calculation and subtract out $29.92 for the utility guy, which again was Maddox Porter.
+
+39
+00:05:26,000 --> 00:05:30,000
+Friday PM shift, these are the final numbers.
+
+40
+00:05:30,000 --> 00:05:32,000
+So this is after tip out.
+
+41
+00:05:32,000 --> 00:05:40,000
+Kevin, $207.41. Austin, $207.41.
+
+42
+00:05:40,000 --> 00:05:48,000
+Utility was Maddox, $59.61.
+
+43
+00:05:48,000 --> 00:05:55,000
+Saturday November 15th 2025 AM shift, these are the final numbers.
+
+44
+00:05:55,000 --> 00:06:06,000
+So after tip out, Kevin Worley, $255.85. Mark, $255.85.
+
+45
+00:06:06,000 --> 00:06:13,000
+Utility was Coban, $66.59.
+
+46
+00:06:13,000 --> 00:06:24,000
+Saturday November 15th 2025 PM shift, these are the final numbers.
+
+47
+00:06:24,000 --> 00:06:36,000
+Kevin, $165.44. Mark, $165.44. Coban, $52.72.
+
+48
+00:06:36,000 --> 00:06:42,000
+Again, those are all final numbers.
+
+49
+00:06:42,000 --> 00:06:48,000
+Okay, Sunday November 16th 2025.
+
+50
+00:06:48,000 --> 00:06:52,000
+This is the AM shift.
+
+51
+00:06:52,000 --> 00:06:56,000
+These are final numbers. So these are final numbers.
+
+52
+00:06:56,000 --> 00:07:08,000
+Kevin, $196.93. Mike, $196.93. Coban, $66.24.
+
+53
+00:07:08,000 --> 00:07:16,000
+Sunday November 16th 2025 PM shift, these are the final numbers.
+
+54
+00:07:16,000 --> 00:07:28,000
+Kevin, $105.76. Austin, $105.76. Coban, $31.30.
+
+55
+00:07:28,000 --> 00:07:30,000
+Again, those are all final numbers.
+

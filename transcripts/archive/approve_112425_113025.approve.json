@@ -1,0 +1,149 @@
+{
+  "out_base": "TipReport_112425_113025",
+  "header": "Week of November 24–30, 2025",
+  "shift_cols": [
+    "MAM","MPM","TAM","TPM","WAM","WPM",
+    "ThAM","ThPM","FAM","FPM","SaAM","SaPM","SuAM","SuPM"
+  ],
+
+  "per_shift": {
+    "Austin Kelley": {
+      "MAM": 219.93,
+      "MPM": 387.22,
+      "TAM": 123.78,
+      "TPM": 351.84,
+      "WAM": 210.25,
+      "WPM": 361.44,
+      "FAM": 357.40
+    },
+    "Brooke Neal": {
+      "MAM": 157.69,
+      "TAM": 132.02,
+      "WAM": 238.77,
+      "WPM": 135.99
+    },
+    "Kevin Worley": {
+      "MPM": 126.32,
+      "FAM": 371.21,
+      "FPM": 147.51,
+      "SaAM": 136.60,
+      "SaPM": 247.28,
+      "SuAM": 111.12,
+      "SuPM": 16.80
+    },
+    "Mike Walton": {
+      "MPM": 208.53,
+      "FPM": 147.51,
+      "SuAM": 111.12,
+      "SuPM": 16.80
+    },
+    "Janel Baki": {
+      "TPM": 270.49,
+      "WPM": 316.06,
+      "FPM": 147.51
+    },
+    "Mark Buryanek": {
+      "TPM": 253.04,
+      "SaAM": 136.60,
+      "SaPM": 247.28
+    },
+    "Atticus Usseglio": {
+      "FPM": 36.55,
+      "SaAM": 30.80
+    },
+    "Ryan Alexander": {
+      "MAM": 80.80,
+      "MPM": 145.00,
+      "TAM": 60.03,
+      "TPM": 94.47,
+      "WAM": 86.40,
+      "WPM": 159.20,
+      "FAM": 130.94,
+      "FPM": 10.72,
+      "SaAM": 28.62,
+      "SaPM": 76.19,
+      "SuAM": 34.72,
+      "SuPM": 7.35
+    }
+  },
+
+  "cook_tips": {
+    "Slayde Walker": 62.06,
+    "Tori Wells": 12.62,
+    "Warren Lewis": 64.17
+  },
+
+  "weekly_totals": {
+    "Austin Kelley": 2011.86,
+    "Brooke Neal": 664.47,
+    "Kevin Worley": 1156.84,
+    "Mike Walton": 483.96,
+    "Janel Baki": 734.06,
+    "Mark Buryanek": 636.92,
+    "Atticus Usseglio": 67.35,
+    "Ryan Alexander": 914.44,
+    "Slayde Walker": 62.06,
+    "Tori Wells": 12.62,
+    "Warren Lewis": 64.17
+  },
+
+  "detail_blocks": [
+    ["Mon Nov 24 — AM (tip-out)", [
+      "Austin Kelley 266.23 – 46.30 = 219.93",
+      "Brooke Neal 192.19 – 34.50 = 157.69",
+      "Utility: Ryan Alexander 46.30 + 34.50 = 80.80"
+    ]],
+    ["Mon Nov 24 — PM (tip-out)", [
+      "Austin Kelley 469.17 – 81.95 = 387.22",
+      "Kevin Worley 142.62 – 16.30 = 126.32",
+      "Mike Walton 255.28 – 46.75 = 208.53",
+      "Utility: Ryan Alexander gets 81.95 + 16.30 + 46.75 = 145.00"
+    ]],
+    ["Tue Nov 25 — AM (tip-out)", [
+      "Brooke Neal 159.17 – 27.15 = 132.02",
+      "Austin Kelley 156.66 – 32.88 = 123.78",
+      "Utility: Ryan Alexander 27.15 + 32.88 = 60.03"
+    ]],
+    ["Tue Nov 25 — PM (tip-out)", [
+      "Austin Kelley 373.83 – 21.99 = 351.84",
+      "Janel Baki 306.17 – 35.68 = 270.49",
+      "Mark Buryanek 289.84 – 36.80 = 253.04",
+      "Utility: Ryan Alexander 21.99 + 35.68 + 36.80 = 94.47"
+    ]],
+    ["Wed Nov 26 — AM (tip-out)", [
+      "Austin Kelley 258.85 – 48.60 = 210.25",
+      "Brooke Neal 276.57 – 37.80 = 238.77",
+      "Utility: Ryan Alexander 48.60 + 37.80 = 86.40"
+    ]],
+    ["Wed Nov 26 — PM (tip-out)", [
+      "Janel Baki 377.86 – 61.80 = 316.06",
+      "Brooke Neal 158.54 – 22.55 = 135.99",
+      "Austin Kelley 436.29 – 74.85 = 361.44",
+      "Utility: Ryan Alexander 61.80 + 22.55 + 74.85 = 159.20"
+    ]],
+    ["Fri Nov 28 — AM (tip-out)", [
+      "Austin Kelley 432.89 – 75.49 = 357.40",
+      "Kevin Worley 426.66 – 55.45 = 371.21",
+      "Utility: Ryan Alexander 75.49 + 55.45 = 130.94"
+    ]],
+    ["Fri Nov 28 — PM (finals)", [
+      "Kevin Worley $147.51, Mike Walton $147.51, Janel Baki $147.51,",
+      "Utility: Ryan Alexander $10.72, Expo: Atticus $36.55"
+    ]],
+    ["Sat Nov 29 — AM (finals)", [
+      "Kevin Worley $136.60, Mark Buryanek $136.60, Atticus $30.80, Utility: Ryan $28.62"
+    ]],
+    ["Sat Nov 29 — PM (finals)", [
+      "Kevin Worley $247.28, Mark Buryanek $247.28, Utility: Ryan $76.19"
+    ]],
+    ["Sun Nov 30 — AM (finals)", [
+      "Kevin Worley $111.12, Mike Walton $111.12, Utility: Ryan $34.72"
+    ]],
+    ["Sun Nov 30 — PM (finals)", [
+      "Kevin Worley $16.80, Mike Walton $16.80, Utility: Ryan $7.35"
+    ]],
+    ["Cook Tips (weekly total)", [
+      "Slayde Walker $62.06, Tori Wells $12.62, Warren Lewis $64.17"
+    ]]
+  ]
+}
