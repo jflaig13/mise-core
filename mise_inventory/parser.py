@@ -35,6 +35,8 @@ def parse_quantity(phrase: str, global_rules: dict) -> float | None:
     pack_patterns = [
         (r"^(\d+(?:\.\d+)?)\s+(six|6)\s+pack", 6),
         (r"^(\d+(?:\.\d+)?)\s+(twelve|12)\s+pack", 12),
+        (r"^(\d+(?:\.\d+)?)\s+(twenty four|24)\s+pack", 24),
+        (r"^(\d+(?:\.\d+)?)\s+(case|cases)\b", 24),
     ]
     for pat, mult in pack_patterns:
         m = re.match(pat, phrase_norm)
