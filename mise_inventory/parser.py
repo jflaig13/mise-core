@@ -1,15 +1,14 @@
 """Inventory transcript parser utilities.
 
-Architecture snapshot & Cycle 1 plan
+Architecture snapshot & Cycle 2 plan
 ------------------------------------
-- Current layers: catalog loader (merges roster CSV), parser CLI, inline normalizer,
-  quantity extractor, and JSON/Excel generators. Normalization was previously
-  inlined and fuzzy matching optional.
-- Goal this cycle: introduce small layers (normalizer/tokenizer/validator),
-  improve quantity parsing for fractions/percentages, and avoid silent failures on
-  malformed catalog rows.
-- Next cycles (TODO): smarter multi-item sentence splitting, normalization tuning,
-  richer rule/validation layer, and expanded tests for multi-line narratives.
+- Layers now include: catalog loader (merges roster CSV), parser CLI, normalizer,
+  tokenizer, validator, quantity extractor, and JSON writer with validation.
+- Improvements this cycle: sharpen tokenizer to split narrative lines on repeated
+  quantity phrases (e.g., "one can ... one can ..."), keep fuzzy off by default,
+  and harden quantity parsing for percent/fraction cases.
+- Future cycles: richer multi-sentence parsing, better normalization thresholds,
+  stronger validation rules, and catalog growth helpers.
 """
 
 from __future__ import annotations

@@ -3,11 +3,15 @@
   "beer_cost": [
     {
       "Item": "Athletic Upside Dawn Golden 12oz Can",
-      "Count": 322.55
+      "Count": 54.55
     },
     {
       "Item": "Athletic Upside Dawn NA (cans)",
-      "Count": 41.0
+      "Count": 42.0
+    },
+    {
+      "Item": "Coors Light (cans)",
+      "Count": 13.0
     },
     {
       "Item": "Coors Light 12oz Can",
@@ -15,23 +19,23 @@
     },
     {
       "Item": "Fairhope I Drink Therefore I Amber Keg",
-      "Count": 623.23
+      "Count": 798.9300000000001
     },
     {
       "Item": "Grayton 30A Beach Blonde Keg",
-      "Count": 87.0
+      "Count": 196.0
     },
     {
       "Item": "Grayton Beach 30A Ros\u00e9 12oz Can",
-      "Count": 1.5
+      "Count": 3.5
     },
     {
       "Item": "High Noon (cans)",
-      "Count": 20.0
+      "Count": 46.0
     },
     {
       "Item": "High Rise Blood Orange 12oz Can",
-      "Count": 27.0
+      "Count": 18.0
     },
     {
       "Item": "High Rise Pineapple THC Seltzer (cans)",
@@ -39,29 +43,45 @@
     },
     {
       "Item": "Michelob Ultra (cans)",
-      "Count": 68.0
+      "Count": 493.0
     },
     {
       "Item": "Miller Lite (cans)",
-      "Count": 40.0
+      "Count": 45.0
     },
     {
       "Item": "Miller Lite 12oz Can",
       "Count": 2.0
     },
     {
+      "Item": "Mom Water (cans)",
+      "Count": 4.0
+    },
+    {
       "Item": "Mom Water Linda 12oz Can",
-      "Count": 57.5
+      "Count": 15.5
+    },
+    {
+      "Item": "Pacifico (cans)",
+      "Count": 44.0
+    },
+    {
+      "Item": "Urban South Paradise Park Keg (1/6BBL)",
+      "Count": 1.0
     },
     {
       "Item": "Yuengling (cans)",
-      "Count": 22.0
+      "Count": 93.0
     }
   ],
   "wine_cost": [
     {
       "Item": "Carter's Lot Ros\u00e9 of Pinot Noir 750ml",
-      "Count": 31.31
+      "Count": 170.31
+    },
+    {
+      "Item": "Scarpetta Pinot Grigio",
+      "Count": 4.0
     },
     {
       "Item": "The Shaker Red Blend",
@@ -69,10 +89,6 @@
     }
   ],
   "liquor_cost": [
-    {
-      "Item": "Fortaleza Blanco Tequila 750ml",
-      "Count": 4.0
-    },
     {
       "Item": "Toschi Nocello Walnut Liqueur 700ml",
       "Count": 4.0
