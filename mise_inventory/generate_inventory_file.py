@@ -9,6 +9,16 @@ from pathlib import Path
 import pandas as pd
 
 
+def sanitize_sheet_name(name: str) -> str:
+    """Make a sheet name safe for Excel/openpyxl."""
+    invalid = set(r'[]:*?/\\')
+    cleaned = "".join(ch if ch not in invalid else "-" for ch in name)
+    cleaned = cleaned.strip()
+    if not cleaned:
+        cleaned = "Sheet"
+    return cleaned[:31]
+
+
 def make_excel(json_path: str | Path) -> Path:
     """Create an Excel file from the structured inventory JSON."""
 
@@ -20,7 +30,7 @@ def make_excel(json_path: str | Path) -> Path:
     stem = json_path.stem
     if stem.endswith("_output"):
         stem = stem[: -len("_output")]
-    output_name = Path(f"{stem}_final.xlsx")
+    output_name = (Path(__file__).resolve().parent / f"{stem}_final.xlsx")
 
     sheet_titles = {
         "grocery_drygoods": "Grocery & Dry Goods",
@@ -33,6 +43,7 @@ def make_excel(json_path: str | Path) -> Path:
     with pd.ExcelWriter(output_name, engine="openpyxl") as writer:
         for key, rows in data.items():
             sheet_name = sheet_titles.get(key, key)
+            sheet_name = sanitize_sheet_name(sheet_name)
             df = pd.DataFrame(rows)
             if len(df) > 0:
                 df = df.sort_values(by="Item")
