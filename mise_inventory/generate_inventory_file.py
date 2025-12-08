@@ -63,11 +63,12 @@ def make_excel(json_path: str | Path) -> Path:
                                 "Item": item,
                                 "Quantity": entry.get("qty"),
                                 "Source": entry.get("line"),
+                                "Location": entry.get("location", "unknown"),
                             }
                         )
             if records:
                 df_break = pd.DataFrame(records)
-                df_break = df_break.sort_values(by=["Category", "Item"])
+                df_break = df_break.sort_values(by=["Category", "Item", "Location"])
                 df_break.to_excel(writer, sheet_name="Breakdown", index=False)
 
     print(f"\n✔ Inventory Excel created: {output_name}\n")

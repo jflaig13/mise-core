@@ -60,6 +60,24 @@ def _has_quantity_token(text: str) -> bool:
     return False
 
 
+def _detect_location(text: str) -> str | None:
+    """Detect a location marker from the transcript line."""
+
+    lower = normalize_text(text)
+    locations = {
+        "walk-in cooler": ["walk in cooler", "walk-in cooler", "walk in", "walk-in"],
+        "inside bar": ["inside bar"],
+        "back bar": ["back bar"],
+        "upstairs": ["upstairs", "storage upstairs"],
+        "truck": ["my truck", "truck"],
+        "storage": ["storage unit", "storage", "back storage"],
+    }
+    for name, phrases in locations.items():
+        if any(p in lower for p in phrases):
+            return name
+    return None
+
+
 def parse_quantity(phrase: str, global_rules: dict) -> float | None:
     """Extract a numeric quantity from a phrase with basic unit awareness."""
 
@@ -278,16 +296,23 @@ def main() -> None:
     results = {cat: {} for cat in catalog_data if isinstance(catalog_data[cat], list)}
     unmatched = []
     breakdown = {cat: {} for cat in catalog_data if isinstance(catalog_data[cat], list)}
+    current_location = "unknown"
 
     with transcript_path.open("r") as f:
         for raw_line in f:
             raw_line = raw_line.strip()
             if not raw_line:
                 continue
-
-            # Skip narrative lines that clearly carry no quantity context to avoid noisy unmatched entries.
-            if not _has_quantity_token(raw_line):
-                continue
+            location = _detect_location(raw_line)
+            if location:
+                current_location = location
+                # If this line is only setting location and has no quantity context, skip parsing it further.
+                if not _has_quantity_token(raw_line):
+                    continue
+            else:
+                # Skip narrative lines that clearly carry no quantity context to avoid noisy unmatched entries.
+                if not _has_quantity_token(raw_line):
+                    continue
 
             for line in split_line_into_segments(raw_line):
                 if not line:
@@ -297,7 +322,9 @@ def main() -> None:
                 cat, canonical, qty, score, kw = parse_line(line, catalog_data, global_rules)
                 if cat and canonical and qty is not None:
                     results[cat][canonical] = results[cat].get(canonical, 0) + qty
-                    breakdown[cat].setdefault(canonical, []).append({"line": line, "qty": qty})
+                    breakdown[cat].setdefault(canonical, []).append(
+                        {"line": line, "qty": qty, "location": current_location}
+                    )
                 else:
                     unmatched.append({"line": line, "score": score})
 
