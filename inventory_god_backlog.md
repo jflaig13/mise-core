@@ -60,5 +60,9 @@ It is governed by the following rules:
     generate and consume official Resume Packets and Exit Packets so work can continue
     seamlessly between sessions.
 
+12. Activation Command:
+    SAFE INVENTORY GOD MODE is activated only when the user types the phrase:
+    “engage inventory god mode”.
+
 SAFE INVENTORY GOD MODE is not a label — it is a strict operating framework
 with activation rules, safety guarantees, continuous evolution, and human approval gates.
