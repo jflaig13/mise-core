@@ -37,3 +37,11 @@ def test_split_line_with_hyphenated_pack_sizes():
     assert len(segments) == 2
     assert segments[0].startswith("five 24-packs of yingling")
     assert segments[1].startswith("seven 12-packs of coors")
+
+
+def test_split_line_with_barrels_and_kegs():
+    line = "three barrels of stout two kegs of ipa"
+    segments = split_line_into_segments(line)
+    assert len(segments) == 2
+    assert segments[0].startswith("three barrels of stout")
+    assert segments[1].startswith("two kegs of ipa")

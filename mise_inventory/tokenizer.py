@@ -32,6 +32,13 @@ QUANTITY_TOKENS = {
     "cases",
     "keg",
     "kegs",
+    "barrel",
+    "barrels",
+    "bbl",
+    "bbls",
+    "ounce",
+    "ounces",
+    "oz",
 }
 
 
@@ -52,7 +59,7 @@ def _split_on_quantity_tokens(line: str) -> List[str]:
         r"(?=("  # positive lookahead start
         r"(?:\b\d+(?:\.\d+)?|\bone\b|\btwo\b|\bthree\b|\bfour\b|\bfive\b|\bsix\b|\bseven\b|\beight\b|\bnine\b|\bten\b|\bhalf\b|\bquarter\b|\bthree\s+quarters?)"
         r"\s+(?:\d+[ -]?)?"  # optional numeric prefix for pack sizes like 24-pack
-        r"(?:bottles?|bottle|cans?|can|packs?|pack|cases?|case|kegs?|keg)"  # unit
+        r"(?:bottles?|bottle|cans?|can|packs?|pack|cases?|case|kegs?|keg|barrels?|bbls?|ounces?|ounce|oz)"  # unit
         r"))"
     )
     matches = [m.start() for m in re.finditer(quantity_pattern, line, flags=re.IGNORECASE)]
