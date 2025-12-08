@@ -36,7 +36,6 @@ def parse_quantity(phrase: str, global_rules: dict) -> float | None:
         (r"^(\d+(?:\.\d+)?)\s+(six|6)\s+pack", 6),
         (r"^(\d+(?:\.\d+)?)\s+(twelve|12)\s+pack", 12),
         (r"^(\d+(?:\.\d+)?)\s+(twenty four|24)\s+pack", 24),
-        (r"^(\d+(?:\.\d+)?)\s+(case|cases)\b", 24),
     ]
     for pat, mult in pack_patterns:
         m = re.match(pat, phrase_norm)
@@ -132,7 +131,12 @@ def parse_line(line: str, catalog: dict, global_rules: dict):
         case_size = best_obj.get("case_size", default_case_size)
 
         if "case" in line or "cases" in line:
-            qty = qty * case_size
+            # If canned/pack context, assume 24 unless overridden
+            if any(word in line for word in ("can", "pack")):
+                can_case_size = best_obj.get("case_size", global_rules.get("case_size_cans", 24))
+                qty = qty * can_case_size
+            else:
+                qty = qty * case_size
 
     return best_cat, best_item, qty, best_score, best_keyword
 
