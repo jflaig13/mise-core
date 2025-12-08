@@ -26,21 +26,29 @@ def normalize(text: str) -> str:
 
 
 def parse_quantity(phrase: str, global_rules: dict) -> float | None:
-    """Extract a numeric quantity from a phrase.
-
-    Supports decimals ("1.5"), simple integers ("2"), and common words
-    like "half" or "quarter" that map to fractional values.
-    """
+    """Extract a numeric quantity from a phrase with basic unit awareness."""
 
     fraction_words = global_rules.get("fraction_words", {})
-    phrase = normalize(phrase)
+    phrase_norm = normalize(phrase)
 
-    match = re.match(r"^([0-9]+(\.[0-9]+)?)", phrase)
-    if match:
-        return float(match.group(1))
+    # Patterns like "4 six packs" or "four six packs"
+    pack_patterns = [
+        (r"^(\d+(?:\.\d+)?)\s+(six|6)\s+pack", 6),
+        (r"^(\d+(?:\.\d+)?)\s+(twelve|12)\s+pack", 12),
+    ]
+    for pat, mult in pack_patterns:
+        m = re.match(pat, phrase_norm)
+        if m:
+            return float(m.group(1)) * mult
 
+    # Leading numeric
+    m = re.match(r"^([0-9]+(\.[0-9]+)?)", phrase_norm)
+    if m:
+        return float(m.group(1))
+
+    # Fractions / words
     for word, value in fraction_words.items():
-        if word in phrase:
+        if word in phrase_norm:
             return value
 
     numbers = {
@@ -56,7 +64,7 @@ def parse_quantity(phrase: str, global_rules: dict) -> float | None:
         "nine": 9,
         "ten": 10,
     }
-    words = phrase.split()
+    words = phrase_norm.split()
     if words and words[0] in numbers:
         return float(numbers[words[0]])
 
@@ -89,6 +97,7 @@ def parse_line(line: str, catalog: dict, global_rules: dict):
     best_item = None
     best_cat = None
     best_keyword = None
+    best_obj = None
 
     for cat, items in catalog.items():
         if not isinstance(items, list):
@@ -104,6 +113,7 @@ def parse_line(line: str, catalog: dict, global_rules: dict):
                     best_item = obj["item"]
                     best_cat = cat
                     best_keyword = kw
+                    best_obj = obj
 
             if best_score == 1.0:
                 break
@@ -113,6 +123,14 @@ def parse_line(line: str, catalog: dict, global_rules: dict):
     threshold = global_rules.get("fuzzy_match_threshold", 0.78)
     if best_score < threshold:
         return None, None, None, best_score, None
+
+    # If we matched and the line mentions cases, apply case size multiplier
+    if best_obj:
+        default_case_size = global_rules.get("default_case_size", 12)
+        case_size = best_obj.get("case_size", default_case_size)
+
+        if "case" in line or "cases" in line:
+            qty = qty * case_size
 
     return best_cat, best_item, qty, best_score, best_keyword
 
