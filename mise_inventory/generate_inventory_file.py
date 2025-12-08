@@ -16,8 +16,11 @@ def make_excel(json_path: str | Path) -> Path:
     with json_path.open("r") as f:
         data = json.load(f)
 
-    base = json_path.stem.replace("inventory_", "")
-    output_name = Path(f"Papa_Surf_Inventory_{base}.xlsx")
+    # Output file name: <stem>_final.xlsx (e.g., 113025_inventory_output -> 113025_inventory_final.xlsx)
+    stem = json_path.stem
+    if stem.endswith("_output"):
+        stem = stem[: -len("_output")]
+    output_name = Path(f"{stem}_final.xlsx")
 
     sheet_titles = {
         "grocery_drygoods": "Grocery & Dry Goods",
