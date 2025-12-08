@@ -26,6 +26,40 @@ from .tokenizer import split_line_into_segments
 from .validator import validate_output
 
 
+QUANTITY_WORDS = {
+    "one",
+    "two",
+    "three",
+    "four",
+    "five",
+    "six",
+    "seven",
+    "eight",
+    "nine",
+    "ten",
+    "half",
+    "quarter",
+    "full",
+    "percent",
+}
+
+
+def _has_quantity_token(text: str) -> bool:
+    """Fast heuristic to skip narrative lines with no quantities/units."""
+
+    lower = normalize_text(text)
+    if re.search(r"\d", lower):
+        return True
+    for tok in QUANTITY_WORDS:
+        if tok in lower:
+            return True
+    # common units that imply quantity context
+    for unit in ("bottle", "bottles", "can", "cans", "pack", "packs", "case", "cases", "keg", "kegs", "barrel", "barrels", "bbl", "bbls", "ounce", "ounces", "oz"):
+        if unit in lower:
+            return True
+    return False
+
+
 def parse_quantity(phrase: str, global_rules: dict) -> float | None:
     """Extract a numeric quantity from a phrase with basic unit awareness."""
 
@@ -248,6 +282,10 @@ def main() -> None:
         for raw_line in f:
             raw_line = raw_line.strip()
             if not raw_line:
+                continue
+
+            # Skip narrative lines that clearly carry no quantity context to avoid noisy unmatched entries.
+            if not _has_quantity_token(raw_line):
                 continue
 
             for line in split_line_into_segments(raw_line):
