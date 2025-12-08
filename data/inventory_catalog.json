@@ -295,9 +295,50 @@
       "phonetic": ["shay-ker"],
       "category": "Wine Cost",
       "unit": "bottle"
+    },
+    {
+      "item": "Marques de Caceres Cava",
+      "keywords": ["marques de caceres", "caceres", "marquez de caceres", "marques cava", "marques prosecco", "caceres cava"],
+      "phonetic": ["mar-kess", "cah-ser-es", "cah-va"],
+      "category": "Wine Cost",
+      "unit": "bottle",
+      "case_size": 12
     }
     ],
-    "liquor_cost": [],
+    "liquor_cost": [
+      {
+        "item": "Papa's Pilar Sherry Cask Rum",
+        "keywords": ["papa's pilar", "papa pilar", "papas pilar", "papas palar", "sherry cask", "pilar rum"],
+        "phonetic": ["pah-pahs pee-lar"],
+        "category": "Liquor Cost",
+        "unit": "bottle",
+        "case_size": 12
+      },
+      {
+        "item": "Bar Mix, Watermelon",
+        "keywords": ["stirrings", "watermelon mix", "watermelon margarita mix", "bar mix watermelon"],
+        "phonetic": ["stir-rings"],
+        "category": "Liquor Cost",
+        "unit": "bottle",
+        "case_size": 6
+      },
+      {
+        "item": "Bar Mix, Margarita",
+        "keywords": ["stirrings", "margarita mix", "bar mix margarita"],
+        "phonetic": ["stir-rings"],
+        "category": "Liquor Cost",
+        "unit": "bottle",
+        "case_size": 6
+      },
+      {
+        "item": "Bar Mix, Mojito",
+        "keywords": ["stirrings", "mojito mix", "bar mix mojito"],
+        "phonetic": ["stir-rings"],
+        "category": "Liquor Cost",
+        "unit": "bottle",
+        "case_size": 6
+      }
+    ],
     "na_bev_cost": []
   }
     
