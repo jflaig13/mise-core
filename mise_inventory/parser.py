@@ -13,7 +13,7 @@ import re
 import sys
 from pathlib import Path
 
-from rapidfuzz import fuzz
+from rapidfuzz import fuzz, process
 from unidecode import unidecode
 
 from .catalog_loader import DEFAULT_CATALOG_PATH, load_catalog
@@ -70,6 +70,48 @@ def parse_quantity(phrase: str, global_rules: dict) -> float | None:
         return float(numbers[words[0]])
 
     return None
+
+
+def normalize_line_with_catalog(line: str, catalog: dict, threshold: float = 0.85) -> str:
+    """Normalize a line by replacing matched product mentions with canonical item names."""
+
+    line_norm = normalize(line)
+    replacements = []
+    choices = []
+
+    for cat, items in catalog.items():
+        if not isinstance(items, list):
+            continue
+        for obj in items:
+            name = obj.get("item")
+            if not name:
+                continue
+            synonyms = [name]
+            synonyms += obj.get("keywords", [])
+            synonyms += obj.get("phonetic", [])
+            for syn in synonyms:
+                syn_norm = normalize(syn)
+                if syn_norm and syn_norm not in [c[0] for c in choices]:
+                    choices.append((syn_norm, name))
+
+    # Direct substring replacements
+    for syn_norm, canon in choices:
+        if syn_norm and syn_norm in line_norm:
+            replacements.append((syn_norm, canon))
+
+    # Fuzzy replacements when no direct hit
+    if not replacements and choices:
+        vocab = [c[0] for c in choices]
+        match = process.extractOne(line_norm, vocab, score_cutoff=int(threshold * 100))
+        if match:
+            syn_norm = match[0]
+            canon = next(c for c in choices if c[0] == syn_norm)[1]
+            replacements.append((syn_norm, canon))
+
+    for syn_norm, canon in replacements:
+        line_norm = line_norm.replace(syn_norm, canon.lower())
+
+    return line_norm
 
 
 def parse_line(line: str, catalog: dict, global_rules: dict):
@@ -144,19 +186,25 @@ def parse_line(line: str, catalog: dict, global_rules: dict):
 def main() -> None:
     """CLI entry point for parsing an inventory transcript."""
 
-    if len(sys.argv) not in (3, 4):
+    if len(sys.argv) not in (3, 4, 5):
         print(
-            "Usage: python -m mise_inventory.parser <transcript.txt> [catalog.json] <output.json>"
+            "Usage: python -m mise_inventory.parser <transcript.txt> [catalog.json] <output.json> [--no-normalize]"
         )
         sys.exit(1)
 
     transcript_path = Path(sys.argv[1])
-    if len(sys.argv) == 4:
+    if len(sys.argv) >= 4 and sys.argv[2].endswith('.json'):
         catalog_path = Path(sys.argv[2])
         output_json = Path(sys.argv[3])
+        normalize_flag_arg = sys.argv[4] if len(sys.argv) == 5 else None
     else:
         catalog_path = DEFAULT_CATALOG_PATH
         output_json = Path(sys.argv[2])
+        normalize_flag_arg = sys.argv[3] if len(sys.argv) == 4 else None
+
+    normalize_on = True
+    if normalize_flag_arg == "--no-normalize":
+        normalize_on = False
 
     catalog_data = load_catalog(catalog_path)
     global_rules = catalog_data.get("global_rules", {})
@@ -169,6 +217,8 @@ def main() -> None:
             line = line.strip()
             if not line:
                 continue
+            if normalize_on:
+                line = normalize_line_with_catalog(line, catalog_data)
             cat, canonical, qty, score, kw = parse_line(line, catalog_data, global_rules)
             if cat and canonical and qty is not None:
                 results[cat][canonical] = results[cat].get(canonical, 0) + qty
