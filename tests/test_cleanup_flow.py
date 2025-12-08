@@ -1,8 +1,15 @@
 import asyncio
 import importlib
+import importlib.util
 import unittest
 from unittest import mock
 import os
+
+import pytest
+
+# Skip this module entirely if whisper is not available in the environment.
+if importlib.util.find_spec("whisper") is None:
+    pytest.skip("whisper package not available; skipping cleanup flow tests", allow_module_level=True)
 
 from transcribe import app as transcribe_app
 

@@ -3,7 +3,7 @@
   "beer_cost": [
     {
       "Item": "Athletic Upside Dawn Golden 12oz Can",
-      "Count": 322.0
+      "Count": 322.55
     },
     {
       "Item": "Athletic Upside Dawn NA (cans)",
@@ -11,15 +11,15 @@
     },
     {
       "Item": "Coors Light 12oz Can",
-      "Count": 12.0
+      "Count": 1.0
     },
     {
       "Item": "Fairhope I Drink Therefore I Amber Keg",
-      "Count": 914.25
+      "Count": 623.23
     },
     {
       "Item": "Grayton 30A Beach Blonde Keg",
-      "Count": 63.0
+      "Count": 87.0
     },
     {
       "Item": "Grayton Beach 30A Ros\u00e9 12oz Can",
@@ -47,7 +47,7 @@
     },
     {
       "Item": "Miller Lite 12oz Can",
-      "Count": 205.5
+      "Count": 2.0
     },
     {
       "Item": "Mom Water Linda 12oz Can",
@@ -61,14 +61,23 @@
   "wine_cost": [
     {
       "Item": "Carter's Lot Ros\u00e9 of Pinot Noir 750ml",
-      "Count": 62.5
+      "Count": 31.31
     },
     {
       "Item": "The Shaker Red Blend",
       "Count": 1.0
     }
   ],
-  "liquor_cost": [],
+  "liquor_cost": [
+    {
+      "Item": "Fortaleza Blanco Tequila 750ml",
+      "Count": 4.0
+    },
+    {
+      "Item": "Toschi Nocello Walnut Liqueur 700ml",
+      "Count": 4.0
+    }
+  ],
   "na_bev_cost": [],
   "grocery__dry_goods": [],
   "na_beverage": []

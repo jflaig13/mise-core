@@ -1,9 +1,15 @@
 """Inventory transcript parser utilities.
 
-This module handles reading a transcript of spoken inventory counts,
-matching each line against the catalog, and writing out a structured
-JSON summary. It can be used as a script or imported by other parts of
-the Mise inventory package.
+Architecture snapshot & Cycle 1 plan
+------------------------------------
+- Current layers: catalog loader (merges roster CSV), parser CLI, inline normalizer,
+  quantity extractor, and JSON/Excel generators. Normalization was previously
+  inlined and fuzzy matching optional.
+- Goal this cycle: introduce small layers (normalizer/tokenizer/validator),
+  improve quantity parsing for fractions/percentages, and avoid silent failures on
+  malformed catalog rows.
+- Next cycles (TODO): smarter multi-item sentence splitting, normalization tuning,
+  richer rule/validation layer, and expanded tests for multi-line narratives.
 """
 
 from __future__ import annotations
@@ -14,22 +20,39 @@ import sys
 from pathlib import Path
 
 from rapidfuzz import fuzz, process
-from unidecode import unidecode
 
 from .catalog_loader import DEFAULT_CATALOG_PATH, load_catalog
-
-
-def normalize(text: str) -> str:
-    """Lowercase, remove accents, and strip whitespace for matching."""
-
-    return unidecode(text).strip().lower()
+from .normalizer import normalize_text
+from .tokenizer import split_line_into_segments
+from .validator import validate_output
 
 
 def parse_quantity(phrase: str, global_rules: dict) -> float | None:
     """Extract a numeric quantity from a phrase with basic unit awareness."""
 
     fraction_words = global_rules.get("fraction_words", {})
-    phrase_norm = normalize(phrase)
+    phrase_norm = normalize_text(phrase)
+
+    # Percentages like "80% bottle" or "80 percent"
+    percent_match = re.search(r"(\d+(?:\.\d+)?)\s*%|\b(\d+(?:\.\d+)?)\s+percent\b", phrase_norm)
+    if percent_match:
+        value = percent_match.group(1) or percent_match.group(2)
+        try:
+            return float(value) / 100.0
+        except Exception:
+            pass
+
+    # Fractions by words
+    word_fractions = {
+        "three quarters": 0.75,
+        "three quarter": 0.75,
+        "half": 0.5,
+        "quarter": 0.25,
+        "full": 1.0,
+    }
+    for w, val in word_fractions.items():
+        if w in phrase_norm:
+            return val
 
     # Patterns like "4 six packs" or "four six packs"
     pack_patterns = [
@@ -75,7 +98,7 @@ def parse_quantity(phrase: str, global_rules: dict) -> float | None:
 def normalize_line_with_catalog(line: str, catalog: dict, threshold: float = 0.85) -> str:
     """Normalize a line by replacing matched product mentions with canonical item names."""
 
-    line_norm = normalize(line)
+    line_norm = normalize_text(line)
     replacements = []
     choices = []
 
@@ -90,7 +113,7 @@ def normalize_line_with_catalog(line: str, catalog: dict, threshold: float = 0.8
             synonyms += obj.get("keywords", [])
             synonyms += obj.get("phonetic", [])
             for syn in synonyms:
-                syn_norm = normalize(syn)
+                syn_norm = normalize_text(syn)
                 # Skip tiny tokens to avoid runaway replacements
                 if len(syn_norm) < 4:
                     continue
@@ -125,7 +148,7 @@ def parse_line(line: str, catalog: dict, global_rules: dict):
     or a tuple of Nones when the line does not match.
     """
 
-    line = normalize(line)
+    line = normalize_text(line)
 
     if any(nk in line for nk in global_rules.get("negative_keywords", [])):
         return None, None, None, None, None
@@ -157,7 +180,7 @@ def parse_line(line: str, catalog: dict, global_rules: dict):
             phonetics = obj.get("phonetic", [])
 
             for kw in keywords + phonetics + [obj["item"].lower()]:
-                score = fuzz.partial_ratio(line, normalize(kw)) / 100
+                score = fuzz.partial_ratio(line, normalize_text(kw)) / 100
                 if score > best_score:
                     best_score = score
                     best_item = obj["item"]
@@ -223,17 +246,21 @@ def main() -> None:
     unmatched = []
 
     with transcript_path.open("r") as f:
-        for line in f:
-            line = line.strip()
-            if not line:
+        for raw_line in f:
+            raw_line = raw_line.strip()
+            if not raw_line:
                 continue
-            if normalize_on:
-                line = normalize_line_with_catalog(line, catalog_data)
-            cat, canonical, qty, score, kw = parse_line(line, catalog_data, global_rules)
-            if cat and canonical and qty is not None:
-                results[cat][canonical] = results[cat].get(canonical, 0) + qty
-            else:
-                unmatched.append({"line": line, "score": score})
+
+            for line in split_line_into_segments(raw_line):
+                if not line:
+                    continue
+                if normalize_on:
+                    line = normalize_line_with_catalog(line, catalog_data)
+                cat, canonical, qty, score, kw = parse_line(line, catalog_data, global_rules)
+                if cat and canonical and qty is not None:
+                    results[cat][canonical] = results[cat].get(canonical, 0) + qty
+                else:
+                    unmatched.append({"line": line, "score": score})
 
     out_json = {}
     for cat in results:
@@ -241,9 +268,16 @@ def main() -> None:
             {"Item": item, "Count": count} for item, count in sorted(results[cat].items())
         ]
 
+    validation_errors = validate_output(results, catalog_data)
+
     with output_json.open("w") as f:
         json.dump(out_json, f, indent=2)
     print(f"✔ Inventory JSON generated: {output_json}")
+
+    if validation_errors:
+        print("\n⚠️ Validation errors:")
+        for err in validation_errors:
+            print(f"  - {err}")
 
     if unmatched:
         print("\n⚠️ Unmatched lines (review these for catalog growth):")
