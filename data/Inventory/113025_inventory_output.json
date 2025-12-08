@@ -1,104 +1,61 @@
 {
   "grocery_drygoods": [
     {
-      "Item": "Tajin Seasoning",
-      "Count": 1.0
-    }
-  ],
-  "beer_cost": [
-    {
-      "Item": "Athletic Upside Dawn Golden 12oz Can",
-      "Count": 54.55
+      "Item": ".008\"/20mm Nozzle Nickel Brass Cleanable Anti-drip Body, SS Tip",
+      "Count": 1.6
     },
     {
-      "Item": "Athletic Upside Dawn NA (cans)",
-      "Count": 42.0
+      "Item": "1/4\" Slip Lock x1/4\" Male Adapter",
+      "Count": 136.0
     },
     {
-      "Item": "Coors Light (cans)",
-      "Count": 13.0
+      "Item": "10\" Sediment Filter 10 Micron 2.5\"",
+      "Count": 1467.28
     },
     {
-      "Item": "Coors Light 12oz Can",
+      "Item": "10M Hdmi Cable",
       "Count": 1.0
     },
     {
-      "Item": "Fairhope I Drink Therefore I Amber Keg",
-      "Count": 810.93
+      "Item": "12 Oz Prt Pet  Cup 5 Color",
+      "Count": 12.0
     },
     {
-      "Item": "Grayton 30A Beach Blonde Keg",
-      "Count": 316.0
+      "Item": "12X12 Light Weight Deli Paper - PAPASURFNP347",
+      "Count": 3.0
     },
     {
-      "Item": "Grayton Beach 30A Ros\u00e9 12oz Can",
-      "Count": 3.5
-    },
-    {
-      "Item": "High Noon (cans)",
-      "Count": 46.0
-    },
-    {
-      "Item": "High Rise Blood Orange 12oz Can",
+      "Item": "12x12 Light weight Deli Paper",
       "Count": 18.0
     },
     {
-      "Item": "High Rise Pineapple THC Seltzer (cans)",
-      "Count": 13.0
+      "Item": "1636 22 Wipe And Dry Floor",
+      "Count": 11.5
     },
     {
-      "Item": "Michelob Ultra (cans)",
-      "Count": 493.0
+      "Item": "18\" Stainless Steel OUTDOOR RATED Fan Variable Speed capable motor. C-Style Bracket, 9' cord- Mist Works",
+      "Count": 411.76
     },
     {
-      "Item": "Miller Lite (cans)",
+      "Item": "3/4* x 1 1/2* x 37* primed poplar for bracing under stair treads",
       "Count": 45.0
     },
     {
-      "Item": "Miller Lite 12oz Can",
-      "Count": 2.0
+      "Item": "3540-60 Slim Jim W/Venting",
+      "Count": 24.65
     },
     {
-      "Item": "Mom Water (cans)",
-      "Count": 4.0
+      "Item": "3897 F/K/T S&P 13x17 Napkin MW Blk P/P Cutlery Kit",
+      "Count": 73.0
     },
     {
-      "Item": "Mom Water Linda 12oz Can",
-      "Count": 15.5
-    },
-    {
-      "Item": "Pacifico (cans)",
-      "Count": 44.0
-    },
-    {
-      "Item": "Urban South Paradise Park Keg (1/6BBL)",
-      "Count": 1.0
-    },
-    {
-      "Item": "Yuengling (cans)",
-      "Count": 93.0
-    }
-  ],
-  "wine_cost": [
-    {
-      "Item": "Carter's Lot Ros\u00e9 of Pinot Noir 750ml",
-      "Count": 170.31
-    },
-    {
-      "Item": "Scarpetta Pinot Grigio",
-      "Count": 4.0
-    },
-    {
-      "Item": "The Shaker Red Blend",
+      "Item": "Chicken, Thighs Honey Boneless",
       "Count": 1.0
     }
   ],
-  "liquor_cost": [
-    {
-      "Item": "Bar Mix, Mojito",
-      "Count": 14.0
-    }
-  ],
+  "beer_cost": [],
+  "wine_cost": [],
+  "liquor_cost": [],
   "na_bev_cost": [],
   "grocery__dry_goods": [],
   "na_beverage": []
