@@ -83,7 +83,7 @@ def normalize_line_with_catalog(line: str, catalog: dict, threshold: float = 0.8
         if not isinstance(items, list):
             continue
         for obj in items:
-            name = obj.get("item")
+            name = obj.get("item") if isinstance(obj, dict) else None
             if not name:
                 continue
             synonyms = [name]
@@ -91,6 +91,9 @@ def normalize_line_with_catalog(line: str, catalog: dict, threshold: float = 0.8
             synonyms += obj.get("phonetic", [])
             for syn in synonyms:
                 syn_norm = normalize(syn)
+                # Skip tiny tokens to avoid runaway replacements
+                if len(syn_norm) < 4:
+                    continue
                 if syn_norm and syn_norm not in [c[0] for c in choices]:
                     choices.append((syn_norm, name))
 
@@ -146,6 +149,10 @@ def parse_line(line: str, catalog: dict, global_rules: dict):
         if not isinstance(items, list):
             continue
         for obj in items:
+            if not isinstance(obj, dict):
+                continue
+            if "item" not in obj:
+                continue
             keywords = obj.get("keywords", [])
             phonetics = obj.get("phonetic", [])
 
@@ -188,7 +195,7 @@ def main() -> None:
 
     if len(sys.argv) not in (3, 4, 5):
         print(
-            "Usage: python -m mise_inventory.parser <transcript.txt> [catalog.json] <output.json> [--no-normalize]"
+            "Usage: python -m mise_inventory.parser <transcript.txt> [catalog.json] <output.json> [--normalize|--no-normalize]"
         )
         sys.exit(1)
 
@@ -202,7 +209,10 @@ def main() -> None:
         output_json = Path(sys.argv[2])
         normalize_flag_arg = sys.argv[3] if len(sys.argv) == 4 else None
 
-    normalize_on = True
+    # Default to no normalization to avoid garbled lines; opt-in with --normalize.
+    normalize_on = False
+    if normalize_flag_arg == "--normalize":
+        normalize_on = True
     if normalize_flag_arg == "--no-normalize":
         normalize_on = False
 

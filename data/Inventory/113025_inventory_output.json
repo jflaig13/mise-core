@@ -2,11 +2,72 @@
   "grocery_drygoods": [],
   "beer_cost": [
     {
+      "Item": "Athletic Upside Dawn Golden 12oz Can",
+      "Count": 322.0
+    },
+    {
+      "Item": "Athletic Upside Dawn NA (cans)",
+      "Count": 41.0
+    },
+    {
+      "Item": "Coors Light 12oz Can",
+      "Count": 12.0
+    },
+    {
+      "Item": "Fairhope I Drink Therefore I Amber Keg",
+      "Count": 914.25
+    },
+    {
       "Item": "Grayton 30A Beach Blonde Keg",
-      "Count": 95.0
+      "Count": 63.0
+    },
+    {
+      "Item": "Grayton Beach 30A Ros\u00e9 12oz Can",
+      "Count": 1.5
+    },
+    {
+      "Item": "High Noon (cans)",
+      "Count": 20.0
+    },
+    {
+      "Item": "High Rise Blood Orange 12oz Can",
+      "Count": 27.0
+    },
+    {
+      "Item": "High Rise Pineapple THC Seltzer (cans)",
+      "Count": 13.0
+    },
+    {
+      "Item": "Michelob Ultra (cans)",
+      "Count": 68.0
+    },
+    {
+      "Item": "Miller Lite (cans)",
+      "Count": 40.0
+    },
+    {
+      "Item": "Miller Lite 12oz Can",
+      "Count": 205.5
+    },
+    {
+      "Item": "Mom Water Linda 12oz Can",
+      "Count": 57.5
+    },
+    {
+      "Item": "Yuengling (cans)",
+      "Count": 22.0
     }
   ],
-  "wine_cost": [],
+  "wine_cost": [
+    {
+      "Item": "Carter's Lot Ros\u00e9 of Pinot Noir 750ml",
+      "Count": 62.5
+    },
+    {
+      "Item": "The Shaker Red Blend",
+      "Count": 1.0
+    }
+  ],
   "liquor_cost": [],
   "na_bev_cost": [],
   "grocery__dry_goods": [],
