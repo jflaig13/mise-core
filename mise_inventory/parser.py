@@ -277,6 +277,7 @@ def main() -> None:
 
     results = {cat: {} for cat in catalog_data if isinstance(catalog_data[cat], list)}
     unmatched = []
+    breakdown = {cat: {} for cat in catalog_data if isinstance(catalog_data[cat], list)}
 
     with transcript_path.open("r") as f:
         for raw_line in f:
@@ -296,6 +297,7 @@ def main() -> None:
                 cat, canonical, qty, score, kw = parse_line(line, catalog_data, global_rules)
                 if cat and canonical and qty is not None:
                     results[cat][canonical] = results[cat].get(canonical, 0) + qty
+                    breakdown[cat].setdefault(canonical, []).append({"line": line, "qty": qty})
                 else:
                     unmatched.append({"line": line, "score": score})
 
@@ -304,6 +306,7 @@ def main() -> None:
         out_json[cat] = [
             {"Item": item, "Count": count} for item, count in sorted(results[cat].items())
         ]
+    out_json["breakdown"] = breakdown
 
     validation_errors = validate_output(results, catalog_data)
 

@@ -42,12 +42,33 @@ def make_excel(json_path: str | Path) -> Path:
 
     with pd.ExcelWriter(output_name, engine="openpyxl") as writer:
         for key, rows in data.items():
+            if key == "breakdown":
+                continue
             sheet_name = sheet_titles.get(key, key)
             sheet_name = sanitize_sheet_name(sheet_name)
             df = pd.DataFrame(rows)
             if len(df) > 0:
                 df = df.sort_values(by="Item")
             df.to_excel(writer, sheet_name=sheet_name, index=False)
+
+        # Optional breakdown sheet
+        if "breakdown" in data:
+            records = []
+            for cat, items in data["breakdown"].items():
+                for item, entries in items.items():
+                    for entry in entries:
+                        records.append(
+                            {
+                                "Category": sheet_titles.get(cat, cat),
+                                "Item": item,
+                                "Quantity": entry.get("qty"),
+                                "Source": entry.get("line"),
+                            }
+                        )
+            if records:
+                df_break = pd.DataFrame(records)
+                df_break = df_break.sort_values(by=["Category", "Item"])
+                df_break.to_excel(writer, sheet_name="Breakdown", index=False)
 
     print(f"\n✔ Inventory Excel created: {output_name}\n")
     return output_name
