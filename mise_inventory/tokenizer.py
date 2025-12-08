@@ -21,12 +21,17 @@ QUANTITY_TOKENS = {
     "ten",
     "half",
     "quarter",
-    "full",
-    "pack",
+    "three quarters",
     "bottle",
+    "bottles",
     "can",
+    "cans",
+    "pack",
+    "packs",
     "case",
-    "percent",
+    "cases",
+    "keg",
+    "kegs",
 }
 
 
@@ -41,27 +46,38 @@ def _looks_like_quantity(segment: str) -> bool:
 
 
 def _split_on_quantity_tokens(line: str) -> List[str]:
-    """Split when multiple quantity phrases appear in one line."""
+    """Split when multiple quantity phrases appear in one line (handles hyphenated pack/case)."""
 
-    quantity_pattern = r"(?=(?:\b\d+(?:\.\d+)?|\bone\b|\btwo\b|\bthree\b|\bfour\b|\bfive\b|\bsix\b|\bseven\b|\beight\b|\bnine\b|\bten\b|\bhalf\b|\bquarter\b|\bthree\s+quarters?)\s+(?:bottles?|bottle|cans?|can|packs?|pack|cases?|case|kegs?|keg))"
+    quantity_pattern = (
+        r"(?=("  # positive lookahead start
+        r"(?:\b\d+(?:\.\d+)?|\bone\b|\btwo\b|\bthree\b|\bfour\b|\bfive\b|\bsix\b|\bseven\b|\beight\b|\bnine\b|\bten\b|\bhalf\b|\bquarter\b|\bthree\s+quarters?)"
+        r"\s+(?:\d+[ -]?)?"  # optional numeric prefix for pack sizes like 24-pack
+        r"(?:bottles?|bottle|cans?|can|packs?|pack|cases?|case|kegs?|keg)"  # unit
+        r"))"
+    )
     matches = [m.start() for m in re.finditer(quantity_pattern, line, flags=re.IGNORECASE)]
     if len(matches) <= 1:
-        return [line]
+        return [line.strip()]
 
-    parts = []
+    parts: List[str] = []
     for i, start in enumerate(matches):
         end = matches[i + 1] if i + 1 < len(matches) else len(line)
         chunk = line[start:end].strip(",;. ").strip()
         if chunk:
+            # Drop leading connectors and trailing connectors like "and"/"&"
+            chunk = re.sub(r"^(?:and|&)\s+", "", chunk, flags=re.IGNORECASE).strip()
+            chunk = re.sub(r"(?:\s+(?:and|&))+\s*$", "", chunk, flags=re.IGNORECASE).strip()
+        if chunk:
             parts.append(chunk)
-    return parts if parts else [line]
+    return parts if parts else [line.strip()]
 
 
 def split_line_into_segments(line: str) -> List[str]:
     """Split a narrative line into segments when it clearly contains multiple items.
 
-    Heuristic: split on 'and' or '&' or commas only if each piece looks like it carries
-    its own quantity token. Otherwise, keep the line intact.
+    Heuristic: first try repeated quantity splitting; if not, fall back to splitting on
+    'and' or commas only when each piece looks like it carries a quantity token. Otherwise
+    keep the line intact.
     """
 
     if not line:
@@ -72,12 +88,12 @@ def split_line_into_segments(line: str) -> List[str]:
     if len(qty_chunks) > 1:
         return qty_chunks
 
-    # Try ampersand / "and" separation
+    # Try ampersand / "and" separation when each part looks like a quantity phrase.
     parts = re.split(r"\s+(?:and|&)\s+", line)
     if len(parts) > 1 and all(_looks_like_quantity(p) for p in parts):
         return [p.strip() for p in parts if p.strip()]
 
-    # Try comma separation
+    # Try comma separation with the same guard.
     comma_parts = [p.strip() for p in re.split(r",\s*", line) if p.strip()]
     if len(comma_parts) > 1 and all(_looks_like_quantity(p) for p in comma_parts):
         return comma_parts

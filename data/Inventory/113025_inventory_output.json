@@ -1,5 +1,10 @@
 {
-  "grocery_drygoods": [],
+  "grocery_drygoods": [
+    {
+      "Item": "Tajin Seasoning",
+      "Count": 1.0
+    }
+  ],
   "beer_cost": [
     {
       "Item": "Athletic Upside Dawn Golden 12oz Can",
@@ -23,7 +28,7 @@
     },
     {
       "Item": "Grayton 30A Beach Blonde Keg",
-      "Count": 196.0
+      "Count": 316.0
     },
     {
       "Item": "Grayton Beach 30A Ros\u00e9 12oz Can",
@@ -91,7 +96,7 @@
   "liquor_cost": [
     {
       "Item": "Toschi Nocello Walnut Liqueur 700ml",
-      "Count": 4.0
+      "Count": 14.0
     }
   ],
   "na_bev_cost": [],
