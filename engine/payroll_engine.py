@@ -529,16 +529,16 @@ def parse_transcript_to_rows(payload: TranscriptIn) -> List[ShiftRow]:
     lowered = text.lower()
     rows: List[ShiftRow] = []
 
-    def resolve_role_category(name: str, default_role: str = "FOH"):
-        role = default_role
-        if name == "Ryan Alexander":
-            role = "utility"
-        elif name == "Atticus Usseglio":
-            role = "expo"
-        elif name == "Fiona Dodson":
-            role = "expo"
-        category = "support" if name in SUPPORT_STAFF else "foh"
-        return role, category
+def resolve_role_category(name: str, default_role: str = "FOH"):
+    role = default_role
+    if name == "Ryan Alexander":
+        role = "utility"
+    elif name == "Atticus Usseglio":
+        role = "expo"
+    elif name == "Fiona Dodson":
+        role = "utility"
+    category = "support" if name in SUPPORT_STAFF else "foh"
+    return role, category
 
 
     # -------------------------------
