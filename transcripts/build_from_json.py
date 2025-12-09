@@ -1,9 +1,25 @@
 import json, sys, os
+from pathlib import Path
 from reportlab.lib.pagesizes import letter, landscape
 from reportlab.lib import colors
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle, PageBreak
 import pandas as pd
+
+SCRIPT_DIR = Path(__file__).resolve().parent
+ROOT_DIR = SCRIPT_DIR.parent
+DEFAULT_BASE = ROOT_DIR / "Transcripts"
+FALLBACK_BASE = Path("/Users/jonathanflaig/Transcripts")
+
+def resolve_base_dir() -> Path:
+    env_base = os.environ.get("LPM_TRANSCRIPTS_BASE")
+    if env_base:
+        return Path(env_base)
+    if DEFAULT_BASE.exists():
+        return DEFAULT_BASE
+    if FALLBACK_BASE.exists():
+        return FALLBACK_BASE
+    return DEFAULT_BASE
 
 def main(p):
     with open(p, 'r') as f:
@@ -18,8 +34,10 @@ def main(p):
     header     = cfg.get("header", "Tip Report")
 
     # ----- PDF -----
+    base_dir = resolve_base_dir()
+
     base = out_base.replace("TipReport_", "")
-    report_dir = f"/Users/jonathanflaig/Transcripts/Tip_Reports/{base}"
+    report_dir = base_dir / "Tip_Reports" / base
     os.makedirs(report_dir, exist_ok=True)
     pdf_path = os.path.join(report_dir, f"{out_base}.pdf")
     styles = getSampleStyleSheet()
@@ -103,8 +121,8 @@ def main(p):
         pass
 
     # ----- PayrollExport CSV (Employee ID | Tips Owed | Employee Name) -----
-    roster_path = "/Users/jonathanflaig/Transcripts/PayrollExportTemplate.csv"
-    if os.path.exists(roster_path):
+    roster_path = base_dir / "PayrollExportTemplate.csv"
+    if roster_path.exists():
         roster = pd.read_csv(roster_path)
         roster_map = {}
         for _, r in roster.iterrows():

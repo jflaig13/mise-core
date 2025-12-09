@@ -1,8 +1,19 @@
 #!/bin/bash
 set -euo pipefail
 
-WATCH_DIR="/Users/jonathanflaig/Transcripts/approvals"
-RUNNER="/Users/jonathanflaig/Transcripts/tipreport_runner.sh"
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+ROOT_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
+DEFAULT_BASE="$ROOT_DIR/Transcripts"
+FALLBACK_BASE="/Users/jonathanflaig/Transcripts"
+BASE="${LPM_TRANSCRIPTS_BASE:-$DEFAULT_BASE}"
+if [ ! -d "$BASE" ] && [ -d "$FALLBACK_BASE" ]; then
+  BASE="$FALLBACK_BASE"
+fi
+
+WATCH_DIR="$BASE/approvals"
+RUNNER="$ROOT_DIR/transcripts/tipreport_runner.sh"
+
+mkdir -p "$WATCH_DIR"
 
 # Ensure fswatch exists
 if ! command -v fswatch >/dev/null 2>&1; then

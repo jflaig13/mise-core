@@ -1,15 +1,25 @@
 #!/bin/bash
 set -euo pipefail
 
-BASE="/Users/jonathanflaig/Transcripts"
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+ROOT_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
+DEFAULT_BASE="$ROOT_DIR/Transcripts"
+FALLBACK_BASE="/Users/jonathanflaig/Transcripts"
+BASE="${LPM_TRANSCRIPTS_BASE:-$DEFAULT_BASE}"
+if [ ! -d "$BASE" ] && [ -d "$FALLBACK_BASE" ]; then
+  BASE="$FALLBACK_BASE"
+fi
+export LPM_TRANSCRIPTS_BASE="$BASE"
+
 IN="$BASE/approvals"
 ARCH="$BASE/archive"
 LOG="$BASE/logs/tipreport.log"
-PY="$BASE/build_from_json.py"
+PY="$ROOT_DIR/transcripts/build_from_json.py"
 PYBIN="$BASE/venv311/bin/python"
 JQ="/opt/homebrew/bin/jq"
 
-mkdir -p "$ARCH" "$BASE/logs"
+mkdir -p "$ARCH" "$BASE/logs" "$IN"
+/usr/bin/printf "%s :: BASE %s\n" "$(date '+%F %T')" "$BASE" >> "$LOG"
 /usr/bin/printf "%s :: scan %s\n" "$(date '+%F %T')" "$IN" >> "$LOG"
 
 shopt -s nullglob
@@ -80,7 +90,8 @@ EOF
   /bin/mv "$f" "$ARCH"/
 
   if [ -n "$OUT_BASE" ]; then
-    /usr/bin/open "$BASE/${OUT_BASE}.pdf" || true
+    report_dir="$BASE/Tip_Reports/${OUT_BASE#TipReport_}"
+    /usr/bin/open "$report_dir/${OUT_BASE}.pdf" || true
   fi
 
   /usr/bin/printf "%s :: done %s\n" "$(date '+%F %T')" "$f" >> "$LOG"
