@@ -1,0 +1,87 @@
+#!/bin/bash
+# Generate a canonical Machine Specification template for any Mise subsystem.
+# Usage: ./get_workflow "Machine Name" > docs/<machine_name>.md
+
+set -euo pipefail
+
+MACHINE="${1:-}"
+
+if [ -z "$MACHINE" ]; then
+  echo "Usage: $0 \"Machine Name\""
+  exit 1
+fi
+
+cat <<'EOF'
+INSTRUCTIONS FOR THE AI
+
+You must produce a canonical system specification, not a casual description.
+This document should serve as the authoritative technical reference that Codex will load anytime I start a new coding session.
+Model your output exactly on the structure and style of the Local Payroll Machine — Master Spec.
+
+Your spec must contain all of the following sections, each written with full detail:
+
+1. PURPOSE
+Explain why this machine exists and what problem it solves.
+
+2. END-TO-END WORKFLOW
+Describe every step in the pipeline:
+- Inputs
+- Transformations
+- Parsing/logic
+- Validation
+- Approvals
+- Database ingestion/output docs
+This section must read like a complete operational map.
+
+3. NAMING CONVENTIONS
+Define all naming rules for:
+- Files
+- Folders
+- JSON/CSV schemas
+- Audio or text assets (if any)
+- Output artifacts
+Codex must treat these as inviolable rules.
+
+4. DATA SCHEMAS
+Provide complete, explicit definitions of:
+- JSON structures
+- BigQuery/SQL tables
+- Any CSVs/PDF formats generated
+Codex must always follow these exactly.
+
+5. PARSING / LOGIC RULES
+Explain exactly how this machine interprets input. Be exhaustive and deterministic — leave no ambiguity.
+
+6. SYSTEM COMPONENTS
+List all scripts, watchers, endpoint flows, or modules that make the machine work, describing their role and interactions.
+
+7. CODING GUIDELINES FOR CODEX
+Define how Codex must behave when modifying or generating code for this system:
+- What is allowed
+- What is forbidden
+- How to maintain compatibility
+- How to preserve schemas
+- Logging paths
+- Deterministic behavior requirements
+
+8. HOW THIS SPEC SHOULD BE USED
+Include a short instruction block I can paste into any Codex terminal window:
+- Load /docs/<machine_name>.md as the authoritative system spec.
+- All code changes must conform exactly to this document.
+- Do not alter schemas or workflows unless explicitly directed.
+
+9. FUTURE EXPANSION NOTES (Optional)
+Briefly mention how this machine will integrate with the future Mise Multi-Assistant Architecture.
+
+TONE / STYLE REQUIREMENTS
+- Highly structured
+- Explicit
+- Declarative
+- Zero ambiguity
+- Technical and production-oriented
+- Written as if it governs the entire system’s behavior
+- Must allow Codex to build or modify the system safely with no additional context
+
+OUTPUT GOAL
+Produce a document at the same depth and level of completeness as the Local Payroll Machine spec — but for this system (Local Inventory Machine, Cloud Payroll Machine, or any future Mise subsystem).
+EOF
