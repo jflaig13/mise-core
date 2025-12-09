@@ -34,7 +34,7 @@ On the Mac, Jon runs:
 transcribe <drag-audio-file-here>
 
 
-Outputs land in /Users/jonathanflaig/mise-core/transcripts by default (or the path set in LPM_TRANSCRIPTS_BASE). No cloud services are involved; transcription is fully offline.
+Outputs land in /Users/jonathanflaig/mise-core/transcripts by default (or the path set in LPM_TRANSCRIPTS_BASE). No cloud services are involved; transcription is fully offline. The transcribe command can be run from any directory (uses absolute paths).
 
 Local Whisper produces a .txt transcript.
 

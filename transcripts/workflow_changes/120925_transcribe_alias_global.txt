@@ -1,0 +1,6 @@
+Date: 12/09/25
+Change: transcribe command works globally with absolute paths.
+Files: ~/.mise_aliases, transcripts/LPM_workflow_120925.txt, transcripts/LPM_Workflow_Master.txt
+Notes:
+- transcribe is now a shell function using absolute paths; no need to cd into the repo.
+- Workflow docs note that transcribe can run from any directory and still output to the repo transcripts folder (or LPM_TRANSCRIPTS_BASE override).
