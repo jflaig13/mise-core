@@ -1,6 +1,6 @@
 # Mise Core – Agent Onboarding
 
-This repo houses multiple workflows. Read the relevant workflow doc before making changes and obey its rules.
+This repo houses multiple workflows. Read the relevant workflow doc before making changes and obey its rules. First: learn my rules → see AGENT_POLICY.md.
 
 Workflows
 - Cloud Payroll Machine (CPM): transcribe/README.md
