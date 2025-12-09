@@ -1,0 +1,7 @@
+Date: 12/09/25
+Change: Documented workflow paths and watcher/runner base resolution.
+Files: transcripts/LPM_workflow_120925.txt, transcripts/local_docs_watcher.sh, transcripts/tipreport_runner.sh, transcripts/build_from_json.py
+Notes:
+- Base defaults to mise-core/Transcripts with fallback to ~/Transcripts or LPM_TRANSCRIPTS_BASE override.
+- Watcher and runner now use repo scripts and respect the resolved base.
+- LPM_workflow_120925.txt now describes paths, watcher/runner usage, and git hygiene. This entry logs the change for traceability.
