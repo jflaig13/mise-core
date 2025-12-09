@@ -7,6 +7,7 @@ First: **Learn my rules.** Before coding, read:
   - LIM: workflow_specs/LIM/README.md
   - LPM: workflow_specs/LPM/LPM_Workflow_Master.txt
 - Spec template (if drafting specs): ./get_workflow
+- Critical path map: workflow_specs/CRITICAL_PATHS.md
 
 Scope & Boundaries
 - Touch only the workflow you’re assigned; read its doc first.

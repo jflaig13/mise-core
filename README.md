@@ -7,6 +7,8 @@ Workflows
 - Local Inventory Machine (LIM): workflow_specs/LIM/README.md
 - Local Payroll Machine (LPM): workflow_specs/LPM/LPM_Workflow_Master.txt
 
+Critical paths map: workflow_specs/CRITICAL_PATHS.md
+
 Spec Template
 - Generate a new machine spec: `./get_workflow "Machine Name" > docs/<machine>.md` (create docs/ as needed).
 
