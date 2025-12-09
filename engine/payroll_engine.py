@@ -529,17 +529,48 @@ def parse_transcript_to_rows(payload: TranscriptIn) -> List[ShiftRow]:
     lowered = text.lower()
     rows: List[ShiftRow] = []
 
-def resolve_role_category(name: str, default_role: str = "FOH"):
-    role = default_role
-    if name == "Ryan Alexander":
-        role = "utility"
-    elif name == "Atticus Usseglio":
-        role = "expo"
-    elif name == "Fiona Dodson":
-        role = "utility"
-    category = "support" if name in SUPPORT_STAFF else "foh"
-    return role, category
+    def resolve_role_category(name: str, default_role: str = "FOH"):
+        role = default_role
+        if name == "Ryan Alexander":
+            role = "utility"
+        elif name == "Atticus Usseglio":
+            role = "expo"
+        elif name == "Fiona Dodson":
+            role = "utility"
+        category = "support" if name in SUPPORT_STAFF else "foh"
+        return role, category
 
+
+    # ------------------------------------------------------------------
+    # STRONGLY-BIASED PATTERN: "<name> 58 dollars and 76 cents"
+    # ------------------------------------------------------------------
+    dollar_cent_pattern = re.compile(
+        r"([A-Za-z][A-Za-z.'\-]*(?:\s+[A-Za-z][A-Za-z.'\-]*){0,2})\s+(\d{1,4})\s+dollars?\s+and\s+(\d{1,2})\s+cents",
+        flags=re.IGNORECASE,
+    )
+    for m in dollar_cent_pattern.finditer(text):
+        nm = normalize_name(m.group(1))
+        if not nm:
+            continue
+        dollars = int(m.group(2))
+        cents = int(m.group(3))
+        val = float(f"{dollars}.{cents:02d}")
+        role, category = resolve_role_category(nm, "FOH")
+        already = any(r.employee == nm and r.date == d and r.shift == sh for r in rows)
+        if not already:
+            rows.append(
+                ShiftRow(
+                    date=d,
+                    shift=sh,
+                    employee=nm,
+                    role=role,
+                    category=category,
+                    amount_final=val,
+                    filename=payload.filename,
+                    file_id=payload.file_id,
+                    parsed_confidence=0.95,
+                )
+            )
 
     # -------------------------------
     # UTILITY SECTION FIRST
@@ -810,6 +841,7 @@ def resolve_role_category(name: str, default_role: str = "FOH"):
     print(f"TOKENS: {tokens}")
     log.debug(f"TOKENS: {tokens}")
     for i in range(len(tokens)):
+        val = None
         raw_nm = tokens[i]
         nm = normalize_name(raw_nm)
         if not nm:
