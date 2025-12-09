@@ -1,0 +1,653 @@
+Local Inventory Machine (LIM) — Master Spec
+This document is the canonical system specification for the Local Inventory Machine. Codex must treat this as the authoritative reference for all LIM-related code and workflows.
+
+1. PURPOSE
+
+The Local Inventory Machine (LIM) exists to turn a single, long-form spoken inventory recording into structured, verifiable operational data and a MarginEdge-ready CSV export, with as little manual work as possible.
+
+The problems it solves:
+
+Operators naturally speak inventory aloud (walking the truck, walk-in, bars, upstairs) but traditional systems require typing into spreadsheets or vendor-specific tools.
+
+Inventory is often inconsistent across zones, units, and descriptors (bottles vs partials vs cases vs kegs).
+
+Manual spreadsheet workflows are error-prone, slow, and hard to audit.
+
+LIM’s mission:
+
+Accept one long spoken inventory recording for a full count.
+
+Produce a fully structured JSON inventory that encodes every SKU, category, unit, and quantity.
+
+Use that JSON to trigger a runner that generates the final *_Inventory_MEExport.csv file that can be imported into MarginEdge.
+
+Maintain a human-in-the-loop path where ChatGPT currently acts as the interpreter, resolving ambiguities and edge cases, with the understanding that this logic will be codified into an internal Mise model in the future.
+
+2. END-TO-END WORKFLOW
+
+This section describes the complete pipeline from audio to MarginEdge-ready CSV.
+
+2.1 High-Level Flow
+
+Record full inventory audio.
+
+Transcribe audio to text with Whisper (local or cloud).
+
+Provide transcript to LIM interpreter (ChatGPT) + inventory parser.
+
+LIM parses and normalizes all items into a structured inventory JSON.
+
+All quantities are validated and any unmapped items are surfaced for correction.
+
+Once approved, the structured JSON is saved to disk.
+
+The LIM runner processes the JSON and generates the final MarginEdge-ready CSV (MMDDYY_Inventory_MEExport.csv).
+
+Operator uploads the CSV to MarginEdge and optionally archives all artifacts (audio, transcript, JSON, CSV).
+
+2.2 Detailed Step-by-Step
+Step 1 — Record Inventory Audio
+
+The manager (Jon or another operator) uses a Bluetooth lapel microphone and a recording app (e.g., Motiv Audio or Voice Memos).
+
+They walk all inventory zones:
+
+Truck
+
+Walk-In
+
+Inside Bar
+
+Back Bar
+
+Upstairs storage
+
+They speak naturally, following rough patterns like:
+
+“Six bottles of Tito’s”
+
+“Half a bottle of Herradura Ultra”
+
+“Three 24-packs of Coors Light”
+
+“One full keg of Paradise Park”
+
+The audio file is saved locally with a descriptive filename; LIM does not require a strict naming convention for the raw audio, but see Naming Conventions for recommended patterns.
+
+Step 2 — Transcribe with Whisper
+
+The audio file is processed by a local or cloud Whisper transcriber.
+
+Output is a .txt file containing the entire inventory transcript.
+
+The transcript must be saved using LIM’s transcript naming convention (see Section 3):
+
+Example: 113025_Inventory.txt for November 30, 2025.
+
+Step 3 — Provide Transcript to LIM Interpreter
+
+The transcript is provided to the LIM interpreter, which is currently a ChatGPT-based workflow guided by this spec.
+
+The interpreter:
+
+Reads the full transcript.
+
+Applies parsing rules, normalization, and SKU matching.
+
+Uses the known product roster and normalization rules to resolve references.
+
+Flags ambiguous or unmapped items for clarification.
+
+Step 4 — Parsing and Normalization
+
+The LIM parsing logic:
+
+Segments text into item-level statements.
+
+Extracts quantities, units, and product phrases.
+
+Applies normalization rules (e.g., “tahini” → “Tajin”; “apparol” → “Aperol”).
+
+Maps each phrase to a canonical SKU from the Papa Surf product roster.
+
+Converts cases/packs into base units (bottles or cans) using roster-defined pack sizes.
+
+Consolidates all zones into global totals per SKU (LIM does not track per-zone inventory in its final output).
+
+Step 5 — Validation & Unmapped Items
+
+LIM must:
+
+Ensure all items in the structured JSON are attached to a known SKU.
+
+NEVER silently discard unparseable lines.
+
+Place any problematic or ambiguous lines into an unmapped_items section with enough context to repair them.
+
+The interpreter (ChatGPT) prompts the user for clarification on unmapped lines when used interactively.
+
+After clarification:
+
+Mappings are updated.
+
+Structured JSON is regenerated.
+
+The updated JSON replaces the previous draft.
+
+Step 6 — Structured JSON Inventory
+
+When parsing and validation are complete, LIM produces a single JSON document representing the full inventory snapshot.
+
+This JSON is the canonical source of truth for that inventory event.
+
+It is saved to disk as MMDDYY_Inventory.json.
+
+Step 7 — Runner Generates MarginEdge-Ready CSV
+
+A local runner (e.g., a Python script such as generate_inventory_file.py) reads MMDDYY_Inventory.json.
+
+The runner:
+
+Iterates over each category and item.
+
+Writes rows to a CSV in the format MarginEdge expects.
+
+Names the file MMDDYY_Inventory_MEExport.csv.
+
+This CSV is the primary integration artifact for the restaurant.
+
+Step 8 — Upload and Archive
+
+Operator uploads MMDDYY_Inventory_MEExport.csv into MarginEdge.
+
+Optional archive:
+
+Raw audio
+
+Transcript
+
+JSON
+
+Final CSV
+
+These may later be ingested into data warehouses (e.g., BigQuery) for longitudinal cost-of-goods and variance tracking.
+
+3. NAMING CONVENTIONS
+
+LIM relies on strict naming conventions to ensure consistency and auditability.
+
+3.1 Dates
+
+All filenames use MMDDYY for dates.
+
+Example: November 30, 2025 → 113025.
+
+3.2 Transcripts
+
+Inventory transcripts must be named:
+
+<MMDDYY>_Inventory.txt
+
+
+Example:
+
+113025_Inventory.txt
+
+3.3 Structured JSON
+
+Parsed inventory JSON snapshots must be named:
+
+<MMDDYY>_Inventory.json
+
+
+Example:
+
+113025_Inventory.json
+
+3.4 MarginEdge Export
+
+The final export file must be named exactly:
+
+<MMDDYY>_Inventory_MEExport.csv
+
+
+Examples:
+
+113025_Inventory_MEExport.csv
+
+123125_Inventory_MEExport.csv
+
+013126_Inventory_MEExport.csv
+
+3.5 Folders (Recommended)
+
+Inside ~/mise-core (or the project root), LIM assets should be stored as:
+
+mise-core/
+  data/
+    inventory/
+      raw_audio/                # optional
+      transcripts/              # <MMDDYY>_Inventory.txt
+      parsed/                   # <MMDDYY>_Inventory.json
+      exports/                  # <MMDDYY>_Inventory_MEExport.csv
+      logs/                     # lim_*.log
+
+
+Codex must not change these conventions without explicit instruction.
+
+4. DATA SCHEMAS
+4.1 Structured JSON Inventory
+
+The canonical JSON schema for LIM is:
+
+{
+  "metadata": {
+    "inventory_date": "YYYY-MM-DD",
+    "location_name": "Papa Surf Burger Bar",
+    "source_audio_filename": "113025_Inventory.m4a",
+    "transcript_filename": "113025_Inventory.txt",
+    "generated_at": "2025-11-30T23:59:59Z",
+    "version": "LIM_v1"
+  },
+  "categories": {
+    "grocery_drygoods": [
+      {
+        "sku": "seasoning_tajin",
+        "item_name": "Seasoning, Tajin",
+        "unit": "each",
+        "quantity": 16.0,
+        "notes": null
+      }
+    ],
+    "beer_cost": [
+      {
+        "sku": "michelob_ultra_12oz_can",
+        "item_name": "Michelob Ultra 12oz Can",
+        "unit": "cans",
+        "quantity": 75.0,
+        "notes": null
+      }
+      // ... more beer items
+    ],
+    "wine_cost": [
+      {
+        "sku": "30a_chardonnay_750ml",
+        "item_name": "30A Chardonnay 750ml",
+        "unit": "bottles",
+        "quantity": 12.0,
+        "notes": null
+      }
+      // ... more wine
+    ],
+    "liquor_cost": [
+      {
+        "sku": "herradura_ultra_750ml",
+        "item_name": "Herradura Ultra Añejo 750ml",
+        "unit": "bottles",
+        "quantity": 0.5,
+        "notes": "partial bottle"
+      }
+      // ... more liquor
+    ],
+    "na_bev_cost": [
+      {
+        "sku": "ginger_beer_12oz_can",
+        "item_name": "Ginger Beer 12oz Can",
+        "unit": "cans",
+        "quantity": 16.0,
+        "notes": null
+      }
+      // ... more NA items
+    ]
+  },
+  "unmapped_items": [
+    {
+      "raw_text": "three bottles of that spicy rim stuff",
+      "suggested_sku": "seasoning_tajin",
+      "status": "needs_confirmation",
+      "reason": "fuzzy match below threshold",
+      "category_guess": "grocery_drygoods"
+    }
+  ]
+}
+
+
+Rules:
+
+categories keys are fixed:
+
+grocery_drygoods, beer_cost, wine_cost, liquor_cost, na_bev_cost.
+
+sku is a stable internal identifier.
+
+item_name matches the canonical product name (as used in exports).
+
+unit is a normalized unit (e.g., bottles, cans, kegs, each).
+
+quantity is float, representing total units (after converting cases/packs).
+
+unmapped_items must never be silently empty when there are failed parses.
+
+4.2 MarginEdge Export CSV
+
+The MMDDYY_Inventory_MEExport.csv file must contain at least:
+
+Category — one of the five categories above.
+
+Item Name — canonical product name.
+
+Unit — unit of count (bottles, cans, kegs, each, etc.).
+
+Quantity — numeric (integer or decimal for partial bottles).
+
+Example:
+
+Category,Item Name,Unit,Quantity
+Beer Cost,Michelob Ultra 12oz Can,cans,75
+Liquor Cost,Herradura Ultra Anejo 750ml,bottles,0.5
+Grocery/Dry Goods,Seasoning, Tajin,each,16
+NA Beverage,Ginger Beer 12oz Can,cans,16
+
+
+Codex may add extra columns if required by MarginEdge, but MUST NOT change or remove these four without explicit direction.
+
+4.3 Future Database Schema (Optional)
+
+For future integration, a BigQuery table might be defined as:
+
+inventory_snapshots
+
+Columns:
+
+snapshot_id (STRING, UUID)
+
+inventory_date (DATE)
+
+location_name (STRING)
+
+sku (STRING)
+
+item_name (STRING)
+
+category (STRING)
+
+unit (STRING)
+
+quantity (FLOAT64)
+
+raw_json (JSON)
+
+created_at (TIMESTAMP)
+
+Codex should not implement this automatically unless asked, but must preserve compatibility with this conceptual schema.
+
+5. PARSING / LOGIC RULES
+
+This is the core of LIM. Codex must treat these rules as deterministic and exhaustive.
+
+5.1 General Principles
+
+Totals Only:
+
+LIM cares about global totals per SKU, not zone-level counts.
+
+Zone references (truck, back bar, upstairs, etc.) are used only for context, not stored in final JSON.
+
+Never Drop Data Silently:
+
+Any line that cannot be confidently mapped must be added to unmapped_items.
+
+Roster-Driven:
+
+All SKUs must originate from the official Papa Surf product roster.
+
+No ad-hoc product names are allowed in final JSON or CSV.
+
+5.2 Quantity Parsing
+
+Recognize patterns like:
+
+"<number> <unit> of <product>"
+
+"one full bottle of <product>"
+
+"half a bottle of <product>"
+
+"three 24-packs of <product>"
+
+Valid units:
+
+bottle(s), can(s), case(s), pack(s), keg(s), each.
+
+Fractional Bottles:
+
+"full bottle" = 1.0
+
+"half bottle" / "half of a bottle" = 0.5
+
+"quarter bottle" = 0.25
+
+"three quarter(s) bottle" / "three-quarters" = 0.75
+
+"80 percent bottle" = 0.8
+
+"33 percent bottle" = 0.33
+
+"1/2 bottle" = 0.5, "1/3 bottle" ≈ 0.33, "2/3 bottle" ≈ 0.66, "3/4 bottle" = 0.75.
+
+Packs and Cases:
+
+Packs (e.g., 4-pack, 6-pack, 12-pack) are converted according to:
+
+total_units = num_packs * pack_size.
+
+Cases use the SKU’s roster-defined case_size.
+
+Example: Coors Light 12oz Can case size = 24 cans.
+→ "three cases of coors light" ⇒ 3 * 24 = 72 cans.
+
+5.3 Normalization Rules (Examples)
+
+"tahini", "tajeen", "tajine", "that spicy rim stuff" → Seasoning, Tajin.
+
+"apparol", "aperal", "appero", "aperoll" → Aperol 1L.
+
+"myckelope", "mickelobe", "mickelope", etc. → Michelob Ultra 12oz Can.
+
+Mom Water flavors:
+
+All individual flavor names (Julie, Karen, Linda, etc.) may be collapsed under a single canonical SK
+U if defined by roster rules (e.g., all counted as Mom Water Linda 12oz Can).
+
+High Noon:
+
+Individual flavors (Peach, Pineapple, Watermelon, Grapefruit, etc.) may be collapsed or separated based on roster.
+
+Codex must implement these normalizations in a dedicated normalization layer, not scattered across parsing logic.
+
+5.4 Category Mapping
+
+Every SKU belongs to exactly one category:
+
+grocery_drygoods
+
+beer_cost
+
+wine_cost
+
+liquor_cost
+
+na_bev_cost
+
+Category is determined by the roster, not by free text.
+
+5.5 Unmapped Items and Human Loop
+
+Any line below confidence threshold:
+
+Must be placed in unmapped_items with:
+
+raw_text
+
+suggested_sku (if any)
+
+status (e.g., needs_confirmation)
+
+reason (e.g., fuzzy match < threshold)
+
+When ChatGPT is involved:
+
+It will ask the user to resolve these items.
+
+Once resolved, the mapping logic and/or catalog should be updated, and the JSON regenerated.
+
+6. SYSTEM COMPONENTS
+
+LIM is made of the following components:
+
+Audio Recorder (External):
+
+Motiv Audio / Voice Memos + Bluetooth mic.
+
+Not part of codebase, but essential to workflow.
+
+Transcriber (Whisper):
+
+Local or cloud Whisper service converting audio → transcript.
+
+Output: <MMDDYY>_Inventory.txt.
+
+LIM Interpreter (ChatGPT):
+
+Used today as the “brain” that:
+
+Reads transcript.
+
+Applies parsing rules and normalization.
+
+Surfaces unmapped items.
+
+Produces final structured JSON.
+
+This will be replaced by an internal Mise model in the future.
+
+Inventory Parser Module (future internal implementation):
+
+A deterministic implementation of the parsing logic described in Section 5.
+
+Takes MMDDYY_Inventory.txt + roster, returns JSON.
+
+Runner (generate_inventory_file.py or equivalent):
+
+Reads MMDDYY_Inventory.json.
+
+Produces MMDDYY_Inventory_MEExport.csv.
+
+Handles category ordering and item sorting (typically alphabetic within category).
+
+File System / Storage:
+
+data/inventory/transcripts/
+
+data/inventory/parsed/
+
+data/inventory/exports/
+
+data/inventory/logs/
+
+7. CODING GUIDELINES FOR CODEX
+
+Codex must treat this spec as a contract.
+
+7.1 Allowed
+
+Implement or modify:
+
+Parsing logic consistent with Section 5.
+
+Normalization tables for SKU matching.
+
+Runner script for JSON → CSV.
+
+Logging and error handling.
+
+Add new SKUs or normalization rules in a structured way (e.g., config files, not hardcoded magic).
+
+7.2 Forbidden
+
+Do not change:
+
+File naming conventions (*_Inventory.txt, *_Inventory.json, *_Inventory_MEExport.csv).
+
+Top-level JSON structure (metadata, categories, unmapped_items).
+
+Category keys (grocery_drygoods, beer_cost, wine_cost, liquor_cost, na_bev_cost) without explicit instruction.
+
+Do not silently drop any unparseable lines.
+
+Do not introduce hidden network calls in LIM (it is local by design).
+
+Do not change units or quantities without correctly updating pack-size logic.
+
+7.3 Logging
+
+All non-trivial processing should log to a known file, e.g.:
+
+data/inventory/logs/lim_<YYYYMMDD>.log
+
+
+Log must include:
+
+Start / end of parse.
+
+Number of lines processed.
+
+Number of SKUs matched.
+
+Number of unmapped items.
+
+7.4 Determinism
+
+Given the same transcript, roster, and normalization rules, LIM must produce the same JSON and CSV every time.
+
+Avoid randomization or time-dependent behavior except in metadata.generated_at.
+
+8. HOW THIS SPEC SHOULD BE USED
+
+The following block is what Jon can paste into any Codex terminal/session:
+
+LIM Spec Instructions for Codex
+
+Load /docs/LIM_Workflow_Master.md as the authoritative system specification for the Local Inventory Machine.
+
+All code changes related to inventory parsing, normalization, JSON generation, and CSV export must conform exactly to this document.
+
+Do not alter JSON schemas, naming conventions, or the end-to-end workflow unless explicitly directed in this chat.
+
+When in doubt, prioritize determinism, auditability, and roster-driven behavior.
+
+Never silently drop data; unmapped items must always be surfaced for review.
+
+9. FUTURE EXPANSION NOTES
+
+LIM is one part of a larger Mise Multi-Assistant Architecture:
+
+The Cloud Payroll Machine (CPM) handles shift-level payroll via cloud services and BigQuery.
+
+The Local Payroll Machine (LPM) handles weekly payroll locally via audio + ChatGPT + approval JSON.
+
+The Local Inventory Machine (LIM) handles inventory via audio + ChatGPT + structured JSON + MarginEdge CSV.
+
+In the future:
+
+All three machines will be backed by internal Mise models instead of ChatGPT.
+
+A central orchestrator will:
+
+Route voice inputs to the correct machine (payroll vs inventory vs other ops).
+
+Store all structured outputs (shifts, inventory snapshots, etc.) in a unified data layer.
+
+Enable cross-workflow intelligence (e.g., linking labor cost, tip behavior, and inventory usage).
+
+This spec must remain forward-compatible with that architecture: LIM should be cleanly callable as a service that takes transcripts and returns structured JSON and exports, with minimal assumptions about UI or calling context.

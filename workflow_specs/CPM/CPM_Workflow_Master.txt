@@ -1,0 +1,720 @@
+============================================================
+CLOUD PAYROLL MACHINE — MASTER SPECIFICATION
+============================================================
+
+Version: 1.0
+Authority: Mise, Inc.
+Owner: Jon Flaig
+System Class: Core Mise Subsystem
+Scope: Cloud Ingestion + Local Approval Workflow
+Status: Canonical, Inviolable
+Purpose: Operational Intelligence Pipeline (Payroll)
+
+============================================================
+1. PURPOSE
+============================================================
+
+The Cloud Payroll Machine exists to automate payroll ingestion from raw human speech at scale across restaurants, hotels, and multi-unit hospitality environments.
+
+This machine solves the following operational problems:
+
+Fragmented, error-prone manual reporting
+Managers and operators traditionally calculate tips, utilities, and shift payouts manually, leading to inaccuracies, delays, and labor waste.
+
+Lack of structured operational intelligence
+Spoken shift details (the most accurate operational data) do not automatically enter databases.
+
+Non-standardized shift logs
+Operator speech varies widely; the system must normalize all linguistic patterns into deterministic, structured outputs.
+
+Need for both development-time oversight and production automation
+
+During development, shifts must be previewed and approved.
+
+In production, ingestion must be fully automated, zero-touch.
+
+Scalable ingestion infrastructure
+The machine must support high-volume ingestion across multiple restaurants without human bottlenecks.
+
+The Cloud Payroll Machine is the cloud-native, production-grade payroll ingestion pipeline that enables Mise’s voice-to-structured-data architecture.
+It interprets human speech, transforms it into validated payroll data, and commits it to BigQuery.
+
+This specification governs how every component must work.
+
+============================================================
+2. END-TO-END WORKFLOW
+============================================================
+
+This section provides the authoritative operational map of the Cloud Payroll Machine.
+
+The machine supports two ingestion modes, both canonical:
+
+MODE A — HUMAN-IN-THE-LOOP INGESTION
+(parse_only → approval_watcher → edit → commit_shift)
+
+MODE B — FULLY AUTOMATED CLOUD INGESTION
+(transcribe_and_ingest → parse → validate → commit → archive)
+
+Both modes are part of the Cloud Payroll Machine until consolidation.
+
+------------------------------------------------------------
+2.1 INPUT SOURCES
+------------------------------------------------------------
+2.1.1 Primary Input
+
+A server records a voice memo on their phone describing:
+
+shift date
+
+shift type (AM/PM)
+
+employees
+
+roles
+
+final payout amounts
+
+utility/expo tipouts
+
+any exceptions
+
+The file is placed into:
+
+Payroll Voice Recordings/
+
+2.1.2 Accepted Input Formats
+
+.m4a (raw mobile recordings)
+
+.wav (post-conversion)
+
+Whisper requires .wav; therefore .m4a triggers conversion.
+
+------------------------------------------------------------
+2.2 WATCHERS & INGESTION ENTRY POINTS
+------------------------------------------------------------
+
+The Cloud Payroll Machine includes all of the following watchers as official system components.
+
+2.2.1 convert_m4a_to_wav.sh
+
+Purpose:
+
+Detect new .m4a files
+
+Convert them to .wav via ffmpeg
+
+Delete the .m4a
+
+Outputs:
+
+<filename>.wav
+
+2.2.2 watcher.sh (Legacy Approval Workflow Watcher)
+
+Purpose:
+
+Detect .wav files
+
+Send audio to /parse_only
+
+Display preview table in terminal
+
+Trigger approval_watcher
+
+This watcher powers MODE A.
+
+2.2.3 Real-Time Cloud Watcher (Automated Ingestion Watcher)
+
+Purpose:
+
+Detect .wav
+
+POST to /transcribe_and_ingest
+
+Automatically archive output
+
+No terminal interaction
+
+This watcher powers MODE B.
+
+2.2.4 archive_transcript.sh
+
+Purpose:
+
+Move processed transcripts or audio files into archival directories
+
+2.2.5 test_transcript.sh
+
+Purpose:
+
+Test parse_only behavior with known transcripts
+
+Never interacts with shift ingestion
+
+Used for QA
+
+All watchers are canonical components of this spec.
+
+------------------------------------------------------------
+2.3 TRANSFORMATION PIPELINE
+------------------------------------------------------------
+2.3.1 Audio Normalization
+
+The system converts:
+
+.m4a → .wav
+
+
+Spec:
+
+48kHz
+
+mono
+
+PCM WAV
+
+2.3.2 Whisper Transcription
+
+Performed via Cloud Run transcriber.
+
+Outputs:
+
+normalized transcript
+
+punctuation applied
+
+filler words removed only when necessary for logic
+
+------------------------------------------------------------
+2.4 PARSING LOGIC (HIGH-LEVEL)
+------------------------------------------------------------
+
+Once transcription returns text, the Cloud Payroll Engine:
+
+Detects date (e.g., “December seventh twenty twenty five”)
+
+Detects shift (“AM”, “PM”)
+
+Identifies employees
+
+Assigns roles
+
+Parses amounts
+
+Computes final payouts
+
+All logic rules are detailed in Section 5.
+
+------------------------------------------------------------
+2.5 VALIDATION PROCESS
+------------------------------------------------------------
+
+Validation ensures:
+
+all employees exist
+
+all amounts are numeric
+
+date + shift resolve deterministically
+
+utility/expo rules are respected
+
+total rows are nonempty
+
+Validation failures must:
+
+return JSON error
+
+never write to BigQuery
+
+------------------------------------------------------------
+2.6 APPROVAL WORKFLOWS
+------------------------------------------------------------
+
+The Cloud Payroll Machine has two official approval modes.
+
+MODE A — HUMAN-IN-THE-LOOP (approval_watcher)
+
+Sequence:
+
+watcher.sh → /parse_only
+
+preview JSON returned
+
+approval_watcher renders formatted table
+
+User chooses:
+
+y → commit
+
+n → manual edit mode
+
+Manual Edit Mode
+
+Two approved editing methods:
+
+2.6.1 Inline Terminal Editing
+
+For each row:
+
+user may press Enter to keep current value
+
+or type corrected value
+
+2.6.2 Temporary File Editing (Preferred UX)
+
+System:
+
+creates temp JSON or CSV
+
+opens it in user’s editor
+
+user edits values
+
+file is reloaded
+
+preview table regenerated
+
+After editing:
+
+Approve updated table? [y/N]:
+
+
+If yes → commit.
+
+MODE B — FULLY AUTOMATED CLOUD INGESTION
+
+Sequence:
+
+watcher → /transcribe_and_ingest
+
+transcribe
+
+parse
+
+validate
+
+commit
+
+archive
+
+No user involvement.
+This is the production path for multi-unit scalability.
+
+------------------------------------------------------------
+2.7 DATABASE INGESTION
+------------------------------------------------------------
+
+Commits are handled via /commit_shift.
+
+The system:
+
+assigns filename
+
+stamps shift_date
+
+inserts rows into BigQuery table:
+automation-station-478103.payroll.shifts
+
+Rows must commit atomically.
+
+------------------------------------------------------------
+2.8 OUTPUT ARTIFACTS
+------------------------------------------------------------
+2.8.1 BigQuery Rows
+
+Primary output.
+
+2.8.2 Archived Audio Files
+
+Stored in:
+
+Payroll Voice Recordings Archive/
+
+2.8.3 Optional Local Logs
+
+Local logs used only during development.
+
+============================================================
+3. NAMING CONVENTIONS
+============================================================
+
+These naming rules are inviolable.
+
+------------------------------------------------------------
+3.1 FILENAMES
+------------------------------------------------------------
+
+Shift audio filenames must follow:
+
+MMDDYY_AM.wav
+MMDDYY_PM.wav
+
+
+Examples:
+
+030125_AM.wav
+030125_PM.wav
+
+
+The filename is a primary key linking audio → data rows.
+
+------------------------------------------------------------
+3.2 FOLDER STRUCTURE
+------------------------------------------------------------
+Payroll Voice Recordings/
+Payroll Voice Recordings Archive/
+
+------------------------------------------------------------
+3.3 JSON SCHEMA NAMES
+------------------------------------------------------------
+
+Preview JSON → preview_shift
+Commit JSON → commit_shift_payload
+
+------------------------------------------------------------
+3.4 JSON KEY NAMING
+------------------------------------------------------------
+
+Keys must be:
+
+lowercase
+
+snake_case
+
+Examples:
+
+shift_date
+employee
+role
+amount_final
+
+------------------------------------------------------------
+3.5 OUTPUT ARTIFACTS
+------------------------------------------------------------
+
+All committed rows must include:
+
+filename
+
+inserted_at timestamp
+
+============================================================
+4. DATA SCHEMAS
+============================================================
+
+These schemas are authoritative.
+Codex must never alter them unless explicitly instructed.
+
+------------------------------------------------------------
+4.1 PREVIEW JSON (parse_only)
+------------------------------------------------------------
+{
+  "filename": "string",
+  "transcript": "string",
+  "rows": [
+    {
+      "date": "MM/DD/YYYY",
+      "shift": "AM" | "PM",
+      "employee": "string",
+      "role": "string",
+      "amount_final": float
+    }
+  ]
+}
+
+------------------------------------------------------------
+4.2 COMMIT JSON (commit_shift_payload)
+------------------------------------------------------------
+{
+  "filename": "string",
+  "rows": [
+    {
+      "shift_date": "YYYY-MM-DD",
+      "shift": "AM" | "PM",
+      "employee": "string",
+      "role": "string",
+      "amount_final": float
+    }
+  ]
+}
+
+------------------------------------------------------------
+4.3 BIGQUERY TABLE — payroll.shifts
+------------------------------------------------------------
+shift_date     DATE
+shift          STRING
+employee       STRING
+role           STRING
+amount_final   FLOAT
+filename       STRING
+inserted_at    TIMESTAMP
+
+============================================================
+5. PARSING / LOGIC RULES
+============================================================
+
+These rules are deterministic and exhaustive.
+
+------------------------------------------------------------
+5.1 DATE INTERPRETATION
+------------------------------------------------------------
+
+The system must support natural speech formats:
+
+Examples:
+
+“December seventh twenty twenty five”
+
+“December 7th 2025”
+
+“12/7/25”
+
+Output:
+
+MM/DD/YYYY
+
+------------------------------------------------------------
+5.2 SHIFT INTERPRETATION
+------------------------------------------------------------
+
+The system must detect:
+
+“AM shift”
+
+“morning shift”
+
+“PM shift”
+
+“night shift”
+
+Normalize to:
+
+AM
+PM
+
+------------------------------------------------------------
+5.3 EMPLOYEE EXTRACTION
+------------------------------------------------------------
+
+Employee patterns include:
+
+“Kevin, two hundred thirty five dollars…”
+
+“Utility was Ryan.”
+
+“Expo was Mike.”
+
+Names map to roles using:
+
+explicit role speech
+
+fallback defaults
+
+role inference patterns
+
+------------------------------------------------------------
+5.4 AMOUNTS
+------------------------------------------------------------
+
+Amount phrases must support:
+
+“two hundred thirty five dollars and twenty two cents”
+
+“two hundred thirty five twenty two”
+
+“235.22”
+
+All normalized to:
+
+float
+
+------------------------------------------------------------
+5.5 ROLE LOGIC
+------------------------------------------------------------
+
+Roles include:
+
+server
+
+utility
+
+expo
+
+cook
+
+If omitted, default role = server.
+
+------------------------------------------------------------
+5.6 VALIDATION LOGIC
+------------------------------------------------------------
+
+A shift is valid when:
+
+date resolves
+
+shift resolves
+
+≥ 1 row exists
+
+all amounts valid
+
+no missing employee names
+
+Invalid shifts must not commit.
+
+============================================================
+6. SYSTEM COMPONENTS
+============================================================
+
+Every component below is part of the canonical machine.
+
+------------------------------------------------------------
+6.1 Watchers
+------------------------------------------------------------
+
+convert_m4a_to_wav.sh
+
+watcher.sh (approval workflow)
+
+Real-time automated watcher
+
+archive_transcript.sh
+
+test_transcript.sh
+
+------------------------------------------------------------
+6.2 Cloud Run Services
+------------------------------------------------------------
+6.2.1 payroll-transcribe
+
+Whisper transcription
+
+Returns transcript
+
+6.2.2 payroll-engine
+
+Routes:
+
+/parse_only
+/commit_shift
+/transcribe
+/transcribe_and_ingest
+
+------------------------------------------------------------
+6.3 Approval Watcher
+------------------------------------------------------------
+
+Core features:
+
+preview rendering
+
+inline editing
+
+temp-file editing
+
+recomputation
+
+re-preview
+
+commit action
+
+------------------------------------------------------------
+6.4 BigQuery Integration
+------------------------------------------------------------
+
+All ingestion flows must use:
+
+automation-station-478103.payroll.shifts
+
+============================================================
+7. CODING GUIDELINES FOR CODEX
+============================================================
+
+Codex must follow these rules.
+
+------------------------------------------------------------
+7.1 WHAT IS ALLOWED
+------------------------------------------------------------
+
+modifying watchers
+
+optimizing endpoints
+
+adding logging
+
+improving error handling
+
+refactoring modules without altering behavior
+
+------------------------------------------------------------
+7.2 WHAT IS FORBIDDEN
+------------------------------------------------------------
+
+Codex must NEVER:
+
+Change schema definitions
+
+Modify workflow boundaries
+
+Rename keys
+
+Rename files or endpoints
+
+Remove watchers
+
+Alter parsing logic semantics
+
+Change BigQuery table schemas
+
+These rules are absolute.
+
+------------------------------------------------------------
+7.3 LOGGING RULES
+------------------------------------------------------------
+
+Use structured logging
+
+Include filename in every log entry
+
+Cloud logs → stdout
+
+Local logs → filesystem
+
+------------------------------------------------------------
+7.4 DETERMINISTIC BEHAVIOR REQUIREMENTS
+------------------------------------------------------------
+
+Parsing must be deterministic for identical transcripts.
+
+============================================================
+8. HOW THIS SPEC SHOULD BE USED
+============================================================
+
+Paste this block into any Codex terminal session:
+
+LOAD /docs/cloud_payroll_machine.md AS MASTER_SPEC.
+ALL CODE CHANGES MUST CONFORM EXACTLY TO THIS DOCUMENT.
+DO NOT MODIFY SCHEMAS, WORKFLOWS, OR LOGIC UNLESS EXPLICITLY DIRECTED.
+THIS SPEC GOVERNS THE CLOUD PAYROLL MACHINE.
+
+============================================================
+9. FUTURE EXPANSION NOTES
+============================================================
+
+The Cloud Payroll Machine will integrate into:
+
+Mise Router Assistant
+
+Unified Voice Ingestion Layer
+
+Multi-Assistant Architecture (Payroll, Inventory, Scheduling, Ops)
+
+The future system will consolidate:
+
+MODE A + MODE B → Single Intelligent Ingestion Pipeline.
+
+============================================================
+END OF CLOUD PAYROLL MACHINE — MASTER SPEC
+=================================================
