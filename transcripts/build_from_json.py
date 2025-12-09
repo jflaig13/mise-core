@@ -8,17 +8,22 @@ import pandas as pd
 
 SCRIPT_DIR = Path(__file__).resolve().parent
 ROOT_DIR = SCRIPT_DIR.parent
-DEFAULT_BASE = ROOT_DIR / "Transcripts"
-FALLBACK_BASE = Path("/Users/jonathanflaig/Transcripts")
+DEFAULT_BASE = ROOT_DIR / "transcripts"
+FALLBACK_BASES = [
+    Path("/Users/jonathanflaig/transcripts"),
+    Path("/Users/jonathanflaig/Transcripts"),
+]
 
 def resolve_base_dir() -> Path:
     env_base = os.environ.get("LPM_TRANSCRIPTS_BASE")
+    candidates = []
     if env_base:
-        return Path(env_base)
-    if DEFAULT_BASE.exists():
-        return DEFAULT_BASE
-    if FALLBACK_BASE.exists():
-        return FALLBACK_BASE
+        candidates.append(Path(env_base))
+    candidates.append(DEFAULT_BASE)
+    candidates.extend(FALLBACK_BASES)
+    for p in candidates:
+        if p.exists():
+            return p
     return DEFAULT_BASE
 
 def main(p):

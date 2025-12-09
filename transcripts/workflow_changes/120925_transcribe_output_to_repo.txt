@@ -1,7 +1,7 @@
 Date: 12/09/25
-Change: Point all Whisper transcription outputs to the repo Transcripts folder.
+Change: Point all Whisper transcription outputs to the repo transcripts folder.
 Files: ~/.mise_aliases, transcripts/Whisper_Weekly_Commands_2025_2026.txt, transcripts/LPM_workflow_120925.txt, transcripts/LPM_Workflow_Master.txt
 Notes:
-- transcribe alias now outputs to ~/mise-core/Transcripts (and still runs offline).
+- transcribe alias now outputs to ~/mise-core/transcripts (and still runs offline).
 - Whisper command cheatsheet updated to the repo path.
 - Workflow docs now state the default output path and mention LPM_TRANSCRIPTS_BASE override.

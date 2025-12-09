@@ -3,11 +3,19 @@ set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 ROOT_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
-DEFAULT_BASE="$ROOT_DIR/Transcripts"
-FALLBACK_BASE="/Users/jonathanflaig/Transcripts"
+DEFAULT_BASE="$ROOT_DIR/transcripts"
+FALLBACK_BASES=(
+  "/Users/jonathanflaig/transcripts"
+  "/Users/jonathanflaig/Transcripts"
+)
 BASE="${LPM_TRANSCRIPTS_BASE:-$DEFAULT_BASE}"
-if [ ! -d "$BASE" ] && [ -d "$FALLBACK_BASE" ]; then
-  BASE="$FALLBACK_BASE"
+if [ ! -d "$BASE" ]; then
+  for fb in "${FALLBACK_BASES[@]}"; do
+    if [ -d "$fb" ]; then
+      BASE="$fb"
+      break
+    fi
+  done
 fi
 export LPM_TRANSCRIPTS_BASE="$BASE"
 

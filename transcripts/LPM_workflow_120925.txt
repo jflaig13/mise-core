@@ -34,7 +34,7 @@ On the Mac, Jon runs:
 transcribe <drag-audio-file-here>
 
 
-Outputs land in /Users/jonathanflaig/mise-core/Transcripts by default (or the path set in LPM_TRANSCRIPTS_BASE). No cloud services are involved; transcription is fully offline.
+Outputs land in /Users/jonathanflaig/mise-core/transcripts by default (or the path set in LPM_TRANSCRIPTS_BASE). No cloud services are involved; transcription is fully offline.
 
 Local Whisper produces a .txt transcript.
 
@@ -248,8 +248,8 @@ approve_MMDDYY_MMDDYY.approve.json
 
 and saves it inside the approvals folder at the active base:
 
-- Default: /Users/jonathanflaig/mise-core/Transcripts/approvals
-- Fallback (if default missing): /Users/jonathanflaig/Transcripts/approvals
+- Default: /Users/jonathanflaig/mise-core/transcripts/approvals
+- Fallbacks (if default missing): /Users/jonathanflaig/transcripts/approvals or /Users/jonathanflaig/Transcripts/approvals
 - Or set LPM_TRANSCRIPTS_BASE and use <base>/approvals
 
 9. Local Runner Automatically Processes the File
@@ -279,8 +279,8 @@ END OF LPM_workflow
 
 11. File Locations and Paths (Updated)
 
-Default base directory: /Users/jonathanflaig/mise-core/Transcripts
-Fallback (if the default does not exist): /Users/jonathanflaig/Transcripts
+Default base directory: /Users/jonathanflaig/mise-core/transcripts
+Fallbacks (if the default does not exist): /Users/jonathanflaig/transcripts or /Users/jonathanflaig/Transcripts
 Override: set LPM_TRANSCRIPTS_BASE to any other absolute path.
 
 Key subpaths (relative to the active base):

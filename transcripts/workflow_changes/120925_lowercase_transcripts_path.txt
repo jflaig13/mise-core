@@ -1,0 +1,7 @@
+Date: 12/09/25
+Change: Switched default transcripts base to lowercase path.
+Files: transcripts/local_docs_watcher.sh, transcripts/tipreport_runner.sh, transcripts/build_from_json.py, transcripts/LPM_workflow_120925.txt, transcripts/LPM_Workflow_Master.txt, transcripts/Whisper_Weekly_Commands_2025_2026.txt
+Notes:
+- Default base is now ~/mise-core/transcripts (lowercase) with fallbacks to ~/transcripts or ~/Transcripts.
+- Workflow docs and Whisper commands updated to reflect the lowercase repo path.
+- Runner/watcher/build scripts resolve using the lowercase base first.
