@@ -34,8 +34,9 @@ On the Mac, Jon runs:
 transcribe <drag-audio-file-here>
 
 
+Outputs land in /Users/jonathanflaig/mise-core/Transcripts by default (or the path set in LPM_TRANSCRIPTS_BASE). No cloud services are involved; transcription is fully offline.
+
 Local Whisper produces a .txt transcript.
-No cloud services are involved; transcription is fully offline.
 
 4. Drop Transcript Into the Local Payroll Machine ChatGPT Thread
 
