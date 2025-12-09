@@ -8,12 +8,14 @@ First: **Learn my rules.** Before coding, read:
   - LPM: workflow_specs/LPM/LPM_Workflow_Master.txt
 - Spec template (if drafting specs): ./get_workflow
 - Critical path map: workflow_specs/CRITICAL_PATHS.md
+- Workflow rules (all workflows, including future): workflow_specs/README.md
 
 Scope & Boundaries
 - Touch only the workflow you’re assigned; read its doc first.
 - Do not change schemas/workflows unless explicitly directed.
 - Keep base paths and env overrides intact (e.g., LPM_TRANSCRIPTS_BASE).
 - Log workflow changes in the correct workflow_changes folder.
+- Apply the same rules to all workflows (CPM/LIM/LPM/future): spec + critical paths + change log in workflow_specs/<WORKFLOW>/.
 - No secrets in git. Use env vars or ignored .env files.
 
 Commands & Safety
