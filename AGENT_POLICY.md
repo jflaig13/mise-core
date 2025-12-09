@@ -3,9 +3,9 @@
 First: **Learn my rules.** Before coding, read:
 - Root onboarding: README.md
 - Workflow-specific doc:
-  - CPM: transcribe/README.md
-  - LIM: mise_inventory/README.md
-  - LPM: transcripts/LPM_Workflow_Master.txt
+  - CPM: workflow_specs/CPM/README.md
+  - LIM: workflow_specs/LIM/README.md
+  - LPM: workflow_specs/LPM/LPM_Workflow_Master.txt
 - Spec template (if drafting specs): ./get_workflow
 
 Scope & Boundaries

@@ -3,17 +3,17 @@
 This repo houses multiple workflows. Read the relevant workflow doc before making changes and obey its rules. First: learn my rules → see AGENT_POLICY.md.
 
 Workflows
-- Cloud Payroll Machine (CPM): transcribe/README.md
-- Local Inventory Machine (LIM): mise_inventory/README.md
-- Local Payroll Machine (LPM): transcripts/LPM_Workflow_Master.txt
+- Cloud Payroll Machine (CPM): workflow_specs/CPM/README.md
+- Local Inventory Machine (LIM): workflow_specs/LIM/README.md
+- Local Payroll Machine (LPM): workflow_specs/LPM/LPM_Workflow_Master.txt
 
 Spec Template
 - Generate a new machine spec: `./get_workflow "Machine Name" > docs/<machine>.md` (create docs/ as needed).
 
 Change Logs
-- LPM: transcripts/workflow_changes/
-- CPM: transcribe/workflow_changes/ (create as needed)
-- LIM: mise_inventory/workflow_changes/ (create as needed)
+- LPM: workflow_specs/LPM/workflow_changes/
+- CPM: workflow_specs/CPM/workflow_changes/
+- LIM: workflow_specs/LIM/workflow_changes/
 
 Defaults and Bases
 - Transcripts base (LPM): ~/mise-core/transcripts (override with LPM_TRANSCRIPTS_BASE)
