@@ -301,3 +301,8 @@ Key subpaths (relative to the active base):
 
 - Keep this file tracked in git; update it whenever the workflow changes.
 - Do not commit secrets (tokens, etc.); keep them in ignored .env files or the keychain.
+
+14. DO NOT CONFUSE WITH LIM JSON
+
+- LPM approval JSON: `approve_MMDDYY_MMDDYY.approve.json` with keys: out_base, header, shift_cols, per_shift, cook_tips, weekly_totals, detail_blocks.
+- LIM inventory JSON: `MMDDYY_Inventory.json` with metadata, categories, unmapped_items. This must NEVER be produced or used in place of LPM approval JSON.

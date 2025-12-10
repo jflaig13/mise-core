@@ -44,6 +44,10 @@ Key Outputs
 - MarginEdge-ready CSV via generate_inventory_file.py
 - Both saved locally under the Mise directory structure.
 
+DO NOT CONFUSE WITH LPM/CPM APPROVAL JSON
+- LIM uses inventory JSON: `MMDDYY_Inventory.json` with metadata, categories, unmapped_items.
+- LPM/CPM use payroll approval JSON: `approve_MMDDYY_MMDDYY.approve.json` with keys: out_base, header, shift_cols, per_shift, cook_tips, weekly_totals, detail_blocks. Never emit or consume LPM/CPM approval JSON for LIM.
+
 Environment Variables
 - Typically none required.
 - Optional: INVENTORY_TRANSCRIPT_DIR, INVENTORY_OUTPUT_DIR (if overriding defaults).

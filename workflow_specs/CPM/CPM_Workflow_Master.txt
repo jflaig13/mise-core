@@ -57,6 +57,10 @@ MODE B — FULLY AUTOMATED CLOUD INGESTION
 
 Both modes are part of the Cloud Payroll Machine until consolidation.
 
+DO NOT CONFUSE WITH LIM JSON
+- CPM/LPM use payroll approval JSON: `approve_MMDDYY_MMDDYY.approve.json` with keys: out_base, header, shift_cols, per_shift, cook_tips, weekly_totals, detail_blocks.
+- LIM uses inventory JSON: `MMDDYY_Inventory.json` with metadata, categories, unmapped_items. Never emit LIM JSON for CPM/LPM flows.
+
 ------------------------------------------------------------
 2.1 INPUT SOURCES
 ------------------------------------------------------------
