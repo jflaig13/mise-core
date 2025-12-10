@@ -84,8 +84,15 @@ for _, r in roster.iterrows():
 # Build rows using weekly_totals from the JSON
 for full_name, total in data["weekly_totals"].items():
     emp_id = roster_map.get(full_name, None)
+    if emp_id is None:
+        emp_id_str = ""
+    else:
+        try:
+            emp_id_str = str(int(emp_id))
+        except Exception:
+            emp_id_str = str(emp_id)
     rows.append({
-        "Employee ID": emp_id,
+        "Employee ID": emp_id_str,
         "Tips Owed": total,
         "Employee Name": full_name
     })

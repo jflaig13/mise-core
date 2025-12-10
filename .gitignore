@@ -24,6 +24,8 @@ Payroll Voice Recordings/
 *.pdf
 *.wav
 *.m4a
+# allow tracked payroll roster template
+!transcripts/PayrollExportTemplate.csv
 
 # Docker artifacts
 *.dockerignore
