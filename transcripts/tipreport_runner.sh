@@ -55,8 +55,8 @@ base = "$BASE"
 out_base = "$OUT_BASE"
 roster_path = os.path.join(base, "PayrollExportTemplate.csv")
 
-# Full output directory = /Transcripts/<OUT_BASE>/
-output_dir = os.path.join(base, out_base)
+# Full output directory = /Transcripts/Tip_Reports/<OUT_BASE>/
+output_dir = os.path.join(base, "Tip_Reports", out_base.replace("TipReport_", ""))
 os.makedirs(output_dir, exist_ok=True)
 
 with open(json_path, 'r') as jf:
