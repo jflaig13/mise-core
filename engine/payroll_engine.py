@@ -21,6 +21,7 @@ from pydantic import BaseModel
 from google.cloud import bigquery
 
 from dateutil import parser as dtp
+from roster.loader import load_roster, normalize_employee_name, get_roster_path
 from .parse_shift import router as ParseShiftRouter
 from .commit_shift import router as CommitShiftRouter
 
@@ -211,6 +212,13 @@ ROSTER = {
     "COBIN": "Coben Cross",
 }
 
+# Canonical roster source (standalone file for all workflows)
+ROSTER_PATH = get_roster_path()
+ROSTER_STANDALONE = load_roster(ROSTER_PATH)
+if set(ROSTER_STANDALONE.keys()) != set(ROSTER.keys()):
+    log.warning("Standalone roster and embedded roster differ; using standalone source of truth")
+ROSTER = ROSTER_STANDALONE
+
 # Employees who should be tagged as support staff (expo/utility/busser buckets)
 SUPPORT_STAFF = {"Ryan Alexander", "Coben Cross", "Maddox Porter", "Fiona Dodson", "Atticus Usseglio"}
 
@@ -226,21 +234,24 @@ def normalize_name(raw: str) -> Optional[str]:
     if "cov" in key or "ovid" in key:
         return "Coben Cross"
 
-    if key in ROSTER:
-        return ROSTER[key]
+    nm = normalize_employee_name(key)
+    if nm:
+        return nm
 
     tokens = key.split()
 
-    # Match any individual word
+    # Match any individual word via canonical roster
     for t in tokens:
-        if t in ROSTER:
-            return ROSTER[t]
+        nm = normalize_employee_name(t)
+        if nm:
+            return nm
 
-    # Match 2-word combos
+    # Match 2-word combos via canonical roster
     for i in range(len(tokens) - 1):
         combo = f"{tokens[i]} {tokens[i+1]}"
-        if combo in ROSTER:
-            return ROSTER[combo]
+        nm = normalize_employee_name(combo)
+        if nm:
+            return nm
 
     return None
 
