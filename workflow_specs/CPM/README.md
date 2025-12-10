@@ -31,6 +31,7 @@ Key Inputs
 - .m4a or .wav audio file
 - Whisper transcript from transcribe service
 - Parsing directives inside CPM
+- Local note: `transcribe` relies on `.venv/bin/whisper`; if missing on a fresh machine, run `.venv/bin/pip install openai-whisper`.
 
 Key Outputs
 - Shift JSON conforming to `schemas/payroll_schema.json`

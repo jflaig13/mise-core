@@ -9,6 +9,7 @@ First: **Learn my rules.** Before coding, read:
 - Spec template (if drafting specs): ./get_workflow
 - Critical path map: workflow_specs/CRITICAL_PATHS.md
 - Workflow rules (all workflows, including future): workflow_specs/README.md
+- Transcribe depends on .venv/bin/whisper; if missing, run .venv/bin/pip install openai-whisper
 
 Scope & Boundaries
 - Touch only the workflow you’re assigned; read its doc first.

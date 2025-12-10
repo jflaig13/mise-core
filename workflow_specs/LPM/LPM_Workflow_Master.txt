@@ -34,7 +34,7 @@ On the Mac, Jon runs:
 transcribe <drag-audio-file-here>
 
 
-Outputs land in /Users/jonathanflaig/mise-core/transcripts by default (or the path set in LPM_TRANSCRIPTS_BASE). No cloud services are involved; transcription is fully offline. The transcribe command can be run from any directory (uses absolute paths).
+Outputs land in /Users/jonathanflaig/mise-core/transcripts by default (or the path set in LPM_TRANSCRIPTS_BASE). No cloud services are involved; transcription is fully offline. The transcribe command can be run from any directory (uses absolute paths). It depends on `.venv/bin/whisper`; if missing on a fresh machine, run `.venv/bin/pip install openai-whisper`.
 
 Local Whisper produces a .txt transcript.
 

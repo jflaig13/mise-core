@@ -30,3 +30,7 @@ Agent Checklist (Claude/Gemini/Codex/etc.)
 - Respect naming conventions and base paths.
 - Log workflow changes in the appropriate workflow_changes folder.
 - Keep secrets out of git; use env vars or ignored .env files.
+
+Quick setup for new agents (local):
+- python3 -m venv .venv
+- .venv/bin/pip install -r requirements.txt openai-whisper
