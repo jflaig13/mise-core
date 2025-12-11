@@ -1,6 +1,6 @@
 """Brain sync stub for the Transrouter.
 
-Responsible for syncing router rules, prompts, and domain configs from the
+Responsible for syncing Transrouter rules, prompts, and domain configs from the
 authoritative brain store (e.g., workflow_specs, AGENT_POLICY). Placeholder only.
 """
 

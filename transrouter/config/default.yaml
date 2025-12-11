@@ -2,13 +2,17 @@
 # TODO: refine once providers and routing rules are wired up.
 
 asr:
-  provider: whisper  # options: whisper, amazon_transcribe, custom
+  provider: whisper  # options: whisper, amazon_transcribe, google, azure
+  whisper_model: base
   timeout_seconds: 120
   language: en
 
 routing:
-  default_domain: lpm
+  default_domain: payroll
   fallback_intent: unknown
+  supported_domains:
+    - payroll
+    - inventory
 
 logging:
   level: INFO

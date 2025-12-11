@@ -37,4 +37,4 @@ Transrouter (when implemented)
 - Spec: workflow_specs/transrouter/Transrouter_Workflow_Master.txt
 - Summary: workflow_specs/transrouter/README.md
 - Change log: workflow_specs/transrouter/workflow_changes/
-- Intended code path: /mise-core/transrouter/src/ (or equivalent) for orchestrator/ASR/router components (add once implemented)
+- Intended code path: /mise-core/transrouter/src/ (or equivalent) for orchestrator/ASR/transrouter components (add once implemented) [implemented v1: orchestration, ASR adapters, classifier, entities, routing stubs]
