@@ -1,0 +1,15 @@
+# Placeholder configuration for the Transrouter.
+# TODO: refine once providers and routing rules are wired up.
+
+asr:
+  provider: whisper  # options: whisper, amazon_transcribe, custom
+  timeout_seconds: 120
+  language: en
+
+routing:
+  default_domain: lpm
+  fallback_intent: unknown
+
+logging:
+  level: INFO
+  format: "[%(asctime)s] %(levelname)s %(name)s: %(message)s"
