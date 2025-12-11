@@ -32,3 +32,9 @@ Local Payroll Machine (LPM)
 - Templates/data: transcripts/PayrollExportTemplate.csv, transcripts/Tip_Reports/, transcripts/Whisper_Weekly_Commands_2025_2026.txt
 - Change log: workflow_specs/LPM/workflow_changes/
 - Do not edit CPM or LIM files when working on LPM.
+
+Transrouter (when implemented)
+- Spec: workflow_specs/transrouter/Transrouter_Workflow_Master.txt
+- Summary: workflow_specs/transrouter/README.md
+- Change log: workflow_specs/transrouter/workflow_changes/
+- Intended code path: /mise-core/transrouter/src/ (or equivalent) for orchestrator/ASR/router components (add once implemented)
