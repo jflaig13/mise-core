@@ -13,10 +13,11 @@ Tracking commits and work done while GitHub push is blocked (e.g., network/DNS i
 - f50d05f: Set preflight approval token to apostrophe (current token).
 - 212b4a3: Add 'save that to your brain' trigger.
 - fb2d219: Add 'Remember this:' trigger and absolute memory rule.
-- f50d05f: Supersedes z/space tokens; apostrophe is current.
+- cb81ff1: Add foundational system truth file.
 - docs/brain/121224__brain-ingest-protocol.md: Brain ingest protocol (mandatory, 19-section structure, mmddyy naming; approval token apostrophe; triggers include “remember this:” and related phrases; absolute memory noted).
 - docs/brain/121224__absolute-memory-rule.md: Absolute Memory Rule (no ephemeral learning; every permanent instruction must create a new brain doc).
 - docs/brain/121224__system-truth-how-mise-works.md: System Truth — Mise is a file-based intelligence system; memory only exists in repo files; this rule overrides all others.
+- docs/brain/121224__workflow-primacy-directive.md: Workflow Primacy Directive — No Rediscovery (must load workflows at startup; no re-asking answered questions; workflows are authoritative).
 - values.md/VALUES_CORE.md: Updated with brain ingest reference, operationalization, and competitive advantage (unchanged in this batch).
 
 Untracked items to reconcile later:
