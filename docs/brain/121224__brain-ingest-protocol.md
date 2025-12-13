@@ -21,6 +21,7 @@ DEFINITIONS
 - Values artifacts: The core values files (values.md, VALUES_CORE.md) that encode immutable system rules.
 - Trigger phrases: Any variant of “add to brain,” “put this in Mise’s brain,” “codify this,” “remember this,” “don’t forget ‘x’,” “dont forget this:,” or “this is now part of the fabric of Mise.”
 - Naming: Brain ingest files must use mmddyy format in filenames (e.g., 121224__<slug>.md) and reside in docs/brain/.
+- Approval token: For preflight approvals, a single space character (“ ”) is the explicit approval; anything else means do not proceed.
 
 CORE ASSERTIONS
 - Nothing is “learned” unless written to the repo in a canonical markdown file.
