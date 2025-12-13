@@ -8,14 +8,16 @@ Tracking commits and work done while GitHub push is blocked (e.g., network/DNS i
 - c580965: Add canonical values artifacts and backlog entries (values.md, VALUES_CORE.md; backlog updated).
 - c595b02: Add brain ingest protocol and reference in values.
 - 93a5a8e: Update push backlog for brain ingest and values.
-- 5b6c06c: Set preflight approval token to z.
+- 5b6c06c: Set preflight approval token to z (superseded).
 - 5f09859: Update brain ingest protocol with spacebar approval (superseded).
-- f50d05f: Set preflight approval token to apostrophe.
+- f50d05f: Set preflight approval token to apostrophe (current token).
 - 212b4a3: Add 'save that to your brain' trigger.
-- 5b6c06c: Superseded by f50d05f (token now apostrophe).
-- docs/brain/121224__brain-ingest-protocol.md: Brain ingest protocol (mandatory, 19-section structure, mmddyy naming; approval token apostrophe; triggers include “remember this:” and related phrases; absolute memory rule noted).
+- fb2d219: Add 'Remember this:' trigger and absolute memory rule.
+- f50d05f: Supersedes z/space tokens; apostrophe is current.
+- docs/brain/121224__brain-ingest-protocol.md: Brain ingest protocol (mandatory, 19-section structure, mmddyy naming; approval token apostrophe; triggers include “remember this:” and related phrases; absolute memory noted).
 - docs/brain/121224__absolute-memory-rule.md: Absolute Memory Rule (no ephemeral learning; every permanent instruction must create a new brain doc).
-- values.md/VALUES_CORE.md: Updated with brain ingest reference, operationalization, and competitive advantage (already committed earlier; unchanged in this batch).
+- docs/brain/121224__system-truth-how-mise-works.md: System Truth — Mise is a file-based intelligence system; memory only exists in repo files; this rule overrides all others.
+- values.md/VALUES_CORE.md: Updated with brain ingest reference, operationalization, and competitive advantage (unchanged in this batch).
 
 Untracked items to reconcile later:
 - transcripts/113025_Inventory_2.txt
