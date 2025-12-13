@@ -9,7 +9,7 @@ Tracking commits and work done while GitHub push is blocked (e.g., network/DNS i
 - c595b02: Add brain ingest protocol and reference in values.
 - 93a5a8e: Update push backlog for brain ingest and values.
 - docs/brain/121224__brain-ingest-protocol.md: Brain ingest protocol (mandatory, 19-section structure, mmddyy naming).
-- Pending change: brain ingest protocol updated with single-space approval token for preflight.
+- Pending change: brain ingest protocol updated with single-letter “z” approval token for preflight.
 - values.md/VALUES_CORE.md: Updated with brain ingest reference, operationalization, and competitive advantage.
 
 Untracked items to reconcile later:
