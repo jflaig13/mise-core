@@ -19,7 +19,7 @@ DEFINITIONS
 - Canonical document: A versioned, detailed markdown file following the mandated structure.
 - Discoverability: Ability for Codex to locate and load the knowledge via repo scan/semantic search without chat context.
 - Values artifacts: The core values files (values.md, VALUES_CORE.md) that encode immutable system rules.
-- Trigger phrases: Any variant of “add to brain,” “put this in Mise’s brain,” “codify this,” “remember this,” “don’t forget ‘x’,” “dont forget this:,” or “this is now part of the fabric of Mise.”
+- Trigger phrases: Any variant of “add to brain,” “put this in Mise’s brain,” “codify this,” “remember this,” “save that to your brain,” “don’t forget ‘x’,” “dont forget this:,” or “this is now part of the fabric of Mise.”
 - Naming: Brain ingest files must use mmddyy format in filenames (e.g., 121224__<slug>.md) and reside in docs/brain/.
 - Approval token: For preflight approvals, a single apostrophe character (“'”) is the explicit approval; anything else means do not proceed.
 
