@@ -5,7 +5,7 @@ STATUS
 CANONICAL
 
 DATE ADDED
-2024-12-12
+2024-12-12 (filename uses mmddyy format: 121224)
 
 SOURCE
 Jon — direct instruction
@@ -19,10 +19,12 @@ DEFINITIONS
 - Canonical document: A versioned, detailed markdown file following the mandated structure.
 - Discoverability: Ability for Codex to locate and load the knowledge via repo scan/semantic search without chat context.
 - Values artifacts: The core values files (values.md, VALUES_CORE.md) that encode immutable system rules.
+- Trigger phrases: Any variant of “add to brain,” “put this in Mise’s brain,” “codify this,” “remember this,” “don’t forget ‘x’,” “dont forget this:,” or “this is now part of the fabric of Mise.”
+- Naming: Brain ingest files must use mmddyy format in filenames (e.g., 121224__<slug>.md) and reside in docs/brain/.
 
 CORE ASSERTIONS
 - Nothing is “learned” unless written to the repo in a canonical markdown file.
-- Each Brain Ingest creates exactly one new markdown file in docs/brain/, named YYYY-MM-DD__<slug>.md.
+- Each Brain Ingest creates exactly one new markdown file in docs/brain/, named mmddyy__<slug>.md (e.g., 121224__<slug>.md).
 - Documents must be written in extreme detail and self-contained; no reliance on prior chat.
 - Existing canonical files must be updated if new knowledge touches values, ethics, posture, or reasoning protocols.
 - Future reasoning must treat repo documents as the sole source of truth.
@@ -57,7 +59,7 @@ ENFORCEMENT & OVERRIDES
 - If uncertainty exists, pause and surface the ambiguity.
 
 EXAMPLES
-- Adding a new operating rule → create docs/brain/YYYY-MM-DD__new-rule.md with all sections; update values.md if it affects posture.
+- Adding a new operating rule → create docs/brain/mmddyy__new-rule.md (e.g., 121224__new-rule.md) with all sections; update values.md if it affects posture.
 - Capturing a workflow exception → single detailed file with decision tests and edge cases.
 
 NON-EXAMPLES

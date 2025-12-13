@@ -7,11 +7,13 @@ Tracking commits and work done while GitHub push is blocked (e.g., network/DNS i
 - 154a38f: Add push backlog log for offline changes.
 - c580965: Add canonical values artifacts and backlog entries (values.md, VALUES_CORE.md; backlog updated).
 - c595b02: Add brain ingest protocol and reference in values.
-- docs/brain/2024-12-12__brain-ingest-protocol.md: Brain ingest protocol (mandatory, 19-section structure).
-- values.md/VALUES_CORE.md: Updated with brain ingest reference and competitive advantage.
+- 93a5a8e: Update push backlog for brain ingest and values.
+- docs/brain/121224__brain-ingest-protocol.md: Brain ingest protocol (mandatory, 19-section structure, mmddyy naming).
+- values.md/VALUES_CORE.md: Updated with brain ingest reference, operationalization, and competitive advantage.
 
 Untracked items to reconcile later:
 - transcripts/113025_Inventory_2.txt
 - transcripts/120125_120725.{json,srt,tsv,txt,vtt}
 - transcripts/archive/approve_120125_120725.approve.json
 - AI_Configs/ (contents not tracked)
+- data/Inventory/113025_inventory_output.json deleted (pending rebuild when rapidfuzz available)
