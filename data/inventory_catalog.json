@@ -1,3442 +1,2623 @@
-[
-  {
-    "name": "Athletic Upside Dawn Golden 12oz Can",
-    "category": "Beer Cost",
-    "sku": "athletic-upside-dawn-golden-12oz-can",
-    "report_by_unit": "Can",
-    "latest_price": "$1.32",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_beer.csv"
-  },
-  {
-    "name": "Coors Light 12oz Can",
-    "category": "Beer Cost",
-    "sku": "coors-light-12oz-can",
-    "report_by_unit": "Can",
-    "latest_price": "$1.33",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_beer.csv"
-  },
-  {
-    "name": "Corona 12oz Can",
-    "category": "Beer Cost",
-    "sku": "corona-12oz-can",
-    "report_by_unit": "Can (12 Fluid Ounces)",
-    "latest_price": "$1.63",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_beer.csv"
-  },
-  {
-    "name": "Fairhope I Drink Therefore I Amber Keg (1/6BBL)",
-    "category": "Beer Cost",
-    "sku": "fairhope-i-drink-therefore-i-amber-keg-1-6bbl",
-    "report_by_unit": "Keg (1/6BBL) 5.16GAL",
-    "latest_price": "$83.00",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_beer.csv"
-  },
-  {
-    "name": "Goose Island IPA Keg (1/6BBL)",
-    "category": "Beer Cost",
-    "sku": "goose-island-ipa-keg-1-6bbl",
-    "report_by_unit": "Keg (1/6BBL) 5.16GAL",
-    "latest_price": "$66.13",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_beer.csv"
-  },
-  {
-    "name": "Grayton 30A Beach Blonde Keg (1/2BBL)",
-    "category": "Beer Cost",
-    "sku": "grayton-30a-beach-blonde-keg-1-2bbl",
-    "report_by_unit": "Keg (1/2BBL) 15.5GAL",
-    "latest_price": "$200.00",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_beer.csv"
-  },
-  {
-    "name": "Grayton Beach 30A Rose 12oz Can",
-    "category": "Beer Cost",
-    "sku": "grayton-beach-30a-rose-12oz-can",
-    "report_by_unit": "Can (12 Cans)",
-    "latest_price": "$1.41",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_beer.csv"
-  },
-  {
-    "name": "Grayton Beach Blonde 12oz Can",
-    "category": "Beer Cost",
-    "sku": "grayton-beach-blonde-12oz-can",
-    "report_by_unit": "Can (12 Fluid Ounces)",
-    "latest_price": "$1.54",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_beer.csv"
-  },
-  {
-    "name": "Grayton Ipa 12oz Can",
-    "category": "Beer Cost",
-    "sku": "grayton-ipa-12oz-can",
-    "report_by_unit": "Can (12 Fluid Ounces)",
-    "latest_price": "$1.54",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_beer.csv"
-  },
-  {
-    "name": "High Rise Blood Orange",
-    "category": "Beer Cost",
-    "sku": "high-rise-blood-orange",
-    "report_by_unit": "Can (12 Fluid Ounces)",
-    "latest_price": "$3.06",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_beer.csv"
-  },
-  {
-    "name": "High Rise Pineapple",
-    "category": "Beer Cost",
-    "sku": "high-rise-pineapple",
-    "report_by_unit": "Can (12 Fluid Ounces)",
-    "latest_price": "$3.06",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_beer.csv"
-  },
-  {
-    "name": "Idyll Hands Joe Coffee Keg (1/6BBL)",
-    "category": "Beer Cost",
-    "sku": "idyll-hands-joe-coffee-keg-1-6bbl",
-    "report_by_unit": "Keg (1/6BBL) 5.16GAL",
-    "latest_price": "$91.00",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_beer.csv"
-  },
-  {
-    "name": "Idyll Hounds Batch 500 Keg (1/6BBL)",
-    "category": "Beer Cost",
-    "sku": "idyll-hounds-batch-500-keg-1-6bbl",
-    "report_by_unit": "Keg (1/6BBL) 5.16GAL",
-    "latest_price": "$102.00",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_beer.csv"
-  },
-  {
-    "name": "Keg Deposit - At Purchase $50",
-    "category": "Beer Cost",
-    "sku": "keg-deposit-at-purchase-50",
-    "report_by_unit": "Each",
-    "latest_price": "$50.00",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_beer.csv"
-  },
-  {
-    "name": "Kona Big Wave 12oz Can",
-    "category": "Beer Cost",
-    "sku": "kona-big-wave-12oz-can",
-    "report_by_unit": "Can (12 Fluid Ounces)",
-    "latest_price": "$1.37",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_beer.csv"
-  },
-  {
-    "name": "Kona Big Wave Keg (1/6BBL)",
-    "category": "Beer Cost",
-    "sku": "kona-big-wave-keg-1-6bbl",
-    "report_by_unit": "Keg (1/6BBL) 5.16GAL",
-    "latest_price": "$80.13",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_beer.csv"
-  },
-  {
-    "name": "Michelob Ultra 12oz Can",
-    "category": "Beer Cost",
-    "sku": "michelob-ultra-12oz-can",
-    "report_by_unit": "Can",
-    "latest_price": "$1.19",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_beer.csv"
-  },
-  {
-    "name": "Miller High Life 12oz Can",
-    "category": "Beer Cost",
-    "sku": "miller-high-life-12oz-can",
-    "report_by_unit": "Can (12 Fluid Ounces)",
-    "latest_price": "$1.02",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_beer.csv"
-  },
-  {
-    "name": "Miller Lite 12oz Can",
-    "category": "Beer Cost",
-    "sku": "miller-lite-12oz-can",
-    "report_by_unit": "Can (12 Fluid Ounces)",
-    "latest_price": "$1.33",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_beer.csv"
-  },
-  {
-    "name": "Mom Water Assorted 12oz Can",
-    "category": "Beer Cost",
-    "sku": "mom-water-assorted-12oz-can",
-    "report_by_unit": "Can (12 Fluid Ounces)",
-    "latest_price": "$2.25",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_beer.csv"
-  },
-  {
-    "name": "Pacifico 12oz Can",
-    "category": "Beer Cost",
-    "sku": "pacifico-12oz-can",
-    "report_by_unit": "Can",
-    "latest_price": "$1.63",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_beer.csv"
-  },
-  {
-    "name": "Perfect Plain Yachtside Keg (1/6BBL)",
-    "category": "Beer Cost",
-    "sku": "perfect-plain-yachtside-keg-1-6bbl",
-    "report_by_unit": "Keg (1/6BBL) 5.16GAL",
-    "latest_price": "$89.00",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_beer.csv"
-  },
-  {
-    "name": "Stella Artois Keg (1/6BBL)",
-    "category": "Beer Cost",
-    "sku": "stella-artois-keg-1-6bbl",
-    "report_by_unit": "Keg (1/6BBL) 5.16GAL",
-    "latest_price": "$85.13",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_beer.csv"
-  },
-  {
-    "name": "Urban South Holy Roller Hazy IPA Keg (1/6BBL)",
-    "category": "Beer Cost",
-    "sku": "urban-south-holy-roller-hazy-ipa-keg-1-6bbl",
-    "report_by_unit": "Keg (1/6BBL) 5.16GAL",
-    "latest_price": "$89.00",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_beer.csv"
-  },
-  {
-    "name": "Urban South Mardi Gras Pils Keg (1/6BBL)",
-    "category": "Beer Cost",
-    "sku": "urban-south-mardi-gras-pils-keg-1-6bbl",
-    "report_by_unit": "Keg (1/6BBL) 5.16GAL",
-    "latest_price": "$89.00",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_beer.csv"
-  },
-  {
-    "name": "Urban South Paradise Park Keg (1/6BBL)",
-    "category": "Beer Cost",
-    "sku": "urban-south-paradise-park-keg-1-6bbl",
-    "report_by_unit": "Keg (1/6BBL) 5.16GAL",
-    "latest_price": "$59.00",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_beer.csv"
-  },
-  {
-    "name": "Yuengling Lager 12oz Can",
-    "category": "Beer Cost",
-    "sku": "yuengling-lager-12oz-can",
-    "report_by_unit": "Can (12 Fluid Ounces)",
-    "latest_price": "$1.33",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_beer.csv"
-  },
-  {
-    "name": "4\" Sandwich Rolls",
-    "category": "Bread",
-    "sku": "4-sandwich-rolls",
-    "report_by_unit": "Case (Case)",
-    "latest_price": "$21.08",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_food.csv"
-  },
-  {
-    "name": "Arugula, Baby",
-    "category": "Produce",
-    "sku": "arugula-baby",
-    "report_by_unit": "Pound",
-    "latest_price": "$8.67",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_food.csv"
-  },
-  {
-    "name": "Avocados, Fresh",
-    "category": "Produce",
-    "sku": "avocados-fresh",
-    "report_by_unit": "Each",
-    "latest_price": "$1.92",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_food.csv"
-  },
-  {
-    "name": "Bacon",
-    "category": "Meat",
-    "sku": "bacon",
-    "report_by_unit": "Pound",
-    "latest_price": "$5.38",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_food.csv"
-  },
-  {
-    "name": "Baking Powder",
-    "category": "Grocery and Dry Goods",
-    "sku": "baking-powder",
-    "report_by_unit": "Pound",
-    "latest_price": "$4.95",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_food.csv"
-  },
-  {
-    "name": "Bar Mix, Bushwacker",
-    "category": "Grocery and Dry Goods",
-    "sku": "bar-mix-bushwacker",
-    "report_by_unit": "Bottle",
-    "latest_price": "$11.58",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_food.csv"
-  },
-  {
-    "name": "Beans, Black Can",
-    "category": "Grocery and Dry Goods",
-    "sku": "beans-black-can",
-    "report_by_unit": "Can",
-    "latest_price": "$6.14",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_food.csv"
-  },
-  {
-    "name": "Beans, Garbanzo Dry",
-    "category": "Grocery and Dry Goods",
-    "sku": "beans-garbanzo-dry",
-    "report_by_unit": "Pound",
-    "latest_price": "$1.62",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_food.csv"
-  },
-  {
-    "name": "Beef, Ground",
-    "category": "Meat",
-    "sku": "beef-ground",
-    "report_by_unit": "Pound",
-    "latest_price": "$5.95",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_food.csv"
-  },
-  {
-    "name": "Beef, Patty",
-    "category": "Meat",
-    "sku": "beef-patty",
-    "report_by_unit": "Each",
-    "latest_price": "$2.86",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_food.csv"
-  },
-  {
-    "name": "Bread, French Roll",
-    "category": "Bread",
-    "sku": "bread-french-roll",
-    "report_by_unit": "Each",
-    "latest_price": "$2.46",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_food.csv"
-  },
-  {
-    "name": "Bread, Hamburger Bun GF",
-    "category": "Bread",
-    "sku": "bread-hamburger-bun-gf",
-    "report_by_unit": "Each",
-    "latest_price": "$1.02",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_food.csv"
-  },
-  {
-    "name": "Bread, Po Boy",
-    "category": "Bread",
-    "sku": "bread-po-boy",
-    "report_by_unit": "Each",
-    "latest_price": "$2.78",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_food.csv"
-  },
-  {
-    "name": "Bread, Potato Bun",
-    "category": "Bread",
-    "sku": "bread-potato-bun",
-    "report_by_unit": "Each",
-    "latest_price": "$0.45",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_food.csv"
-  },
-  {
-    "name": "Bread, Texas Toast",
-    "category": "Bread",
-    "sku": "bread-texas-toast",
-    "report_by_unit": "Case",
-    "latest_price": "$28.99",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_food.csv"
-  },
-  {
-    "name": "Brussel Sprouts, Roasted",
-    "category": "Grocery and Dry Goods",
-    "sku": "brussel-sprouts-roasted",
-    "report_by_unit": "Each",
-    "latest_price": "$10.00",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_food.csv"
-  },
-  {
-    "name": "Butter, Unsalted",
-    "category": "Dairy",
-    "sku": "butter-unsalted",
-    "report_by_unit": "Pound",
-    "latest_price": "$3.33",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_food.csv"
-  },
-  {
-    "name": "Buttermilk",
-    "category": "Dairy",
-    "sku": "buttermilk",
-    "report_by_unit": "Gallon",
-    "latest_price": "$8.90",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_food.csv"
-  },
-  {
-    "name": "Cake, Blueberry Crumb",
-    "category": "Grocery and Dry Goods",
-    "sku": "cake-blueberry-crumb",
-    "report_by_unit": "Each",
-    "latest_price": "$9.00",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_food.csv"
-  },
-  {
-    "name": "Cake, Chocolate Peanut Butter",
-    "category": "Grocery and Dry Goods",
-    "sku": "cake-chocolate-peanut-butter",
-    "report_by_unit": "Each",
-    "latest_price": "$37.47",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_food.csv"
-  },
-  {
-    "name": "Cake, Red Velvet",
-    "category": "Grocery and Dry Goods",
-    "sku": "cake-red-velvet",
-    "report_by_unit": "Each",
-    "latest_price": "$30.87",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_food.csv"
-  },
-  {
-    "name": "Carrots, Diced",
-    "category": "Grocery and Dry Goods",
-    "sku": "carrots-diced",
-    "report_by_unit": "Can (10 Pounds)",
-    "latest_price": "$16.50",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_food.csv"
-  },
-  {
-    "name": "Carrots, Shredded",
-    "category": "Produce",
-    "sku": "carrots-shredded",
-    "report_by_unit": "Pound",
-    "latest_price": "$2.65",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_food.csv"
-  },
-  {
-    "name": "Cereal, Grain Bobs Red Mill",
-    "category": "Grocery and Dry Goods",
-    "sku": "cereal-grain-bobs-red-mill",
-    "report_by_unit": "Each",
-    "latest_price": "$4.63",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_food.csv"
-  },
-  {
-    "name": "Charcuterie",
-    "category": "Meat",
-    "sku": "charcuterie",
-    "report_by_unit": "Each",
-    "latest_price": "$15.00",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_food.csv"
-  },
-  {
-    "name": "Cheese, American Sliced",
-    "category": "Dairy",
-    "sku": "cheese-american-sliced",
-    "report_by_unit": "Pound",
-    "latest_price": "$3.29",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_food.csv"
-  },
-  {
-    "name": "Cheese, Cheddar Shredded",
-    "category": "Dairy",
-    "sku": "cheese-cheddar-shredded",
-    "report_by_unit": "LB (Pound)",
-    "latest_price": "$3.61",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_food.csv"
-  },
-  {
-    "name": "Cheese, Cheddar/Monterey Jack Shredded",
-    "category": "Dairy",
-    "sku": "cheese-cheddar-monterey-jack-shredded",
-    "report_by_unit": "Pound",
-    "latest_price": "$2.86",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_food.csv"
-  },
-  {
-    "name": "Cheese, Curd Breaded",
-    "category": "Dairy",
-    "sku": "cheese-curd-breaded",
-    "report_by_unit": "Pound (Pound)",
-    "latest_price": "$6.09",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_food.csv"
-  },
-  {
-    "name": "Cheese, Goat",
-    "category": "Dairy",
-    "sku": "cheese-goat",
-    "report_by_unit": "Pound",
-    "latest_price": "$11.56",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_food.csv"
-  },
-  {
-    "name": "Cheese, Pepper Jack Sliced",
-    "category": "Dairy",
-    "sku": "cheese-pepper-jack-sliced",
-    "report_by_unit": "Pound",
-    "latest_price": "$3.98",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_food.csv"
-  },
-  {
-    "name": "Cheese, Queso Hatch",
-    "category": "Dairy",
-    "sku": "cheese-queso-hatch",
-    "report_by_unit": "Pound",
-    "latest_price": "$2.98",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_food.csv"
-  },
-  {
-    "name": "Cheese, Swiss Sliced",
-    "category": "Dairy",
-    "sku": "cheese-swiss-sliced",
-    "report_by_unit": "Pound",
-    "latest_price": "$5.46",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_food.csv"
-  },
-  {
-    "name": "Cheesecake, Plain",
-    "category": "Grocery and Dry Goods",
-    "sku": "cheesecake-plain",
-    "report_by_unit": "8 (Slice)",
-    "latest_price": "$5.63",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_food.csv"
-  },
-  {
-    "name": "Cheesecake, Raspberry Swirl",
-    "category": "Dairy",
-    "sku": "cheesecake-raspberry-swirl",
-    "report_by_unit": "Each",
-    "latest_price": "$31.57",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_food.csv"
-  },
-  {
-    "name": "Cheesecake, Salted Caramel Pecan",
-    "category": "Grocery and Dry Goods",
-    "sku": "cheesecake-salted-caramel-pecan",
-    "report_by_unit": "Each",
-    "latest_price": "$10.00",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_food.csv"
-  },
-  {
-    "name": "Cherries, Bada Bing",
-    "category": "Grocery and Dry Goods",
-    "sku": "cherries-bada-bing",
-    "report_by_unit": "Jar (13.5 Ounces)",
-    "latest_price": "$11.49",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_food.csv"
-  },
-  {
-    "name": "Cherries, Maraschino",
-    "category": "Grocery and Dry Goods",
-    "sku": "cherries-maraschino",
-    "report_by_unit": "Gallon",
-    "latest_price": "$49.75",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_food.csv"
-  },
-  {
-    "name": "Cherry, Dark Sweet Can",
-    "category": "Grocery and Dry Goods",
-    "sku": "cherry-dark-sweet-can",
-    "report_by_unit": "Can",
-    "latest_price": "$27.07",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_food.csv"
-  },
-  {
-    "name": "Chicken, Breast",
-    "category": "Meat",
-    "sku": "chicken-breast",
-    "report_by_unit": "Pound",
-    "latest_price": "$3.13",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_food.csv"
-  },
-  {
-    "name": "Chicken, Tenders Breaded",
-    "category": "Meat",
-    "sku": "chicken-tenders-breaded",
-    "report_by_unit": "Pound",
-    "latest_price": "$4.08",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_food.csv"
-  },
-  {
-    "name": "Chicken, Thighs Honey Boneless",
-    "category": "Meat",
-    "sku": "chicken-thighs-honey-boneless",
-    "report_by_unit": "Each",
-    "latest_price": "$16.00",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_food.csv"
-  },
-  {
-    "name": "Chicken, Wings",
-    "category": "Meat",
-    "sku": "chicken-wings",
-    "report_by_unit": "Pound",
-    "latest_price": "$5.78",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_food.csv"
-  },
-  {
-    "name": "Chips, Potato .5oz",
-    "category": "Grocery and Dry Goods",
-    "sku": "chips-potato-5oz",
-    "report_by_unit": "Bag",
-    "latest_price": "$0.27",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_food.csv"
-  },
-  {
-    "name": "Churros",
-    "category": "Grocery and Dry Goods",
-    "sku": "churros",
-    "report_by_unit": "Case",
-    "latest_price": "$50.00",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_food.csv"
-  },
-  {
-    "name": "Cilantro, Fresh",
-    "category": "Produce",
-    "sku": "cilantro-fresh",
-    "report_by_unit": "Pound",
-    "latest_price": "$9.08",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_food.csv"
-  },
-  {
-    "name": "Coleslaw Mix",
-    "category": "Produce",
-    "sku": "coleslaw-mix",
-    "report_by_unit": "Pound",
-    "latest_price": "$1.47",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_food.csv"
-  },
-  {
-    "name": "Corn Starch",
-    "category": "Grocery and Dry Goods",
-    "sku": "corn-starch",
-    "report_by_unit": "Pound",
-    "latest_price": "$3.24",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_food.csv"
-  },
-  {
-    "name": "Corn, Fire Roasted",
-    "category": "Produce",
-    "sku": "corn-fire-roasted",
-    "report_by_unit": "Pound",
-    "latest_price": "$2.59",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_food.csv"
-  },
-  {
-    "name": "Cranberries, Fresh",
-    "category": "Produce",
-    "sku": "cranberries-fresh",
-    "report_by_unit": "Each",
-    "latest_price": "$2.48",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_food.csv"
-  },
-  {
-    "name": "Cream Cheese",
-    "category": "Dairy",
-    "sku": "cream-cheese",
-    "report_by_unit": "Pound",
-    "latest_price": "$3.32",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_food.csv"
-  },
-  {
-    "name": "Dill, Fresh",
-    "category": "Produce",
-    "sku": "dill-fresh",
-    "report_by_unit": "Pound",
-    "latest_price": "$15.76",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_food.csv"
-  },
-  {
-    "name": "Dip, Poppin' Pimento",
-    "category": "Grocery and Dry Goods",
-    "sku": "dip-poppin-pimento",
-    "report_by_unit": "Pound",
-    "latest_price": "$7.00",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_food.csv"
-  },
-  {
-    "name": "Dressing Mix, Ranch",
-    "category": "Grocery and Dry Goods",
-    "sku": "dressing-mix-ranch",
-    "report_by_unit": "Each (Each)",
-    "latest_price": "$2.77",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_food.csv"
-  },
-  {
-    "name": "Dressing, Balsamic Vinaigrette",
-    "category": "Grocery and Dry Goods",
-    "sku": "dressing-balsamic-vinaigrette",
-    "report_by_unit": "Gallon",
-    "latest_price": "$16.58",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_food.csv"
-  },
-  {
-    "name": "Dressing, Blue Cheese",
-    "category": "Grocery and Dry Goods",
-    "sku": "dressing-blue-cheese",
-    "report_by_unit": "Gallon",
-    "latest_price": "$22.26",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_food.csv"
-  },
-  {
-    "name": "Dressing, Honey Mustard",
-    "category": "Grocery and Dry Goods",
-    "sku": "dressing-honey-mustard",
-    "report_by_unit": "Gallon",
-    "latest_price": "$86.98",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_food.csv"
-  },
-  {
-    "name": "Egg Substitute",
-    "category": "Grocery and Dry Goods",
-    "sku": "egg-substitute",
-    "report_by_unit": "Bag (Bag)",
-    "latest_price": "$17.45",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_food.csv"
-  },
-  {
-    "name": "Egg, Vegan Powder",
-    "category": "Grocery and Dry Goods",
-    "sku": "egg-vegan-powder",
-    "report_by_unit": "Each",
-    "latest_price": "$13.04",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_food.csv"
-  },
-  {
-    "name": "Eggs, Liquid Yolks",
-    "category": "Dairy",
-    "sku": "eggs-liquid-yolks",
-    "report_by_unit": "2 LBS (2 Pounds)",
-    "latest_price": "$4.42",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_food.csv"
-  },
-  {
-    "name": "Flour, All Purpose",
-    "category": "Grocery and Dry Goods",
-    "sku": "flour-all-purpose",
-    "report_by_unit": "Pound",
-    "latest_price": "$0.45",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_food.csv"
-  },
-  {
-    "name": "French Fries, Curly",
-    "category": "Grocery and Dry Goods",
-    "sku": "french-fries-curly",
-    "report_by_unit": "Pound",
-    "latest_price": "$2.65",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_food.csv"
-  },
-  {
-    "name": "French Fries, Sweet Potato",
-    "category": "Grocery and Dry Goods",
-    "sku": "french-fries-sweet-potato",
-    "report_by_unit": "Pound",
-    "latest_price": "$3.45",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_food.csv"
-  },
-  {
-    "name": "French Fries, Sweet Potato Cheney",
-    "category": "Grocery and Dry Goods",
-    "sku": "french-fries-sweet-potato-cheney",
-    "report_by_unit": "Pound",
-    "latest_price": "$3.25",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_food.csv"
-  },
-  {
-    "name": "Garlic, Minced",
-    "category": "Produce",
-    "sku": "garlic-minced",
-    "report_by_unit": "Pound",
-    "latest_price": "$6.46",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_food.csv"
-  },
-  {
-    "name": "Ginger, Pickled",
-    "category": "Grocery and Dry Goods",
-    "sku": "ginger-pickled",
-    "report_by_unit": "Pound",
-    "latest_price": "$10.40",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_food.csv"
-  },
-  {
-    "name": "Grated Ginger",
-    "category": "Grocery and Dry Goods",
-    "sku": "grated-ginger",
-    "report_by_unit": "Oz (Ounce)",
-    "latest_price": "$0.34",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_food.csv"
-  },
-  {
-    "name": "Grouper, Fillet",
-    "category": "Seafood",
-    "sku": "grouper-fillet",
-    "report_by_unit": "Pound",
-    "latest_price": "$21.99",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_food.csv"
-  },
-  {
-    "name": "Heavy Cream",
-    "category": "Dairy",
-    "sku": "heavy-cream",
-    "report_by_unit": "Quart",
-    "latest_price": "$5.75",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_food.csv"
-  },
-  {
-    "name": "Honey",
-    "category": "Grocery and Dry Goods",
-    "sku": "honey",
-    "report_by_unit": "Honey (5 Pounds)",
-    "latest_price": "$21.00",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_food.csv"
-  },
-  {
-    "name": "Juice, Lemon",
-    "category": "Grocery and Dry Goods",
-    "sku": "juice-lemon",
-    "report_by_unit": "Gal (Gallon)",
-    "latest_price": "$13.33",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_food.csv"
-  },
-  {
-    "name": "Juice, Lime",
-    "category": "Grocery and Dry Goods",
-    "sku": "juice-lime",
-    "report_by_unit": "Quart",
-    "latest_price": "$3.39",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_food.csv"
-  },
-  {
-    "name": "Ketchup, Bottle",
-    "category": "Grocery and Dry Goods",
-    "sku": "ketchup-bottle",
-    "report_by_unit": "Bottle",
-    "latest_price": "$2.50",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_food.csv"
-  },
-  {
-    "name": "Ketchup, Bulk",
-    "category": "Grocery and Dry Goods",
-    "sku": "ketchup-bulk",
-    "report_by_unit": "Pound (Pound)",
-    "latest_price": "$0.57",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_food.csv"
-  },
-  {
-    "name": "Ketchup, Packets",
-    "category": "Grocery and Dry Goods",
-    "sku": "ketchup-packets",
-    "report_by_unit": "Case",
-    "latest_price": "$35.08",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_food.csv"
-  },
-  {
-    "name": "Lemons, Fresh",
-    "category": "Produce",
-    "sku": "lemons-fresh",
-    "report_by_unit": "Pound",
-    "latest_price": "$2.30",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_food.csv"
-  },
-  {
-    "name": "Lettuce, Bibb",
-    "category": "Produce",
-    "sku": "lettuce-bibb",
-    "report_by_unit": "Each",
-    "latest_price": "$2.85",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_food.csv"
-  },
-  {
-    "name": "Lettuce, Shredded",
-    "category": "Produce",
-    "sku": "lettuce-shredded",
-    "report_by_unit": "Pound",
-    "latest_price": "$2.27",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_food.csv"
-  },
-  {
-    "name": "Limes, Fresh",
-    "category": "Produce",
-    "sku": "limes-fresh",
-    "report_by_unit": "Pound",
-    "latest_price": "$1.38",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_food.csv"
-  },
-  {
-    "name": "Mahi Mahi, Fillet",
-    "category": "Seafood",
-    "sku": "mahi-mahi-fillet",
-    "report_by_unit": "Pound",
-    "latest_price": "$9.29",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_food.csv"
-  },
-  {
-    "name": "Mango, Frozen",
-    "category": "Grocery and Dry Goods",
-    "sku": "mango-frozen",
-    "report_by_unit": "Pound",
-    "latest_price": "$4.18",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_food.csv"
-  },
-  {
-    "name": "Mayonnaise",
-    "category": "Grocery and Dry Goods",
-    "sku": "mayonnaise",
-    "report_by_unit": "Gallon",
-    "latest_price": "$11.22",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_food.csv"
-  },
-  {
-    "name": "Mayonnaise, Bottle",
-    "category": "Grocery and Dry Goods",
-    "sku": "mayonnaise-bottle",
-    "report_by_unit": "Bottle (18 Ounces)",
-    "latest_price": "$5.45",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_food.csv"
-  },
-  {
-    "name": "Mayonnaise, Packets",
-    "category": "Grocery and Dry Goods",
-    "sku": "mayonnaise-packets",
-    "report_by_unit": "Case (Case)",
-    "latest_price": "$39.69",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_food.csv"
-  },
-  {
-    "name": "Mayonnaise, Vegan",
-    "category": "Grocery and Dry Goods",
-    "sku": "mayonnaise-vegan",
-    "report_by_unit": "Oz (Fluid Ounce)",
-    "latest_price": "$0.20",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_food.csv"
-  },
-  {
-    "name": "Milk, Whole",
-    "category": "Dairy",
-    "sku": "milk-whole",
-    "report_by_unit": "Gal (Gallon)",
-    "latest_price": "$7.50",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_food.csv"
-  },
-  {
-    "name": "Mint, Fresh",
-    "category": "Produce",
-    "sku": "mint-fresh",
-    "report_by_unit": "Pound",
-    "latest_price": "$12.90",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_food.csv"
-  },
-  {
-    "name": "Mushrooms, Cremini Sliced",
-    "category": "Produce",
-    "sku": "mushrooms-cremini-sliced",
-    "report_by_unit": "Pound",
-    "latest_price": "$3.80",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_food.csv"
-  },
-  {
-    "name": "Mustard Gallon",
-    "category": "Grocery and Dry Goods",
-    "sku": "mustard-gallon",
-    "report_by_unit": "Gallon (Gallon)",
-    "latest_price": "$5.96",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_food.csv"
-  },
-  {
-    "name": "Mustard, Creole",
-    "category": "Grocery and Dry Goods",
-    "sku": "mustard-creole",
-    "report_by_unit": "Gallon",
-    "latest_price": "$5.63",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_food.csv"
-  },
-  {
-    "name": "Mustard, Dijon",
-    "category": "Grocery and Dry Goods",
-    "sku": "mustard-dijon",
-    "report_by_unit": "Pound (Pound)",
-    "latest_price": "$2.77",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_food.csv"
-  },
-  {
-    "name": "Mustard, Yellow",
-    "category": "Grocery and Dry Goods",
-    "sku": "mustard-yellow",
-    "report_by_unit": "Each",
-    "latest_price": "$1.79",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_food.csv"
-  },
-  {
-    "name": "Mustard, Yellow Packets",
-    "category": "Grocery and Dry Goods",
-    "sku": "mustard-yellow-packets",
-    "report_by_unit": "Case",
-    "latest_price": "$37.86",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_food.csv"
-  },
-  {
-    "name": "Oatmeal",
-    "category": "Grocery and Dry Goods",
-    "sku": "oatmeal",
-    "report_by_unit": "Each",
-    "latest_price": "$5.04",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_food.csv"
-  },
-  {
-    "name": "Oats",
-    "category": "Grocery and Dry Goods",
-    "sku": "oats",
-    "report_by_unit": "Oz (Ounce)",
-    "latest_price": "$0.12",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_food.csv"
-  },
-  {
-    "name": "Oil, Butter Flavored",
-    "category": "Grocery and Dry Goods",
-    "sku": "oil-butter-flavored",
-    "report_by_unit": "Gallon",
-    "latest_price": "$14.94",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_food.csv"
-  },
-  {
-    "name": "Oil, Canola",
-    "category": "Grocery and Dry Goods",
-    "sku": "oil-canola",
-    "report_by_unit": "Gal (Gallon)",
-    "latest_price": "$17.72",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_food.csv"
-  },
-  {
-    "name": "Oil, Fryer",
-    "category": "Grocery and Dry Goods",
-    "sku": "oil-fryer",
-    "report_by_unit": "Case",
-    "latest_price": "$33.85",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_food.csv"
-  },
-  {
-    "name": "Oil, Olive Extra Virgin",
-    "category": "Grocery and Dry Goods",
-    "sku": "oil-olive-extra-virgin",
-    "report_by_unit": "Liter",
-    "latest_price": "$17.08",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_food.csv"
-  },
-  {
-    "name": "Oil, Sesame",
-    "category": "Grocery and Dry Goods",
-    "sku": "oil-sesame",
-    "report_by_unit": "Pound",
-    "latest_price": "$12.24",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_food.csv"
-  },
-  {
-    "name": "Oil, Truffle White",
-    "category": "Grocery and Dry Goods",
-    "sku": "oil-truffle-white",
-    "report_by_unit": "Oz (Each)",
-    "latest_price": "$24.65",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_food.csv"
-  },
-  {
-    "name": "Okra, Breaded",
-    "category": "Grocery and Dry Goods",
-    "sku": "okra-breaded",
-    "report_by_unit": "Pound",
-    "latest_price": "$2.73",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_food.csv"
-  },
-  {
-    "name": "Olives, Green Stuffed",
-    "category": "Grocery and Dry Goods",
-    "sku": "olives-green-stuffed",
-    "report_by_unit": "Gallon",
-    "latest_price": "$28.04",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_food.csv"
-  },
-  {
-    "name": "Onions, Green",
-    "category": "Produce",
-    "sku": "onions-green",
-    "report_by_unit": "2 Pounds (2 Pounds)",
-    "latest_price": "$10.10",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_food.csv"
-  },
-  {
-    "name": "Onions, Red",
-    "category": "Produce",
-    "sku": "onions-red",
-    "report_by_unit": "Pound",
-    "latest_price": "$0.89",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_food.csv"
-  },
-  {
-    "name": "Onions, Yellow",
-    "category": "Produce",
-    "sku": "onions-yellow",
-    "report_by_unit": "Pound",
-    "latest_price": "$0.62",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_food.csv"
-  },
-  {
-    "name": "Oranges, Fresh",
-    "category": "Produce",
-    "sku": "oranges-fresh",
-    "report_by_unit": "Each",
-    "latest_price": "$0.61",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_food.csv"
-  },
-  {
-    "name": "Paste, Gochujang",
-    "category": "Grocery and Dry Goods",
-    "sku": "paste-gochujang",
-    "report_by_unit": "Pound",
-    "latest_price": "$7.41",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_food.csv"
-  },
-  {
-    "name": "Pecans, Candied",
-    "category": "Grocery and Dry Goods",
-    "sku": "pecans-candied",
-    "report_by_unit": "Pound",
-    "latest_price": "$13.26",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_food.csv"
-  },
-  {
-    "name": "Peppers, Green",
-    "category": "Produce",
-    "sku": "peppers-green",
-    "report_by_unit": "Pound",
-    "latest_price": "$1.43",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_food.csv"
-  },
-  {
-    "name": "Peppers, Jommin' Jalapenos",
-    "category": "Grocery and Dry Goods",
-    "sku": "peppers-jommin-jalapenos",
-    "report_by_unit": "Pound",
-    "latest_price": "$5.00",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_food.csv"
-  },
-  {
-    "name": "Peppers, Red",
-    "category": "Produce",
-    "sku": "peppers-red",
-    "report_by_unit": "Pound",
-    "latest_price": "$2.61",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_food.csv"
-  },
-  {
-    "name": "Pickles, Dill Chips",
-    "category": "Grocery and Dry Goods",
-    "sku": "pickles-dill-chips",
-    "report_by_unit": "Gallon",
-    "latest_price": "$9.79",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_food.csv"
-  },
-  {
-    "name": "Pie, Banana Cheesecake Peanut Butter",
-    "category": "Grocery and Dry Goods",
-    "sku": "pie-banana-cheesecake-peanut-butter",
-    "report_by_unit": "Each",
-    "latest_price": "$43.20",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_food.csv"
-  },
-  {
-    "name": "Pie, Fried Apple",
-    "category": "Grocery and Dry Goods",
-    "sku": "pie-fried-apple",
-    "report_by_unit": "Each",
-    "latest_price": "$1.28",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_food.csv"
-  },
-  {
-    "name": "Pie, Fried Blackberry",
-    "category": "Grocery and Dry Goods",
-    "sku": "pie-fried-blackberry",
-    "report_by_unit": "Each",
-    "latest_price": "$1.83",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_food.csv"
-  },
-  {
-    "name": "Pie, Mini Peach Cobbler",
-    "category": "Grocery and Dry Goods",
-    "sku": "pie-mini-peach-cobbler",
-    "report_by_unit": "Each",
-    "latest_price": "$6.00",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_food.csv"
-  },
-  {
-    "name": "Pie, Pumpkin",
-    "category": "Grocery and Dry Goods",
-    "sku": "pie-pumpkin",
-    "report_by_unit": "Each",
-    "latest_price": "$10.67",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_food.csv"
-  },
-  {
-    "name": "Pineapple, Sliced",
-    "category": "Grocery and Dry Goods",
-    "sku": "pineapple-sliced",
-    "report_by_unit": "Pound",
-    "latest_price": "$12.53",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_food.csv"
-  },
-  {
-    "name": "Pineapple, Sliced Can",
-    "category": "Grocery and Dry Goods",
-    "sku": "pineapple-sliced-can",
-    "report_by_unit": "Can",
-    "latest_price": "$9.19",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_food.csv"
-  },
-  {
-    "name": "Pork, Korean Bites",
-    "category": "Meat",
-    "sku": "pork-korean-bites",
-    "report_by_unit": "Each",
-    "latest_price": "$17.00",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_food.csv"
-  },
-  {
-    "name": "Pork, Shoulder",
-    "category": "Meat",
-    "sku": "pork-shoulder",
-    "report_by_unit": "Pound",
-    "latest_price": "$5.91",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_food.csv"
-  },
-  {
-    "name": "Potatoes, Fingerling",
-    "category": "Produce",
-    "sku": "potatoes-fingerling",
-    "report_by_unit": "Each",
-    "latest_price": "$12.00",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_food.csv"
-  },
-  {
-    "name": "Potatoes, Misbehavin' Maters (tomato Jam)",
-    "category": "Grocery and Dry Goods",
-    "sku": "potatoes-misbehavin-maters-tomato-jam",
-    "report_by_unit": "Pound",
-    "latest_price": "$5.00",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_food.csv"
-  },
-  {
-    "name": "Potatoes, Waffle Fry (Cheney)",
-    "category": "Grocery and Dry Goods",
-    "sku": "potatoes-waffle-fry-cheney",
-    "report_by_unit": "Pound",
-    "latest_price": "$1.81",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_food.csv"
-  },
-  {
-    "name": "Pretzel, Soft",
-    "category": "Grocery and Dry Goods",
-    "sku": "pretzel-soft",
-    "report_by_unit": "Each",
-    "latest_price": "$1.27",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_food.csv"
-  },
-  {
-    "name": "Puree, Strawberry",
-    "category": "Grocery and Dry Goods",
-    "sku": "puree-strawberry",
-    "report_by_unit": "Each",
-    "latest_price": "$7.62",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_food.csv"
-  },
-  {
-    "name": "Pusetts",
-    "category": "Grocery and Dry Goods",
-    "sku": "pusetts",
-    "report_by_unit": "Each",
-    "latest_price": "$4.00",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_food.csv"
-  },
-  {
-    "name": "Raw Tortilla Chips",
-    "category": "Grocery and Dry Goods",
-    "sku": "raw-tortilla-chips",
-    "report_by_unit": "Pound (Pound)",
-    "latest_price": "$0.89",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_food.csv"
-  },
-  {
-    "name": "Relish, Sweet",
-    "category": "Grocery and Dry Goods",
-    "sku": "relish-sweet",
-    "report_by_unit": "Gallon",
-    "latest_price": "$14.69",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_food.csv"
-  },
-  {
-    "name": "Sauce, BBQ Chipotle Citrus",
-    "category": "Grocery and Dry Goods",
-    "sku": "sauce-bbq-chipotle-citrus",
-    "report_by_unit": "Gallon",
-    "latest_price": "$20.14",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_food.csv"
-  },
-  {
-    "name": "Sauce, BBQ Korean",
-    "category": "Grocery and Dry Goods",
-    "sku": "sauce-bbq-korean",
-    "report_by_unit": "Each",
-    "latest_price": "$18.69",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_food.csv"
-  },
-  {
-    "name": "Sauce, Buffalo",
-    "category": "Grocery and Dry Goods",
-    "sku": "sauce-buffalo",
-    "report_by_unit": "Gallon",
-    "latest_price": "$17.45",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_food.csv"
-  },
-  {
-    "name": "Sauce, Chipotle",
-    "category": "Grocery and Dry Goods",
-    "sku": "sauce-chipotle",
-    "report_by_unit": "Bottle",
-    "latest_price": "$5.00",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_food.csv"
-  },
-  {
-    "name": "Sauce, Garlic Parmesan",
-    "category": "Grocery and Dry Goods",
-    "sku": "sauce-garlic-parmesan",
-    "report_by_unit": "Gallon",
-    "latest_price": "$20.99",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_food.csv"
-  },
-  {
-    "name": "Sauce, Hot 5oz",
-    "category": "Grocery and Dry Goods",
-    "sku": "sauce-hot-5oz",
-    "report_by_unit": "Bottle",
-    "latest_price": "$3.37",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_food.csv"
-  },
-  {
-    "name": "Sauce, Hot 6oz",
-    "category": "Grocery and Dry Goods",
-    "sku": "sauce-hot-6oz",
-    "report_by_unit": "Bottle",
-    "latest_price": "$1.50",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_food.csv"
-  },
-  {
-    "name": "Sauce, Hot GAL",
-    "category": "Grocery and Dry Goods",
-    "sku": "sauce-hot-gal",
-    "report_by_unit": "Gallon",
-    "latest_price": "$10.52",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_food.csv"
-  },
-  {
-    "name": "Sauce, Remoulade",
-    "category": "Grocery and Dry Goods",
-    "sku": "sauce-remoulade",
-    "report_by_unit": "Gallon",
-    "latest_price": "$20.75",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_food.csv"
-  },
-  {
-    "name": "Sauce, Soy",
-    "category": "Grocery and Dry Goods",
-    "sku": "sauce-soy",
-    "report_by_unit": "Bottle",
-    "latest_price": "$59.95",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_food.csv"
-  },
-  {
-    "name": "Sauce, Sriracha",
-    "category": "Grocery and Dry Goods",
-    "sku": "sauce-sriracha",
-    "report_by_unit": "Oz (Ounce)",
-    "latest_price": "$0.17",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_food.csv"
-  },
-  {
-    "name": "Sauce, Teriyaki",
-    "category": "Grocery and Dry Goods",
-    "sku": "sauce-teriyaki",
-    "report_by_unit": "Gallon",
-    "latest_price": "$17.02",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_food.csv"
-  },
-  {
-    "name": "Sauce, Worcestershire GAL",
-    "category": "Grocery and Dry Goods",
-    "sku": "sauce-worcestershire-gal",
-    "report_by_unit": "Gallon (Gallon)",
-    "latest_price": "$17.02",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_food.csv"
-  },
-  {
-    "name": "Seasoning, Blackened Redfish",
-    "category": "Grocery and Dry Goods",
-    "sku": "seasoning-blackened-redfish",
-    "report_by_unit": "Each",
-    "latest_price": "$11.80",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_food.csv"
-  },
-  {
-    "name": "Seasoning, Montreal Steak",
-    "category": "Grocery and Dry Goods",
-    "sku": "seasoning-montreal-steak",
-    "report_by_unit": "Pound",
-    "latest_price": "$9.60",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_food.csv"
-  },
-  {
-    "name": "Seasoning, Tajin",
-    "category": "Grocery and Dry Goods",
-    "sku": "seasoning-tajin",
-    "report_by_unit": "Pound (Pound)",
-    "latest_price": "$7.51",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_food.csv"
-  },
-  {
-    "name": "Slider Rolls",
-    "category": "Bread",
-    "sku": "slider-rolls",
-    "report_by_unit": "Case (Case)",
-    "latest_price": "$18.69",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_food.csv"
-  },
-  {
-    "name": "Sour Cream",
-    "category": "Dairy",
-    "sku": "sour-cream",
-    "report_by_unit": "Pound",
-    "latest_price": "$2.63",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_food.csv"
-  },
-  {
-    "name": "Spice, Black Peppercorn Grinder",
-    "category": "Grocery and Dry Goods",
-    "sku": "spice-black-peppercorn-grinder",
-    "report_by_unit": "Each",
-    "latest_price": "$2.50",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_food.csv"
-  },
-  {
-    "name": "Spice, Cayenne Pepper",
-    "category": "Grocery and Dry Goods",
-    "sku": "spice-cayenne-pepper",
-    "report_by_unit": "Pound (Pound)",
-    "latest_price": "$9.37",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_food.csv"
-  },
-  {
-    "name": "Spice, Chipotle Cinnamon",
-    "category": "Grocery and Dry Goods",
-    "sku": "spice-chipotle-cinnamon",
-    "report_by_unit": "Pound (Pound)",
-    "latest_price": "$11.42",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_food.csv"
-  },
-  {
-    "name": "Spice, Cinnamon Ground",
-    "category": "Grocery and Dry Goods",
-    "sku": "spice-cinnamon-ground",
-    "report_by_unit": "7 Ounces",
-    "latest_price": "$3.39",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_food.csv"
-  },
-  {
-    "name": "Spice, Cumin Ground",
-    "category": "Grocery and Dry Goods",
-    "sku": "spice-cumin-ground",
-    "report_by_unit": "Pound (Pound)",
-    "latest_price": "$11.80",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_food.csv"
-  },
-  {
-    "name": "Spice, Gochugaru Chili Flakes",
-    "category": "Grocery and Dry Goods",
-    "sku": "spice-gochugaru-chili-flakes",
-    "report_by_unit": "Pound",
-    "latest_price": "$35.67",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_food.csv"
-  },
-  {
-    "name": "Spice, Kosher Salt",
-    "category": "Grocery and Dry Goods",
-    "sku": "spice-kosher-salt",
-    "report_by_unit": "Pound",
-    "latest_price": "$1.09",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_food.csv"
-  },
-  {
-    "name": "Spice, Lemon Pepper",
-    "category": "Grocery and Dry Goods",
-    "sku": "spice-lemon-pepper",
-    "report_by_unit": "Pound",
-    "latest_price": "$3.55",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_food.csv"
-  },
-  {
-    "name": "Spice, Nutmeg Ground",
-    "category": "Grocery and Dry Goods",
-    "sku": "spice-nutmeg-ground",
-    "report_by_unit": "Pound",
-    "latest_price": "$19.32",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_food.csv"
-  },
-  {
-    "name": "Spice, Paprika",
-    "category": "Grocery and Dry Goods",
-    "sku": "spice-paprika",
-    "report_by_unit": "Pound",
-    "latest_price": "$8.26",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_food.csv"
-  },
-  {
-    "name": "Spice, Parsley Flakes",
-    "category": "Grocery and Dry Goods",
-    "sku": "spice-parsley-flakes",
-    "report_by_unit": "Ounce",
-    "latest_price": "$1.18",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_food.csv"
-  },
-  {
-    "name": "Spice, Pepper Black Ground",
-    "category": "Grocery and Dry Goods",
-    "sku": "spice-pepper-black-ground",
-    "report_by_unit": "Pound",
-    "latest_price": "$16.82",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_food.csv"
-  },
-  {
-    "name": "Spice, Sea Salt Grinder",
-    "category": "Grocery and Dry Goods",
-    "sku": "spice-sea-salt-grinder",
-    "report_by_unit": "Each",
-    "latest_price": "$2.44",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_food.csv"
-  },
-  {
-    "name": "Spice, Sesame Seed White",
-    "category": "Grocery and Dry Goods",
-    "sku": "spice-sesame-seed-white",
-    "report_by_unit": "sesame seeds white (Pound)",
-    "latest_price": "$8.97",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_food.csv"
-  },
-  {
-    "name": "Spice, Tarragon",
-    "category": "Grocery and Dry Goods",
-    "sku": "spice-tarragon",
-    "report_by_unit": "Pound (Pound)",
-    "latest_price": "$28.96",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_food.csv"
-  },
-  {
-    "name": "Strawberries, Fresh",
-    "category": "Produce",
-    "sku": "strawberries-fresh",
-    "report_by_unit": "Pound",
-    "latest_price": "$8.05",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_food.csv"
-  },
-  {
-    "name": "Sugar, Brown",
-    "category": "Grocery and Dry Goods",
-    "sku": "sugar-brown",
-    "report_by_unit": "Pound",
-    "latest_price": "$1.58",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_food.csv"
-  },
-  {
-    "name": "Sugar, Granulated",
-    "category": "Grocery and Dry Goods",
-    "sku": "sugar-granulated",
-    "report_by_unit": "Pound (Pound)",
-    "latest_price": "$0.96",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_food.csv"
-  },
-  {
-    "name": "Sugar, Packets",
-    "category": "Grocery and Dry Goods",
-    "sku": "sugar-packets",
-    "report_by_unit": "Case",
-    "latest_price": "$25.03",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_food.csv"
-  },
-  {
-    "name": "Sugar, Powdered",
-    "category": "Grocery and Dry Goods",
-    "sku": "sugar-powdered",
-    "report_by_unit": "Pound",
-    "latest_price": "$1.52",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_food.csv"
-  },
-  {
-    "name": "Sweet & Low Packets (Pink)",
-    "category": "Grocery and Dry Goods",
-    "sku": "sweet-low-packets-pink",
-    "report_by_unit": "Case",
-    "latest_price": "$28.62",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_food.csv"
-  },
-  {
-    "name": "Syrup, Chocolate",
-    "category": "Grocery and Dry Goods",
-    "sku": "syrup-chocolate",
-    "report_by_unit": "Each",
-    "latest_price": "$5.41",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_food.csv"
-  },
-  {
-    "name": "Syrup, Maple Pure",
-    "category": "Grocery and Dry Goods",
-    "sku": "syrup-maple-pure",
-    "report_by_unit": "Gal (Gallon)",
-    "latest_price": "$48.49",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_food.csv"
-  },
-  {
-    "name": "Tater Tots",
-    "category": "Grocery and Dry Goods",
-    "sku": "tater-tots",
-    "report_by_unit": "LB (Pound)",
-    "latest_price": "$1.82",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_food.csv"
-  },
-  {
-    "name": "Tomatoes, Fresh",
-    "category": "Produce",
-    "sku": "tomatoes-fresh",
-    "report_by_unit": "Pound",
-    "latest_price": "$1.14",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_food.csv"
-  },
-  {
-    "name": "Tomatoes, Green Breaded",
-    "category": "Grocery and Dry Goods",
-    "sku": "tomatoes-green-breaded",
-    "report_by_unit": "Pound",
-    "latest_price": "$5.17",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_food.csv"
-  },
-  {
-    "name": "Tomatoes, Sundried",
-    "category": "Grocery and Dry Goods",
-    "sku": "tomatoes-sundried",
-    "report_by_unit": "Each",
-    "latest_price": "$27.00",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_food.csv"
-  },
-  {
-    "name": "Tortilla, Corn 6\"",
-    "category": "Grocery and Dry Goods",
-    "sku": "tortilla-corn-6",
-    "report_by_unit": "Case",
-    "latest_price": "$34.64",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_food.csv"
-  },
-  {
-    "name": "Tortilla, Flour 12\"",
-    "category": "Grocery and Dry Goods",
-    "sku": "tortilla-flour-12",
-    "report_by_unit": "Each (Each)",
-    "latest_price": "$0.09",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_food.csv"
-  },
-  {
-    "name": "Vinegar, White",
-    "category": "Grocery and Dry Goods",
-    "sku": "vinegar-white",
-    "report_by_unit": "Gal (Gallon)",
-    "latest_price": "$4.40",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_food.csv"
-  },
-  {
-    "name": "Whipped Cream, Non Dairy",
-    "category": "Grocery and Dry Goods",
-    "sku": "whipped-cream-non-dairy",
-    "report_by_unit": "Each",
-    "latest_price": "$3.63",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_food.csv"
-  },
-  {
-    "name": "Whipped Topping",
-    "category": "Dairy",
-    "sku": "whipped-topping",
-    "report_by_unit": "Each",
-    "latest_price": "$3.39",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_food.csv"
-  },
-  {
-    "name": "Wine, Cooking White",
-    "category": "Grocery and Dry Goods",
-    "sku": "wine-cooking-white",
-    "report_by_unit": "Oz (Fluid Ounce)",
-    "latest_price": "$0.36",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_food.csv"
-  },
-  {
-    "name": "Angostura Bitters 4oz",
-    "category": "Liquor Cost",
-    "sku": "angostura-bitters-4oz",
-    "report_by_unit": "Bottle (4 Ounces)",
-    "latest_price": "$8.80",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_liquor.csv"
-  },
-  {
-    "name": "Aperol Aperitivo",
-    "category": "Liquor Cost",
-    "sku": "aperol-aperitivo",
-    "report_by_unit": "Bottle (Liter)",
-    "latest_price": "$26.35",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_liquor.csv"
-  },
-  {
-    "name": "Balvenie 14yr Caribbean Cask Single Malt Scotch",
-    "category": "Liquor Cost",
-    "sku": "balvenie-14yr-caribbean-cask-single-malt-scotch",
-    "report_by_unit": "Bottle (750 Milliliters)",
-    "latest_price": "$89.10",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_liquor.csv"
-  },
-  {
-    "name": "Bar Mix, Margarita",
-    "category": "Liquor Cost",
-    "sku": "bar-mix-margarita",
-    "report_by_unit": "Bottle (750 Milliliters)",
-    "latest_price": "$5.25",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_liquor.csv"
-  },
-  {
-    "name": "Bar Mix, Mojito",
-    "category": "Liquor Cost",
-    "sku": "bar-mix-mojito",
-    "report_by_unit": "Bottle (750 Milliliters)",
-    "latest_price": "$5.25",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_liquor.csv"
-  },
-  {
-    "name": "Bar Mix, Watermelon",
-    "category": "Liquor Cost",
-    "sku": "bar-mix-watermelon",
-    "report_by_unit": "Bottle (750 Milliliters)",
-    "latest_price": "$5.25",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_liquor.csv"
-  },
-  {
-    "name": "Blanton's Single Barrel Bourbon",
-    "category": "Liquor Cost",
-    "sku": "blanton-s-single-barrel-bourbon",
-    "report_by_unit": "Bottle (750 Milliliters)",
-    "latest_price": "$62.10",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_liquor.csv"
-  },
-  {
-    "name": "Blue Curacao",
-    "category": "Liquor Cost",
-    "sku": "blue-curacao",
-    "report_by_unit": "Bottle (Liter)",
-    "latest_price": "$4.05",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_liquor.csv"
-  },
-  {
-    "name": "Bols Elderflower Liqueur",
-    "category": "Liquor Cost",
-    "sku": "bols-elderflower-liqueur",
-    "report_by_unit": "Bottle (Liter)",
-    "latest_price": "$19.00",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_liquor.csv"
-  },
-  {
-    "name": "Campari",
-    "category": "Liquor Cost",
-    "sku": "campari",
-    "report_by_unit": "Bottle (Liter)",
-    "latest_price": "$42.21",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_liquor.csv"
-  },
-  {
-    "name": "Campesino Aged Rum",
-    "category": "Liquor Cost",
-    "sku": "campesino-aged-rum",
-    "report_by_unit": "Bottle (750 Milliliters)",
-    "latest_price": "$28.00",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_liquor.csv"
-  },
-  {
-    "name": "Campesino Silver Rum",
-    "category": "Liquor Cost",
-    "sku": "campesino-silver-rum",
-    "report_by_unit": "Bottle (750 Milliliters)",
-    "latest_price": "$17.00",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_liquor.csv"
-  },
-  {
-    "name": "Caravella Limoncello",
-    "category": "Liquor Cost",
-    "sku": "caravella-limoncello",
-    "report_by_unit": "Bottle (750 Milliliters)",
-    "latest_price": "$16.50",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_liquor.csv"
-  },
-  {
-    "name": "Casamigos Blanco Tequila",
-    "category": "Liquor Cost",
-    "sku": "casamigos-blanco-tequila",
-    "report_by_unit": "Bottle (750 Milliliters)",
-    "latest_price": "$53.40",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_liquor.csv"
-  },
-  {
-    "name": "Chambord",
-    "category": "Liquor Cost",
-    "sku": "chambord",
-    "report_by_unit": "Bottle (700 Milliliters)",
-    "latest_price": "$27.90",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_liquor.csv"
-  },
-  {
-    "name": "Crop Cucumber Vodka",
-    "category": "Liquor Cost",
-    "sku": "crop-cucumber-vodka",
-    "report_by_unit": "Bottle (750 Milliliters)",
-    "latest_price": "$11.25",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_liquor.csv"
-  },
-  {
-    "name": "Crop Harvest Organic Meyer Lemon Vodka",
-    "category": "Liquor Cost",
-    "sku": "crop-harvest-organic-meyer-lemon-vodka",
-    "report_by_unit": "Bottle (Liter)",
-    "latest_price": "$15.00",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_liquor.csv"
-  },
-  {
-    "name": "Crown Royal Whiskey",
-    "category": "Liquor Cost",
-    "sku": "crown-royal-whiskey",
-    "report_by_unit": "Bottle (Liter)",
-    "latest_price": "$38.00",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_liquor.csv"
-  },
-  {
-    "name": "Diplomatico 8yr Mantuano Rum",
-    "category": "Liquor Cost",
-    "sku": "diplomatico-8yr-mantuano-rum",
-    "report_by_unit": "Bottle (750 Milliliters)",
-    "latest_price": "$18.25",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_liquor.csv"
-  },
-  {
-    "name": "Eagle Rare 10yr Bourbon",
-    "category": "Liquor Cost",
-    "sku": "eagle-rare-10yr-bourbon",
-    "report_by_unit": "Bottle (750 Milliliters)",
-    "latest_price": "$39.60",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_liquor.csv"
-  },
-  {
-    "name": "EH Taylor Small Batch Bourbon",
-    "category": "Liquor Cost",
-    "sku": "eh-taylor-small-batch-bourbon",
-    "report_by_unit": "Bottle (750 Milliliters)",
-    "latest_price": "$43.35",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_liquor.csv"
-  },
-  {
-    "name": "El Jimador Cristalino Tequila",
-    "category": "Liquor Cost",
-    "sku": "el-jimador-cristalino-tequila",
-    "report_by_unit": "Bottle (750 Milliliters)",
-    "latest_price": "$24.60",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_liquor.csv"
-  },
-  {
-    "name": "Event Liquor",
-    "category": "Liquor Cost",
-    "sku": "event-liquor",
-    "report_by_unit": "Each",
-    "latest_price": "$466.00",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_liquor.csv"
-  },
-  {
-    "name": "Faretti Espresso Liqueur",
-    "category": "Liquor Cost",
-    "sku": "faretti-espresso-liqueur",
-    "report_by_unit": "Bottle (750 Milliliters)",
-    "latest_price": "$27.30",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_liquor.csv"
-  },
-  {
-    "name": "Farmers Organic Gin",
-    "category": "Liquor Cost",
-    "sku": "farmers-organic-gin",
-    "report_by_unit": "Bottle (750 Milliliters)",
-    "latest_price": "$21.00",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_liquor.csv"
-  },
-  {
-    "name": "Farmers Reserve Gin",
-    "category": "Liquor Cost",
-    "sku": "farmers-reserve-gin",
-    "report_by_unit": "750 Milliliters",
-    "latest_price": "$25.00",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_liquor.csv"
-  },
-  {
-    "name": "Fireball Cinnamon Whisky",
-    "category": "Liquor Cost",
-    "sku": "fireball-cinnamon-whisky",
-    "report_by_unit": "Bottle (Liter)",
-    "latest_price": "$18.95",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_liquor.csv"
-  },
-  {
-    "name": "Fords Gin",
-    "category": "Liquor Cost",
-    "sku": "fords-gin",
-    "report_by_unit": "Bottle (Liter)",
-    "latest_price": "$18.85",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_liquor.csv"
-  },
-  {
-    "name": "Fortaleza Blanco Tequila",
-    "category": "Liquor Cost",
-    "sku": "fortaleza-blanco-tequila",
-    "report_by_unit": "Bottle (750 Milliliters)",
-    "latest_price": "$44.10",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_liquor.csv"
-  },
-  {
-    "name": "Glenglassaugh 12yr Highland Single Malt Scotch",
-    "category": "Liquor Cost",
-    "sku": "glenglassaugh-12yr-highland-single-malt-scotch",
-    "report_by_unit": "Bottle (700 Milliliters)",
-    "latest_price": "$21.17",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_liquor.csv"
-  },
-  {
-    "name": "Gran Gala Orange Liqueur",
-    "category": "Liquor Cost",
-    "sku": "gran-gala-orange-liqueur",
-    "report_by_unit": "Bottle (Liter)",
-    "latest_price": "$15.00",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_liquor.csv"
-  },
-  {
-    "name": "Grand Marnier",
-    "category": "Liquor Cost",
-    "sku": "grand-marnier",
-    "report_by_unit": "Bottle (Liter)",
-    "latest_price": "$38.00",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_liquor.csv"
-  },
-  {
-    "name": "Grey Goose Vodka",
-    "category": "Liquor Cost",
-    "sku": "grey-goose-vodka",
-    "report_by_unit": "Bottle (750 Milliliters)",
-    "latest_price": "$34.25",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_liquor.csv"
-  },
-  {
-    "name": "Hendrick's Gin",
-    "category": "Liquor Cost",
-    "sku": "hendrick-s-gin",
-    "report_by_unit": "Bottle (Liter)",
-    "latest_price": "$36.75",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_liquor.csv"
-  },
-  {
-    "name": "Herradura Anejo Tequila",
-    "category": "Liquor Cost",
-    "sku": "herradura-anejo-tequila",
-    "report_by_unit": "Bottle (750 Milliliters)",
-    "latest_price": "$44.10",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_liquor.csv"
-  },
-  {
-    "name": "Herradura Blanco Tequila",
-    "category": "Liquor Cost",
-    "sku": "herradura-blanco-tequila",
-    "report_by_unit": "Bottle (700 Milliliters)",
-    "latest_price": "$33.00",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_liquor.csv"
-  },
-  {
-    "name": "Herradura Legend Anejo Tequila",
-    "category": "Liquor Cost",
-    "sku": "herradura-legend-anejo-tequila",
-    "report_by_unit": "Bottle (750 Milliliters)",
-    "latest_price": "$82.80",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_liquor.csv"
-  },
-  {
-    "name": "Herradura Reposado Tequila",
-    "category": "Liquor Cost",
-    "sku": "herradura-reposado-tequila",
-    "report_by_unit": "Bottle (Liter)",
-    "latest_price": "$30.44",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_liquor.csv"
-  },
-  {
-    "name": "Herradura Silver Tequila",
-    "category": "Liquor Cost",
-    "sku": "herradura-silver-tequila",
-    "report_by_unit": "Bottle (Liter)",
-    "latest_price": "$30.44",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_liquor.csv"
-  },
-  {
-    "name": "Herradura Ultra Anejo Tequila",
-    "category": "Liquor Cost",
-    "sku": "herradura-ultra-anejo-tequila",
-    "report_by_unit": "Bottle (750 Milliliters)",
-    "latest_price": "$46.79",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_liquor.csv"
-  },
-  {
-    "name": "High Noon Peach Vodka Soda 12oz Can",
-    "category": "Liquor Cost",
-    "sku": "high-noon-peach-vodka-soda-12oz-can",
-    "report_by_unit": "Can",
-    "latest_price": "$1.60",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_liquor.csv"
-  },
-  {
-    "name": "High Noon Pineapple Vodka Soda 12oz Can",
-    "category": "Liquor Cost",
-    "sku": "high-noon-pineapple-vodka-soda-12oz-can",
-    "report_by_unit": "Can",
-    "latest_price": "$1.65",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_liquor.csv"
-  },
-  {
-    "name": "High Noon Vodka Grapefruit Seltzer 12oz Can",
-    "category": "Liquor Cost",
-    "sku": "high-noon-vodka-grapefruit-seltzer-12oz-can",
-    "report_by_unit": "Can (355 Milliliters)",
-    "latest_price": "$1.60",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_liquor.csv"
-  },
-  {
-    "name": "High Noon Watermelon Vodka Soda 12oz Can",
-    "category": "Liquor Cost",
-    "sku": "high-noon-watermelon-vodka-soda-12oz-can",
-    "report_by_unit": "Can",
-    "latest_price": "$1.60",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_liquor.csv"
-  },
-  {
-    "name": "Jack Daniel's Black Label Whiskey",
-    "category": "Liquor Cost",
-    "sku": "jack-daniel-s-black-label-whiskey",
-    "report_by_unit": "Bottle (Liter)",
-    "latest_price": "$27.77",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_liquor.csv"
-  },
-  {
-    "name": "Jack Daniels Blackberry",
-    "category": "Liquor Cost",
-    "sku": "jack-daniels-blackberry",
-    "report_by_unit": "Bottle (Liter)",
-    "latest_price": "$36.70",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_liquor.csv"
-  },
-  {
-    "name": "Jagermeister",
-    "category": "Liquor Cost",
-    "sku": "jagermeister",
-    "report_by_unit": "Bottle (Liter)",
-    "latest_price": "$22.25",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_liquor.csv"
-  },
-  {
-    "name": "Jameson Irish Whiskey",
-    "category": "Liquor Cost",
-    "sku": "jameson-irish-whiskey",
-    "report_by_unit": "Bottle (Liter)",
-    "latest_price": "$38.66",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_liquor.csv"
-  },
-  {
-    "name": "Jim Beam Bourbon",
-    "category": "Liquor Cost",
-    "sku": "jim-beam-bourbon",
-    "report_by_unit": "Bottle (Liter)",
-    "latest_price": "$20.50",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_liquor.csv"
-  },
-  {
-    "name": "Maker's Mark Bourbon",
-    "category": "Liquor Cost",
-    "sku": "maker-s-mark-bourbon",
-    "report_by_unit": "Bottle (750 Milliliters)",
-    "latest_price": "$27.74",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_liquor.csv"
-  },
-  {
-    "name": "Michters Us1 Single Barrel Straight Rye Whiskey",
-    "category": "Liquor Cost",
-    "sku": "michters-us1-single-barrel-straight-rye-whiskey",
-    "report_by_unit": "Bottle (750 Milliliters)",
-    "latest_price": "$32.84",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_liquor.csv"
-  },
-  {
-    "name": "Milagro Anejo Cristalino Tequila",
-    "category": "Liquor Cost",
-    "sku": "milagro-anejo-cristalino-tequila",
-    "report_by_unit": "Bottle (750 Milliliters)",
-    "latest_price": "$46.60",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_liquor.csv"
-  },
-  {
-    "name": "Milagro Reposado Tequila",
-    "category": "Liquor Cost",
-    "sku": "milagro-reposado-tequila",
-    "report_by_unit": "Bottle (Liter)",
-    "latest_price": "$27.55",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_liquor.csv"
-  },
-  {
-    "name": "Milagro Silver Tequila",
-    "category": "Liquor Cost",
-    "sku": "milagro-silver-tequila",
-    "report_by_unit": "Bottle (Liter)",
-    "latest_price": "$3.90",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_liquor.csv"
-  },
-  {
-    "name": "Mom Water Blueberry Peach 12oz Can",
-    "category": "Liquor Cost",
-    "sku": "mom-water-blueberry-peach-12oz-can",
-    "report_by_unit": "Can (12 Fluid Ounces)",
-    "latest_price": "$1.55",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_liquor.csv"
-  },
-  {
-    "name": "Mom Water Julie",
-    "category": "Liquor Cost",
-    "sku": "mom-water-julie",
-    "report_by_unit": "Can (12 Fluid Ounces)",
-    "latest_price": "$2.25",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_liquor.csv"
-  },
-  {
-    "name": "Mom Water Karen",
-    "category": "Liquor Cost",
-    "sku": "mom-water-karen",
-    "report_by_unit": "Can (12 Fluid Ounces)",
-    "latest_price": "$2.25",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_liquor.csv"
-  },
-  {
-    "name": "Mom Water Lemon Blueberry 12oz Can",
-    "category": "Liquor Cost",
-    "sku": "mom-water-lemon-blueberry-12oz-can",
-    "report_by_unit": "Can (12 Fluid Ounces)",
-    "latest_price": "$1.55",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_liquor.csv"
-  },
-  {
-    "name": "Mom Water Linda",
-    "category": "Liquor Cost",
-    "sku": "mom-water-linda",
-    "report_by_unit": "Can (12 Fluid Ounces)",
-    "latest_price": "$2.25",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_liquor.csv"
-  },
-  {
-    "name": "Mom Water Louise Citrus Cucumber 12oz Can",
-    "category": "Liquor Cost",
-    "sku": "mom-water-louise-citrus-cucumber-12oz-can",
-    "report_by_unit": "Can (12 Fluid Ounces)",
-    "latest_price": "$1.55",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_liquor.csv"
-  },
-  {
-    "name": "Mom Water Sandy",
-    "category": "Liquor Cost",
-    "sku": "mom-water-sandy",
-    "report_by_unit": "Can (12 Fluid Ounces)",
-    "latest_price": "$2.25",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_liquor.csv"
-  },
-  {
-    "name": "Mom Water Strawberry Kiwi 12oz Can",
-    "category": "Liquor Cost",
-    "sku": "mom-water-strawberry-kiwi-12oz-can",
-    "report_by_unit": "Can (12 Fluid Ounces)",
-    "latest_price": "$1.55",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_liquor.csv"
-  },
-  {
-    "name": "Monkey Shoulder Scotch",
-    "category": "Liquor Cost",
-    "sku": "monkey-shoulder-scotch",
-    "report_by_unit": "Bottle (750 Milliliters)",
-    "latest_price": "$32.14",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_liquor.csv"
-  },
-  {
-    "name": "Mr Boston Peach Schnapps",
-    "category": "Liquor Cost",
-    "sku": "mr-boston-peach-schnapps",
-    "report_by_unit": "Bottle (Liter)",
-    "latest_price": "$6.50",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_liquor.csv"
-  },
-  {
-    "name": "Myers's Dark Rum",
-    "category": "Liquor Cost",
-    "sku": "myers-s-dark-rum",
-    "report_by_unit": "Bottle (Liter)",
-    "latest_price": "$19.90",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_liquor.csv"
-  },
-  {
-    "name": "Papa's Pilar 24Yr Spanish Sherry Cask Solera Dark Rum",
-    "category": "Liquor Cost",
-    "sku": "papa-s-pilar-24yr-spanish-sherry-cask-solera-dark-rum",
-    "report_by_unit": "Bottle (750 Milliliters)",
-    "latest_price": "$35.00",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_liquor.csv"
-  },
-  {
-    "name": "Parrot Bay Coconut Rum",
-    "category": "Liquor Cost",
-    "sku": "parrot-bay-coconut-rum",
-    "report_by_unit": "Bottle (Liter)",
-    "latest_price": "$8.75",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_liquor.csv"
-  },
-  {
-    "name": "Parrot Bay White Rum",
-    "category": "Liquor Cost",
-    "sku": "parrot-bay-white-rum",
-    "report_by_unit": "Bottle (Liter)",
-    "latest_price": "$8.75",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_liquor.csv"
-  },
-  {
-    "name": "Paul Sutton Kentucky Bourbon",
-    "category": "Liquor Cost",
-    "sku": "paul-sutton-kentucky-bourbon",
-    "report_by_unit": "Bottle (750 Milliliters)",
-    "latest_price": "$51.00",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_liquor.csv"
-  },
-  {
-    "name": "Pueblo Viejo Blanco Tequila",
-    "category": "Liquor Cost",
-    "sku": "pueblo-viejo-blanco-tequila",
-    "report_by_unit": "Bottle (Liter)",
-    "latest_price": "$12.50",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_liquor.csv"
-  },
-  {
-    "name": "Redwood Empire Lost Monarch Whiskey",
-    "category": "Liquor Cost",
-    "sku": "redwood-empire-lost-monarch-whiskey",
-    "report_by_unit": "Bottle (750 Milliliters)",
-    "latest_price": "$22.10",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_liquor.csv"
-  },
-  {
-    "name": "Romana Amaro",
-    "category": "Liquor Cost",
-    "sku": "romana-amaro",
-    "report_by_unit": "Bottle (750 Milliliters)",
-    "latest_price": "$22.35",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_liquor.csv"
-  },
-  {
-    "name": "Rumple Minze Peppermint",
-    "category": "Liquor Cost",
-    "sku": "rumple-minze-peppermint",
-    "report_by_unit": "Bottle (Liter)",
-    "latest_price": "$29.50",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_liquor.csv"
-  },
-  {
-    "name": "Siete Misterios Dobayej Mezcal",
-    "category": "Liquor Cost",
-    "sku": "siete-misterios-dobayej-mezcal",
-    "report_by_unit": "case (4500 Milliliters)",
-    "latest_price": "$174.00",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_liquor.csv"
-  },
-  {
-    "name": "Tanqueray Gin",
-    "category": "Liquor Cost",
-    "sku": "tanqueray-gin",
-    "report_by_unit": "Bottle (Liter)",
-    "latest_price": "$29.67",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_liquor.csv"
-  },
-  {
-    "name": "Tia Maria Coffee Liqueur",
-    "category": "Liquor Cost",
-    "sku": "tia-maria-coffee-liqueur",
-    "report_by_unit": "Bottle (Liter)",
-    "latest_price": "$30.45",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_liquor.csv"
-  },
-  {
-    "name": "Tito's Vodka",
-    "category": "Liquor Cost",
-    "sku": "tito-s-vodka",
-    "report_by_unit": "Bottle (Liter)",
-    "latest_price": "$25.50",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_liquor.csv"
-  },
-  {
-    "name": "Toschi Nocello Walnut Liqueur",
-    "category": "Liquor Cost",
-    "sku": "toschi-nocello-walnut-liqueur",
-    "report_by_unit": "Bottle (700 Milliliters)",
-    "latest_price": "$36.60",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_liquor.csv"
-  },
-  {
-    "name": "Triple Sec",
-    "category": "Liquor Cost",
-    "sku": "triple-sec",
-    "report_by_unit": "Bottle (Liter)",
-    "latest_price": "$4.05",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_liquor.csv"
-  },
-  {
-    "name": "Tullamore Dew Irish Whiskey",
-    "category": "Liquor Cost",
-    "sku": "tullamore-dew-irish-whiskey",
-    "report_by_unit": "Bottle (Liter)",
-    "latest_price": "$36.35",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_liquor.csv"
-  },
-  {
-    "name": "Wheatley Vodka",
-    "category": "Liquor Cost",
-    "sku": "wheatley-vodka",
-    "report_by_unit": "Bottle (Liter)",
-    "latest_price": "$15.00",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_liquor.csv"
-  },
-  {
-    "name": "Woodford Reserve Bourbon",
-    "category": "Liquor Cost",
-    "sku": "woodford-reserve-bourbon",
-    "report_by_unit": "Bottle (Liter)",
-    "latest_price": "$42.88",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_liquor.csv"
-  },
-  {
-    "name": "Woodford Reserve Double Oaked Straight Bourbon",
-    "category": "Liquor Cost",
-    "sku": "woodford-reserve-double-oaked-straight-bourbon",
-    "report_by_unit": "Bottle (Liter)",
-    "latest_price": "$57.70",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_liquor.csv"
-  },
-  {
-    "name": "Yave Coconut Tequila",
-    "category": "Liquor Cost",
-    "sku": "yave-coconut-tequila",
-    "report_by_unit": "Bottle (750 Milliliters)",
-    "latest_price": "$29.00",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_liquor.csv"
-  },
-  {
-    "name": "Agave Nectar",
-    "category": "N/A Beverage Cost",
-    "sku": "agave-nectar",
-    "report_by_unit": "Bottle",
-    "latest_price": "$6.00",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_nabev.csv"
-  },
-  {
-    "name": "Bar Mix, Bloody Mary",
-    "category": "N/A Beverage Cost",
-    "sku": "bar-mix-bloody-mary",
-    "report_by_unit": "Bottle",
-    "latest_price": "$5.63",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_nabev.csv"
-  },
-  {
-    "name": "Bar Mix, Lime Juice",
-    "category": "N/A Beverage Cost",
-    "sku": "bar-mix-lime-juice",
-    "report_by_unit": "Bottle",
-    "latest_price": "$5.75",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_nabev.csv"
-  },
-  {
-    "name": "Bar Mix, Margarita Strawberry 64oz",
-    "category": "N/A Beverage Cost",
-    "sku": "bar-mix-margarita-strawberry-64oz",
-    "report_by_unit": "margarita man (Bottle)",
-    "latest_price": "$11.58",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_nabev.csv"
-  },
-  {
-    "name": "Bar Mix, Pina Colada",
-    "category": "N/A Beverage Cost",
-    "sku": "bar-mix-pina-colada",
-    "report_by_unit": "Liter",
-    "latest_price": "$4.25",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_nabev.csv"
-  },
-  {
-    "name": "Carbon Dioxide Empties Only Coca Cola Only",
-    "category": "N/A Beverage Cost",
-    "sku": "carbon-dioxide-empties-only-coca-cola-only",
-    "report_by_unit": "20 Pounds",
-    "latest_price": "$75.00",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_nabev.csv"
-  },
-  {
-    "name": "Cream Of Coconut",
-    "category": "N/A Beverage Cost",
-    "sku": "cream-of-coconut",
-    "report_by_unit": "Each",
-    "latest_price": "$3.15",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_nabev.csv"
-  },
-  {
-    "name": "Ginger Ale BIB",
-    "category": "N/A Beverage Cost",
-    "sku": "ginger-ale-bib",
-    "report_by_unit": "Gallon",
-    "latest_price": "$26.14",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_nabev.csv"
-  },
-  {
-    "name": "Ginger Beer 12oz Can",
-    "category": "N/A Beverage Cost",
-    "sku": "ginger-beer-12oz-can",
-    "report_by_unit": "Can",
-    "latest_price": "$1.01",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_nabev.csv"
-  },
-  {
-    "name": "Grenadine",
-    "category": "N/A Beverage Cost",
-    "sku": "grenadine",
-    "report_by_unit": "Bottle",
-    "latest_price": "$4.00",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_nabev.csv"
-  },
-  {
-    "name": "Hot Chocolate",
-    "category": "N/A Beverage Cost",
-    "sku": "hot-chocolate",
-    "report_by_unit": "Each",
-    "latest_price": "$1.90",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_nabev.csv"
-  },
-  {
-    "name": "Juice, Blood Orange 16oz",
-    "category": "N/A Beverage Cost",
-    "sku": "juice-blood-orange-16oz",
-    "report_by_unit": "Each",
-    "latest_price": "$3.71",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_nabev.csv"
-  },
-  {
-    "name": "Juice, Cranberry",
-    "category": "N/A Beverage Cost",
-    "sku": "juice-cranberry",
-    "report_by_unit": "Bottle (Gallon)",
-    "latest_price": "$9.00",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_nabev.csv"
-  },
-  {
-    "name": "Juice, Cucumber Lime 64oz",
-    "category": "N/A Beverage Cost",
-    "sku": "juice-cucumber-lime-64oz",
-    "report_by_unit": "Each",
-    "latest_price": "$20.00",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_nabev.csv"
-  },
-  {
-    "name": "Juice, Grapefruit",
-    "category": "N/A Beverage Cost",
-    "sku": "juice-grapefruit",
-    "report_by_unit": "Each",
-    "latest_price": "$3.50",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_nabev.csv"
-  },
-  {
-    "name": "Juice, Olive",
-    "category": "N/A Beverage Cost",
-    "sku": "juice-olive",
-    "report_by_unit": "Bottle",
-    "latest_price": "$8.25",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_nabev.csv"
-  },
-  {
-    "name": "Juice, Orange",
-    "category": "N/A Beverage Cost",
-    "sku": "juice-orange",
-    "report_by_unit": "0.5 Gallons",
-    "latest_price": "$6.54",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_nabev.csv"
-  },
-  {
-    "name": "Juice, Orange 32oz",
-    "category": "N/A Beverage Cost",
-    "sku": "juice-orange-32oz",
-    "report_by_unit": "32 Fluid Ounces",
-    "latest_price": "$3.30",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_nabev.csv"
-  },
-  {
-    "name": "Juice, Orange 46oz",
-    "category": "N/A Beverage Cost",
-    "sku": "juice-orange-46oz",
-    "report_by_unit": "Bottle",
-    "latest_price": "$6.27",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_nabev.csv"
-  },
-  {
-    "name": "Juice, Orange 56OZ",
-    "category": "N/A Beverage Cost",
-    "sku": "juice-orange-56oz",
-    "report_by_unit": "Each",
-    "latest_price": "$7.66",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_nabev.csv"
-  },
-  {
-    "name": "Juice, Pineapple",
-    "category": "N/A Beverage Cost",
-    "sku": "juice-pineapple",
-    "report_by_unit": "Each",
-    "latest_price": "$3.98",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_nabev.csv"
-  },
-  {
-    "name": "Juice, Pomegranate 64oz",
-    "category": "N/A Beverage Cost",
-    "sku": "juice-pomegranate-64oz",
-    "report_by_unit": "Each",
-    "latest_price": "$20.00",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_nabev.csv"
-  },
-  {
-    "name": "Lemonade BIB",
-    "category": "N/A Beverage Cost",
-    "sku": "lemonade-bib",
-    "report_by_unit": "Gallon",
-    "latest_price": "$24.67",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_nabev.csv"
-  },
-  {
-    "name": "Syrup, Jalapeno",
-    "category": "N/A Beverage Cost",
-    "sku": "syrup-jalapeno",
-    "report_by_unit": "Bottle",
-    "latest_price": "$4.90",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_nabev.csv"
-  },
-  {
-    "name": "Syrup, Pineapple",
-    "category": "N/A Beverage Cost",
-    "sku": "syrup-pineapple",
-    "report_by_unit": "Liter",
-    "latest_price": "$6.70",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_nabev.csv"
-  },
-  {
-    "name": "Syrup, Simple",
-    "category": "N/A Beverage Cost",
-    "sku": "syrup-simple",
-    "report_by_unit": "Liter",
-    "latest_price": "$4.25",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_nabev.csv"
-  },
-  {
-    "name": "Tea, Sweet",
-    "category": "N/A Beverage Cost",
-    "sku": "tea-sweet",
-    "report_by_unit": "Bag",
-    "latest_price": "$5.94",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_nabev.csv"
-  },
-  {
-    "name": "Tea, Sweet BIB",
-    "category": "N/A Beverage Cost",
-    "sku": "tea-sweet-bib",
-    "report_by_unit": "Gallon",
-    "latest_price": "$15.83",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_nabev.csv"
-  },
-  {
-    "name": "Tea, Unsweet",
-    "category": "N/A Beverage Cost",
-    "sku": "tea-unsweet",
-    "report_by_unit": "Each",
-    "latest_price": "$1.33",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_nabev.csv"
-  },
-  {
-    "name": "Tonic BIB",
-    "category": "N/A Beverage Cost",
-    "sku": "tonic-bib",
-    "report_by_unit": "Gallon",
-    "latest_price": "$25.76",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_nabev.csv"
-  },
-  {
-    "name": "30A Cabernet Sauvignon",
-    "category": "Wine Cost",
-    "sku": "30a-cabernet-sauvignon",
-    "report_by_unit": "Bottle (750 Milliliters)",
-    "latest_price": "$13.00",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_wine.csv"
-  },
-  {
-    "name": "30A Chardonnay",
-    "category": "Wine Cost",
-    "sku": "30a-chardonnay",
-    "report_by_unit": "Bottle (750 Milliliters)",
-    "latest_price": "$12.00",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_wine.csv"
-  },
-  {
-    "name": "30A Pinot Noir",
-    "category": "Wine Cost",
-    "sku": "30a-pinot-noir",
-    "report_by_unit": "Bottle (750 Milliliters)",
-    "latest_price": "$15.00",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_wine.csv"
-  },
-  {
-    "name": "30A Provence Rose",
-    "category": "Wine Cost",
-    "sku": "30a-provence-rose",
-    "report_by_unit": "Bottle (750 Milliliters)",
-    "latest_price": "$9.00",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_wine.csv"
-  },
-  {
-    "name": "30A Sauvignon Blanc",
-    "category": "Wine Cost",
-    "sku": "30a-sauvignon-blanc",
-    "report_by_unit": "Bottle (750 Milliliters)",
-    "latest_price": "$13.00",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_wine.csv"
-  },
-  {
-    "name": "Avarus Chardonnay",
-    "category": "Wine Cost",
-    "sku": "avarus-chardonnay",
-    "report_by_unit": "Bottle (750 Milliliters)",
-    "latest_price": "$11.00",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_wine.csv"
-  },
-  {
-    "name": "Canoe Ridge Merlot",
-    "category": "Wine Cost",
-    "sku": "canoe-ridge-merlot",
-    "report_by_unit": "750 Milliliters",
-    "latest_price": "$8.00",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_wine.csv"
-  },
-  {
-    "name": "Carter's Lot Rose Of Pinot Noir 2020",
-    "category": "Wine Cost",
-    "sku": "carter-s-lot-rose-of-pinot-noir-2020",
-    "report_by_unit": "Bottle (750 Milliliters)",
-    "latest_price": "$10.00",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_wine.csv"
-  },
-  {
-    "name": "Caymus Suisun The Walking Fool Red Blend",
-    "category": "Wine Cost",
-    "sku": "caymus-suisun-the-walking-fool-red-blend",
-    "report_by_unit": "Bottle (750 Milliliters)",
-    "latest_price": "$16.00",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_wine.csv"
-  },
-  {
-    "name": "Charles De Fere Jean-Louis Cuvee Blanc De Blancs Brut",
-    "category": "Wine Cost",
-    "sku": "charles-de-fere-jean-louis-cuvee-blanc-de-blancs-brut",
-    "report_by_unit": "Bottle (750 Milliliters)",
-    "latest_price": "$6.75",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_wine.csv"
-  },
-  {
-    "name": "Decoded Russian River Pinot Noir",
-    "category": "Wine Cost",
-    "sku": "decoded-russian-river-pinot-noir",
-    "report_by_unit": "Bottle (750 Milliliters)",
-    "latest_price": "$10.00",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_wine.csv"
-  },
-  {
-    "name": "Domaine St Michelle Brut",
-    "category": "Wine Cost",
-    "sku": "domaine-st-michelle-brut",
-    "report_by_unit": "Bottle (750 Milliliters)",
-    "latest_price": "$10.00",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_wine.csv"
-  },
-  {
-    "name": "Gearbox California Pinot Noir",
-    "category": "Wine Cost",
-    "sku": "gearbox-california-pinot-noir",
-    "report_by_unit": "Bottle (750 Milliliters)",
-    "latest_price": "$8.00",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_wine.csv"
-  },
-  {
-    "name": "Justin Cabernet Sauvignon",
-    "category": "Wine Cost",
-    "sku": "justin-cabernet-sauvignon",
-    "report_by_unit": "Bottle (750 Milliliters)",
-    "latest_price": "$19.00",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_wine.csv"
-  },
-  {
-    "name": "Marques De Caceres NV Brut Cava",
-    "category": "Wine Cost",
-    "sku": "marques-de-caceres-nv-brut-cava",
-    "report_by_unit": "Bottle (750 Milliliters)",
-    "latest_price": "$8.00",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_wine.csv"
-  },
-  {
-    "name": "Matua Lighter Sauvignon Blanc",
-    "category": "Wine Cost",
-    "sku": "matua-lighter-sauvignon-blanc",
-    "report_by_unit": "Bottle (750 Milliliters)",
-    "latest_price": "$8.49",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_wine.csv"
-  },
-  {
-    "name": "Scarpetta Pinot Grigio",
-    "category": "Wine Cost",
-    "sku": "scarpetta-pinot-grigio",
-    "report_by_unit": "Bottle (750 Milliliters)",
-    "latest_price": "$10.00",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_wine.csv"
-  },
-  {
-    "name": "Sonoma Cutrer Chardonnay",
-    "category": "Wine Cost",
-    "sku": "sonoma-cutrer-chardonnay",
-    "report_by_unit": "Bottle (750 Milliliters)",
-    "latest_price": "$14.50",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_wine.csv"
-  },
-  {
-    "name": "Squealing Pig Sauvignon Blanc",
-    "category": "Wine Cost",
-    "sku": "squealing-pig-sauvignon-blanc",
-    "report_by_unit": "Bottle (750 Milliliters)",
-    "latest_price": "$11.00",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_wine.csv"
-  },
-  {
-    "name": "The Shaker Red Blend",
-    "category": "Wine Cost",
-    "sku": "the-shaker-red-blend",
-    "report_by_unit": "Bottle (750 Milliliters)",
-    "latest_price": "$14.75",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_wine.csv"
-  },
-  {
-    "name": "Windstorm Central Coast Chardonnay",
-    "category": "Wine Cost",
-    "sku": "windstorm-central-coast-chardonnay",
-    "report_by_unit": "Bottle (750 Milliliters)",
-    "latest_price": "$9.75",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_wine.csv"
-  },
-  {
-    "name": "Windstorm Red Hills Cabernet Sauvignon",
-    "category": "Wine Cost",
-    "sku": "windstorm-red-hills-cabernet-sauvignon",
-    "report_by_unit": "Bottle (750 Milliliters)",
-    "latest_price": "$9.75",
-    "accounting_code": "",
-    "tax_exempt": "No",
-    "source_file": "products_wine.csv"
-  }
-]
+{
+  "global_rules": {
+    "fuzzy_match_threshold": 0.65,
+    "fraction_words": {
+      "half": 0.5,
+      "quarter": 0.25,
+      "three quarters": 0.75,
+      "full": 1.0
+    },
+    "negative_keywords": []
+  },
+  "beer_cost": [
+    {
+      "name": "Athletic Upside Dawn Golden 12oz Can",
+      "category": "Beer Cost",
+      "sku": "athletic-upside-dawn-golden-12oz-can",
+      "report_by_unit": "Can",
+      "latest_price": "$1.32",
+      "accounting_code": "",
+      "tax_exempt": "No",
+      "source_file": "products_beer.csv",
+      "keywords": [
+        "athletic",
+        "upside",
+        "dawn",
+        "golden",
+        "12oz",
+        "can"
+      ]
+    },
+    {
+      "name": "Coors Light 12oz Can",
+      "category": "Beer Cost",
+      "sku": "coors-light-12oz-can",
+      "report_by_unit": "Can",
+      "latest_price": "$1.33",
+      "accounting_code": "",
+      "tax_exempt": "No",
+      "source_file": "products_beer.csv",
+      "keywords": [
+        "coors",
+        "light",
+        "12oz",
+        "can"
+      ]
+    },
+    {
+      "name": "Corona 12oz Can",
+      "category": "Beer Cost",
+      "sku": "corona-12oz-can",
+      "report_by_unit": "Can (12 Fluid Ounces)",
+      "latest_price": "$1.63",
+      "accounting_code": "",
+      "tax_exempt": "No",
+      "source_file": "products_beer.csv",
+      "keywords": [
+        "corona",
+        "12oz",
+        "can"
+      ]
+    },
+    {
+      "name": "Fairhope I Drink Therefore I Amber Keg (1/6BBL)",
+      "category": "Beer Cost",
+      "sku": "fairhope-i-drink-therefore-i-amber-keg-1-6bbl",
+      "report_by_unit": "Keg (1/6BBL) 5.16GAL",
+      "latest_price": "$83.00",
+      "accounting_code": "",
+      "tax_exempt": "No",
+      "source_file": "products_beer.csv",
+      "keywords": [
+        "fairhope",
+        "i",
+        "drink",
+        "therefore",
+        "amber",
+        "keg",
+        "1",
+        "6bbl"
+      ]
+    },
+    {
+      "name": "Goose Island IPA Keg (1/6BBL)",
+      "category": "Beer Cost",
+      "sku": "goose-island-ipa-keg-1-6bbl",
+      "report_by_unit": "Keg (1/6BBL) 5.16GAL",
+      "latest_price": "$66.13",
+      "accounting_code": "",
+      "tax_exempt": "No",
+      "source_file": "products_beer.csv",
+      "keywords": [
+        "goose",
+        "island",
+        "ipa",
+        "keg",
+        "1",
+        "6bbl"
+      ]
+    },
+    {
+      "name": "Grayton 30A Beach Blonde Keg (1/2BBL)",
+      "category": "Beer Cost",
+      "sku": "grayton-30a-beach-blonde-keg-1-2bbl",
+      "report_by_unit": "Keg (1/2BBL) 15.5GAL",
+      "latest_price": "$200.00",
+      "accounting_code": "",
+      "tax_exempt": "No",
+      "source_file": "products_beer.csv",
+      "keywords": [
+        "grayton",
+        "30a",
+        "beach",
+        "blonde",
+        "keg",
+        "1",
+        "2bbl"
+      ]
+    },
+    {
+      "name": "Grayton Beach 30A Rose 12oz Can",
+      "category": "Beer Cost",
+      "sku": "grayton-beach-30a-rose-12oz-can",
+      "report_by_unit": "Can (12 Cans)",
+      "latest_price": "$1.41",
+      "accounting_code": "",
+      "tax_exempt": "No",
+      "source_file": "products_beer.csv",
+      "keywords": [
+        "grayton",
+        "beach",
+        "30a",
+        "rose",
+        "12oz",
+        "can"
+      ]
+    },
+    {
+      "name": "Grayton Beach Blonde 12oz Can",
+      "category": "Beer Cost",
+      "sku": "grayton-beach-blonde-12oz-can",
+      "report_by_unit": "Can (12 Fluid Ounces)",
+      "latest_price": "$1.54",
+      "accounting_code": "",
+      "tax_exempt": "No",
+      "source_file": "products_beer.csv",
+      "keywords": [
+        "grayton",
+        "beach",
+        "blonde",
+        "12oz",
+        "can"
+      ]
+    },
+    {
+      "name": "Grayton Ipa 12oz Can",
+      "category": "Beer Cost",
+      "sku": "grayton-ipa-12oz-can",
+      "report_by_unit": "Can (12 Fluid Ounces)",
+      "latest_price": "$1.54",
+      "accounting_code": "",
+      "tax_exempt": "No",
+      "source_file": "products_beer.csv",
+      "keywords": [
+        "grayton",
+        "ipa",
+        "12oz",
+        "can"
+      ]
+    },
+    {
+      "name": "High Rise Blood Orange",
+      "category": "Beer Cost",
+      "sku": "high-rise-blood-orange",
+      "report_by_unit": "Can (12 Fluid Ounces)",
+      "latest_price": "$3.06",
+      "accounting_code": "",
+      "tax_exempt": "No",
+      "source_file": "products_beer.csv",
+      "keywords": [
+        "high",
+        "rise",
+        "blood",
+        "orange"
+      ]
+    },
+    {
+      "name": "High Rise Pineapple",
+      "category": "Beer Cost",
+      "sku": "high-rise-pineapple",
+      "report_by_unit": "Can (12 Fluid Ounces)",
+      "latest_price": "$3.06",
+      "accounting_code": "",
+      "tax_exempt": "No",
+      "source_file": "products_beer.csv",
+      "keywords": [
+        "high",
+        "rise",
+        "pineapple"
+      ]
+    },
+    {
+      "name": "Idyll Hands Joe Coffee Keg (1/6BBL)",
+      "category": "Beer Cost",
+      "sku": "idyll-hands-joe-coffee-keg-1-6bbl",
+      "report_by_unit": "Keg (1/6BBL) 5.16GAL",
+      "latest_price": "$91.00",
+      "accounting_code": "",
+      "tax_exempt": "No",
+      "source_file": "products_beer.csv",
+      "keywords": [
+        "idyll",
+        "hands",
+        "joe",
+        "coffee",
+        "keg",
+        "1",
+        "6bbl"
+      ]
+    },
+    {
+      "name": "Idyll Hounds Batch 500 Keg (1/6BBL)",
+      "category": "Beer Cost",
+      "sku": "idyll-hounds-batch-500-keg-1-6bbl",
+      "report_by_unit": "Keg (1/6BBL) 5.16GAL",
+      "latest_price": "$102.00",
+      "accounting_code": "",
+      "tax_exempt": "No",
+      "source_file": "products_beer.csv",
+      "keywords": [
+        "idyll",
+        "hounds",
+        "batch",
+        "500",
+        "keg",
+        "1",
+        "6bbl"
+      ]
+    },
+    {
+      "name": "Keg Deposit - At Purchase $50",
+      "category": "Beer Cost",
+      "sku": "keg-deposit-at-purchase-50",
+      "report_by_unit": "Each",
+      "latest_price": "$50.00",
+      "accounting_code": "",
+      "tax_exempt": "No",
+      "source_file": "products_beer.csv",
+      "keywords": [
+        "keg",
+        "deposit",
+        "-",
+        "at",
+        "purchase",
+        "$50"
+      ]
+    },
+    {
+      "name": "Kona Big Wave 12oz Can",
+      "category": "Beer Cost",
+      "sku": "kona-big-wave-12oz-can",
+      "report_by_unit": "Can (12 Fluid Ounces)",
+      "latest_price": "$1.37",
+      "accounting_code": "",
+      "tax_exempt": "No",
+      "source_file": "products_beer.csv",
+      "keywords": [
+        "kona",
+        "big",
+        "wave",
+        "12oz",
+        "can"
+      ]
+    },
+    {
+      "name": "Kona Big Wave Keg (1/6BBL)",
+      "category": "Beer Cost",
+      "sku": "kona-big-wave-keg-1-6bbl",
+      "report_by_unit": "Keg (1/6BBL) 5.16GAL",
+      "latest_price": "$80.13",
+      "accounting_code": "",
+      "tax_exempt": "No",
+      "source_file": "products_beer.csv",
+      "keywords": [
+        "kona",
+        "big",
+        "wave",
+        "keg",
+        "1",
+        "6bbl"
+      ]
+    },
+    {
+      "name": "Michelob Ultra 12oz Can",
+      "category": "Beer Cost",
+      "sku": "michelob-ultra-12oz-can",
+      "report_by_unit": "Can",
+      "latest_price": "$1.19",
+      "accounting_code": "",
+      "tax_exempt": "No",
+      "source_file": "products_beer.csv",
+      "keywords": [
+        "michelob",
+        "ultra",
+        "12oz",
+        "can"
+      ]
+    },
+    {
+      "name": "Miller High Life 12oz Can",
+      "category": "Beer Cost",
+      "sku": "miller-high-life-12oz-can",
+      "report_by_unit": "Can (12 Fluid Ounces)",
+      "latest_price": "$1.02",
+      "accounting_code": "",
+      "tax_exempt": "No",
+      "source_file": "products_beer.csv",
+      "keywords": [
+        "miller",
+        "high",
+        "life",
+        "12oz",
+        "can"
+      ]
+    },
+    {
+      "name": "Miller Lite 12oz Can",
+      "category": "Beer Cost",
+      "sku": "miller-lite-12oz-can",
+      "report_by_unit": "Can (12 Fluid Ounces)",
+      "latest_price": "$1.33",
+      "accounting_code": "",
+      "tax_exempt": "No",
+      "source_file": "products_beer.csv",
+      "keywords": [
+        "miller",
+        "lite",
+        "12oz",
+        "can"
+      ]
+    },
+    {
+      "name": "Mom Water Assorted 12oz Can",
+      "category": "Beer Cost",
+      "sku": "mom-water-assorted-12oz-can",
+      "report_by_unit": "Can (12 Fluid Ounces)",
+      "latest_price": "$2.25",
+      "accounting_code": "",
+      "tax_exempt": "No",
+      "source_file": "products_beer.csv",
+      "keywords": [
+        "mom",
+        "water",
+        "assorted",
+        "12oz",
+        "can"
+      ]
+    },
+    {
+      "name": "Pacifico 12oz Can",
+      "category": "Beer Cost",
+      "sku": "pacifico-12oz-can",
+      "report_by_unit": "Can",
+      "latest_price": "$1.63",
+      "accounting_code": "",
+      "tax_exempt": "No",
+      "source_file": "products_beer.csv",
+      "keywords": [
+        "pacifico",
+        "12oz",
+        "can"
+      ]
+    },
+    {
+      "name": "Perfect Plain Yachtside Keg (1/6BBL)",
+      "category": "Beer Cost",
+      "sku": "perfect-plain-yachtside-keg-1-6bbl",
+      "report_by_unit": "Keg (1/6BBL) 5.16GAL",
+      "latest_price": "$89.00",
+      "accounting_code": "",
+      "tax_exempt": "No",
+      "source_file": "products_beer.csv",
+      "keywords": [
+        "perfect",
+        "plain",
+        "yachtside",
+        "keg",
+        "1",
+        "6bbl"
+      ]
+    },
+    {
+      "name": "Stella Artois Keg (1/6BBL)",
+      "category": "Beer Cost",
+      "sku": "stella-artois-keg-1-6bbl",
+      "report_by_unit": "Keg (1/6BBL) 5.16GAL",
+      "latest_price": "$85.13",
+      "accounting_code": "",
+      "tax_exempt": "No",
+      "source_file": "products_beer.csv",
+      "keywords": [
+        "stella",
+        "artois",
+        "keg",
+        "1",
+        "6bbl"
+      ]
+    },
+    {
+      "name": "Urban South Holy Roller Hazy IPA Keg (1/6BBL)",
+      "category": "Beer Cost",
+      "sku": "urban-south-holy-roller-hazy-ipa-keg-1-6bbl",
+      "report_by_unit": "Keg (1/6BBL) 5.16GAL",
+      "latest_price": "$89.00",
+      "accounting_code": "",
+      "tax_exempt": "No",
+      "source_file": "products_beer.csv",
+      "keywords": [
+        "urban",
+        "south",
+        "holy",
+        "roller",
+        "hazy",
+        "ipa",
+        "keg",
+        "1",
+        "6bbl"
+      ]
+    },
+    {
+      "name": "Urban South Mardi Gras Pils Keg (1/6BBL)",
+      "category": "Beer Cost",
+      "sku": "urban-south-mardi-gras-pils-keg-1-6bbl",
+      "report_by_unit": "Keg (1/6BBL) 5.16GAL",
+      "latest_price": "$89.00",
+      "accounting_code": "",
+      "tax_exempt": "No",
+      "source_file": "products_beer.csv",
+      "keywords": [
+        "urban",
+        "south",
+        "mardi",
+        "gras",
+        "pils",
+        "keg",
+        "1",
+        "6bbl"
+      ]
+    },
+    {
+      "name": "Urban South Paradise Park Keg (1/6BBL)",
+      "category": "Beer Cost",
+      "sku": "urban-south-paradise-park-keg-1-6bbl",
+      "report_by_unit": "Keg (1/6BBL) 5.16GAL",
+      "latest_price": "$59.00",
+      "accounting_code": "",
+      "tax_exempt": "No",
+      "source_file": "products_beer.csv",
+      "keywords": [
+        "urban",
+        "south",
+        "paradise",
+        "park",
+        "keg",
+        "1",
+        "6bbl"
+      ]
+    },
+    {
+      "name": "Yuengling Lager 12oz Can",
+      "category": "Beer Cost",
+      "sku": "yuengling-lager-12oz-can",
+      "report_by_unit": "Can (12 Fluid Ounces)",
+      "latest_price": "$1.33",
+      "accounting_code": "",
+      "tax_exempt": "No",
+      "source_file": "products_beer.csv",
+      "keywords": [
+        "yuengling",
+        "lager",
+        "12oz",
+        "can"
+      ]
+    }
+  ],
+  "liquor_cost": [
+    {
+      "name": "Angostura Bitters 4oz",
+      "category": "Liquor Cost",
+      "sku": "angostura-bitters-4oz",
+      "report_by_unit": "Bottle (4 Ounces)",
+      "latest_price": "$8.80",
+      "accounting_code": "",
+      "tax_exempt": "No",
+      "source_file": "products_liquor.csv",
+      "keywords": [
+        "angostura",
+        "bitters",
+        "4oz"
+      ]
+    },
+    {
+      "name": "Aperol Aperitivo",
+      "category": "Liquor Cost",
+      "sku": "aperol-aperitivo",
+      "report_by_unit": "Bottle (Liter)",
+      "latest_price": "$26.35",
+      "accounting_code": "",
+      "tax_exempt": "No",
+      "source_file": "products_liquor.csv",
+      "keywords": [
+        "aperol",
+        "aperitivo"
+      ]
+    },
+    {
+      "name": "Balvenie 14yr Caribbean Cask Single Malt Scotch",
+      "category": "Liquor Cost",
+      "sku": "balvenie-14yr-caribbean-cask-single-malt-scotch",
+      "report_by_unit": "Bottle (750 Milliliters)",
+      "latest_price": "$89.10",
+      "accounting_code": "",
+      "tax_exempt": "No",
+      "source_file": "products_liquor.csv",
+      "keywords": [
+        "balvenie",
+        "14yr",
+        "caribbean",
+        "cask",
+        "single",
+        "malt",
+        "scotch"
+      ]
+    },
+    {
+      "name": "Bar Mix, Margarita",
+      "category": "Liquor Cost",
+      "sku": "bar-mix-margarita",
+      "report_by_unit": "Bottle (750 Milliliters)",
+      "latest_price": "$5.25",
+      "accounting_code": "",
+      "tax_exempt": "No",
+      "source_file": "products_liquor.csv",
+      "keywords": [
+        "bar",
+        "mix",
+        "margarita"
+      ]
+    },
+    {
+      "name": "Bar Mix, Mojito",
+      "category": "Liquor Cost",
+      "sku": "bar-mix-mojito",
+      "report_by_unit": "Bottle (750 Milliliters)",
+      "latest_price": "$5.25",
+      "accounting_code": "",
+      "tax_exempt": "No",
+      "source_file": "products_liquor.csv",
+      "keywords": [
+        "bar",
+        "mix",
+        "mojito"
+      ]
+    },
+    {
+      "name": "Bar Mix, Watermelon",
+      "category": "Liquor Cost",
+      "sku": "bar-mix-watermelon",
+      "report_by_unit": "Bottle (750 Milliliters)",
+      "latest_price": "$5.25",
+      "accounting_code": "",
+      "tax_exempt": "No",
+      "source_file": "products_liquor.csv",
+      "keywords": [
+        "bar",
+        "mix",
+        "watermelon"
+      ]
+    },
+    {
+      "name": "Blanton's Single Barrel Bourbon",
+      "category": "Liquor Cost",
+      "sku": "blanton-s-single-barrel-bourbon",
+      "report_by_unit": "Bottle (750 Milliliters)",
+      "latest_price": "$62.10",
+      "accounting_code": "",
+      "tax_exempt": "No",
+      "source_file": "products_liquor.csv",
+      "keywords": [
+        "blanton's",
+        "single",
+        "barrel",
+        "bourbon"
+      ]
+    },
+    {
+      "name": "Blue Curacao",
+      "category": "Liquor Cost",
+      "sku": "blue-curacao",
+      "report_by_unit": "Bottle (Liter)",
+      "latest_price": "$4.05",
+      "accounting_code": "",
+      "tax_exempt": "No",
+      "source_file": "products_liquor.csv",
+      "keywords": [
+        "blue",
+        "curacao"
+      ]
+    },
+    {
+      "name": "Bols Elderflower Liqueur",
+      "category": "Liquor Cost",
+      "sku": "bols-elderflower-liqueur",
+      "report_by_unit": "Bottle (Liter)",
+      "latest_price": "$19.00",
+      "accounting_code": "",
+      "tax_exempt": "No",
+      "source_file": "products_liquor.csv",
+      "keywords": [
+        "bols",
+        "elderflower",
+        "liqueur"
+      ]
+    },
+    {
+      "name": "Campari",
+      "category": "Liquor Cost",
+      "sku": "campari",
+      "report_by_unit": "Bottle (Liter)",
+      "latest_price": "$42.21",
+      "accounting_code": "",
+      "tax_exempt": "No",
+      "source_file": "products_liquor.csv",
+      "keywords": [
+        "campari"
+      ]
+    },
+    {
+      "name": "Campesino Aged Rum",
+      "category": "Liquor Cost",
+      "sku": "campesino-aged-rum",
+      "report_by_unit": "Bottle (750 Milliliters)",
+      "latest_price": "$28.00",
+      "accounting_code": "",
+      "tax_exempt": "No",
+      "source_file": "products_liquor.csv",
+      "keywords": [
+        "campesino",
+        "aged",
+        "rum"
+      ]
+    },
+    {
+      "name": "Campesino Silver Rum",
+      "category": "Liquor Cost",
+      "sku": "campesino-silver-rum",
+      "report_by_unit": "Bottle (750 Milliliters)",
+      "latest_price": "$17.00",
+      "accounting_code": "",
+      "tax_exempt": "No",
+      "source_file": "products_liquor.csv",
+      "keywords": [
+        "campesino",
+        "silver",
+        "rum"
+      ]
+    },
+    {
+      "name": "Caravella Limoncello",
+      "category": "Liquor Cost",
+      "sku": "caravella-limoncello",
+      "report_by_unit": "Bottle (750 Milliliters)",
+      "latest_price": "$16.50",
+      "accounting_code": "",
+      "tax_exempt": "No",
+      "source_file": "products_liquor.csv",
+      "keywords": [
+        "caravella",
+        "limoncello"
+      ]
+    },
+    {
+      "name": "Casamigos Blanco Tequila",
+      "category": "Liquor Cost",
+      "sku": "casamigos-blanco-tequila",
+      "report_by_unit": "Bottle (750 Milliliters)",
+      "latest_price": "$53.40",
+      "accounting_code": "",
+      "tax_exempt": "No",
+      "source_file": "products_liquor.csv",
+      "keywords": [
+        "casamigos",
+        "blanco",
+        "tequila"
+      ]
+    },
+    {
+      "name": "Chambord",
+      "category": "Liquor Cost",
+      "sku": "chambord",
+      "report_by_unit": "Bottle (700 Milliliters)",
+      "latest_price": "$27.90",
+      "accounting_code": "",
+      "tax_exempt": "No",
+      "source_file": "products_liquor.csv",
+      "keywords": [
+        "chambord"
+      ]
+    },
+    {
+      "name": "Crop Cucumber Vodka",
+      "category": "Liquor Cost",
+      "sku": "crop-cucumber-vodka",
+      "report_by_unit": "Bottle (750 Milliliters)",
+      "latest_price": "$11.25",
+      "accounting_code": "",
+      "tax_exempt": "No",
+      "source_file": "products_liquor.csv",
+      "keywords": [
+        "crop",
+        "cucumber",
+        "vodka"
+      ]
+    },
+    {
+      "name": "Crop Harvest Organic Meyer Lemon Vodka",
+      "category": "Liquor Cost",
+      "sku": "crop-harvest-organic-meyer-lemon-vodka",
+      "report_by_unit": "Bottle (Liter)",
+      "latest_price": "$15.00",
+      "accounting_code": "",
+      "tax_exempt": "No",
+      "source_file": "products_liquor.csv",
+      "keywords": [
+        "crop",
+        "harvest",
+        "organic",
+        "meyer",
+        "lemon",
+        "vodka"
+      ]
+    },
+    {
+      "name": "Crown Royal Whiskey",
+      "category": "Liquor Cost",
+      "sku": "crown-royal-whiskey",
+      "report_by_unit": "Bottle (Liter)",
+      "latest_price": "$38.00",
+      "accounting_code": "",
+      "tax_exempt": "No",
+      "source_file": "products_liquor.csv",
+      "keywords": [
+        "crown",
+        "royal",
+        "whiskey"
+      ]
+    },
+    {
+      "name": "Diplomatico 8yr Mantuano Rum",
+      "category": "Liquor Cost",
+      "sku": "diplomatico-8yr-mantuano-rum",
+      "report_by_unit": "Bottle (750 Milliliters)",
+      "latest_price": "$18.25",
+      "accounting_code": "",
+      "tax_exempt": "No",
+      "source_file": "products_liquor.csv",
+      "keywords": [
+        "diplomatico",
+        "8yr",
+        "mantuano",
+        "rum"
+      ]
+    },
+    {
+      "name": "Eagle Rare 10yr Bourbon",
+      "category": "Liquor Cost",
+      "sku": "eagle-rare-10yr-bourbon",
+      "report_by_unit": "Bottle (750 Milliliters)",
+      "latest_price": "$39.60",
+      "accounting_code": "",
+      "tax_exempt": "No",
+      "source_file": "products_liquor.csv",
+      "keywords": [
+        "eagle",
+        "rare",
+        "10yr",
+        "bourbon"
+      ]
+    },
+    {
+      "name": "EH Taylor Small Batch Bourbon",
+      "category": "Liquor Cost",
+      "sku": "eh-taylor-small-batch-bourbon",
+      "report_by_unit": "Bottle (750 Milliliters)",
+      "latest_price": "$43.35",
+      "accounting_code": "",
+      "tax_exempt": "No",
+      "source_file": "products_liquor.csv",
+      "keywords": [
+        "eh",
+        "taylor",
+        "small",
+        "batch",
+        "bourbon"
+      ]
+    },
+    {
+      "name": "El Jimador Cristalino Tequila",
+      "category": "Liquor Cost",
+      "sku": "el-jimador-cristalino-tequila",
+      "report_by_unit": "Bottle (750 Milliliters)",
+      "latest_price": "$24.60",
+      "accounting_code": "",
+      "tax_exempt": "No",
+      "source_file": "products_liquor.csv",
+      "keywords": [
+        "el",
+        "jimador",
+        "cristalino",
+        "tequila"
+      ]
+    },
+    {
+      "name": "Event Liquor",
+      "category": "Liquor Cost",
+      "sku": "event-liquor",
+      "report_by_unit": "Each",
+      "latest_price": "$466.00",
+      "accounting_code": "",
+      "tax_exempt": "No",
+      "source_file": "products_liquor.csv",
+      "keywords": [
+        "event",
+        "liquor"
+      ]
+    },
+    {
+      "name": "Faretti Espresso Liqueur",
+      "category": "Liquor Cost",
+      "sku": "faretti-espresso-liqueur",
+      "report_by_unit": "Bottle (750 Milliliters)",
+      "latest_price": "$27.30",
+      "accounting_code": "",
+      "tax_exempt": "No",
+      "source_file": "products_liquor.csv",
+      "keywords": [
+        "faretti",
+        "espresso",
+        "liqueur"
+      ]
+    },
+    {
+      "name": "Farmers Organic Gin",
+      "category": "Liquor Cost",
+      "sku": "farmers-organic-gin",
+      "report_by_unit": "Bottle (750 Milliliters)",
+      "latest_price": "$21.00",
+      "accounting_code": "",
+      "tax_exempt": "No",
+      "source_file": "products_liquor.csv",
+      "keywords": [
+        "farmers",
+        "organic",
+        "gin"
+      ]
+    },
+    {
+      "name": "Farmers Reserve Gin",
+      "category": "Liquor Cost",
+      "sku": "farmers-reserve-gin",
+      "report_by_unit": "750 Milliliters",
+      "latest_price": "$25.00",
+      "accounting_code": "",
+      "tax_exempt": "No",
+      "source_file": "products_liquor.csv",
+      "keywords": [
+        "farmers",
+        "reserve",
+        "gin"
+      ]
+    },
+    {
+      "name": "Fireball Cinnamon Whisky",
+      "category": "Liquor Cost",
+      "sku": "fireball-cinnamon-whisky",
+      "report_by_unit": "Bottle (Liter)",
+      "latest_price": "$18.95",
+      "accounting_code": "",
+      "tax_exempt": "No",
+      "source_file": "products_liquor.csv",
+      "keywords": [
+        "fireball",
+        "cinnamon",
+        "whisky"
+      ]
+    },
+    {
+      "name": "Fords Gin",
+      "category": "Liquor Cost",
+      "sku": "fords-gin",
+      "report_by_unit": "Bottle (Liter)",
+      "latest_price": "$18.85",
+      "accounting_code": "",
+      "tax_exempt": "No",
+      "source_file": "products_liquor.csv",
+      "keywords": [
+        "fords",
+        "gin"
+      ]
+    },
+    {
+      "name": "Fortaleza Blanco Tequila",
+      "category": "Liquor Cost",
+      "sku": "fortaleza-blanco-tequila",
+      "report_by_unit": "Bottle (750 Milliliters)",
+      "latest_price": "$44.10",
+      "accounting_code": "",
+      "tax_exempt": "No",
+      "source_file": "products_liquor.csv",
+      "keywords": [
+        "fortaleza",
+        "blanco",
+        "tequila"
+      ]
+    },
+    {
+      "name": "Glenglassaugh 12yr Highland Single Malt Scotch",
+      "category": "Liquor Cost",
+      "sku": "glenglassaugh-12yr-highland-single-malt-scotch",
+      "report_by_unit": "Bottle (700 Milliliters)",
+      "latest_price": "$21.17",
+      "accounting_code": "",
+      "tax_exempt": "No",
+      "source_file": "products_liquor.csv",
+      "keywords": [
+        "glenglassaugh",
+        "12yr",
+        "highland",
+        "single",
+        "malt",
+        "scotch"
+      ]
+    },
+    {
+      "name": "Gran Gala Orange Liqueur",
+      "category": "Liquor Cost",
+      "sku": "gran-gala-orange-liqueur",
+      "report_by_unit": "Bottle (Liter)",
+      "latest_price": "$15.00",
+      "accounting_code": "",
+      "tax_exempt": "No",
+      "source_file": "products_liquor.csv",
+      "keywords": [
+        "gran",
+        "gala",
+        "orange",
+        "liqueur"
+      ]
+    },
+    {
+      "name": "Grand Marnier",
+      "category": "Liquor Cost",
+      "sku": "grand-marnier",
+      "report_by_unit": "Bottle (Liter)",
+      "latest_price": "$38.00",
+      "accounting_code": "",
+      "tax_exempt": "No",
+      "source_file": "products_liquor.csv",
+      "keywords": [
+        "grand",
+        "marnier"
+      ]
+    },
+    {
+      "name": "Grey Goose Vodka",
+      "category": "Liquor Cost",
+      "sku": "grey-goose-vodka",
+      "report_by_unit": "Bottle (750 Milliliters)",
+      "latest_price": "$34.25",
+      "accounting_code": "",
+      "tax_exempt": "No",
+      "source_file": "products_liquor.csv",
+      "keywords": [
+        "grey",
+        "goose",
+        "vodka"
+      ]
+    },
+    {
+      "name": "Hendrick's Gin",
+      "category": "Liquor Cost",
+      "sku": "hendrick-s-gin",
+      "report_by_unit": "Bottle (Liter)",
+      "latest_price": "$36.75",
+      "accounting_code": "",
+      "tax_exempt": "No",
+      "source_file": "products_liquor.csv",
+      "keywords": [
+        "hendrick's",
+        "gin"
+      ]
+    },
+    {
+      "name": "Herradura Anejo Tequila",
+      "category": "Liquor Cost",
+      "sku": "herradura-anejo-tequila",
+      "report_by_unit": "Bottle (750 Milliliters)",
+      "latest_price": "$44.10",
+      "accounting_code": "",
+      "tax_exempt": "No",
+      "source_file": "products_liquor.csv",
+      "keywords": [
+        "herradura",
+        "anejo",
+        "tequila"
+      ]
+    },
+    {
+      "name": "Herradura Blanco Tequila",
+      "category": "Liquor Cost",
+      "sku": "herradura-blanco-tequila",
+      "report_by_unit": "Bottle (700 Milliliters)",
+      "latest_price": "$33.00",
+      "accounting_code": "",
+      "tax_exempt": "No",
+      "source_file": "products_liquor.csv",
+      "keywords": [
+        "herradura",
+        "blanco",
+        "tequila"
+      ]
+    },
+    {
+      "name": "Herradura Legend Anejo Tequila",
+      "category": "Liquor Cost",
+      "sku": "herradura-legend-anejo-tequila",
+      "report_by_unit": "Bottle (750 Milliliters)",
+      "latest_price": "$82.80",
+      "accounting_code": "",
+      "tax_exempt": "No",
+      "source_file": "products_liquor.csv",
+      "keywords": [
+        "herradura",
+        "legend",
+        "anejo",
+        "tequila"
+      ]
+    },
+    {
+      "name": "Herradura Reposado Tequila",
+      "category": "Liquor Cost",
+      "sku": "herradura-reposado-tequila",
+      "report_by_unit": "Bottle (Liter)",
+      "latest_price": "$30.44",
+      "accounting_code": "",
+      "tax_exempt": "No",
+      "source_file": "products_liquor.csv",
+      "keywords": [
+        "herradura",
+        "reposado",
+        "tequila"
+      ]
+    },
+    {
+      "name": "Herradura Silver Tequila",
+      "category": "Liquor Cost",
+      "sku": "herradura-silver-tequila",
+      "report_by_unit": "Bottle (Liter)",
+      "latest_price": "$30.44",
+      "accounting_code": "",
+      "tax_exempt": "No",
+      "source_file": "products_liquor.csv",
+      "keywords": [
+        "herradura",
+        "silver",
+        "tequila"
+      ]
+    },
+    {
+      "name": "Herradura Ultra Anejo Tequila",
+      "category": "Liquor Cost",
+      "sku": "herradura-ultra-anejo-tequila",
+      "report_by_unit": "Bottle (750 Milliliters)",
+      "latest_price": "$46.79",
+      "accounting_code": "",
+      "tax_exempt": "No",
+      "source_file": "products_liquor.csv",
+      "keywords": [
+        "herradura",
+        "ultra",
+        "anejo",
+        "tequila"
+      ]
+    },
+    {
+      "name": "High Noon Peach Vodka Soda 12oz Can",
+      "category": "Liquor Cost",
+      "sku": "high-noon-peach-vodka-soda-12oz-can",
+      "report_by_unit": "Can",
+      "latest_price": "$1.60",
+      "accounting_code": "",
+      "tax_exempt": "No",
+      "source_file": "products_liquor.csv",
+      "keywords": [
+        "high",
+        "noon",
+        "peach",
+        "vodka",
+        "soda",
+        "12oz",
+        "can"
+      ]
+    },
+    {
+      "name": "High Noon Pineapple Vodka Soda 12oz Can",
+      "category": "Liquor Cost",
+      "sku": "high-noon-pineapple-vodka-soda-12oz-can",
+      "report_by_unit": "Can",
+      "latest_price": "$1.65",
+      "accounting_code": "",
+      "tax_exempt": "No",
+      "source_file": "products_liquor.csv",
+      "keywords": [
+        "high",
+        "noon",
+        "pineapple",
+        "vodka",
+        "soda",
+        "12oz",
+        "can"
+      ]
+    },
+    {
+      "name": "High Noon Vodka Grapefruit Seltzer 12oz Can",
+      "category": "Liquor Cost",
+      "sku": "high-noon-vodka-grapefruit-seltzer-12oz-can",
+      "report_by_unit": "Can (355 Milliliters)",
+      "latest_price": "$1.60",
+      "accounting_code": "",
+      "tax_exempt": "No",
+      "source_file": "products_liquor.csv",
+      "keywords": [
+        "high",
+        "noon",
+        "vodka",
+        "grapefruit",
+        "seltzer",
+        "12oz",
+        "can"
+      ]
+    },
+    {
+      "name": "High Noon Watermelon Vodka Soda 12oz Can",
+      "category": "Liquor Cost",
+      "sku": "high-noon-watermelon-vodka-soda-12oz-can",
+      "report_by_unit": "Can",
+      "latest_price": "$1.60",
+      "accounting_code": "",
+      "tax_exempt": "No",
+      "source_file": "products_liquor.csv",
+      "keywords": [
+        "high",
+        "noon",
+        "watermelon",
+        "vodka",
+        "soda",
+        "12oz",
+        "can"
+      ]
+    },
+    {
+      "name": "Jack Daniel's Black Label Whiskey",
+      "category": "Liquor Cost",
+      "sku": "jack-daniel-s-black-label-whiskey",
+      "report_by_unit": "Bottle (Liter)",
+      "latest_price": "$27.77",
+      "accounting_code": "",
+      "tax_exempt": "No",
+      "source_file": "products_liquor.csv",
+      "keywords": [
+        "jack",
+        "daniel's",
+        "black",
+        "label",
+        "whiskey"
+      ]
+    },
+    {
+      "name": "Jack Daniels Blackberry",
+      "category": "Liquor Cost",
+      "sku": "jack-daniels-blackberry",
+      "report_by_unit": "Bottle (Liter)",
+      "latest_price": "$36.70",
+      "accounting_code": "",
+      "tax_exempt": "No",
+      "source_file": "products_liquor.csv",
+      "keywords": [
+        "jack",
+        "daniels",
+        "blackberry"
+      ]
+    },
+    {
+      "name": "Jagermeister",
+      "category": "Liquor Cost",
+      "sku": "jagermeister",
+      "report_by_unit": "Bottle (Liter)",
+      "latest_price": "$22.25",
+      "accounting_code": "",
+      "tax_exempt": "No",
+      "source_file": "products_liquor.csv",
+      "keywords": [
+        "jagermeister"
+      ]
+    },
+    {
+      "name": "Jameson Irish Whiskey",
+      "category": "Liquor Cost",
+      "sku": "jameson-irish-whiskey",
+      "report_by_unit": "Bottle (Liter)",
+      "latest_price": "$38.66",
+      "accounting_code": "",
+      "tax_exempt": "No",
+      "source_file": "products_liquor.csv",
+      "keywords": [
+        "jameson",
+        "irish",
+        "whiskey"
+      ]
+    },
+    {
+      "name": "Jim Beam Bourbon",
+      "category": "Liquor Cost",
+      "sku": "jim-beam-bourbon",
+      "report_by_unit": "Bottle (Liter)",
+      "latest_price": "$20.50",
+      "accounting_code": "",
+      "tax_exempt": "No",
+      "source_file": "products_liquor.csv",
+      "keywords": [
+        "jim",
+        "beam",
+        "bourbon"
+      ]
+    },
+    {
+      "name": "Maker's Mark Bourbon",
+      "category": "Liquor Cost",
+      "sku": "maker-s-mark-bourbon",
+      "report_by_unit": "Bottle (750 Milliliters)",
+      "latest_price": "$27.74",
+      "accounting_code": "",
+      "tax_exempt": "No",
+      "source_file": "products_liquor.csv",
+      "keywords": [
+        "maker's",
+        "mark",
+        "bourbon"
+      ]
+    },
+    {
+      "name": "Michters Us1 Single Barrel Straight Rye Whiskey",
+      "category": "Liquor Cost",
+      "sku": "michters-us1-single-barrel-straight-rye-whiskey",
+      "report_by_unit": "Bottle (750 Milliliters)",
+      "latest_price": "$32.84",
+      "accounting_code": "",
+      "tax_exempt": "No",
+      "source_file": "products_liquor.csv",
+      "keywords": [
+        "michters",
+        "us1",
+        "single",
+        "barrel",
+        "straight",
+        "rye",
+        "whiskey"
+      ]
+    },
+    {
+      "name": "Milagro Anejo Cristalino Tequila",
+      "category": "Liquor Cost",
+      "sku": "milagro-anejo-cristalino-tequila",
+      "report_by_unit": "Bottle (750 Milliliters)",
+      "latest_price": "$46.60",
+      "accounting_code": "",
+      "tax_exempt": "No",
+      "source_file": "products_liquor.csv",
+      "keywords": [
+        "milagro",
+        "anejo",
+        "cristalino",
+        "tequila"
+      ]
+    },
+    {
+      "name": "Milagro Reposado Tequila",
+      "category": "Liquor Cost",
+      "sku": "milagro-reposado-tequila",
+      "report_by_unit": "Bottle (Liter)",
+      "latest_price": "$27.55",
+      "accounting_code": "",
+      "tax_exempt": "No",
+      "source_file": "products_liquor.csv",
+      "keywords": [
+        "milagro",
+        "reposado",
+        "tequila"
+      ]
+    },
+    {
+      "name": "Milagro Silver Tequila",
+      "category": "Liquor Cost",
+      "sku": "milagro-silver-tequila",
+      "report_by_unit": "Bottle (Liter)",
+      "latest_price": "$3.90",
+      "accounting_code": "",
+      "tax_exempt": "No",
+      "source_file": "products_liquor.csv",
+      "keywords": [
+        "milagro",
+        "silver",
+        "tequila"
+      ]
+    },
+    {
+      "name": "Mom Water Blueberry Peach 12oz Can",
+      "category": "Liquor Cost",
+      "sku": "mom-water-blueberry-peach-12oz-can",
+      "report_by_unit": "Can (12 Fluid Ounces)",
+      "latest_price": "$1.55",
+      "accounting_code": "",
+      "tax_exempt": "No",
+      "source_file": "products_liquor.csv",
+      "keywords": [
+        "mom",
+        "water",
+        "blueberry",
+        "peach",
+        "12oz",
+        "can"
+      ]
+    },
+    {
+      "name": "Mom Water Julie",
+      "category": "Liquor Cost",
+      "sku": "mom-water-julie",
+      "report_by_unit": "Can (12 Fluid Ounces)",
+      "latest_price": "$2.25",
+      "accounting_code": "",
+      "tax_exempt": "No",
+      "source_file": "products_liquor.csv",
+      "keywords": [
+        "mom",
+        "water",
+        "julie"
+      ]
+    },
+    {
+      "name": "Mom Water Karen",
+      "category": "Liquor Cost",
+      "sku": "mom-water-karen",
+      "report_by_unit": "Can (12 Fluid Ounces)",
+      "latest_price": "$2.25",
+      "accounting_code": "",
+      "tax_exempt": "No",
+      "source_file": "products_liquor.csv",
+      "keywords": [
+        "mom",
+        "water",
+        "karen"
+      ]
+    },
+    {
+      "name": "Mom Water Lemon Blueberry 12oz Can",
+      "category": "Liquor Cost",
+      "sku": "mom-water-lemon-blueberry-12oz-can",
+      "report_by_unit": "Can (12 Fluid Ounces)",
+      "latest_price": "$1.55",
+      "accounting_code": "",
+      "tax_exempt": "No",
+      "source_file": "products_liquor.csv",
+      "keywords": [
+        "mom",
+        "water",
+        "lemon",
+        "blueberry",
+        "12oz",
+        "can"
+      ]
+    },
+    {
+      "name": "Mom Water Linda",
+      "category": "Liquor Cost",
+      "sku": "mom-water-linda",
+      "report_by_unit": "Can (12 Fluid Ounces)",
+      "latest_price": "$2.25",
+      "accounting_code": "",
+      "tax_exempt": "No",
+      "source_file": "products_liquor.csv",
+      "keywords": [
+        "mom",
+        "water",
+        "linda"
+      ]
+    },
+    {
+      "name": "Mom Water Louise Citrus Cucumber 12oz Can",
+      "category": "Liquor Cost",
+      "sku": "mom-water-louise-citrus-cucumber-12oz-can",
+      "report_by_unit": "Can (12 Fluid Ounces)",
+      "latest_price": "$1.55",
+      "accounting_code": "",
+      "tax_exempt": "No",
+      "source_file": "products_liquor.csv",
+      "keywords": [
+        "mom",
+        "water",
+        "louise",
+        "citrus",
+        "cucumber",
+        "12oz",
+        "can"
+      ]
+    },
+    {
+      "name": "Mom Water Sandy",
+      "category": "Liquor Cost",
+      "sku": "mom-water-sandy",
+      "report_by_unit": "Can (12 Fluid Ounces)",
+      "latest_price": "$2.25",
+      "accounting_code": "",
+      "tax_exempt": "No",
+      "source_file": "products_liquor.csv",
+      "keywords": [
+        "mom",
+        "water",
+        "sandy"
+      ]
+    },
+    {
+      "name": "Mom Water Strawberry Kiwi 12oz Can",
+      "category": "Liquor Cost",
+      "sku": "mom-water-strawberry-kiwi-12oz-can",
+      "report_by_unit": "Can (12 Fluid Ounces)",
+      "latest_price": "$1.55",
+      "accounting_code": "",
+      "tax_exempt": "No",
+      "source_file": "products_liquor.csv",
+      "keywords": [
+        "mom",
+        "water",
+        "strawberry",
+        "kiwi",
+        "12oz",
+        "can"
+      ]
+    },
+    {
+      "name": "Monkey Shoulder Scotch",
+      "category": "Liquor Cost",
+      "sku": "monkey-shoulder-scotch",
+      "report_by_unit": "Bottle (750 Milliliters)",
+      "latest_price": "$32.14",
+      "accounting_code": "",
+      "tax_exempt": "No",
+      "source_file": "products_liquor.csv",
+      "keywords": [
+        "monkey",
+        "shoulder",
+        "scotch"
+      ]
+    },
+    {
+      "name": "Mr Boston Peach Schnapps",
+      "category": "Liquor Cost",
+      "sku": "mr-boston-peach-schnapps",
+      "report_by_unit": "Bottle (Liter)",
+      "latest_price": "$6.50",
+      "accounting_code": "",
+      "tax_exempt": "No",
+      "source_file": "products_liquor.csv",
+      "keywords": [
+        "mr",
+        "boston",
+        "peach",
+        "schnapps"
+      ]
+    },
+    {
+      "name": "Myers's Dark Rum",
+      "category": "Liquor Cost",
+      "sku": "myers-s-dark-rum",
+      "report_by_unit": "Bottle (Liter)",
+      "latest_price": "$19.90",
+      "accounting_code": "",
+      "tax_exempt": "No",
+      "source_file": "products_liquor.csv",
+      "keywords": [
+        "myers's",
+        "dark",
+        "rum"
+      ]
+    },
+    {
+      "name": "Papa's Pilar 24Yr Spanish Sherry Cask Solera Dark Rum",
+      "category": "Liquor Cost",
+      "sku": "papa-s-pilar-24yr-spanish-sherry-cask-solera-dark-rum",
+      "report_by_unit": "Bottle (750 Milliliters)",
+      "latest_price": "$35.00",
+      "accounting_code": "",
+      "tax_exempt": "No",
+      "source_file": "products_liquor.csv",
+      "keywords": [
+        "papa's",
+        "pilar",
+        "24yr",
+        "spanish",
+        "sherry",
+        "cask",
+        "solera",
+        "dark",
+        "rum"
+      ]
+    },
+    {
+      "name": "Parrot Bay Coconut Rum",
+      "category": "Liquor Cost",
+      "sku": "parrot-bay-coconut-rum",
+      "report_by_unit": "Bottle (Liter)",
+      "latest_price": "$8.75",
+      "accounting_code": "",
+      "tax_exempt": "No",
+      "source_file": "products_liquor.csv",
+      "keywords": [
+        "parrot",
+        "bay",
+        "coconut",
+        "rum"
+      ]
+    },
+    {
+      "name": "Parrot Bay White Rum",
+      "category": "Liquor Cost",
+      "sku": "parrot-bay-white-rum",
+      "report_by_unit": "Bottle (Liter)",
+      "latest_price": "$8.75",
+      "accounting_code": "",
+      "tax_exempt": "No",
+      "source_file": "products_liquor.csv",
+      "keywords": [
+        "parrot",
+        "bay",
+        "white",
+        "rum"
+      ]
+    },
+    {
+      "name": "Paul Sutton Kentucky Bourbon",
+      "category": "Liquor Cost",
+      "sku": "paul-sutton-kentucky-bourbon",
+      "report_by_unit": "Bottle (750 Milliliters)",
+      "latest_price": "$51.00",
+      "accounting_code": "",
+      "tax_exempt": "No",
+      "source_file": "products_liquor.csv",
+      "keywords": [
+        "paul",
+        "sutton",
+        "kentucky",
+        "bourbon"
+      ]
+    },
+    {
+      "name": "Pueblo Viejo Blanco Tequila",
+      "category": "Liquor Cost",
+      "sku": "pueblo-viejo-blanco-tequila",
+      "report_by_unit": "Bottle (Liter)",
+      "latest_price": "$12.50",
+      "accounting_code": "",
+      "tax_exempt": "No",
+      "source_file": "products_liquor.csv",
+      "keywords": [
+        "pueblo",
+        "viejo",
+        "blanco",
+        "tequila"
+      ]
+    },
+    {
+      "name": "Redwood Empire Lost Monarch Whiskey",
+      "category": "Liquor Cost",
+      "sku": "redwood-empire-lost-monarch-whiskey",
+      "report_by_unit": "Bottle (750 Milliliters)",
+      "latest_price": "$22.10",
+      "accounting_code": "",
+      "tax_exempt": "No",
+      "source_file": "products_liquor.csv",
+      "keywords": [
+        "redwood",
+        "empire",
+        "lost",
+        "monarch",
+        "whiskey"
+      ]
+    },
+    {
+      "name": "Romana Amaro",
+      "category": "Liquor Cost",
+      "sku": "romana-amaro",
+      "report_by_unit": "Bottle (750 Milliliters)",
+      "latest_price": "$22.35",
+      "accounting_code": "",
+      "tax_exempt": "No",
+      "source_file": "products_liquor.csv",
+      "keywords": [
+        "romana",
+        "amaro"
+      ]
+    },
+    {
+      "name": "Rumple Minze Peppermint",
+      "category": "Liquor Cost",
+      "sku": "rumple-minze-peppermint",
+      "report_by_unit": "Bottle (Liter)",
+      "latest_price": "$29.50",
+      "accounting_code": "",
+      "tax_exempt": "No",
+      "source_file": "products_liquor.csv",
+      "keywords": [
+        "rumple",
+        "minze",
+        "peppermint"
+      ]
+    },
+    {
+      "name": "Siete Misterios Dobayej Mezcal",
+      "category": "Liquor Cost",
+      "sku": "siete-misterios-dobayej-mezcal",
+      "report_by_unit": "case (4500 Milliliters)",
+      "latest_price": "$174.00",
+      "accounting_code": "",
+      "tax_exempt": "No",
+      "source_file": "products_liquor.csv",
+      "keywords": [
+        "siete",
+        "misterios",
+        "dobayej",
+        "mezcal"
+      ]
+    },
+    {
+      "name": "Tanqueray Gin",
+      "category": "Liquor Cost",
+      "sku": "tanqueray-gin",
+      "report_by_unit": "Bottle (Liter)",
+      "latest_price": "$29.67",
+      "accounting_code": "",
+      "tax_exempt": "No",
+      "source_file": "products_liquor.csv",
+      "keywords": [
+        "tanqueray",
+        "gin"
+      ]
+    },
+    {
+      "name": "Tia Maria Coffee Liqueur",
+      "category": "Liquor Cost",
+      "sku": "tia-maria-coffee-liqueur",
+      "report_by_unit": "Bottle (Liter)",
+      "latest_price": "$30.45",
+      "accounting_code": "",
+      "tax_exempt": "No",
+      "source_file": "products_liquor.csv",
+      "keywords": [
+        "tia",
+        "maria",
+        "coffee",
+        "liqueur"
+      ]
+    },
+    {
+      "name": "Tito's Vodka",
+      "category": "Liquor Cost",
+      "sku": "tito-s-vodka",
+      "report_by_unit": "Bottle (Liter)",
+      "latest_price": "$25.50",
+      "accounting_code": "",
+      "tax_exempt": "No",
+      "source_file": "products_liquor.csv",
+      "keywords": [
+        "tito's",
+        "vodka"
+      ]
+    },
+    {
+      "name": "Toschi Nocello Walnut Liqueur",
+      "category": "Liquor Cost",
+      "sku": "toschi-nocello-walnut-liqueur",
+      "report_by_unit": "Bottle (700 Milliliters)",
+      "latest_price": "$36.60",
+      "accounting_code": "",
+      "tax_exempt": "No",
+      "source_file": "products_liquor.csv",
+      "keywords": [
+        "toschi",
+        "nocello",
+        "walnut",
+        "liqueur"
+      ]
+    },
+    {
+      "name": "Triple Sec",
+      "category": "Liquor Cost",
+      "sku": "triple-sec",
+      "report_by_unit": "Bottle (Liter)",
+      "latest_price": "$4.05",
+      "accounting_code": "",
+      "tax_exempt": "No",
+      "source_file": "products_liquor.csv",
+      "keywords": [
+        "triple",
+        "sec"
+      ]
+    },
+    {
+      "name": "Tullamore Dew Irish Whiskey",
+      "category": "Liquor Cost",
+      "sku": "tullamore-dew-irish-whiskey",
+      "report_by_unit": "Bottle (Liter)",
+      "latest_price": "$36.35",
+      "accounting_code": "",
+      "tax_exempt": "No",
+      "source_file": "products_liquor.csv",
+      "keywords": [
+        "tullamore",
+        "dew",
+        "irish",
+        "whiskey"
+      ]
+    },
+    {
+      "name": "Wheatley Vodka",
+      "category": "Liquor Cost",
+      "sku": "wheatley-vodka",
+      "report_by_unit": "Bottle (Liter)",
+      "latest_price": "$15.00",
+      "accounting_code": "",
+      "tax_exempt": "No",
+      "source_file": "products_liquor.csv",
+      "keywords": [
+        "wheatley",
+        "vodka"
+      ]
+    },
+    {
+      "name": "Woodford Reserve Bourbon",
+      "category": "Liquor Cost",
+      "sku": "woodford-reserve-bourbon",
+      "report_by_unit": "Bottle (Liter)",
+      "latest_price": "$42.88",
+      "accounting_code": "",
+      "tax_exempt": "No",
+      "source_file": "products_liquor.csv",
+      "keywords": [
+        "woodford",
+        "reserve",
+        "bourbon"
+      ]
+    },
+    {
+      "name": "Woodford Reserve Double Oaked Straight Bourbon",
+      "category": "Liquor Cost",
+      "sku": "woodford-reserve-double-oaked-straight-bourbon",
+      "report_by_unit": "Bottle (Liter)",
+      "latest_price": "$57.70",
+      "accounting_code": "",
+      "tax_exempt": "No",
+      "source_file": "products_liquor.csv",
+      "keywords": [
+        "woodford",
+        "reserve",
+        "double",
+        "oaked",
+        "straight",
+        "bourbon"
+      ]
+    },
+    {
+      "name": "Yave Coconut Tequila",
+      "category": "Liquor Cost",
+      "sku": "yave-coconut-tequila",
+      "report_by_unit": "Bottle (750 Milliliters)",
+      "latest_price": "$29.00",
+      "accounting_code": "",
+      "tax_exempt": "No",
+      "source_file": "products_liquor.csv",
+      "keywords": [
+        "yave",
+        "coconut",
+        "tequila"
+      ]
+    }
+  ],
+  "wine_cost": [
+    {
+      "name": "30A Cabernet Sauvignon",
+      "category": "Wine Cost",
+      "sku": "30a-cabernet-sauvignon",
+      "report_by_unit": "Bottle (750 Milliliters)",
+      "latest_price": "$13.00",
+      "accounting_code": "",
+      "tax_exempt": "No",
+      "source_file": "products_wine.csv",
+      "keywords": [
+        "30a",
+        "cabernet",
+        "sauvignon"
+      ]
+    },
+    {
+      "name": "30A Chardonnay",
+      "category": "Wine Cost",
+      "sku": "30a-chardonnay",
+      "report_by_unit": "Bottle (750 Milliliters)",
+      "latest_price": "$12.00",
+      "accounting_code": "",
+      "tax_exempt": "No",
+      "source_file": "products_wine.csv",
+      "keywords": [
+        "30a",
+        "chardonnay"
+      ]
+    },
+    {
+      "name": "30A Pinot Noir",
+      "category": "Wine Cost",
+      "sku": "30a-pinot-noir",
+      "report_by_unit": "Bottle (750 Milliliters)",
+      "latest_price": "$15.00",
+      "accounting_code": "",
+      "tax_exempt": "No",
+      "source_file": "products_wine.csv",
+      "keywords": [
+        "30a",
+        "pinot",
+        "noir"
+      ]
+    },
+    {
+      "name": "30A Provence Rose",
+      "category": "Wine Cost",
+      "sku": "30a-provence-rose",
+      "report_by_unit": "Bottle (750 Milliliters)",
+      "latest_price": "$9.00",
+      "accounting_code": "",
+      "tax_exempt": "No",
+      "source_file": "products_wine.csv",
+      "keywords": [
+        "30a",
+        "provence",
+        "rose"
+      ]
+    },
+    {
+      "name": "30A Sauvignon Blanc",
+      "category": "Wine Cost",
+      "sku": "30a-sauvignon-blanc",
+      "report_by_unit": "Bottle (750 Milliliters)",
+      "latest_price": "$13.00",
+      "accounting_code": "",
+      "tax_exempt": "No",
+      "source_file": "products_wine.csv",
+      "keywords": [
+        "30a",
+        "sauvignon",
+        "blanc"
+      ]
+    },
+    {
+      "name": "Avarus Chardonnay",
+      "category": "Wine Cost",
+      "sku": "avarus-chardonnay",
+      "report_by_unit": "Bottle (750 Milliliters)",
+      "latest_price": "$11.00",
+      "accounting_code": "",
+      "tax_exempt": "No",
+      "source_file": "products_wine.csv",
+      "keywords": [
+        "avarus",
+        "chardonnay"
+      ]
+    },
+    {
+      "name": "Canoe Ridge Merlot",
+      "category": "Wine Cost",
+      "sku": "canoe-ridge-merlot",
+      "report_by_unit": "750 Milliliters",
+      "latest_price": "$8.00",
+      "accounting_code": "",
+      "tax_exempt": "No",
+      "source_file": "products_wine.csv",
+      "keywords": [
+        "canoe",
+        "ridge",
+        "merlot"
+      ]
+    },
+    {
+      "name": "Carter's Lot Rose Of Pinot Noir 2020",
+      "category": "Wine Cost",
+      "sku": "carter-s-lot-rose-of-pinot-noir-2020",
+      "report_by_unit": "Bottle (750 Milliliters)",
+      "latest_price": "$10.00",
+      "accounting_code": "",
+      "tax_exempt": "No",
+      "source_file": "products_wine.csv",
+      "keywords": [
+        "carter's",
+        "lot",
+        "rose",
+        "of",
+        "pinot",
+        "noir",
+        "2020"
+      ]
+    },
+    {
+      "name": "Caymus Suisun The Walking Fool Red Blend",
+      "category": "Wine Cost",
+      "sku": "caymus-suisun-the-walking-fool-red-blend",
+      "report_by_unit": "Bottle (750 Milliliters)",
+      "latest_price": "$16.00",
+      "accounting_code": "",
+      "tax_exempt": "No",
+      "source_file": "products_wine.csv",
+      "keywords": [
+        "caymus",
+        "suisun",
+        "the",
+        "walking",
+        "fool",
+        "red",
+        "blend"
+      ]
+    },
+    {
+      "name": "Charles De Fere Jean-Louis Cuvee Blanc De Blancs Brut",
+      "category": "Wine Cost",
+      "sku": "charles-de-fere-jean-louis-cuvee-blanc-de-blancs-brut",
+      "report_by_unit": "Bottle (750 Milliliters)",
+      "latest_price": "$6.75",
+      "accounting_code": "",
+      "tax_exempt": "No",
+      "source_file": "products_wine.csv",
+      "keywords": [
+        "charles",
+        "de",
+        "fere",
+        "jean-louis",
+        "cuvee",
+        "blanc",
+        "blancs",
+        "brut"
+      ]
+    },
+    {
+      "name": "Decoded Russian River Pinot Noir",
+      "category": "Wine Cost",
+      "sku": "decoded-russian-river-pinot-noir",
+      "report_by_unit": "Bottle (750 Milliliters)",
+      "latest_price": "$10.00",
+      "accounting_code": "",
+      "tax_exempt": "No",
+      "source_file": "products_wine.csv",
+      "keywords": [
+        "decoded",
+        "russian",
+        "river",
+        "pinot",
+        "noir"
+      ]
+    },
+    {
+      "name": "Domaine St Michelle Brut",
+      "category": "Wine Cost",
+      "sku": "domaine-st-michelle-brut",
+      "report_by_unit": "Bottle (750 Milliliters)",
+      "latest_price": "$10.00",
+      "accounting_code": "",
+      "tax_exempt": "No",
+      "source_file": "products_wine.csv",
+      "keywords": [
+        "domaine",
+        "st",
+        "michelle",
+        "brut"
+      ]
+    },
+    {
+      "name": "Gearbox California Pinot Noir",
+      "category": "Wine Cost",
+      "sku": "gearbox-california-pinot-noir",
+      "report_by_unit": "Bottle (750 Milliliters)",
+      "latest_price": "$8.00",
+      "accounting_code": "",
+      "tax_exempt": "No",
+      "source_file": "products_wine.csv",
+      "keywords": [
+        "gearbox",
+        "california",
+        "pinot",
+        "noir"
+      ]
+    },
+    {
+      "name": "Justin Cabernet Sauvignon",
+      "category": "Wine Cost",
+      "sku": "justin-cabernet-sauvignon",
+      "report_by_unit": "Bottle (750 Milliliters)",
+      "latest_price": "$19.00",
+      "accounting_code": "",
+      "tax_exempt": "No",
+      "source_file": "products_wine.csv",
+      "keywords": [
+        "justin",
+        "cabernet",
+        "sauvignon"
+      ]
+    },
+    {
+      "name": "Marques De Caceres NV Brut Cava",
+      "category": "Wine Cost",
+      "sku": "marques-de-caceres-nv-brut-cava",
+      "report_by_unit": "Bottle (750 Milliliters)",
+      "latest_price": "$8.00",
+      "accounting_code": "",
+      "tax_exempt": "No",
+      "source_file": "products_wine.csv",
+      "keywords": [
+        "marques",
+        "de",
+        "caceres",
+        "nv",
+        "brut",
+        "cava"
+      ]
+    },
+    {
+      "name": "Matua Lighter Sauvignon Blanc",
+      "category": "Wine Cost",
+      "sku": "matua-lighter-sauvignon-blanc",
+      "report_by_unit": "Bottle (750 Milliliters)",
+      "latest_price": "$8.49",
+      "accounting_code": "",
+      "tax_exempt": "No",
+      "source_file": "products_wine.csv",
+      "keywords": [
+        "matua",
+        "lighter",
+        "sauvignon",
+        "blanc"
+      ]
+    },
+    {
+      "name": "Scarpetta Pinot Grigio",
+      "category": "Wine Cost",
+      "sku": "scarpetta-pinot-grigio",
+      "report_by_unit": "Bottle (750 Milliliters)",
+      "latest_price": "$10.00",
+      "accounting_code": "",
+      "tax_exempt": "No",
+      "source_file": "products_wine.csv",
+      "keywords": [
+        "scarpetta",
+        "pinot",
+        "grigio"
+      ]
+    },
+    {
+      "name": "Sonoma Cutrer Chardonnay",
+      "category": "Wine Cost",
+      "sku": "sonoma-cutrer-chardonnay",
+      "report_by_unit": "Bottle (750 Milliliters)",
+      "latest_price": "$14.50",
+      "accounting_code": "",
+      "tax_exempt": "No",
+      "source_file": "products_wine.csv",
+      "keywords": [
+        "sonoma",
+        "cutrer",
+        "chardonnay"
+      ]
+    },
+    {
+      "name": "Squealing Pig Sauvignon Blanc",
+      "category": "Wine Cost",
+      "sku": "squealing-pig-sauvignon-blanc",
+      "report_by_unit": "Bottle (750 Milliliters)",
+      "latest_price": "$11.00",
+      "accounting_code": "",
+      "tax_exempt": "No",
+      "source_file": "products_wine.csv",
+      "keywords": [
+        "squealing",
+        "pig",
+        "sauvignon",
+        "blanc"
+      ]
+    },
+    {
+      "name": "The Shaker Red Blend",
+      "category": "Wine Cost",
+      "sku": "the-shaker-red-blend",
+      "report_by_unit": "Bottle (750 Milliliters)",
+      "latest_price": "$14.75",
+      "accounting_code": "",
+      "tax_exempt": "No",
+      "source_file": "products_wine.csv",
+      "keywords": [
+        "the",
+        "shaker",
+        "red",
+        "blend"
+      ]
+    },
+    {
+      "name": "Windstorm Central Coast Chardonnay",
+      "category": "Wine Cost",
+      "sku": "windstorm-central-coast-chardonnay",
+      "report_by_unit": "Bottle (750 Milliliters)",
+      "latest_price": "$9.75",
+      "accounting_code": "",
+      "tax_exempt": "No",
+      "source_file": "products_wine.csv",
+      "keywords": [
+        "windstorm",
+        "central",
+        "coast",
+        "chardonnay"
+      ]
+    },
+    {
+      "name": "Windstorm Red Hills Cabernet Sauvignon",
+      "category": "Wine Cost",
+      "sku": "windstorm-red-hills-cabernet-sauvignon",
+      "report_by_unit": "Bottle (750 Milliliters)",
+      "latest_price": "$9.75",
+      "accounting_code": "",
+      "tax_exempt": "No",
+      "source_file": "products_wine.csv",
+      "keywords": [
+        "windstorm",
+        "red",
+        "hills",
+        "cabernet",
+        "sauvignon"
+      ]
+    }
+  ],
+  "n_a_beverage_cost": [
+    {
+      "name": "Agave Nectar",
+      "category": "N/A Beverage Cost",
+      "sku": "agave-nectar",
+      "report_by_unit": "Bottle",
+      "latest_price": "$6.00",
+      "accounting_code": "",
+      "tax_exempt": "No",
+      "source_file": "products_nabev.csv",
+      "keywords": [
+        "agave",
+        "nectar"
+      ]
+    },
+    {
+      "name": "Bar Mix, Bloody Mary",
+      "category": "N/A Beverage Cost",
+      "sku": "bar-mix-bloody-mary",
+      "report_by_unit": "Bottle",
+      "latest_price": "$5.63",
+      "accounting_code": "",
+      "tax_exempt": "No",
+      "source_file": "products_nabev.csv",
+      "keywords": [
+        "bar",
+        "mix",
+        "bloody",
+        "mary"
+      ]
+    },
+    {
+      "name": "Bar Mix, Lime Juice",
+      "category": "N/A Beverage Cost",
+      "sku": "bar-mix-lime-juice",
+      "report_by_unit": "Bottle",
+      "latest_price": "$5.75",
+      "accounting_code": "",
+      "tax_exempt": "No",
+      "source_file": "products_nabev.csv",
+      "keywords": [
+        "bar",
+        "mix",
+        "lime",
+        "juice"
+      ]
+    },
+    {
+      "name": "Bar Mix, Margarita Strawberry 64oz",
+      "category": "N/A Beverage Cost",
+      "sku": "bar-mix-margarita-strawberry-64oz",
+      "report_by_unit": "margarita man (Bottle)",
+      "latest_price": "$11.58",
+      "accounting_code": "",
+      "tax_exempt": "No",
+      "source_file": "products_nabev.csv",
+      "keywords": [
+        "bar",
+        "mix",
+        "margarita",
+        "strawberry",
+        "64oz"
+      ]
+    },
+    {
+      "name": "Bar Mix, Pina Colada",
+      "category": "N/A Beverage Cost",
+      "sku": "bar-mix-pina-colada",
+      "report_by_unit": "Liter",
+      "latest_price": "$4.25",
+      "accounting_code": "",
+      "tax_exempt": "No",
+      "source_file": "products_nabev.csv",
+      "keywords": [
+        "bar",
+        "mix",
+        "pina",
+        "colada"
+      ]
+    },
+    {
+      "name": "Carbon Dioxide Empties Only Coca Cola Only",
+      "category": "N/A Beverage Cost",
+      "sku": "carbon-dioxide-empties-only-coca-cola-only",
+      "report_by_unit": "20 Pounds",
+      "latest_price": "$75.00",
+      "accounting_code": "",
+      "tax_exempt": "No",
+      "source_file": "products_nabev.csv",
+      "keywords": [
+        "carbon",
+        "dioxide",
+        "empties",
+        "only",
+        "coca",
+        "cola"
+      ]
+    },
+    {
+      "name": "Cream Of Coconut",
+      "category": "N/A Beverage Cost",
+      "sku": "cream-of-coconut",
+      "report_by_unit": "Each",
+      "latest_price": "$3.15",
+      "accounting_code": "",
+      "tax_exempt": "No",
+      "source_file": "products_nabev.csv",
+      "keywords": [
+        "cream",
+        "of",
+        "coconut"
+      ]
+    },
+    {
+      "name": "Ginger Ale BIB",
+      "category": "N/A Beverage Cost",
+      "sku": "ginger-ale-bib",
+      "report_by_unit": "Gallon",
+      "latest_price": "$26.14",
+      "accounting_code": "",
+      "tax_exempt": "No",
+      "source_file": "products_nabev.csv",
+      "keywords": [
+        "ginger",
+        "ale",
+        "bib"
+      ]
+    },
+    {
+      "name": "Ginger Beer 12oz Can",
+      "category": "N/A Beverage Cost",
+      "sku": "ginger-beer-12oz-can",
+      "report_by_unit": "Can",
+      "latest_price": "$1.01",
+      "accounting_code": "",
+      "tax_exempt": "No",
+      "source_file": "products_nabev.csv",
+      "keywords": [
+        "ginger",
+        "beer",
+        "12oz",
+        "can"
+      ]
+    },
+    {
+      "name": "Grenadine",
+      "category": "N/A Beverage Cost",
+      "sku": "grenadine",
+      "report_by_unit": "Bottle",
+      "latest_price": "$4.00",
+      "accounting_code": "",
+      "tax_exempt": "No",
+      "source_file": "products_nabev.csv",
+      "keywords": [
+        "grenadine"
+      ]
+    },
+    {
+      "name": "Hot Chocolate",
+      "category": "N/A Beverage Cost",
+      "sku": "hot-chocolate",
+      "report_by_unit": "Each",
+      "latest_price": "$1.90",
+      "accounting_code": "",
+      "tax_exempt": "No",
+      "source_file": "products_nabev.csv",
+      "keywords": [
+        "hot",
+        "chocolate"
+      ]
+    },
+    {
+      "name": "Juice, Blood Orange 16oz",
+      "category": "N/A Beverage Cost",
+      "sku": "juice-blood-orange-16oz",
+      "report_by_unit": "Each",
+      "latest_price": "$3.71",
+      "accounting_code": "",
+      "tax_exempt": "No",
+      "source_file": "products_nabev.csv",
+      "keywords": [
+        "juice",
+        "blood",
+        "orange",
+        "16oz"
+      ]
+    },
+    {
+      "name": "Juice, Cranberry",
+      "category": "N/A Beverage Cost",
+      "sku": "juice-cranberry",
+      "report_by_unit": "Bottle (Gallon)",
+      "latest_price": "$9.00",
+      "accounting_code": "",
+      "tax_exempt": "No",
+      "source_file": "products_nabev.csv",
+      "keywords": [
+        "juice",
+        "cranberry"
+      ]
+    },
+    {
+      "name": "Juice, Cucumber Lime 64oz",
+      "category": "N/A Beverage Cost",
+      "sku": "juice-cucumber-lime-64oz",
+      "report_by_unit": "Each",
+      "latest_price": "$20.00",
+      "accounting_code": "",
+      "tax_exempt": "No",
+      "source_file": "products_nabev.csv",
+      "keywords": [
+        "juice",
+        "cucumber",
+        "lime",
+        "64oz"
+      ]
+    },
+    {
+      "name": "Juice, Grapefruit",
+      "category": "N/A Beverage Cost",
+      "sku": "juice-grapefruit",
+      "report_by_unit": "Each",
+      "latest_price": "$3.50",
+      "accounting_code": "",
+      "tax_exempt": "No",
+      "source_file": "products_nabev.csv",
+      "keywords": [
+        "juice",
+        "grapefruit"
+      ]
+    },
+    {
+      "name": "Juice, Olive",
+      "category": "N/A Beverage Cost",
+      "sku": "juice-olive",
+      "report_by_unit": "Bottle",
+      "latest_price": "$8.25",
+      "accounting_code": "",
+      "tax_exempt": "No",
+      "source_file": "products_nabev.csv",
+      "keywords": [
+        "juice",
+        "olive"
+      ]
+    },
+    {
+      "name": "Juice, Orange",
+      "category": "N/A Beverage Cost",
+      "sku": "juice-orange",
+      "report_by_unit": "0.5 Gallons",
+      "latest_price": "$6.54",
+      "accounting_code": "",
+      "tax_exempt": "No",
+      "source_file": "products_nabev.csv",
+      "keywords": [
+        "juice",
+        "orange"
+      ]
+    },
+    {
+      "name": "Juice, Orange 32oz",
+      "category": "N/A Beverage Cost",
+      "sku": "juice-orange-32oz",
+      "report_by_unit": "32 Fluid Ounces",
+      "latest_price": "$3.30",
+      "accounting_code": "",
+      "tax_exempt": "No",
+      "source_file": "products_nabev.csv",
+      "keywords": [
+        "juice",
+        "orange",
+        "32oz"
+      ]
+    },
+    {
+      "name": "Juice, Orange 46oz",
+      "category": "N/A Beverage Cost",
+      "sku": "juice-orange-46oz",
+      "report_by_unit": "Bottle",
+      "latest_price": "$6.27",
+      "accounting_code": "",
+      "tax_exempt": "No",
+      "source_file": "products_nabev.csv",
+      "keywords": [
+        "juice",
+        "orange",
+        "46oz"
+      ]
+    },
+    {
+      "name": "Juice, Orange 56OZ",
+      "category": "N/A Beverage Cost",
+      "sku": "juice-orange-56oz",
+      "report_by_unit": "Each",
+      "latest_price": "$7.66",
+      "accounting_code": "",
+      "tax_exempt": "No",
+      "source_file": "products_nabev.csv",
+      "keywords": [
+        "juice",
+        "orange",
+        "56oz"
+      ]
+    },
+    {
+      "name": "Juice, Pineapple",
+      "category": "N/A Beverage Cost",
+      "sku": "juice-pineapple",
+      "report_by_unit": "Each",
+      "latest_price": "$3.98",
+      "accounting_code": "",
+      "tax_exempt": "No",
+      "source_file": "products_nabev.csv",
+      "keywords": [
+        "juice",
+        "pineapple"
+      ]
+    },
+    {
+      "name": "Juice, Pomegranate 64oz",
+      "category": "N/A Beverage Cost",
+      "sku": "juice-pomegranate-64oz",
+      "report_by_unit": "Each",
+      "latest_price": "$20.00",
+      "accounting_code": "",
+      "tax_exempt": "No",
+      "source_file": "products_nabev.csv",
+      "keywords": [
+        "juice",
+        "pomegranate",
+        "64oz"
+      ]
+    },
+    {
+      "name": "Lemonade BIB",
+      "category": "N/A Beverage Cost",
+      "sku": "lemonade-bib",
+      "report_by_unit": "Gallon",
+      "latest_price": "$24.67",
+      "accounting_code": "",
+      "tax_exempt": "No",
+      "source_file": "products_nabev.csv",
+      "keywords": [
+        "lemonade",
+        "bib"
+      ]
+    },
+    {
+      "name": "Syrup, Jalapeno",
+      "category": "N/A Beverage Cost",
+      "sku": "syrup-jalapeno",
+      "report_by_unit": "Bottle",
+      "latest_price": "$4.90",
+      "accounting_code": "",
+      "tax_exempt": "No",
+      "source_file": "products_nabev.csv",
+      "keywords": [
+        "syrup",
+        "jalapeno"
+      ]
+    },
+    {
+      "name": "Syrup, Pineapple",
+      "category": "N/A Beverage Cost",
+      "sku": "syrup-pineapple",
+      "report_by_unit": "Liter",
+      "latest_price": "$6.70",
+      "accounting_code": "",
+      "tax_exempt": "No",
+      "source_file": "products_nabev.csv",
+      "keywords": [
+        "syrup",
+        "pineapple"
+      ]
+    },
+    {
+      "name": "Syrup, Simple",
+      "category": "N/A Beverage Cost",
+      "sku": "syrup-simple",
+      "report_by_unit": "Liter",
+      "latest_price": "$4.25",
+      "accounting_code": "",
+      "tax_exempt": "No",
+      "source_file": "products_nabev.csv",
+      "keywords": [
+        "syrup",
+        "simple"
+      ]
+    },
+    {
+      "name": "Tea, Sweet",
+      "category": "N/A Beverage Cost",
+      "sku": "tea-sweet",
+      "report_by_unit": "Bag",
+      "latest_price": "$5.94",
+      "accounting_code": "",
+      "tax_exempt": "No",
+      "source_file": "products_nabev.csv",
+      "keywords": [
+        "tea",
+        "sweet"
+      ]
+    },
+    {
+      "name": "Tea, Sweet BIB",
+      "category": "N/A Beverage Cost",
+      "sku": "tea-sweet-bib",
+      "report_by_unit": "Gallon",
+      "latest_price": "$15.83",
+      "accounting_code": "",
+      "tax_exempt": "No",
+      "source_file": "products_nabev.csv",
+      "keywords": [
+        "tea",
+        "sweet",
+        "bib"
+      ]
+    },
+    {
+      "name": "Tea, Unsweet",
+      "category": "N/A Beverage Cost",
+      "sku": "tea-unsweet",
+      "report_by_unit": "Each",
+      "latest_price": "$1.33",
+      "accounting_code": "",
+      "tax_exempt": "No",
+      "source_file": "products_nabev.csv",
+      "keywords": [
+        "tea",
+        "unsweet"
+      ]
+    },
+    {
+      "name": "Tonic BIB",
+      "category": "N/A Beverage Cost",
+      "sku": "tonic-bib",
+      "report_by_unit": "Gallon",
+      "latest_price": "$25.76",
+      "accounting_code": "",
+      "tax_exempt": "No",
+      "source_file": "products_nabev.csv",
+      "keywords": [
+        "tonic",
+        "bib"
+      ]
+    }
+  ],
+  "grocery_and_dry_goods": [
+    {
+      "name": "Seasoning, Tajin",
+      "category": "Grocery and Dry Goods",
+      "sku": "seasoning-tajin",
+      "report_by_unit": "Pound (Pound)",
+      "latest_price": "$7.51",
+      "accounting_code": "",
+      "tax_exempt": "No",
+      "source_file": "products_food.csv",
+      "keywords": [
+        "seasoning",
+        "tajin"
+      ]
+    }
+  ]
+}
