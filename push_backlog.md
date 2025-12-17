@@ -2,9 +2,23 @@
 
 Tracking commits and work done while GitHub push is blocked (e.g., network/DNS issues). Push these when connectivity is restored.
 
-- 6686613: Implement Transrouter v1 pipeline (orchestration, ASR providers, classifier, entities, routing stubs, tests).
-- 066fd97: Rebuild inventory catalog from product CSVs (regenerate data/inventory_catalog.json from mise_inventory/products, include only “On Inventory” = Yes).
+- 3a32b24: Add catalog rebuild script with On Inventory filtering (scripts/rebuild_catalog.py; filters "On Inventory" = Yes; excludes food except Tajin; 164 products).
+- 8096956: Add Claude Code onboarding summary.
+- 217bfa1: Add workflow primacy directive.
+- cb81ff1: Add foundational system truth file.
+- fb2d219: Add 'Remember this:' trigger and absolute memory rule.
+- 212b4a3: Add 'save that to your brain' trigger.
+- f50d05f: Set preflight approval token to apostrophe.
+- 5b6c06c: Set preflight approval token to z (superseded).
+- 5f09859: Update brain ingest protocol with spacebar approval (superseded).
+- 971d0c8: Enforce mmddyy brain ingest naming and restore values.
+- 93a5a8e: Update push backlog for brain ingest and values.
+- c595b02: Add brain ingest protocol and reference in values.
+- c580965: Add canonical values artifacts and backlog entries.
+- 0a5ea1a: Add inventory transcript formatter script.
 - 154a38f: Add push backlog log for offline changes.
+- 066fd97: Rebuild inventory catalog from product CSVs (regenerate data/inventory_catalog.json from mise_inventory/products, include only "On Inventory" = Yes).
+- 6686613: Implement Transrouter v1 pipeline (orchestration, ASR providers, classifier, entities, routing stubs, tests).
 - c580965: Add canonical values artifacts and backlog entries (values.md, VALUES_CORE.md; backlog updated).
 - c595b02: Add brain ingest protocol and reference in values.
 - 93a5a8e: Update push backlog for brain ingest and values.
