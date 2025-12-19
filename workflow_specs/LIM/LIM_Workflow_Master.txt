@@ -21,7 +21,7 @@ Produce a fully structured JSON inventory that encodes every SKU, category, unit
 
 Use that JSON to trigger a runner that generates the final *_Inventory_MEExport.csv file that can be imported into MarginEdge.
 
-Maintain a human-in-the-loop path where ChatGPT currently acts as the interpreter, resolving ambiguities and edge cases, with the understanding that this logic will be codified into an internal Mise model in the future.
+Maintain a human-in-the-loop path where Claude currently acts as the interpreter, resolving ambiguities and edge cases, with the understanding that this logic will be codified into an internal Mise model in the future.
 
 2. END-TO-END WORKFLOW
 
@@ -33,7 +33,7 @@ Record full inventory audio.
 
 Transcribe audio to text with Whisper (local or cloud).
 
-Provide transcript to LIM interpreter (ChatGPT) + inventory parser.
+Provide transcript to LIM interpreter (Claude) + inventory parser.
 
 LIM parses and normalizes all items into a structured inventory JSON.
 
@@ -86,7 +86,7 @@ Example: 113025_Inventory.txt for November 30, 2025.
 
 Step 3 — Provide Transcript to LIM Interpreter
 
-The transcript is provided to the LIM interpreter, which is currently a ChatGPT-based workflow guided by this spec.
+The transcript is provided to the LIM interpreter, which is currently a Claude-based workflow guided by this spec.
 
 The interpreter:
 
@@ -124,7 +124,7 @@ NEVER silently discard unparseable lines.
 
 Place any problematic or ambiguous lines into an unmapped_items section with enough context to repair them.
 
-The interpreter (ChatGPT) prompts the user for clarification on unmapped lines when used interactively.
+The interpreter (Claude) prompts the user for clarification on unmapped lines when used interactively.
 
 After clarification:
 
@@ -495,7 +495,7 @@ status (e.g., needs_confirmation)
 
 reason (e.g., fuzzy match < threshold)
 
-When ChatGPT is involved:
+When Claude is involved:
 
 It will ask the user to resolve these items.
 
@@ -517,9 +517,9 @@ Local or cloud Whisper service converting audio → transcript.
 
 Output: <MMDDYY>_Inventory.txt.
 
-LIM Interpreter (ChatGPT):
+LIM Interpreter (Claude):
 
-Used today as the “brain” that:
+Used today as the "brain" that:
 
 Reads transcript.
 
@@ -634,13 +634,13 @@ LIM is one part of a larger Mise Multi-Assistant Architecture:
 
 The Cloud Payroll Machine (CPM) handles shift-level payroll via cloud services and BigQuery.
 
-The Local Payroll Machine (LPM) handles weekly payroll locally via audio + ChatGPT + approval JSON.
+The Local Payroll Machine (LPM) handles weekly payroll locally via audio + Claude + approval JSON.
 
-The Local Inventory Machine (LIM) handles inventory via audio + ChatGPT + structured JSON + MarginEdge CSV.
+The Local Inventory Machine (LIM) handles inventory via audio + Claude + structured JSON + MarginEdge CSV.
 
 In the future:
 
-All three machines will be backed by internal Mise models instead of ChatGPT.
+All three machines will be backed by internal Mise models instead of Claude.
 
 A central orchestrator will:
 

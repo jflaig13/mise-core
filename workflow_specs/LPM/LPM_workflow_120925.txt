@@ -38,11 +38,11 @@ Outputs land in /Users/jonathanflaig/mise-core/transcripts by default (or the pa
 
 Local Whisper produces a .txt transcript.
 
-4. Drop Transcript Into the Local Payroll Machine ChatGPT Thread
+4. Drop Transcript Into the Local Payroll Machine Claude Project
 
-Jon drags the .txt transcript into his dedicated LPM ChatGPT thread.
+Jon drags the .txt transcript into his dedicated LPM Claude project.
 
-This ChatGPT thread is pre-configured with:
+This Claude project is pre-configured with:
 
 Papa Surf payroll rules
 
@@ -58,11 +58,11 @@ All constraints and formatting required for processing
 
 The strict approval JSON schema/spec described below
 
-ChatGPT reads the transcript, parses every shift, and computes all employee-level math.
+Claude reads the transcript, parses every shift, and computes all employee-level math.
 
-5. ChatGPT Calculates and Displays All Math
+5. Claude Calculates and Displays All Math
 
-ChatGPT presents:
+Claude presents:
 
 Hours
 
@@ -83,18 +83,18 @@ Per-shift totals
 Weekly totals per employee
 
 Jon reviews this breakdown and requests corrections as needed.
-ChatGPT recomputes everything automatically.
+Claude recomputes everything automatically.
 
 6. Jon Gives Final Approval
 
 Once all numbers are correct, Jon explicitly says “Approved.”
 
-This signals ChatGPT to generate the one and only artifact required by the runner:
+This signals Claude to generate the one and only artifact required by the runner:
 the Big Final Approval JSON.
 
-7. ChatGPT Generates the BIG FINAL APPROVAL JSON (Critical Specification)
+7. Claude Generates the BIG FINAL APPROVAL JSON (Critical Specification)
 
-When Jon approves the math, ChatGPT must immediately output only the final approval file in raw JSON format — no commentary, no backticks.
+When Jon approves the math, Claude must immediately output only the final approval file in raw JSON format — no commentary, no backticks.
 
 7.1 Required Filename Format
 approve_MMDDYY_MMDDYY.approve.json
@@ -108,7 +108,7 @@ Both must be zero-padded (e.g., 110325, not 11325)
 
 7.2 Required Overall JSON Structure
 
-ChatGPT must output only the following top-level keys, in this exact order:
+Claude must output only the following top-level keys, in this exact order:
 
 {
   "out_base": "",

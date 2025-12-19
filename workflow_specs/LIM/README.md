@@ -4,7 +4,7 @@ Purpose / Scope
 - Converts long-form restaurant inventory audio into structured, verifiable data and a MarginEdge-ready CSV export.
 - Second major Mise workflow (alongside the Local Payroll Machine) and a key piece of Wedge v2 demos/early deployment.
 - Performs SKU normalization, fuzzy matching, unit conversions, fractional bottles, pack sizing, and aggregation across zones (Truck, Walk-In, Inside Bar, Back Bar, Upstairs).
-- Interpreter-assisted parsing today (ChatGPT resolves ambiguities, normalizes distortions); future plan is a deterministic internal model.
+- Interpreter-assisted parsing today (Claude resolves ambiguities, normalizes distortions); future plan is a deterministic internal model.
 
 Repo Location
 - data/Inventory/
@@ -62,4 +62,4 @@ Execution Flow
    (The JSON from step 3 is the input to the runner that builds the CSV.)
 
 Interpreter Note
-- LIM (and Local Payroll Machine) currently rely on ChatGPT as interpreter to bridge messy speech → structured data. Post-funding, this will be codified into a deterministic internal model.
+- LIM (and Local Payroll Machine) currently rely on Claude as interpreter to bridge messy speech → structured data. Post-funding, this will be codified into a deterministic internal model.
