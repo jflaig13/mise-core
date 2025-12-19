@@ -22,6 +22,7 @@ Payroll Voice Recordings/
 *.xlsx
 *.csv
 *.pdf
+!Mise_PitchDeck.pdf
 *.wav
 *.m4a
 # allow tracked payroll roster template
