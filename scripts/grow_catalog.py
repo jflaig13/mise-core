@@ -24,8 +24,8 @@ from pathlib import Path
 from typing import Dict, List, Tuple
 
 from rapidfuzz import process
-from mise_inventory import parser as inv_parser
-from mise_inventory.catalog_loader import load_catalog
+from inventory_agent import parser as inv_parser
+from inventory_agent.catalog_loader import load_catalog
 
 
 def collect_unmatched(transcript_path: Path, catalog: Dict) -> List[str]:

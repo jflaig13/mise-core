@@ -1,0 +1,6 @@
+# Move folders into payroll_agent
+# Moves engine/, transcribe/, and lpm/ into the payroll_agent directory
+
+mv ~/mise-core/engine ~/mise-core/payroll_agent/
+mv ~/mise-core/transcribe ~/mise-core/payroll_agent/
+mv ~/mise-core/lpm ~/mise-core/payroll_agent/

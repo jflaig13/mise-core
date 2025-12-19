@@ -1,0 +1,25 @@
+CHANGE: Added mandatory output format specification for Claude review step
+DATE: 2025-12-17
+AUTHOR: Jon directive via Claude Code
+FILES AFFECTED: workflow_specs/LPM/LPM_Workflow_Master.txt
+
+SUMMARY:
+Added Section 5.1 "Required Output Format for Review (MANDATORY)" to LPM_Workflow_Master.txt.
+This section specifies the exact format Claude must use when presenting payroll calculations
+to Jon for review before generating the approval JSON.
+
+DETAILS:
+The new section mandates a 6-part output format:
+1. Payroll Breakdown Section (shift-by-shift with calculations)
+2. Per-Shift Totals Section (employee → shift amounts)
+3. Weekly Totals Section (employee → weekly sum)
+4. Detail Blocks Section (human-readable math)
+5. Complete Payroll Summary Section (consolidated view with matrix)
+6. Approval Prompt
+
+This ensures consistent, reviewable output for all payroll runs.
+
+RATIONALE:
+Jon requested this format be permanently encoded into the workflow to ensure
+the LPM always presents payroll data in a clear, verifiable format before
+generating the approval JSON and triggering the automated runner.

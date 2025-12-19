@@ -1,115 +1,134 @@
-The Local Payroll Machine (LPM) is Jon’s weekly, fully offline payroll-processing pipeline. It converts a single audio recording into a completed Toast-ready payroll CSV, a Tip Report PDF, and an Excel summary sheet. The workflow begins with Jon manually recording payroll for the entire week and ends with the local runner automatically generating all outputs after receiving the final approval JSON. This document defines the authoritative, end-to-end workflow and the exact JSON contract required by the system.
+# LPM Master Spec
 
-1. Record Weekly Payroll Audio
+The Local Payroll Machine (LPM) is Jon's weekly, fully offline payroll-processing pipeline. It converts a single audio recording into a completed Toast-ready payroll CSV, a Tip Report PDF, and an Excel summary sheet. The workflow begins with Jon manually recording payroll for the entire week and ends with the local runner automatically generating all outputs after receiving the final approval JSON. This document defines the authoritative, end-to-end workflow and the exact JSON contract required by the system.
 
-Jon records a single audio file covering the entire week’s payroll using his Bluetooth microphone and the Motiv Audio app.
+## 1. Record Weekly Payroll Audio
+
+Jon records a single audio file covering the entire week's payroll using his Bluetooth microphone and the Motiv Audio app.
 This audio includes:
 
-All employees who worked
-
-All shifts
-
-Hours
-
-Cash tips
-
-Credit tips
-
-Tipouts
-
-Tip pool hours
-
-Exceptions, corrections, or notes
+- All employees who worked
+- All shifts
+- Hours
+- Cash tips
+- Credit tips
+- Tipouts
+- Tip pool hours
+- Exceptions, corrections, or notes
 
 This one audio file represents the entire week.
 
-2. AirDrop the Audio File to the Mac
+## 2. AirDrop the Audio File to the Mac
 
 After recording, Jon AirDrops the Motiv Audio file to his Mac.
 
-3. Transcribe Using Local Whisper
+## 3. Transcribe Using Local Whisper
 
 On the Mac, Jon runs:
 
+```
 transcribe <drag-audio-file-here>
+```
 
-
-Outputs land in /Users/jonathanflaig/mise-core/transcripts by default (or the path set in LPM_TRANSCRIPTS_BASE). No cloud services are involved; transcription is fully offline. The transcribe command can be run from any directory (uses absolute paths). It depends on `.venv/bin/whisper`; if missing on a fresh machine, run `.venv/bin/pip install openai-whisper`.
+Outputs land in /Users/jonathanflaig/mise-core/payroll_agent/LPM by default (or the path set in LPM_TRANSCRIPTS_BASE). No cloud services are involved; transcription is fully offline. The transcribe command can be run from any directory (uses absolute paths). It depends on `.venv/bin/whisper`; if missing on a fresh machine, run `.venv/bin/pip install openai-whisper`.
 
 Local Whisper produces a .txt transcript.
 
-4. Drop Transcript Into the Local Payroll Machine ChatGPT Thread
+## 4. Drop Transcript Into Claude Code
 
-Jon drags the .txt transcript into his dedicated LPM ChatGPT thread.
+Jon drags the .txt transcript into his dedicated LPM Claude project.
 
-This ChatGPT thread is pre-configured with:
+This Claude project is pre-configured with:
 
-Papa Surf payroll rules
+- Papa Surf payroll rules
+- Tipout percentages
+- Weekly tip pool logic
+- Support staff tip distributions
+- Employee naming conventions
+- All constraints and formatting required for processing
+- The strict approval JSON schema/spec described below
 
-Tipout percentages
+Claude reads the transcript, parses every shift, and computes all employee-level math.
 
-Weekly tip pool logic
+## 5. Claude Calculates and Displays All Math
 
-Support staff tip distributions
+Claude presents:
 
-Employee naming conventions
-
-All constraints and formatting required for processing
-
-The strict approval JSON schema/spec described below
-
-ChatGPT reads the transcript, parses every shift, and computes all employee-level math.
-
-5. ChatGPT Calculates and Displays All Math
-
-ChatGPT presents:
-
-Hours
-
-Cash tips
-
-Credit tips
-
-Tip pool contributions and distribution
-
-Expo/busser tipouts
-
-Utility allocations
-
-Cook tips
-
-Per-shift totals
-
-Weekly totals per employee
+- Hours
+- Cash tips
+- Credit tips
+- Tip pool contributions and distribution
+- Expo/busser tipouts
+- Utility allocations
+- Cook tips
+- Per-shift totals
+- Weekly totals per employee
 
 Jon reviews this breakdown and requests corrections as needed.
-ChatGPT recomputes everything automatically.
+Claude recomputes everything automatically.
 
-6. Jon Gives Final Approval
+### 5.1 Required Output Format for Review (MANDATORY)
 
-Once all numbers are correct, Jon explicitly says “Approved.”
+Claude MUST present the payroll breakdown in the following exact format before asking for approval:
 
-This signals ChatGPT to generate the one and only artifact required by the runner:
+1. **Payroll Breakdown Section** — Show each day/shift with detailed calculations:
+   - Day and shift (e.g., "Mon Dec 8 — AM")
+   - For solo shifts: Employee name and final amount
+   - For tip-out shifts: Show before tip-out amount, minus tip-out amount, equals final amount
+   - For tip pool shifts: Show both employees' amounts, tipouts, pool total, and equal split
+   - Include all support staff amounts
+
+2. **Per-Shift Totals Section** — List each employee with their shift-by-shift earnings:
+   - Employee name as heading
+   - Each shift code (MAM, TPM, etc.) with amount
+   - Show combined amounts for mid-shifts or multi-period shifts
+
+3. **Weekly Totals Section** — Show calculated weekly total for each employee:
+   - Employee name: sum of all shifts = total
+
+4. **Detail Blocks Section** — Show human-readable math for each shift:
+   - Chronological order by day/shift
+   - Show all calculations with actual numbers
+   - Include support staff allocations
+   - Include cook tips (if any)
+
+5. **Complete Payroll Summary Section** — Final consolidated view:
+   - Title: "COMPLETE PAYROLL SUMMARY" with week date range
+   - "Weekly Totals (Alphabetical by Last Name)" — list all employees sorted by last name
+   - "Shift Matrix" — table with employees as rows, shift codes as columns, amounts in cells
+   - Cook Tips summary line
+
+6. **Approval Prompt** — End with:
+   "Please review all numbers. If everything looks correct, say **'Approved'** and I will generate and save the approval JSON to trigger the runner."
+
+This format ensures Jon can easily verify all calculations before approving the payroll run.
+
+## 6. Jon Gives Final Approval
+
+Once all numbers are correct, Jon explicitly says "Approved."
+
+This signals Claude to generate the one and only artifact required by the runner:
 the Big Final Approval JSON.
 
-7. ChatGPT Generates the BIG FINAL APPROVAL JSON (Critical Specification)
+## 7. Claude Generates the BIG FINAL APPROVAL JSON (Critical Specification)
 
-When Jon approves the math, ChatGPT must immediately output only the final approval file in raw JSON format — no commentary, no backticks.
+When Jon approves the math, Claude must immediately output only the final approval file in raw JSON format — no commentary, no backticks.
 
-7.1 Required Filename Format
+### 7.1 Required Filename Format
+
+```
 approve_MMDDYY_MMDDYY.approve.json
+```
 
+- First date = pay period start
+- Second date = pay period end
+- Both must be zero-padded (e.g., 110325, not 11325)
 
-First date = pay period start
+### 7.2 Required Overall JSON Structure
 
-Second date = pay period end
+Claude must output only the following top-level keys, in this exact order:
 
-Both must be zero-padded (e.g., 110325, not 11325)
-
-7.2 Required Overall JSON Structure
-
-ChatGPT must output only the following top-level keys, in this exact order:
-
+```json
 {
   "out_base": "",
   "header": "",
@@ -119,36 +138,40 @@ ChatGPT must output only the following top-level keys, in this exact order:
   "weekly_totals": {},
   "detail_blocks": []
 }
+```
 
+- No extra keys.
+- No comments.
+- No trailing commas.
+- Valid JSON only.
 
-No extra keys.
-No comments.
-No trailing commas.
-Valid JSON only.
+### 7.3 Field Requirements
 
-7.3 Field Requirements
-7.3.1 out_base
+#### 7.3.1 out_base
 
 String formatted as:
 
+```
 "TipReport_MMDDYY_MMDDYY"
-
+```
 
 Example: "TipReport_110325_110925"
 
-7.3.2 header
+#### 7.3.2 header
 
 String showing the readable date range:
 
+```
 "Week of {Month} {D}–{D}, {YYYY}"
-
+```
 
 Use an en dash (–) between dates.
 
-7.3.3 shift_cols
+#### 7.3.3 shift_cols
 
 Must always be this exact array, in this exact order:
 
+```json
 [
   "MAM","MPM",
   "TAM","TPM",
@@ -158,62 +181,65 @@ Must always be this exact array, in this exact order:
   "SaAM","SaPM",
   "SuAM","SuPM"
 ]
+```
 
-7.3.4 per_shift
+#### 7.3.4 per_shift
 
 Object mapping employee name → object mapping shift code → numeric amount.
 
 Example pattern:
 
+```json
 "per_shift": {
   "John Neal": { "MAM": 87.59, "TAM": 205.47 },
   "Austin Kelley": { "MPM": 196.86, "TPM": 157.55 }
 }
-
+```
 
 Rules:
 
-Only include shifts the employee worked.
+- Only include shifts the employee worked.
+- Numbers must be JSON numbers (no quotes).
+- Employee names must match final output names exactly.
 
-Numbers must be JSON numbers (no quotes).
-
-Employee names must match final output names exactly.
-
-7.3.5 cook_tips
+#### 7.3.5 cook_tips
 
 Object mapping cook name → numeric total for the entire week.
 
 Example:
 
+```json
 "cook_tips": {
   "Warren Lewis": 64.17,
   "Slayde Walker": 62.06
 }
-
+```
 
 If none: {}.
 
-7.3.6 weekly_totals
+#### 7.3.6 weekly_totals
 
 Object mapping every employee + every cook to their total weekly amount.
 
 Example:
 
+```json
 "weekly_totals": {
   "Austin Kelley": 2011.86,
   "Brooke Neal": 664.47,
   "Warren Lewis": 64.17
 }
-
+```
 
 Must include everyone who appears anywhere in the file.
 
-7.3.7 detail_blocks
+#### 7.3.7 detail_blocks
 
 Array of [label, [lines]] entries.
 
 Example pattern:
 
+```json
 "detail_blocks": [
   [
     "Mon Nov 24 — AM (tip-out)",
@@ -229,80 +255,75 @@ Example pattern:
     ]
   ]
 ]
-
+```
 
 Rules:
 
-Each block must have a label and an array of human-readable lines.
+- Each block must have a label and an array of human-readable lines.
+- Chronological order is preferred.
+- Internal math must match the JSON values exactly.
 
-Chronological order is preferred.
-
-Internal math must match the JSON values exactly.
-
-8. Jon Saves the Approval JSON Into the Approvals Folder
+## 8. Jon Saves the Approval JSON Into the Approvals Folder
 
 Jon copies the JSON output into a file named:
 
+```
 approve_MMDDYY_MMDDYY.approve.json
-
+```
 
 and saves it inside the approvals folder at the active base:
 
-- Default: /Users/jonathanflaig/mise-core/transcripts/approvals
+- Default: /Users/jonathanflaig/mise-core/payroll_agent/LPM/approvals
 - Fallbacks (if default missing): /Users/jonathanflaig/transcripts/approvals or /Users/jonathanflaig/Transcripts/approvals
 - Or set LPM_TRANSCRIPTS_BASE and use <base>/approvals
 
-9. Local Runner Automatically Processes the File
+## 9. Local Runner Automatically Processes the File
 
 When a new approval file appears in the folder, the runner:
 
-Validates the JSON schema
-
-Loads all computed values
-
-Generates:
-
-Tip Report PDF
-
-Excel Summary Workbook
-
-Toast Payroll CSV
+- Validates the JSON schema
+- Loads all computed values
+- Generates:
+  - Tip Report PDF
+  - Excel Summary Workbook
+  - Toast Payroll CSV
 
 These artifacts appear automatically in the configured output directory.
 
-10. Jon Imports the CSV Into Toast
+## 10. Jon Imports the CSV Into Toast
 
 Jon drags the CSV directly into Toast Payroll to complete payroll.
 No calculators, no spreadsheets, no manual typing.
 
-END OF LPM_workflow
+---
 
-11. File Locations and Paths (Updated)
+## 11. File Locations and Paths
 
-Default base directory: /Users/jonathanflaig/mise-core/transcripts
+Default base directory: /Users/jonathanflaig/mise-core/payroll_agent/LPM
 Fallbacks (if the default does not exist): /Users/jonathanflaig/transcripts or /Users/jonathanflaig/Transcripts
 Override: set LPM_TRANSCRIPTS_BASE to any other absolute path.
 
 Key subpaths (relative to the active base):
+
 - approvals/: drop approve_MMDDYY_MMDDYY.approve.json here.
 - Tip_Reports/<out_base_without_prefix>/: all generated outputs (PDF, XLSX, PayrollExport CSV).
 - PayrollExportTemplate.csv: roster file used to map names to Employee IDs.
 - venv311/: Python env used by the runner.
 
-12. Running the Local Watcher / Runner
+## 12. Running the Local Watcher / Runner
 
-- Start watcher (requires fswatch): ./transcripts/local_docs_watcher.sh
+- Start watcher (requires fswatch): ./payroll_agent/LPM/local_docs_watcher.sh
   - Watches <base>/approvals for new .approve.json files.
-  - On detection, invokes ./transcripts/tipreport_runner.sh.
-- Run manually: LPM_TRANSCRIPTS_BASE=<path> ./transcripts/tipreport_runner.sh
-  - BASE defaults to repo Transcripts; falls back to ~/Transcripts if missing.
+  - On detection, invokes ./payroll_agent/LPM/tipreport_runner.sh.
+- Run manually: LPM_TRANSCRIPTS_BASE=<path> ./payroll_agent/LPM/tipreport_runner.sh
+  - BASE defaults to payroll_agent/LPM; falls back to ~/Transcripts if missing.
 
-13. Git Hygiene for LPM Docs
+## 13. Git Hygiene for LPM Docs
 
 - Keep this file tracked in git; update it whenever the workflow changes.
 - Do not commit secrets (tokens, etc.); keep them in ignored .env files or the keychain.
 
-14. DO NOT CONFUSE WITH LIM JSON
+## 14. DO NOT CONFUSE WITH LIM JSON
 
 - LPM approval JSON: `approve_MMDDYY_MMDDYY.approve.json` with keys: out_base, header, shift_cols, per_shift, cook_tips, weekly_totals, detail_blocks.
 - LIM inventory JSON: `MMDDYY_Inventory.json` with metadata, categories, unmapped_items. This must NEVER be produced or used in place of LPM approval JSON.

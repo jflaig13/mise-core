@@ -10,7 +10,7 @@ Repo Location
 - data/Inventory/
   - <DATE>_Inventory.txt — Whisper transcript
   - inventory_catalog.json — enterprise catalog
-- mise_inventory/
+- inventory_agent/
   - parser.py — main inventory parser (tokenize, fuzzy match, normalize, aggregate)
   - normalizer.py — SKU normalization (handles phonetic variants, consolidations)
   - tokenizer.py — transcript segmentation
@@ -23,15 +23,15 @@ Repo Location
   - grow_catalog.py — catalog expansion utility
 
 Main Entry Points / Scripts
-1) mise_inventory/parser.py
+1) inventory_agent/parser.py
    - Reads Whisper transcript, tokenizes, fuzzy-matches SKUs, normalizes, extracts quantities, aggregates zones, validates against inventory_schema.json.
-2) mise_inventory/generate_inventory_file.py
+2) inventory_agent/generate_inventory_file.py
    - Given structured JSON inventory, produces `MMDDYY_Inventory_MEExport.csv` (MarginEdge import file).
-3) mise_inventory/normalizer.py
+3) inventory_agent/normalizer.py
    - Canonicalizes distorted/variant expressions (e.g., aperol variants → Aperol; Mom Water → Linda; High Noon flavors consolidated) and Whisper quirks.
-4) mise_inventory/tokenizer.py
+4) inventory_agent/tokenizer.py
    - Breaks long-form transcripts into parseable segments.
-5) mise_inventory/validator.py
+5) inventory_agent/validator.py
    - Enforces schema, flags missing/mis-categorized/invalid quantities.
 
 Key Inputs
@@ -56,9 +56,9 @@ Execution Flow
 1) Record full inventory audio.
 2) Whisper creates `MMDDYY_Inventory.txt`.
 3) Run parser:
-   `python -m mise_inventory.parser data/Inventory/MMDDYY_Inventory.txt data/inventory_catalog.json output/MMDDYY_Inventory.json`
+   `python -m inventory_agent.parser data/Inventory/MMDDYY_Inventory.txt data/inventory_catalog.json output/MMDDYY_Inventory.json`
 4) Generate MarginEdge CSV:
-   `python -m mise_inventory.generate_inventory_file output/MMDDYY_Inventory.json output/MMDDYY_Inventory_MEExport.csv`
+   `python -m inventory_agent.generate_inventory_file output/MMDDYY_Inventory.json output/MMDDYY_Inventory_MEExport.csv`
    (The JSON from step 3 is the input to the runner that builds the CSV.)
 
 Interpreter Note

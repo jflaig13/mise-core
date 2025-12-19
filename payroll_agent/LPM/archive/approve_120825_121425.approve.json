@@ -1,0 +1,167 @@
+{
+  "out_base": "TipReport_120825_121425",
+  "header": "Week of December 8–14, 2025",
+  "shift_cols": ["MAM","MPM","TAM","TPM","WAM","WPM","ThAM","ThPM","FAM","FPM","SaAM","SaPM","SuAM","SuPM"],
+  "per_shift": {
+    "Brooke Neal": {
+      "MAM": 128.23,
+      "TAM": 64.55,
+      "WAM": 136.88
+    },
+    "Austin Kelley": {
+      "MPM": 266.98,
+      "TPM": 99.63,
+      "ThAM": 140.02,
+      "ThPM": 87.68,
+      "FAM": 202.95,
+      "FPM": 252.15,
+      "SaAM": 156.81
+    },
+    "Kevin Worley": {
+      "WPM": 288.84,
+      "FPM": 252.15,
+      "SaAM": 279.53,
+      "SaPM": 117.32
+    },
+    "Mark Buryanek": {
+      "SaPM": 117.32,
+      "SuAM": 115.31,
+      "SuPM": 142.00
+    },
+    "Mike Walton": {
+      "SuAM": 115.31
+    },
+    "Ryan Alexander": {
+      "MPM": 32.82,
+      "TPM": 16.99,
+      "WAM": 20.00,
+      "WPM": 41.25,
+      "ThPM": 16.49,
+      "FAM": 18.93,
+      "FPM": 67.33,
+      "SaAM": 65.29,
+      "SaPM": 39.45,
+      "SuAM": 17.22,
+      "SuPM": 25.65
+    }
+  },
+  "cook_tips": {},
+  "weekly_totals": {
+    "Ryan Alexander": 361.42,
+    "Brooke Neal": 329.66,
+    "Mark Buryanek": 374.63,
+    "Austin Kelley": 1206.22,
+    "Mike Walton": 115.31,
+    "Kevin Worley": 1009.14
+  },
+  "detail_blocks": [
+    [
+      "Mon Dec 8 — AM",
+      [
+        "Brooke Neal $128.23 (solo, no tipout)"
+      ]
+    ],
+    [
+      "Mon Dec 8 — PM",
+      [
+        "Austin Kelley 299.80 – Ryan 32.82 = 266.98",
+        "Ryan Alexander (support) $32.82"
+      ]
+    ],
+    [
+      "Tue Dec 9 — AM",
+      [
+        "Brooke Neal $64.55 (solo, no tipout)"
+      ]
+    ],
+    [
+      "Tue Dec 9 — PM",
+      [
+        "Austin Kelley 116.62 – Ryan 16.99 = 99.63",
+        "Ryan Alexander (support) $16.99"
+      ]
+    ],
+    [
+      "Wed Dec 10 — AM",
+      [
+        "Brooke Neal 156.88 – Ryan 20.00 = 136.88",
+        "Ryan Alexander (support) $20.00"
+      ]
+    ],
+    [
+      "Wed Dec 10 — PM",
+      [
+        "Kevin Worley $288.84",
+        "Ryan Alexander (support) $41.25"
+      ]
+    ],
+    [
+      "Thu Dec 11 — AM",
+      [
+        "Austin Kelley $140.02 (solo, no tipout)"
+      ]
+    ],
+    [
+      "Thu Dec 11 — PM",
+      [
+        "Austin Kelley 104.17 – Ryan 16.49 = 87.68",
+        "Ryan Alexander (support) $16.49"
+      ]
+    ],
+    [
+      "Fri Dec 12 — AM",
+      [
+        "Austin Kelley 221.88 – Ryan 18.93 = 202.95",
+        "Ryan Alexander (support) $18.93"
+      ]
+    ],
+    [
+      "Fri Dec 12 — PM (tip pool)",
+      [
+        "Austin Kelley & Kevin Worley pool: (414.78 – 49.34) + (156.84 – 17.99) = 504.29 split → Austin $252.15, Kevin $252.15",
+        "Ryan Alexander (support) $67.33"
+      ]
+    ],
+    [
+      "Sat Dec 13 — AM (tip pool)",
+      [
+        "Kevin Worley & Austin Kelley pool: (151.80 – 24.74) + (227.11 – 40.55) = 313.62 split → Kevin $156.81, Austin $156.81",
+        "Ryan Alexander (support) $65.29"
+      ]
+    ],
+    [
+      "Sat Dec 13 — Mid (Kevin solo)",
+      [
+        "Kevin Worley $122.72 (solo, no tipout)"
+      ]
+    ],
+    [
+      "Sat Dec 13 — PM (tip pool)",
+      [
+        "Mark Buryanek & Kevin Worley pool: (149.09 – 25.89) + (125.00 – 13.56) = 234.64 split → Mark $117.32, Kevin $117.32",
+        "Ryan Alexander (support) $39.45"
+      ]
+    ],
+    [
+      "Sun Dec 14 — AM",
+      [
+        "Mark Buryanek $115.31",
+        "Mike Walton $115.31",
+        "Ryan Alexander (support) $17.22"
+      ]
+    ],
+    [
+      "Sun Dec 14 — PM",
+      [
+        "Mark Buryanek $142.00",
+        "Ryan Alexander (support) $25.65"
+      ]
+    ],
+    [
+      "Manual Adjustment",
+      [
+        "Kevin Worley +$71.30 (shift earnings: $937.84, adjustment: $71.30, final total: $1,009.14)"
+      ]
+    ]
+  ]
+}

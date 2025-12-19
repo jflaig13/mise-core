@@ -1,0 +1,4 @@
+# Rename mise_inventory to inventory_agent
+# Renames the mise_inventory folder to inventory_agent
+
+mv ~/mise-core/mise_inventory ~/mise-core/inventory_agent

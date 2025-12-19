@@ -180,15 +180,50 @@ PCM WAV
 
 2.3.2 Whisper Transcription
 
-Performed via Cloud Run transcriber.
+Performed via Cloud Run transcriber using Whisper base.en model.
 
-Outputs:
+Outputs raw transcript with:
 
-normalized transcript
+basic punctuation applied
 
-punctuation applied
+speech-to-text conversion
 
-filler words removed only when necessary for logic
+------------------------------------------------------------
+2.3.3 LLM Cleanup Layer
+
+Introduced: December 2025
+
+Purpose:
+
+Normalizes Whisper output before engine parsing
+
+Fixes common transcription errors and typos
+
+Standardizes date/time formatting
+
+Corrects obvious mistakes that would cause parser failures
+
+Implementation:
+
+Location: payroll_agent/CPM/transcribe/cleanup/llm_cleanup.py
+
+Integration: Called automatically in payroll_agent/CPM/transcribe/app.py after Whisper completes
+
+Model: Claude Haiku via Anthropic API (fast, cost-effective)
+
+Behavior:
+
+Receives raw Whisper transcript
+
+Sends to LLM cleanup service for normalization
+
+Returns cleaned transcript
+
+Graceful degradation: Falls back to raw Whisper text if cleanup service unavailable
+
+Output:
+
+Cleaned, normalized transcript ready for engine parsing
 
 ------------------------------------------------------------
 2.4 PARSING LOGIC (HIGH-LEVEL)
@@ -593,9 +628,11 @@ test_transcript.sh
 ------------------------------------------------------------
 6.2.1 payroll-transcribe
 
-Whisper transcription
+Whisper base.en transcription
 
-Returns transcript
+LLM cleanup layer (cleanup/llm_cleanup.py)
+
+Returns cleaned transcript
 
 6.2.2 payroll-engine
 

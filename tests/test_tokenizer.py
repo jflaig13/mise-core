@@ -1,4 +1,4 @@
-from mise_inventory.tokenizer import split_line_into_segments
+from inventory_agent.tokenizer import split_line_into_segments
 
 
 def test_split_line_with_and():

@@ -68,7 +68,7 @@ if [[ "$file" == *.wav ]]; then
     # Obtain Cloud Run auth token
     TOKEN=$(gcloud auth print-identity-token)
 
-    # Submit audio to engine
+    # Submit audio to Cloud Run payroll engine
     RESPONSE=$(curl -s -H "Authorization: Bearer $TOKEN" \
     -F "audio=@${file}" \
     -F "filename=${name}" \

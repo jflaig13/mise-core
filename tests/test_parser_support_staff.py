@@ -15,7 +15,7 @@ def test_support_staff_are_recognized_and_categorized():
 
     with mock.patch("google.cloud.bigquery.Client") as client_mock:
         client_mock.return_value = mock.Mock()
-        engine = importlib.reload(importlib.import_module("engine.payroll_engine"))
+        engine = importlib.reload(importlib.import_module("payroll_agent.CPM.engine.payroll_engine"))
 
     payload = engine.TranscriptIn(
         filename="010125_AM.wav",
@@ -35,7 +35,7 @@ def test_support_staff_are_recognized_and_categorized():
 def test_full_phrase_amounts_are_not_truncated():
     with mock.patch("google.cloud.bigquery.Client") as client_mock:
         client_mock.return_value = mock.Mock()
-        engine = importlib.reload(importlib.import_module("engine.payroll_engine"))
+        engine = importlib.reload(importlib.import_module("payroll_agent.CPM.engine.payroll_engine"))
 
     payload = engine.TranscriptIn(
         filename="113025_AM.wav",
@@ -56,7 +56,7 @@ def test_full_phrase_amounts_are_not_truncated():
 def test_dollar_tokens_with_punctuation_are_parsed():
     with mock.patch("google.cloud.bigquery.Client") as client_mock:
         client_mock.return_value = mock.Mock()
-        engine = importlib.reload(importlib.import_module("engine.payroll_engine"))
+        engine = importlib.reload(importlib.import_module("payroll_agent.CPM.engine.payroll_engine"))
 
     payload = engine.TranscriptIn(
         filename="113025_PM.wav",
@@ -73,7 +73,7 @@ def test_dollar_tokens_with_punctuation_are_parsed():
 def test_full_phrase_amounts_with_dollars_and_cents_are_kept():
     with mock.patch("google.cloud.bigquery.Client") as client_mock:
         client_mock.return_value = mock.Mock()
-        engine = importlib.reload(importlib.import_module("engine.payroll_engine"))
+        engine = importlib.reload(importlib.import_module("payroll_agent.CPM.engine.payroll_engine"))
 
     payload = engine.TranscriptIn(
         filename="113025_AM.wav",
@@ -90,7 +90,7 @@ def test_full_phrase_amounts_with_dollars_and_cents_are_kept():
 def test_plain_dollar_amounts_with_trailing_dot_parse_to_whole_dollars():
     with mock.patch("google.cloud.bigquery.Client") as client_mock:
         client_mock.return_value = mock.Mock()
-        engine = importlib.reload(importlib.import_module("engine.payroll_engine"))
+        engine = importlib.reload(importlib.import_module("payroll_agent.CPM.engine.payroll_engine"))
 
     payload = engine.TranscriptIn(
         filename="120425_PM.wav",
@@ -105,7 +105,7 @@ def test_plain_dollar_amounts_with_trailing_dot_parse_to_whole_dollars():
 def test_fiona_dodson_normalization_and_support_category():
     with mock.patch("google.cloud.bigquery.Client") as client_mock:
         client_mock.return_value = mock.Mock()
-        engine = importlib.reload(importlib.import_module("engine.payroll_engine"))
+        engine = importlib.reload(importlib.import_module("payroll_agent.CPM.engine.payroll_engine"))
 
     payload = engine.TranscriptIn(
         filename="120425_PM.wav",
@@ -122,7 +122,7 @@ def test_fiona_dodson_normalization_and_support_category():
 def test_lost_him_variants_map_to_austin_kelley():
     with mock.patch("google.cloud.bigquery.Client") as client_mock:
         client_mock.return_value = mock.Mock()
-        engine = importlib.reload(importlib.import_module("engine.payroll_engine"))
+        engine = importlib.reload(importlib.import_module("payroll_agent.CPM.engine.payroll_engine"))
 
     payload = engine.TranscriptIn(
         filename="112825_AM.wav",
@@ -139,7 +139,7 @@ def test_lost_him_variants_map_to_austin_kelley():
 def test_atticus_usseglo_normalization():
     with mock.patch("google.cloud.bigquery.Client") as client_mock:
         client_mock.return_value = mock.Mock()
-        engine = importlib.reload(importlib.import_module("engine.payroll_engine"))
+        engine = importlib.reload(importlib.import_module("payroll_agent.CPM.engine.payroll_engine"))
 
     payload = engine.TranscriptIn(
         filename="120425_PM.wav",
@@ -154,7 +154,7 @@ def test_atticus_usseglo_normalization():
 def test_allston_alias_and_fiona_support_role():
     with mock.patch("google.cloud.bigquery.Client") as client_mock:
         client_mock.return_value = mock.Mock()
-        engine = importlib.reload(importlib.import_module("engine.payroll_engine"))
+        engine = importlib.reload(importlib.import_module("payroll_agent.CPM.engine.payroll_engine"))
 
     payload = engine.TranscriptIn(
         filename="120525_PM.wav",

@@ -31,7 +31,7 @@ from typing import Dict, List, Set
 from datetime import datetime
 
 
-PRODUCTS_DIR = Path(__file__).resolve().parent.parent / "mise_inventory" / "products"
+PRODUCTS_DIR = Path(__file__).resolve().parent.parent / "inventory_agent" / "products"
 DEFAULT_OUTPUT = Path(__file__).resolve().parent.parent / "data" / "inventory_catalog.json"
 
 BAR_PRODUCT_FILES = [

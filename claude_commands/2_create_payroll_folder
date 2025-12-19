@@ -1,0 +1,4 @@
+# Create Payroll Agent Folder
+# Creates the new payroll_agent directory at repo root
+
+mkdir -p ~/mise-core/payroll_agent

@@ -32,7 +32,7 @@ BRANCH/STATE
 - Committed offline: Transrouter v1 pipeline; inventory catalog rebuild; values/competitive advantage; brain ingest/absolute memory/system truth/workflow primacy; approval token changes.
 
 OUTSTANDING/UNTRACKED ITEMS
-- Untracked: AI_Configs/, mise_inventory/113025_Inventory.txt, mise_inventory/113025_Inventory_formatted.txt, transcripts/113025_Inventory_2.txt, transcripts/120125_120725.{json,srt,tsv,txt,vtt}, transcripts/archive/approve_120125_120725.approve.json.
+- Untracked: AI_Configs/, inventory_agent/113025_Inventory.txt, inventory_agent/113025_Inventory_formatted.txt, transcripts/113025_Inventory_2.txt, transcripts/120125_120725.{json,srt,tsv,txt,vtt}, transcripts/archive/approve_120125_120725.approve.json.
 - Deleted pending rebuild: data/Inventory/113025_inventory_output.json (blocked by missing rapidfuzz install due to network).
 
 WORKFLOWS

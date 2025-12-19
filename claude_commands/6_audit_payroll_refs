@@ -1,0 +1,31 @@
+# Audit Payroll Path References
+# This is an INSTRUCTION for Claude Code, not a shell script
+#
+# Claude: Search the entire mise-core repo for references to these OLD paths:
+#   - /mise-core/transcripts OR transcripts/
+#   - /mise-core/engine OR engine/
+#   - /mise-core/transcribe OR transcribe/
+#
+# For each reference found, report:
+#   1. File path where reference exists
+#   2. Line number
+#   3. Current reference (old path)
+#   4. Required new reference:
+#      - transcripts/ → payroll_agent/lpm/
+#      - engine/ → payroll_agent/cpm/engine/
+#      - transcribe/ → payroll_agent/cpm/transcribe/
+#
+# Present ALL findings for user review before making any changes.
+# Do NOT modify any files during this audit.
+
+# Shell helper to find references (run this first):
+echo "=== References to 'transcripts' ==="
+grep -rn "transcripts" ~/mise-core --include="*.py" --include="*.md" --include="*.txt" --include="*.sh" --include="*.yaml" --include="*.json" | grep -v "claude_commands"
+
+echo ""
+echo "=== References to 'engine' ==="
+grep -rn "engine" ~/mise-core --include="*.py" --include="*.md" --include="*.txt" --include="*.sh" --include="*.yaml" --include="*.json" | grep -v "claude_commands" | grep -v "__pycache__"
+
+echo ""
+echo "=== References to 'transcribe' ==="
+grep -rn "transcribe" ~/mise-core --include="*.py" --include="*.md" --include="*.txt" --include="*.sh" --include="*.yaml" --include="*.json" | grep -v "claude_commands"

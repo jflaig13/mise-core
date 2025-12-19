@@ -1,0 +1,1 @@
+Read /Users/jonathanflaig/mise-core/claude_new and execute its contents as instructions

@@ -1,0 +1,26 @@
+# Update Payroll Path References
+# This is an INSTRUCTION for Claude Code, not a shell script
+#
+# Claude: Based on the audit from command #6, make the following replacements
+# throughout mise-core. IMPORTANT: Present each change for approval BEFORE making it.
+#
+# Replacement map:
+#   - "transcripts/" → "payroll_agent/lpm/"
+#   - "/transcripts" → "/payroll_agent/lpm"
+#   - "mise-core/transcripts" → "mise-core/payroll_agent/lpm"
+#
+#   - "engine/" → "payroll_agent/cpm/engine/"
+#   - "/engine" → "/payroll_agent/cpm/engine"
+#   - "mise-core/engine" → "mise-core/payroll_agent/cpm/engine"
+#
+#   - "transcribe/" → "payroll_agent/cpm/transcribe/"
+#   - "/transcribe" → "/payroll_agent/cpm/transcribe"
+#   - "mise-core/transcribe" → "mise-core/payroll_agent/cpm/transcribe"
+#
+# For EACH file that needs changes:
+#   1. Show the file path
+#   2. Show the specific lines being changed (before/after)
+#   3. Ask: "Approve this change? (yes/no)"
+#   4. Only proceed if user confirms
+#
+# Do NOT batch changes. One file at a time, one approval at a time.

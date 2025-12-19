@@ -1,0 +1,6 @@
+# Create CPM structure and move engine/transcribe into it
+# Creates payroll_agent/cpm/ and moves engine/ & transcribe/ inside
+
+mkdir -p ~/mise-core/payroll_agent/cpm
+mv ~/mise-core/payroll_agent/engine ~/mise-core/payroll_agent/cpm/
+mv ~/mise-core/payroll_agent/transcribe ~/mise-core/payroll_agent/cpm/

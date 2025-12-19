@@ -1,0 +1,18 @@
+# Setup Google Drive Symlinks for mise-core
+# Creates symlinks from mise-core directories/files to Google Drive for auto-sync
+
+# Create the mise-core folder in Drive
+mkdir ~/Library/CloudStorage/GoogleDrive-jonathan@papasurf.com/My\ Drive/Mise/mise-core
+
+# Symlink the useful directories (excludes .venv, .git, __pycache__)
+for dir in docs engine transrouter workflow_specs AI_Configs config scripts mise_inventory roster data transcripts transcribe tests; do
+  ln -s /Users/jonathanflaig/mise-core/$dir ~/Library/CloudStorage/GoogleDrive-jonathan@papasurf.com/My\ Drive/Mise/mise-core/$dir
+done
+
+# Symlink key markdown files at root level
+for file in README.md AGENT_POLICY.md VALUES_CORE.md mise_ai_backlog.md inventory_god_backlog.md push_backlog.md; do
+  ln -s /Users/jonathanflaig/mise-core/$file ~/Library/CloudStorage/GoogleDrive-jonathan@papasurf.com/My\ Drive/Mise/mise-core/$file
+done
+
+# Verify
+ls -la ~/Library/CloudStorage/GoogleDrive-jonathan@papasurf.com/My\ Drive/Mise/mise-core/

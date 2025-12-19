@@ -11,8 +11,10 @@ COPY requirements.txt .
 RUN pip install --no-cache-dir --upgrade pip \
     && pip install --no-cache-dir -r requirements.txt
 
-# Copy ONLY the engine package into the image
+# Copy the engine package, roster module, and roster data into the image
 COPY engine ./engine
+COPY roster ./roster
+COPY workflow_specs/roster ./workflow_specs/roster
 
 # Cloud Run will send traffic to $PORT
 ENV PORT=8080

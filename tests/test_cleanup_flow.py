@@ -11,7 +11,7 @@ import pytest
 if importlib.util.find_spec("whisper") is None:
     pytest.skip("whisper package not available; skipping cleanup flow tests", allow_module_level=True)
 
-from transcribe import app as transcribe_app
+from payroll_agent.CPM.transcribe import app as transcribe_app
 
 
 class DummyUploadFile:
@@ -58,7 +58,7 @@ class CleanupFlowTest(unittest.TestCase):
             with mock.patch("google.cloud.bigquery.Client") as client_mock:
                 client_mock.return_value = mock.Mock()
                 self._engine_app = importlib.reload(
-                    importlib.import_module("engine.payroll_engine")
+                    importlib.import_module("payroll_agent.CPM.engine.payroll_engine")
                 )
         return self._engine_app
 
@@ -99,11 +99,11 @@ class CleanupFlowTest(unittest.TestCase):
         self.assertEqual(cleaned, "cleaned transcript")
 
     def test_cleanup_client_falls_back_to_raw_on_error(self):
-        from transcribe.cleanup.llm_cleanup import LlmCleanupClient
+        from payroll_agent.CPM.transcribe.cleanup.llm_cleanup import LlmCleanupClient
 
         client = LlmCleanupClient(endpoint_url="https://cleanup.example.com")
 
-        with mock.patch("transcribe.cleanup.llm_cleanup.requests.post") as post:
+        with mock.patch("payroll_agent.CPM.transcribe.cleanup.llm_cleanup.requests.post") as post:
             post.side_effect = RuntimeError("network fail")
 
             cleaned = client.clean_text(" raw sample ")
@@ -112,11 +112,11 @@ class CleanupFlowTest(unittest.TestCase):
         post.assert_called_once()
 
     def test_cleanup_client_uses_configurable_timeout(self):
-        from transcribe.cleanup.llm_cleanup import LlmCleanupClient
+        from payroll_agent.CPM.transcribe.cleanup.llm_cleanup import LlmCleanupClient
 
         client = LlmCleanupClient(endpoint_url="https://cleanup.example.com", timeout_seconds=5)
 
-        with mock.patch("transcribe.cleanup.llm_cleanup.requests.post") as post:
+        with mock.patch("payroll_agent.CPM.transcribe.cleanup.llm_cleanup.requests.post") as post:
             post.return_value = DummyResponse({"cleaned_text": "polished"})
 
             cleaned = client.clean_text("   text   ")
@@ -127,7 +127,7 @@ class CleanupFlowTest(unittest.TestCase):
         self.assertEqual(kwargs["timeout"], 5)
 
     def test_cleanup_client_respects_timeout_env(self):
-        from transcribe.cleanup.llm_cleanup import LlmCleanupClient
+        from payroll_agent.CPM.transcribe.cleanup.llm_cleanup import LlmCleanupClient
 
         with mock.patch.dict(os.environ, {"TRANSCRIBE_CLEANUP_TIMEOUT_SECONDS": "7.5"}):
             client = LlmCleanupClient(endpoint_url="https://cleanup.example.com", timeout_seconds=None)
@@ -135,7 +135,7 @@ class CleanupFlowTest(unittest.TestCase):
         self.assertEqual(client.timeout_seconds, 7.5)
 
     def test_cleanup_client_handles_invalid_timeout_env(self):
-        from transcribe.cleanup.llm_cleanup import LlmCleanupClient
+        from payroll_agent.CPM.transcribe.cleanup.llm_cleanup import LlmCleanupClient
 
         with mock.patch.dict(os.environ, {"TRANSCRIBE_CLEANUP_TIMEOUT_SECONDS": "not-a-number"}):
             client = LlmCleanupClient(endpoint_url="https://cleanup.example.com", timeout_seconds=None)

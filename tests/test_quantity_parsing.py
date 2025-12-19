@@ -1,6 +1,6 @@
 import pytest
 
-from mise_inventory.parser import parse_quantity
+from inventory_agent.parser import parse_quantity
 
 
 @pytest.mark.parametrize(

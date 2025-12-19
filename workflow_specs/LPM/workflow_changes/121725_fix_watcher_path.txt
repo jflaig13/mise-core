@@ -1,0 +1,28 @@
+CHANGE: Fixed watcher script DEFAULT_BASE path to use lowercase 'transcripts'
+DATE: 2025-12-17
+AUTHOR: Jon directive via Claude Code
+FILES AFFECTED: transcripts/local_docs_watcher.sh
+
+SUMMARY:
+Changed DEFAULT_BASE in local_docs_watcher.sh from "$ROOT_DIR/Transcripts" (capital T)
+to "$ROOT_DIR/transcripts" (lowercase t) to match the actual repo directory structure.
+
+DETAILS:
+Line 6 changed from:
+  DEFAULT_BASE="$ROOT_DIR/Transcripts"
+To:
+  DEFAULT_BASE="$ROOT_DIR/transcripts"
+
+RATIONALE:
+The watcher was defaulting to the fallback location (/Users/jonathanflaig/Transcripts)
+instead of the canonical repo location (mise-core/transcripts) because of the case
+mismatch. This caused approval JSON files saved to mise-core/transcripts/approvals
+to not be detected by the watcher.
+
+With this fix, when the watcher is started from the repo, it will correctly monitor
+mise-core/transcripts/approvals instead of falling back to ~/Transcripts.
+
+ACTION REQUIRED:
+User must restart the watcher for this change to take effect:
+1. Stop current watcher process (kill PIDs 26584, 26586)
+2. Start new watcher: cd ~/mise-core && ./transcripts/local_docs_watcher.sh

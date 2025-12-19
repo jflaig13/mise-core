@@ -17,7 +17,7 @@ Tracking commits and work done while GitHub push is blocked (e.g., network/DNS i
 - c580965: Add canonical values artifacts and backlog entries.
 - 0a5ea1a: Add inventory transcript formatter script.
 - 154a38f: Add push backlog log for offline changes.
-- 066fd97: Rebuild inventory catalog from product CSVs (regenerate data/inventory_catalog.json from mise_inventory/products, include only "On Inventory" = Yes).
+- 066fd97: Rebuild inventory catalog from product CSVs (regenerate data/inventory_catalog.json from inventory_agent/products, include only "On Inventory" = Yes).
 - 6686613: Implement Transrouter v1 pipeline (orchestration, ASR providers, classifier, entities, routing stubs, tests).
 - c580965: Add canonical values artifacts and backlog entries (values.md, VALUES_CORE.md; backlog updated).
 - c595b02: Add brain ingest protocol and reference in values.

@@ -1,0 +1,4 @@
+# Rename transcripts to lpm
+# Renames the transcripts folder to lpm (Local Payroll Machine)
+
+mv ~/mise-core/transcripts ~/mise-core/lpm

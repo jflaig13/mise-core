@@ -1,0 +1,19 @@
+# Audit Inventory Path References
+# This is an INSTRUCTION for Claude Code, not a shell script
+#
+# Claude: Search the entire mise-core repo for references to the OLD path:
+#   - /mise-core/mise_inventory OR mise_inventory/
+#
+# For each reference found, report:
+#   1. File path where reference exists
+#   2. Line number
+#   3. Current reference (old path)
+#   4. Required new reference:
+#      - mise_inventory/ → inventory_agent/
+#
+# Present ALL findings for user review before making any changes.
+# Do NOT modify any files during this audit.
+
+# Shell helper to find references (run this first):
+echo "=== References to 'mise_inventory' ==="
+grep -rn "mise_inventory" ~/mise-core --include="*.py" --include="*.md" --include="*.txt" --include="*.sh" --include="*.yaml" --include="*.json" | grep -v "claude_commands" | grep -v "__pycache__"
