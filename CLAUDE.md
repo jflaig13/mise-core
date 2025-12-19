@@ -22,6 +22,7 @@
 - `workflow_specs/LPM/LPM_Workflow_Master.txt` — Local Payroll Machine
 - `workflow_specs/CPM/CPM_Workflow_Master.txt` — Cloud Payroll Machine
 - `workflow_specs/LIM/LIM_Workflow_Master.txt` — Local Inventory Machine
+- `transrouter/TRANSROUTER_SPEC.md` — Transrouter architecture, ASR strategy, next steps
 
 **Architecture:**
 Mise is a multi-agent restaurant ops system. Transrouter coordinates domain agents (Payroll, Inventory, Ordering, Scheduling, Forecasting, General Ops). Each agent has its own brain with Claude integration.
