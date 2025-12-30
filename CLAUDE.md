@@ -5,6 +5,16 @@
 2. **Repo is truth.** Search this repo for answers before asking me.
 3. **Log everything.** All changes must be documented.
 
+## New Session Initialization
+
+When starting a new session and the user's first message is just a greeting ("hi", "hello", etc.):
+
+1. **Immediately read ONBOARDING.md** (don't ask, just do it)
+2. Follow the onboarding instructions in that file
+3. After reading all required files, respond: "Ready for work. What do you need?"
+
+This ensures every new session is properly initialized with project context.
+
 ## Before Making File Changes
 - State what you're changing and why
 - Wait for my approval
@@ -20,6 +30,7 @@
 
 **Workflow Specs (Master References):**
 - `workflow_specs/LPM/LPM_Workflow_Master.txt` — Local Payroll Machine
+
 - `workflow_specs/CPM/CPM_Workflow_Master.txt` — Cloud Payroll Machine
 - `workflow_specs/LIM/LIM_Workflow_Master.txt` — Local Inventory Machine
 
