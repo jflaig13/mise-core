@@ -38,7 +38,14 @@ PROJECT_ID = os.getenv("PROJECT_ID", "automation-station-478103")
 BQ_DATASET = os.getenv("BQ_DATASET", "payroll")
 BQ_TABLE_SHIFTS = os.getenv("BQ_TABLE_SHIFTS", "shifts")
 
-bq_client = bigquery.Client(project=PROJECT_ID)
+# Lazy-load BigQuery client to avoid blocking container startup
+_bq_client = None
+
+def get_bq_client():
+    global _bq_client
+    if _bq_client is None:
+        _bq_client = bigquery.Client(project=PROJECT_ID)
+    return _bq_client
 
 
 # ----------------------------------------------------
@@ -1144,7 +1151,7 @@ def insert_shift_rows(rows: List[ShiftRow]):
             }
         )
 
-    errors = bq_client.insert_rows_json(table, to_insert, row_ids=row_ids)
+    errors = get_bq_client().insert_rows_json(table, to_insert, row_ids=row_ids)
 
     if errors:
         raise HTTPException(status_code=500, detail=str(errors))

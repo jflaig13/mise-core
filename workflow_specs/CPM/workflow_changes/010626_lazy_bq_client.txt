@@ -1,0 +1,9 @@
+Date: 01/06/26
+Change: Lazy-load BigQuery clients to prevent Cloud Run startup timeouts.
+Files:
+- payroll_agent/CPM/engine/payroll_engine.py
+- payroll_agent/CPM/engine/commit_shift.py
+Why:
+- BigQuery auth was occurring at import time and could block uvicorn from binding to port 8080. Lazy init defers auth until first request.
+Notes:
+- No schema or workflow changes. Parsing and commit logic unchanged.

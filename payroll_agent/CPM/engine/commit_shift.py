@@ -3,7 +3,15 @@ from google.cloud import bigquery
 from datetime import datetime
 
 router = APIRouter()
-bq = bigquery.Client()
+
+# Lazy-load BigQuery client to avoid blocking container startup
+_bq = None
+
+def get_bq_client():
+    global _bq
+    if _bq is None:
+        _bq = bigquery.Client()
+    return _bq
 
 @router.post("/commit_shift")
 async def commit_shift(payload: dict):
@@ -29,7 +37,7 @@ async def commit_shift(payload: dict):
             }
         )
 
-    errors = bq.insert_rows_json(table, formatted)
+    errors = get_bq_client().insert_rows_json(table, formatted)
     if errors:
         return {"ok": False, "inserted": 0, "errors": errors}
     return {"ok": True, "inserted": len(formatted)}
