@@ -1,5 +1,5 @@
-# Placeholder configuration for the Transrouter.
-# TODO: refine once providers and routing rules are wired up.
+# Configuration for the Transrouter.
+# Defines ASR, routing, Claude, and logging settings.
 
 asr:
   provider: whisper  # options: whisper, amazon_transcribe, google, azure
@@ -17,3 +17,16 @@ routing:
 logging:
   level: INFO
   format: "[%(asctime)s] %(levelname)s %(name)s: %(message)s"
+
+# Claude API configuration for domain agents
+# API key must be set via ANTHROPIC_API_KEY environment variable
+claude:
+  model: claude-sonnet-4-20250514
+  max_tokens: 8000           # Max OUTPUT tokens per request
+  max_input_tokens: 15000    # Warn if input exceeds this (prevents runaway costs)
+  timeout_seconds: 120
+
+# Brain sync configuration
+brain:
+  auto_load: true  # Load brain on startup
+  cache_ttl_seconds: 300  # How long to cache brain before refresh

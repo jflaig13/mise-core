@@ -37,6 +37,26 @@ This ensures every new session is properly initialized with project context.
 **Architecture:**
 Mise is a multi-agent restaurant ops system. Transrouter coordinates domain agents (Payroll, Inventory, Ordering, Scheduling, Forecasting, General Ops). Each agent has its own brain with Claude integration.
 
+## Testing & Debugging
+
+### Watcher Logs
+When testing components that use file watchers, check these logs to see real-time output:
+
+| Component | Log File | Start Command |
+|-----------|----------|---------------|
+| CPM (Cloud Payroll Machine) | `logs/cpm-approval-watcher.log` | `~/mise-core/scripts/watch-cpm-approval` |
+
+**CPM Testing Workflow:**
+When testing audio file processing for the Cloud Payroll Machine:
+1. I will drop `.wav` files into "Payroll Voice Recordings" (Google Drive)
+2. The watcher detects them, sends to the payroll engine, shows preview
+3. **You must check `logs/cpm-approval-watcher.log`** to see:
+   - Parse results from `/parse_only`
+   - Preview output (shifts, amounts, transcript)
+   - Any errors from the engine
+4. Use `tail -n 50 logs/cpm-approval-watcher.log` to see recent output
+5. Use `cat logs/cpm-approval-watcher.log` to see full log
+
 ## Command Runner Convention
 
 When I say **"Run command #N"** (e.g., "Run command #1", "Run command #42"):

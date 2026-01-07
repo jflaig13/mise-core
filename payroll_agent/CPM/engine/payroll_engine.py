@@ -87,20 +87,23 @@ async def transcribe_audio(upload: UploadFile) -> str:
 # Roster + All Normalization Patches
 # ----------------------------------------------------
 ROSTER = {
-    # Core names
+    # Brooke Neal
     "brooke neal": "Brooke Neal",
     "broke Neil": "Brooke Neal",
     "brooke neil": "Brooke Neal",
     "brooke": "Brooke Neal",
     "broke": "Brooke Neal",
-    "john neal": "Brooke Neal",
-    "john Neil": "Brooke Neal",
-    "john neil": "Brooke Neal",
-    "john": "Brooke Neal",
-    "jon": "Brooke Neal",
-    "jon neal": "Brooke Neal",
-    "jon Neil": "Brooke Neal",
-    "jon neil": "Brooke Neal",
+    "barack": "Brooke Neal",
+
+    # John Neal
+    "john neal": "John Neal",
+    "john Neil": "John Neal",
+    "john neil": "John Neal",
+    "john": "John Neal",
+    "jon": "John Neal",
+    "jon neal": "John Neal",
+    "jon Neil": "John Neal",
+    "jon neil": "John Neal",
     
     # Austin Kelley
     "austin kelley": "Austin Kelley",

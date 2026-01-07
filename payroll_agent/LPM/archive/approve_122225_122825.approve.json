@@ -1,0 +1,172 @@
+{
+  "out_base": "TipReport_122225_122825",
+  "header": "Week of December 22–28, 2025",
+  "shift_cols": [
+    "MAM","MPM",
+    "TAM","TPM",
+    "WAM","WPM",
+    "ThAM","ThPM",
+    "FAM","FPM",
+    "SaAM","SaPM",
+    "SuAM","SuPM"
+  ],
+  "per_shift": {
+    "Ryan Alexander": {
+      "MPM": 43.99,
+      "TAM": 25.00,
+      "TPM": 30.40,
+      "WAM": 24.50,
+      "FAM": 61.26,
+      "FPM": 108.94,
+      "SaAM": 37.87,
+      "SaPM": 64.50,
+      "SuAM": 79.62,
+      "SuPM": 38.21
+    },
+    "Mark Buryanek": {
+      "SaPM": 246.92,
+      "SuPM": 151.16
+    },
+    "Austin Kelley": {
+      "MPM": 295.40,
+      "TPM": 248.49,
+      "WAM": 46.25,
+      "FAM": 151.58,
+      "FPM": 212.97,
+      "SaAM": 272.71,
+      "SaPM": 246.91,
+      "SuAM": 100.62
+    },
+    "Brooke Neal": {
+      "MAM": 276.15,
+      "TAM": 176.28,
+      "WAM": 73.18
+    },
+    "John Neal": {
+      "SaAM": 30.99,
+      "SaPM": 64.51,
+      "SuAM": 39.81,
+      "SuPM": 38.21
+    },
+    "Atticus Usseglio": {
+      "SaAM": 17.21,
+      "SaPM": 32.25,
+      "SuPM": 19.01
+    },
+    "Mike Walton": {
+      "FPM": 212.97,
+      "SuAM": 261.64,
+      "SuPM": 151.16
+    },
+    "Kevin Worley": {
+      "FAM": 156.35,
+      "FPM": 212.97,
+      "SaAM": 272.72,
+      "SaPM": 246.91,
+      "SuAM": 261.64,
+      "SuPM": 151.16
+    }
+  },
+  "cook_tips": {},
+  "weekly_totals": {
+    "Ryan Alexander": 514.29,
+    "Mark Buryanek": 398.08,
+    "Austin Kelley": 1574.93,
+    "Brooke Neal": 525.61,
+    "John Neal": 173.52,
+    "Atticus Usseglio": 68.47,
+    "Mike Walton": 625.77,
+    "Kevin Worley": 1301.75
+  },
+  "detail_blocks": [
+    [
+      "Mon Dec 22 — AM (solo)",
+      [
+        "Brooke Neal $276.15"
+      ]
+    ],
+    [
+      "Mon Dec 22 — PM (tip-out)",
+      [
+        "Austin Kelley 339.39 – 43.99 = 295.40",
+        "Utility: Ryan Alexander 43.99"
+      ]
+    ],
+    [
+      "Tue Dec 23 — AM (tip-out)",
+      [
+        "Brooke Neal 201.28 – 25.00 = 176.28",
+        "Utility: Ryan Alexander 25.00"
+      ]
+    ],
+    [
+      "Tue Dec 23 — PM (tip-out)",
+      [
+        "Austin Kelley 278.89 – 30.40 = 248.49",
+        "Utility: Ryan Alexander 30.40"
+      ]
+    ],
+    [
+      "Wed Dec 24 — AM (individual tips, not pooling)",
+      [
+        "Brooke Neal 86.93 – 13.75 = 73.18",
+        "Austin Kelley 57.00 – 10.75 = 46.25",
+        "Utility: Ryan Alexander 24.50"
+      ]
+    ],
+    [
+      "Fri Dec 26 — AM (individual tips, not pooling)",
+      [
+        "Kevin Worley 184.96 – 28.61 = 156.35",
+        "Austin Kelley 184.23 – 32.65 = 151.58",
+        "Utility: Ryan Alexander 61.26"
+      ]
+    ],
+    [
+      "Fri Dec 26 — PM (tip pool)",
+      [
+        "Pool: 638.91 (Mike 46.62 + Austin 424.67 + Kevin 167.62)",
+        "Split: Mike Walton $212.97, Austin Kelley $212.97, Kevin Worley $212.97",
+        "Utility: Ryan Alexander 108.94"
+      ]
+    ],
+    [
+      "Sat Dec 27 — AM (tip pool, pro-rated bussers)",
+      [
+        "Pool: 545.43 (Kevin 166.15 + Austin 379.28)",
+        "Split: Kevin Worley $272.72, Austin Kelley $272.71",
+        "Expo: Atticus 17.21",
+        "Bussers: John Neal 30.99 (45%), Ryan Alexander 37.87 (55%)"
+      ]
+    ],
+    [
+      "Sat Dec 27 — PM (tip pool)",
+      [
+        "Pool: 740.74 (Kevin 159.24 + Austin 333.39 + Mark 248.11)",
+        "Split: Kevin Worley $246.91, Austin Kelley $246.91, Mark Buryanek $246.92",
+        "Expo: Atticus 32.25",
+        "Bussers: John Neal 64.51, Ryan Alexander 64.50"
+      ]
+    ],
+    [
+      "Sun Dec 28 — AM",
+      [
+        "Kevin Worley $261.64",
+        "Mike Walton $261.64",
+        "Austin Kelley $100.62",
+        "John Neal $39.81",
+        "Ryan Alexander $79.62"
+      ]
+    ],
+    [
+      "Sun Dec 28 — PM",
+      [
+        "Kevin Worley $151.16",
+        "Mark Buryanek $151.16",
+        "Mike Walton $151.16",
+        "Expo: Atticus 19.01",
+        "Bussers: John Neal 38.21, Ryan Alexander 38.21"
+      ]
+    ]
+  ]
+}

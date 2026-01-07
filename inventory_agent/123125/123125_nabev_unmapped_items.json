@@ -1,0 +1,63 @@
+[
+  {
+    "spoken_name": "Blood orange juice",
+    "quantity": 4,
+    "suggestions": [
+      "Juice, Blood Orange 16oz",
+      "High Rise Blood Orange",
+      "Juice, Orange"
+    ]
+  },
+  {
+    "spoken_name": "Orange juice",
+    "quantity": 5,
+    "suggestions": [
+      "Juice, Blood Orange 16oz",
+      "Juice, Orange",
+      "Juice, Orange 32oz"
+    ]
+  },
+  {
+    "spoken_name": "Pineapple juice",
+    "quantity": 7,
+    "suggestions": [
+      "Juice, Pineapple",
+      "High Noon Pineapple Vodka Soda 12oz Can",
+      "High Rise Pineapple"
+    ]
+  },
+  {
+    "spoken_name": "Sweet tea",
+    "quantity": 10.0,
+    "suggestions": [
+      "Cherry, Dark Sweet Can",
+      "French Fries, Sweet Potato",
+      "French Fries, Sweet Potato Cheney"
+    ]
+  },
+  {
+    "spoken_name": "Unsweet tea",
+    "quantity": 5,
+    "suggestions": [
+      "Tea, Unsweet"
+    ]
+  },
+  {
+    "spoken_name": "Pomegranate juice",
+    "quantity": 6,
+    "suggestions": [
+      "Juice, Pomegranate 64oz",
+      "Bar Mix, Lime Juice",
+      "Juice, Blood Orange 16oz"
+    ]
+  },
+  {
+    "spoken_name": "Cucumber lime juice",
+    "quantity": 4,
+    "suggestions": [
+      "Juice, Cucumber Lime 64oz",
+      "Bar Mix, Lime Juice",
+      "Juice, Lime"
+    ]
+  }
+]

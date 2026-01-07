@@ -1,0 +1,23 @@
+#!/bin/bash
+# =============================================================================
+# CPM (Cloud Payroll Machine) Approval Watcher
+# Part of: payroll_agent
+# Log location: ~/mise-core/logs/cpm-approval-watcher.log
+# =============================================================================
+#
+# Watches for voice recordings in Google Drive, sends to Cloud Payroll Engine
+# for parsing, displays preview, and prompts for approve/edit/skip.
+#
+# Usage: ~/mise-core/scripts/watch-cpm-approval
+# =============================================================================
+
+LOG_DIR="$HOME/mise-core/logs"
+LOG_FILE="$LOG_DIR/cpm-approval-watcher.log"
+
+mkdir -p "$LOG_DIR"
+
+echo "========================================" >> "$LOG_FILE"
+echo "CPM Approval Watcher started: $(date)" >> "$LOG_FILE"
+echo "========================================" >> "$LOG_FILE"
+
+/Users/jonathanflaig/mise-core/watcher_approval.sh 2>&1 | tee -a "$LOG_FILE"

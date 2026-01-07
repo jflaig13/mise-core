@@ -1,0 +1,186 @@
+{
+  "out_base": "TipReport_121525_122125",
+  "header": "Week of December 15–21, 2025",
+  "shift_cols": [
+    "MAM","MPM",
+    "TAM","TPM",
+    "WAM","WPM",
+    "ThAM","ThPM",
+    "FAM","FPM",
+    "SaAM","SaPM",
+    "SuAM","SuPM"
+  ],
+  "per_shift": {
+    "Ryan Alexander": {
+      "MPM": 16.26,
+      "TPM": 3.51,
+      "WAM": 10.55,
+      "ThPM": 12.90,
+      "FAM": 15.00,
+      "FPM": 27.79,
+      "SaPM": 39.84,
+      "SuAM": 31.46,
+      "SuPM": 35.30
+    },
+    "Mark Buryanek": {
+      "SaAM": 44.95,
+      "SaPM": 199.88
+    },
+    "Emily Geissler": {
+      "SaPM": 199.88
+    },
+    "Austin Kelley": {
+      "MPM": 140.70,
+      "TPM": 123.01,
+      "WAM": 59.32,
+      "ThPM": 82.04,
+      "FAM": 190.63,
+      "FPM": 98.95
+    },
+    "Heather Martin": {
+      "ThPM": 10.14
+    },
+    "Brooke Neal": {
+      "MAM": 43.55,
+      "TAM": 160.31
+    },
+    "Atticus Usseglio": {
+      "SaAM": 2.84,
+      "SaPM": 39.84
+    },
+    "Mike Walton": {
+      "ThAM": 26.10,
+      "ThPM": 20.00,
+      "SuAM": 113.40,
+      "SuPM": 155.66
+    },
+    "Kevin Worley": {
+      "FPM": 98.95,
+      "SaAM": 44.95,
+      "SaPM": 199.88,
+      "SuAM": 113.40,
+      "SuPM": 155.66
+    }
+  },
+  "cook_tips": {
+    "Mike Walton": 28.96,
+    "Slayde Walker": 22.97
+  },
+  "weekly_totals": {
+    "Ryan Alexander": 192.61,
+    "Mark Buryanek": 244.83,
+    "Emily Geissler": 199.88,
+    "Austin Kelley": 694.65,
+    "Heather Martin": 10.14,
+    "Brooke Neal": 203.86,
+    "Atticus Usseglio": 42.68,
+    "Mike Walton": 344.12,
+    "Slayde Walker": 22.97,
+    "Kevin Worley": 612.84
+  },
+  "detail_blocks": [
+    [
+      "Cook Tips (weekly total)",
+      [
+        "Mike Walton $28.96, Slayde Walker $22.97"
+      ]
+    ],
+    [
+      "Mon Dec 15 — AM (solo)",
+      [
+        "Brooke Neal $43.55"
+      ]
+    ],
+    [
+      "Mon Dec 15 — PM (tip-out)",
+      [
+        "Austin Kelley 156.96 – 16.26 = 140.70",
+        "Utility: Ryan Alexander 16.26"
+      ]
+    ],
+    [
+      "Tue Dec 16 — AM (solo)",
+      [
+        "Brooke Neal $160.31"
+      ]
+    ],
+    [
+      "Tue Dec 16 — PM (tip-out)",
+      [
+        "Austin Kelley 126.52 – 3.51 = 123.01",
+        "Utility: Ryan Alexander 3.51"
+      ]
+    ],
+    [
+      "Wed Dec 17 — AM (tip-out)",
+      [
+        "Austin Kelley 69.87 – 10.55 = 59.32",
+        "Utility: Ryan Alexander 10.55"
+      ]
+    ],
+    [
+      "Thu Dec 18 — AM (solo)",
+      [
+        "Mike Walton $26.10"
+      ]
+    ],
+    [
+      "Thu Dec 18 — PM (individual tips)",
+      [
+        "Austin Kelley 92.24 – 10.20 = 82.04",
+        "Mike Walton $20.00",
+        "Heather Martin 12.84 – 2.70 = 10.14",
+        "Utility: Ryan Alexander 12.90"
+      ]
+    ],
+    [
+      "Fri Dec 19 — AM (tip-out)",
+      [
+        "Austin Kelley 205.63 – 15.00 = 190.63",
+        "Utility: Ryan Alexander 15.00"
+      ]
+    ],
+    [
+      "Fri Dec 19 — PM (tip pool)",
+      [
+        "Kevin Worley $98.95",
+        "Austin Kelley $98.95",
+        "Ryan Alexander $27.79"
+      ]
+    ],
+    [
+      "Sat Dec 20 — AM (tip pool)",
+      [
+        "Kevin Worley $44.95",
+        "Mark Buryanek $44.95",
+        "Atticus Usseglio $2.84"
+      ]
+    ],
+    [
+      "Sat Dec 20 — PM (tip pool)",
+      [
+        "Emily Geissler $199.88",
+        "Kevin Worley $199.88",
+        "Mark Buryanek $199.88",
+        "Ryan Alexander $39.84",
+        "Atticus Usseglio $39.84"
+      ]
+    ],
+    [
+      "Sun Dec 21 — AM (tip pool)",
+      [
+        "Kevin Worley $113.40",
+        "Mike Walton $113.40",
+        "Ryan Alexander $31.46"
+      ]
+    ],
+    [
+      "Sun Dec 21 — PM (tip pool)",
+      [
+        "Kevin Worley $155.66",
+        "Mike Walton $155.66",
+        "Ryan Alexander $35.30"
+      ]
+    ]
+  ]
+}

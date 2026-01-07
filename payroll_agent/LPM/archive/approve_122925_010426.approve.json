@@ -1,0 +1,183 @@
+{
+  "out_base": "TipReport_122925_010426",
+  "header": "Week of December 29 – January 4, 2026",
+  "shift_cols": [
+    "MAM","MPM",
+    "TAM","TPM",
+    "WAM","WPM",
+    "ThAM","ThPM",
+    "FAM","FPM",
+    "SaAM","SaPM",
+    "SuAM","SuPM"
+  ],
+  "per_shift": {
+    "Austin Kelley": { "MAM": 59.87, "MPM": 345.95, "TAM": 192.47, "TPM": 203.58, "FAM": 170.82, "FPM": 290.02, "SaAM": 122.41, "SuPM": 181.63 },
+    "Brooke Neal": { "MAM": 59.87, "MPM": 345.95, "TAM": 192.47, "WAM": 294.94, "WPM": 189.55, "ThAM": 220.00 },
+    "Janel Baki": { "TPM": 203.58, "ThAM": 286.00, "ThPM": 72.08 },
+    "Mike Walton": { "TPM": 203.58, "SuAM": 181.81 },
+    "Mark Buryanek": { "WAM": 294.94, "FAM": 170.82, "SaPM": 52.65 },
+    "Kevin Worley": { "WPM": 189.55, "ThAM": 286.00, "ThPM": 162.18, "FPM": 290.02, "SaAM": 122.41, "SaPM": 52.65, "SuAM": 181.81 },
+    "Heather Martin": { "ThPM": 162.18 },
+    "Atticus Usseglio": { "MPM": 23.17, "WPM": 65.72, "FPM": 16.31, "SaPM": 5.19 },
+    "Ryan Alexander": { "MAM": 41.10, "MPM": 46.34, "TAM": 15.76, "TPM": 17.17, "WAM": 18.34, "ThAM": 57.70, "ThPM": 37.38, "FAM": 68.83, "FPM": 65.26, "SaAM": 48.46 },
+    "John Neal": { "MPM": 46.34, "TAM": 63.04, "TPM": 68.69, "ThAM": 57.70, "ThPM": 37.38, "SaPM": 23.63, "SuAM": 12.05, "SuPM": 30.60 }
+  },
+  "cook_tips": {},
+  "weekly_totals": {
+    "Ryan Alexander": 416.34,
+    "Janel Baki": 561.66,
+    "Mark Buryanek": 518.41,
+    "Austin Kelley": 1566.75,
+    "Heather Martin": 162.18,
+    "Brooke Neal": 1302.78,
+    "John Neal": 339.43,
+    "Atticus Usseglio": 110.39,
+    "Mike Walton": 385.39,
+    "Kevin Worley": 1284.62
+  },
+  "detail_blocks": [
+    [
+      "Mon Dec 29 — AM (tip pool)",
+      [
+        "Pool: Austin Kelley $80.89 + Brooke Neal $79.94 = $160.83",
+        "Tipout to Ryan Alexander: $41.10",
+        "Pool after tipout: $119.73 ÷ 2 = $59.87 each",
+        "Austin Kelley $59.87, Brooke Neal $59.87",
+        "Utility: Ryan Alexander $41.10"
+      ]
+    ],
+    [
+      "Mon Dec 29 — PM (tip pool)",
+      [
+        "Pool: Austin Kelley $487.17 + Brooke Neal $320.57 = $807.74",
+        "Tipout: Bussers $92.68, Expo $23.17 = $115.85",
+        "Pool after tipout: $691.89 ÷ 2 = $345.95 each",
+        "Austin Kelley $345.95, Brooke Neal $345.95",
+        "Expo: Atticus Usseglio $23.17",
+        "Bussers: John Neal $46.34, Ryan Alexander $46.34"
+      ]
+    ],
+    [
+      "Tue Dec 30 — AM (tip pool)",
+      [
+        "Pool: Austin Kelley $191.47 + Brooke Neal $272.27 = $463.74",
+        "Tipout: Busser $63.04, Expo $15.76 = $78.80",
+        "Pool after tipout: $384.94 ÷ 2 = $192.47 each",
+        "Austin Kelley $192.47, Brooke Neal $192.47",
+        "Expo: Ryan Alexander $15.76",
+        "Busser: John Neal $63.04"
+      ]
+    ],
+    [
+      "Tue Dec 30 — PM (tip pool)",
+      [
+        "Pool: Janel Baki $267.89 + Mike Walton $100.88 + Austin Kelley $327.82 = $696.59",
+        "Tipout: Busser $68.69, Expo $17.17 = $85.86",
+        "Pool after tipout: $610.73 ÷ 3 = $203.58 each",
+        "Janel Baki $203.58, Mike Walton $203.58, Austin Kelley $203.58",
+        "Expo: Ryan Alexander $17.17",
+        "Busser: John Neal $68.69"
+      ]
+    ],
+    [
+      "Wed Dec 31 — AM (final numbers)",
+      [
+        "Brooke Neal $294.94",
+        "Mark Buryanek $294.94",
+        "Ryan Alexander $18.34"
+      ]
+    ],
+    [
+      "Wed Dec 31 — PM (final numbers)",
+      [
+        "Kevin Worley $189.55",
+        "Brooke Neal $189.55",
+        "Expo: Atticus Usseglio $65.72"
+      ]
+    ],
+    [
+      "Thu Jan 1 — AM (tip pool, unequal hours)",
+      [
+        "Pool hours: Kevin 6.5 + Janel 6.5 + Brooke 5 = 18 total",
+        "Kevin Worley $169.30 − $12.70 = $156.60",
+        "Janel Baki $445.16 − $58.70 = $386.46",
+        "Brooke Neal $292.96 − $43.99 = $248.97",
+        "Pool total: $792.03 ÷ 18 hrs = $44.00/hr",
+        "Kevin Worley (6.5 hrs) $286.00",
+        "Janel Baki (6.5 hrs) $286.00",
+        "Brooke Neal (5 hrs) $220.00",
+        "Support split: $115.39 ÷ 2 = $57.70 each",
+        "Ryan Alexander $57.70, John Neal $57.70"
+      ]
+    ],
+    [
+      "Thu Jan 1 — PM (tip pool, unequal hours)",
+      [
+        "Pool hours: Heather 4.5 + Kevin 4.5 + Janel 2 = 11 total",
+        "Stated rate: $36.04/hr after tipout",
+        "Heather Martin (4.5 hrs) $162.18",
+        "Kevin Worley (4.5 hrs) $162.18",
+        "Janel Baki (2 hrs) $72.08",
+        "Support split: $74.75 ÷ 2 = $37.38 each",
+        "Ryan Alexander $37.38, John Neal $37.38"
+      ]
+    ],
+    [
+      "Fri Jan 2 — AM (tip pool)",
+      [
+        "Pool: Austin Kelley $259.50 + Mark Buryanek $150.97 = $410.47",
+        "Tipout to Ryan Alexander: $68.83",
+        "Pool after tipout: $341.64 ÷ 2 = $170.82 each",
+        "Austin Kelley $170.82, Mark Buryanek $170.82",
+        "Utility: Ryan Alexander $68.83"
+      ]
+    ],
+    [
+      "Fri Jan 2 — PM (final numbers)",
+      [
+        "Kevin Worley $290.02",
+        "Austin Kelley $290.02",
+        "Expo: Atticus Usseglio $16.31",
+        "Busser: Ryan Alexander $65.26"
+      ]
+    ],
+    [
+      "Sat Jan 3 — AM (final numbers)",
+      [
+        "Kevin Worley $122.41",
+        "Austin Kelley $122.41",
+        "Utility: Ryan Alexander $48.46"
+      ]
+    ],
+    [
+      "Sat Jan 3 — PM (final numbers)",
+      [
+        "Kevin Worley $52.65",
+        "Mark Buryanek $52.65",
+        "Expo: Atticus Usseglio $5.19",
+        "Busser: John Neal $23.63"
+      ]
+    ],
+    [
+      "Sun Jan 4 — AM (final numbers)",
+      [
+        "Kevin Worley $181.81",
+        "Mike Walton $181.81",
+        "Expo: John Neal $12.05"
+      ]
+    ],
+    [
+      "Sun Jan 4 — PM (tip-out)",
+      [
+        "Austin Kelley $212.23 − $30.60 = $181.63",
+        "Busser: John Neal $30.60"
+      ]
+    ],
+    [
+      "Cook Tips (weekly total)",
+      [
+        "None this week"
+      ]
+    ]
+  ]
+}

@@ -1,0 +1,50 @@
+# Docker Compose for local development and testing
+# Usage: docker-compose up --build
+
+version: "3.8"
+
+services:
+  transrouter:
+    build:
+      context: ..
+      dockerfile: transrouter/Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      # API Keys (comma-separated key:client pairs)
+      - MISE_API_KEYS=${MISE_API_KEYS:-dev-key:local-dev}
+      # Anthropic API key for Claude
+      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY}
+      # CORS origins (comma-separated, * for all)
+      - CORS_ORIGINS=${CORS_ORIGINS:-*}
+      # Port (Cloud Run convention)
+      - PORT=8080
+    volumes:
+      # Mount workflow specs for brain sync (read-only)
+      - ../workflow_specs:/app/workflow_specs:ro
+      # Mount brain docs (read-only)
+      - ../docs/brain:/app/docs/brain:ro
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8080/api/v1/health')"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+    restart: unless-stopped
+
+# Usage:
+#
+# 1. Set environment variables:
+#    export ANTHROPIC_API_KEY="sk-ant-..."
+#    export MISE_API_KEYS="my-key:my-client"
+#
+# 2. Build and run:
+#    cd transrouter
+#    docker-compose up --build
+#
+# 3. Test:
+#    curl http://localhost:8080/api/v1/health
+#    curl -X POST http://localhost:8080/api/v1/payroll/parse \
+#      -H "X-API-Key: my-key" \
+#      -H "Content-Type: application/json" \
+#      -d '{"transcript": "Monday AM shift..."}'
