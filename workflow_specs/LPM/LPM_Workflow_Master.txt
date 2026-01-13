@@ -41,7 +41,7 @@ Jon drags the .txt transcript into his dedicated LPM Claude project.
 This Claude project is pre-configured with:
 
 - Papa Surf payroll rules
-- Tipout percentages
+- Tipout percentages (calculated from food sales)
 - Weekly tip pool logic
 - Support staff tip distributions
 - Employee naming conventions
@@ -49,6 +49,42 @@ This Claude project is pre-configured with:
 - The strict approval JSON schema/spec described below
 
 Claude reads the transcript, parses every shift, and computes all employee-level math.
+
+### 4.1 Verbal Input Format
+
+For each shift, Jon provides:
+1. **Support staff declaration**: "Expo was [name], busser was [name]" or "Utility was [name]"
+2. **For each server**: "[Name], tips $[amount], food sales $[amount]"
+
+Example:
+```
+"Support staff: Expo was Atticus, bussers were John and Ryan.
+Austin Kelley, tips $487.17, food sales $1,271.00.
+Brooke Neal, tips $320.57, food sales $1,046.00."
+```
+
+### 4.2 Tipout Calculation Rules
+
+Tipouts are calculated as percentages of **total shift food sales**:
+
+| Role | Tipout Rate |
+|------|-------------|
+| Utility | 5% of total food sales |
+| Busser/Runner | 4% of total food sales |
+| Expo | 1% of total food sales |
+
+**Split rules:**
+- Multiple bussers: Split 4% evenly, or by hours if in tip pool
+- Multiple expos: Split 1% evenly
+- Multiple utility: Split 5% evenly, or by hours if in tip pool
+- Single support staff: Receives full percentage amount
+
+**Calculation steps:**
+1. Sum all servers' food sales for the shift = Total Food Sales
+2. Calculate tipouts using percentages above
+3. Subtract total tipouts from total tips to get pool amount
+4. Distribute pool to servers (evenly or by hours)
+5. Distribute tipouts to support staff (evenly or by hours)
 
 ## 5. Claude Calculates and Displays All Math
 
@@ -242,10 +278,16 @@ Example pattern:
 ```json
 "detail_blocks": [
   [
-    "Mon Nov 24 — AM (tip-out)",
+    "Mon Nov 24 — PM (tip pool)",
     [
-      "Austin Kelley 266.23 – 46.30 = 219.93",
-      "Utility: Ryan 46.30"
+      "Austin Kelley tips $487.17, food sales $1,271.00",
+      "Brooke Neal tips $320.57, food sales $1,046.00",
+      "Total food sales: $2,317.00",
+      "Tipouts: Busser 4% ($2,317.00) = $92.68, Expo 1% ($2,317.00) = $23.17",
+      "Pool after tipout: $807.74 − $115.85 = $691.89 ÷ 2 = $345.95 each",
+      "Austin Kelley $345.95, Brooke Neal $345.95",
+      "Expo: Atticus Usseglio $23.17",
+      "Bussers: John Neal $46.34, Ryan Alexander $46.34"
     ]
   ],
   [
@@ -262,6 +304,9 @@ Rules:
 - Each block must have a label and an array of human-readable lines.
 - Chronological order is preferred.
 - Internal math must match the JSON values exactly.
+- Must show each server's individual tips and food sales.
+- Must show total food sales for the shift.
+- Must show tipout calculation with formula (e.g., "Busser 4% ($2,317.00) = $92.68").
 
 ## 8. Jon Saves the Approval JSON Into the Approvals Folder
 

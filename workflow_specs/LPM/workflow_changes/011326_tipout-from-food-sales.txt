@@ -1,0 +1,52 @@
+CHANGELOG: LPM Tipout Calculation from Food Sales
+==================================================
+
+Date: 2025-01-13
+Author: Jon (via Claude)
+
+SUMMARY
+-------
+Changed tipout calculation method from explicitly stated amounts to percentage-based
+calculation from food sales.
+
+WHAT CHANGED
+------------
+1. Verbal input format now includes food sales per server
+2. Tipouts calculated as percentages of total shift food sales:
+   - Utility: 5%
+   - Busser/Runner: 4%
+   - Expo: 1%
+3. Detail blocks now show food sales and tipout calculation formulas
+
+FILES TOUCHED
+-------------
+- workflow_specs/LPM/LPM_Workflow_Master.txt
+  - Added section 4.1: Verbal Input Format
+  - Added section 4.2: Tipout Calculation Rules
+  - Updated section 7.3.7: detail_blocks example and rules
+
+- docs/brain/011326__lpm-tipout-from-food-sales.md (NEW)
+  - Canonical brain doc for this rule
+
+WHY
+---
+Jon requested this change to simplify the verbal recording process. Instead of
+calculating and stating each tipout amount during recording, Jon now states only
+the server's tips and food sales. The system calculates tipouts automatically
+using fixed percentage rates.
+
+NEW VERBAL FORMAT
+-----------------
+Old: "[Name] before tip-out made $[tips], needs to tip out busser $[amount], expo $[amount]"
+New: "[Name], tips $[tips], food sales $[food sales]"
+
+SUPPORT STAFF SPLIT RULES
+-------------------------
+- Multiple bussers: Split 4% evenly, or by hours if in tip pool
+- Multiple expos: Split 1% evenly
+- Multiple utility: Split 5% evenly, or by hours if in tip pool
+
+BACKWARD COMPATIBILITY
+----------------------
+Old transcripts using explicit tipout amounts will need to be processed differently.
+This change applies to all recordings made after 2025-01-13.
