@@ -86,6 +86,37 @@ Tipouts are calculated as percentages of **total shift food sales**:
 4. Distribute pool to servers (evenly or by hours)
 5. Distribute tipouts to support staff (evenly or by hours)
 
+### 4.3 Shift Hours (DST-Based Schedule)
+
+Papa Surf hours are dependent on daylight savings time. Schedule changes take effect on the **Monday following** each DST transition (not the transition day itself).
+
+**AM Shift:** Always 10:00AM–4:30PM (6.5 hours). This NEVER changes.
+
+**PM Shift:** 4:30PM–close. Close time varies:
+
+| Period | Days | Close | PM Duration |
+|--------|------|-------|-------------|
+| DST (Mar–Nov) | Sun–Thu | 9:00PM | 4.5 hrs |
+| DST (Mar–Nov) | Fri–Sat | 10:00PM | 5.5 hrs |
+| Standard (Nov–Mar) | Sun–Thu | 8:00PM | 3.5 hrs |
+| Standard (Nov–Mar) | Fri–Sat | 9:00PM | 4.5 hrs |
+
+DST transitions:
+- DST starts: 2nd Sunday in March → Switch to DST hours on Monday
+- DST ends: 1st Sunday in November → Switch to Standard hours on Monday
+
+See `docs/brain/011326__lpm-shift-hours.md` for full specification.
+
+### 4.4 Tip Pool Default Rule (CARDINAL RULE)
+
+**If Jon does not mention how servers are splitting their tips, assume they are sharing tips in a tip pool.**
+
+- Default: Tip pool (split evenly)
+- If hours differ: Jon will state hours, split by hours
+- Only exception: Jon explicitly says "NOT tip pooling" or similar
+
+This rule applies to ALL multi-server shifts. Do not ask — assume tip pool unless told otherwise.
+
 ## 5. Claude Calculates and Displays All Math
 
 Claude presents:

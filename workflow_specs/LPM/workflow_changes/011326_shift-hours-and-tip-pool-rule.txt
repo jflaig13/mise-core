@@ -1,0 +1,57 @@
+CHANGELOG: LPM Shift Hours and Tip Pool Default Rule
+=====================================================
+
+Date: 2025-01-13
+Author: Jon (via Claude)
+
+SUMMARY
+-------
+Added DST-based shift hours schedule and documented the cardinal tip pool default rule.
+
+WHAT CHANGED
+------------
+1. Added Section 4.3: Shift Hours (DST-Based Schedule)
+   - AM shift always 6.5 hours (10AM-4:30PM)
+   - PM shift varies by day and DST status
+   - Schedule changes on Monday after DST transitions
+
+2. Added Section 4.4: Tip Pool Default Rule
+   - If Jon doesn't mention how servers split tips, assume tip pool
+   - Split evenly unless hours are stated
+   - Only exception: explicit "NOT tip pooling" statement
+
+FILES TOUCHED
+-------------
+- workflow_specs/LPM/LPM_Workflow_Master.txt
+  - Added section 4.3: Shift Hours
+  - Added section 4.4: Tip Pool Default Rule
+
+- docs/brain/011326__lpm-shift-hours.md (NEW - created earlier)
+  - Full DST schedule specification
+
+WHY
+---
+1. Shift hours: Enables automatic calculation of PM shift durations without
+   requiring explicit hours in every recording. Based on DST for simplicity
+   (only 2 schedule changes per year).
+
+2. Tip pool rule: Documents the cardinal rule that was previously implicit.
+   Prevents errors where multi-server shifts are incorrectly processed as
+   individual (non-pooled) shifts.
+
+SHIFT HOURS SUMMARY
+-------------------
+AM: Always 6.5 hours (10AM-4:30PM)
+
+DST (March-November):
+- Sun-Thu: close 9PM (4.5 hr PM shift)
+- Fri-Sat: close 10PM (5.5 hr PM shift)
+
+Standard (November-March):
+- Sun-Thu: close 8PM (3.5 hr PM shift)
+- Fri-Sat: close 9PM (4.5 hr PM shift)
+
+TIP POOL RULE
+-------------
+Multiple servers on a shift = tip pool (default)
+Unless Jon explicitly states otherwise or provides individual final numbers.
