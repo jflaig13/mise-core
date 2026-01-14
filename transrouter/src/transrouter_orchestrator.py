@@ -13,6 +13,7 @@ from typing import Any, Callable, Dict, Optional
 
 from . import intent_classifier, entity_extractor, domain_router, logging_utils
 from .asr_adapter import ASRAdapter, get_asr_provider
+from .logging_utils import log_transcript
 from .schemas import (
     AudioRequest,
     EntityExtraction,
@@ -131,6 +132,9 @@ def _handle_text_core(
     logger,
     transcript_result: TranscriptResult,
 ) -> RouterResponse:
+    # Add transcript to meta so domain agents can access it
+    meta["transcript"] = transcript
+
     try:
         domain_agent, intent_type, intent_conf = classifier(transcript, meta)
         intent = IntentClassification(domain_agent=domain_agent, intent_type=intent_type, confidence=intent_conf)
@@ -157,4 +161,20 @@ def _handle_text_core(
     response.entity_confidence = extraction.confidence
     response.decision_reason = f"rule_based:{intent.intent_type}"
     logging_utils.log_event(logger, "router.routed", response.__dict__)
+
+    # Log detailed transcript processing for debugging
+    filename = meta.get("filename", "unknown")
+    log_transcript(
+        filename=filename,
+        transcript=transcript,
+        extraction={
+            "domain": intent.domain_agent,
+            "intent": intent.intent_type,
+            "intent_confidence": intent.confidence,
+            "entities": extraction.entities,
+            "entity_confidence": extraction.confidence,
+        },
+        result=response.payload if response.payload else None,
+    )
+
     return response

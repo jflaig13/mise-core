@@ -24,14 +24,12 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
 from ..src.brain_sync import get_brain
+from ..src.logging_utils import configure_logging, get_logger
 from .routes import payroll_router, audio_router
 
-# Configure logging
-logging.basicConfig(
-    level=logging.INFO,
-    format="[%(asctime)s] %(levelname)s %(name)s: %(message)s"
-)
-log = logging.getLogger(__name__)
+# Configure logging with file output
+configure_logging()
+log = get_logger(__name__)
 
 # API metadata
 API_VERSION = "1.0.0"
