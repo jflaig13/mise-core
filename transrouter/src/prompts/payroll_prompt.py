@@ -53,16 +53,59 @@ Parse the provided payroll transcript and:
 
 ## CRITICAL BUSINESS RULES
 
-### Tip Pooling (DEFAULT BEHAVIOR)
+### Tip Pooling (DEFAULT BEHAVIOR) - READ THIS CAREFULLY
 **DEFAULT: All servers on a shift ARE tip pooling unless explicitly stated otherwise.**
 
-When tip pooling (the default):
-1. Combine all servers' tips before tipout into a single pool
-2. Calculate total tipout (sum of all tipouts)
-3. Subtract total tipout from pool
-4. Divide remaining pool evenly among servers
+**IMPORTANT: When multiple servers work the same shift, they are ALWAYS tip pooling by default.**
 
-Only if the transcript explicitly says "NOT tip pooling", "keeping their own tips", or similar should you NOT pool tips.
+When tip pooling (which is the default for any shift with 2+ servers):
+1. **Add up ALL servers' tips** into a single pool
+2. **Add up ALL servers' food sales** into a total
+3. **Calculate tipout from TOTAL food sales** (not individual)
+4. **Subtract tipout from pool**
+5. **Divide remaining pool equally among servers** (or by hours if stated)
+
+**CRITICAL EXAMPLE - Thursday PM with 2 servers (tip pool):**
+Transcript: "Thursday PM, utility was John. Kevin $65.01, food sales $295. Austin $165.95, food sales $325."
+
+Step 1: Pool all tips: $65.01 + $165.95 = $230.96
+Step 2: Total food sales: $295 + $325 = $620.00
+Step 3: Utility tipout: $620.00 × 5% = $31.00
+Step 4: Pool after tipout: $230.96 - $31.00 = $199.96
+Step 5: Divide equally: $199.96 ÷ 2 = $99.98 each
+
+Result:
+- Kevin Worley: $99.98
+- Austin Kelley: $99.98
+- John Neal (utility): $31.00
+
+**CRITICAL EXAMPLE - Friday PM with 3 servers (tip pool):**
+Transcript: "Friday PM, utility split John and Ryan. Kevin $368.70, food sales $858. Brooke $213.08, food sales $170.50. Austin $411.46, food sales $883."
+
+Step 1: Pool all tips: $368.70 + $213.08 + $411.46 = $993.24
+Step 2: Total food sales: $858 + $170.50 + $883 = $1,911.50
+Step 3: Utility tipout: $1,911.50 × 5% = $95.58
+Step 4: Pool after tipout: $993.24 - $95.58 = $897.66
+Step 5: Divide equally (3 servers): $897.66 ÷ 3 = $299.22 each
+Step 6: Utility split (2 people): $95.58 ÷ 2 = $47.79 each
+
+Result:
+- Kevin Worley: $299.22
+- Brooke Neal: $299.22
+- Austin Kelley: $299.22
+- John Neal (utility): $47.79
+- Ryan Alexander (utility): $47.79
+
+**WRONG (do NOT do this):** Calculating each server's tipout individually and subtracting from their own tips. This is NOT how tip pooling works.
+
+Only if the transcript explicitly says "NOT tip pooling", "keeping their own tips", "no pool", or similar should you NOT pool tips.
+
+### Single Server Shift (NO pool needed)
+When only ONE server works a shift, there is no pool - just calculate their tipout:
+
+Example: "Monday AM, utility Ryan. Austin $200, food sales $400."
+- Austin: $200 - ($400 × 5%) = $200 - $20 = $180.00
+- Ryan (utility): $20.00
 
 ### Tip Pool with Unequal Hours
 When a tip pool has unequal hours:
@@ -71,46 +114,95 @@ When a tip pool has unequal hours:
 3. Calculate hourly rate: pool / total hours
 4. Distribute based on hours worked: hourly_rate × hours
 
-### Tipout Calculation (CRITICAL)
-Tipouts are calculated from each server's **food sales**:
-
-- **Expo tipout** = 1% of server's food sales
-- **Busser tipout** = 4% of server's food sales
-- **Utility tipout** = 5% of server's food sales (full expo + busser combined)
-
-Example: If Austin has $500 food sales:
-- With expo + busser: expo gets $5.00 (1%), busser gets $20.00 (4%)
-- With utility only: utility gets $25.00 (5%)
+### Tipout Percentages
+- **Expo tipout** = 1% of food sales
+- **Busser tipout** = 4% of food sales
+- **Utility tipout** = 5% of food sales (replaces expo + busser)
 
 ### Support Staff Configurations
 Shifts have one of these support staff setups:
 1. **Expo + Busser(s)**: Expo gets 1%, busser(s) get 4% (split if multiple)
 2. **Utility only**: Utility gets full 5%
-3. **Expo + Busser + Utility**: Rare, but expo gets 1%, busser gets 4%, utility gets stated amount or additional duties
 
 ### Support Staff Distribution
-- **Expo**: Receives 1% of each server's food sales
-- **Busser**: Receives 4% of each server's food sales (split evenly if multiple bussers)
-- **Utility**: Receives 5% of each server's food sales (replaces expo + busser)
-- When multiple bussers: Split total busser tipout evenly between them
+- When multiple support staff share a role (e.g., 2 bussers, or split utility): divide their total evenly
 - Support staff amounts are ADDED (they receive tipouts)
-- Server amounts have tipouts SUBTRACTED
+- Server amounts come from the POOL (after tipout is subtracted)
+
+### Partial Tipouts (Support Staff)
+Managers may indicate that support staff should receive less than the full tipout. This can be stated:
+
+**At the BEGINNING** when naming support staff:
+- "Utility was Ryan, but he only gets half"
+- "John was busser but left early"
+
+**At the END** after all tips:
+- "...and Ryan only gets 75% of the tipout"
+- "John took a 2 hour break"
+- "Ryan left at 3:30"
+
+**Types of partial tipout indicators:**
+
+1. **Explicit percentage**: "Ryan only gets half" or "Ryan gets 50%"
+2. **Explicit amount**: "Ryan gets $15" (use exact amount)
+3. **Break time**: "Ryan took a 2 hour break" → Calculate based on hours actually worked
+4. **Early departure**: "Ryan left at 3:30" → Calculate based on time worked vs full shift
+5. **Late arrival**: "Ryan came in at noon" → Calculate based on time worked vs full shift
+
+### Shift Hours for Partial Tipout Calculations
+
+Use these STANDARD SHIFT DURATIONS to calculate partial tipouts:
+
+**AM Shift:** ALWAYS 6.5 hours (10:00AM–4:30PM) — never changes
+
+**PM Shift (Standard Time: Nov–Mar):**
+| Day | Duration |
+|-----|----------|
+| Sun–Thu | 3.5 hours (4:30PM–8:00PM) |
+| Fri–Sat | 4.5 hours (4:30PM–9:00PM) |
+
+**PM Shift (DST: Mar–Nov):**
+| Day | Duration |
+|-----|----------|
+| Sun–Thu | 4.5 hours (4:30PM–9:00PM) |
+| Fri–Sat | 5.5 hours (4:30PM–10:00PM) |
+
+**January is Standard Time (use Standard hours).**
+
+### Calculating Partial Tipout from Time
+
+**Example 1: Early departure on AM shift**
+"Ryan left at 3:30" on AM shift (10AM–4:30PM = 6.5 hours)
+- Ryan worked: 10:00AM to 3:30PM = 5.5 hours
+- Full shift: 6.5 hours
+- Percentage: 5.5 / 6.5 = 84.6%
+- Ryan gets: 84.6% of calculated tipout
+
+**Example 2: Break on PM shift**
+"John took a 2 hour break" on Thursday PM (Standard time = 3.5 hours)
+- John worked: 3.5 - 2.0 = 1.5 hours
+- Percentage: 1.5 / 3.5 = 42.9%
+- John gets: 42.9% of calculated tipout
+
+**Example 3: Late arrival**
+"Ryan came in at noon" on AM shift (10AM–4:30PM)
+- Ryan worked: 12:00PM to 4:30PM = 4.5 hours
+- Full shift: 6.5 hours
+- Percentage: 4.5 / 6.5 = 69.2%
+- Ryan gets: 69.2% of calculated tipout
+
+### What happens to the unearned tipout?
+When support staff gets partial tipout, the remainder stays with the servers:
+- For single server: They keep the unearned portion
+- For tip pool: Add unearned portion back to pool before splitting
 
 ### Transcript Format
 The transcript follows this pattern:
-1. Date + shift (AM/PM) — PM shifts may omit date if same day as previous AM
-2. Support staff for the shift (expo, busser, utility) — stated casually
+1. Date + shift (AM/PM)
+2. Support staff for the shift (expo, busser, utility)
 3. Each server with:
-   - Before tipout tips (total tips before any deductions)
-   - Food sales (used to calculate expo/busser/utility tipouts)
-
-Example transcript segment:
-"Monday December 29th AM shift. Ryan was utility. Austin before tipout $200, food sales $400. Brooke before tipout $180, food sales $350."
-
-Calculation:
-- Austin: utility tipout = $400 × 0.05 = $20.00, final = $200 - $20 = $180.00
-- Brooke: utility tipout = $350 × 0.05 = $17.50, final = $180 - $17.50 = $162.50
-- Ryan (utility): receives $20.00 + $17.50 = $37.50
+   - Tips (before tipout / total tips)
+   - Food sales
 
 ### Final Numbers
 When transcript says "these are the final numbers" or "no calculation needed":
