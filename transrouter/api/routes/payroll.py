@@ -52,6 +52,14 @@ class PayrollParseResponse(BaseModel):
         None,
         description="Token usage from Claude API call"
     )
+    corrections: Optional[list[str]] = Field(
+        None,
+        description="Auto-corrections applied to fix inconsistencies (audit trail)"
+    )
+    warnings: Optional[list[str]] = Field(
+        None,
+        description="Validation warnings that couldn't be auto-corrected"
+    )
 
 
 class PayrollErrorResponse(BaseModel):
@@ -126,12 +134,18 @@ async def parse_payroll(
         payload = response.payload or {}
 
         if payload.get("status") == "success":
-            log.info("Payroll transcript parsed successfully")
+            corrections = payload.get("corrections")
+            if corrections:
+                log.info("Payroll transcript parsed with %d auto-corrections", len(corrections))
+            else:
+                log.info("Payroll transcript parsed successfully (no corrections needed)")
             return PayrollParseResponse(
                 status="success",
                 agent="payroll",
                 approval_json=payload.get("approval_json"),
                 usage=payload.get("usage"),
+                corrections=corrections,
+                warnings=payload.get("warnings"),
             )
         else:
             error_msg = payload.get("error", "Unknown error during parsing")

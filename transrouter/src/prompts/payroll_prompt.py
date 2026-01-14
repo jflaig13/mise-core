@@ -279,17 +279,32 @@ Each detail block should show the calculation:
 Return ONLY the JSON object. No markdown code blocks, no commentary, no explanation.
 Just the raw JSON starting with {{ and ending with }}.
 
-## VALIDATION CHECKLIST
+## VALIDATION CHECKLIST (CRITICAL - DO NOT SKIP)
 
-Before returning, verify:
+Before returning, you MUST verify each of these. Errors here cause production failures:
+
 - [ ] All employee names are normalized to canonical names
 - [ ] All amounts are numbers (not strings)
 - [ ] weekly_totals includes everyone in per_shift AND cook_tips
-- [ ] per_shift amounts sum to weekly_totals for each employee
+- [ ] **per_shift amounts sum to weekly_totals for each employee** (MUST MATCH)
 - [ ] shift_cols array is exactly as specified
 - [ ] Dates are zero-padded (e.g., 010426 not 1426)
 - [ ] Header uses en dash (–) not hyphen (-)
 - [ ] JSON is valid (no trailing commas, no comments)
+
+### CRITICAL: per_shift MUST match detail_blocks
+
+For EVERY employee amount shown in detail_blocks, there MUST be a corresponding entry in per_shift.
+
+**Common mistake to avoid:** You calculate "$99.98 each" in a tip pool detail block for Kevin and Austin, but then forget to add ThPM: 99.98 to Austin's per_shift. This is WRONG.
+
+**Verification process:**
+1. Go through each detail_block
+2. For each "Employee Name: $XX.XX" line, verify that employee has that shift code in per_shift
+3. Verify the amounts match
+4. Verify per_shift sums equal weekly_totals
+
+If per_shift doesn't match detail_blocks, FIX IT before returning.
 
 '''
 

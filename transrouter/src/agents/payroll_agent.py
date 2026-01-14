@@ -124,9 +124,17 @@ class PayrollAgent:
                 "raw_response": response.content,
             }
 
+        # Auto-correct any inconsistencies between detail_blocks and per_shift
+        corrections = self._auto_correct_approval_json(response.json_data)
+        if corrections:
+            log.info("Auto-corrected %d inconsistencies in approval JSON", len(corrections))
+            for correction in corrections:
+                log.info("  CORRECTED: %s", correction)
+
         log.info(
-            "Successfully parsed payroll transcript (employees=%d)",
+            "Successfully parsed payroll transcript (employees=%d, corrections=%d)",
             len(response.json_data.get("weekly_totals", {})),
+            len(corrections),
         )
 
         return {
@@ -135,6 +143,7 @@ class PayrollAgent:
             "approval_json": response.json_data,
             "raw_response": response.content,
             "usage": response.usage,
+            "corrections": corrections if corrections else None,
         }
 
     def _validate_approval_json(self, data: Dict[str, Any]) -> Optional[str]:
@@ -189,7 +198,196 @@ class PayrollAgent:
         if missing_from_totals:
             return f"Employees missing from weekly_totals: {missing_from_totals}"
 
+        # Validate per_shift sums match weekly_totals
+        warnings = []
+        for employee, shifts in data.get("per_shift", {}).items():
+            calculated_total = sum(shifts.values())
+            stated_total = data.get("weekly_totals", {}).get(employee, 0)
+            diff = abs(calculated_total - stated_total)
+            if diff > 0.02:  # Allow 2 cent rounding tolerance
+                warnings.append(
+                    f"{employee}: per_shift sum ${calculated_total:.2f} != weekly_total ${stated_total:.2f} (diff: ${diff:.2f})"
+                )
+
+        # Log warnings but don't fail validation (Claude inconsistency, not error)
+        if warnings:
+            log.warning("Validation warnings (per_shift vs weekly_totals mismatch):")
+            for w in warnings:
+                log.warning("  %s", w)
+
+        # Check detail_blocks for amounts that should be in per_shift
+        detail_warnings = self._check_detail_block_consistency(data)
+        if detail_warnings:
+            log.warning("Validation warnings (detail_blocks vs per_shift):")
+            for w in detail_warnings:
+                log.warning("  %s", w)
+
         return None
+
+    def _check_detail_block_consistency(self, data: Dict[str, Any]) -> list:
+        """Check if amounts mentioned in detail_blocks are in per_shift.
+
+        Returns list of warning strings (doesn't fail validation).
+        """
+        import re
+
+        warnings = []
+        per_shift = data.get("per_shift", {})
+
+        # Map shift labels to shift codes
+        day_map = {
+            "Mon": "M", "Tue": "T", "Wed": "W", "Thu": "Th",
+            "Fri": "F", "Sat": "Sa", "Sun": "Su"
+        }
+
+        for block in data.get("detail_blocks", []):
+            if not isinstance(block, list) or len(block) < 2:
+                continue
+
+            label = block[0]  # e.g., "Thu Jan 8 — PM (tip pool)"
+            lines = block[1]
+
+            # Parse day and AM/PM from label
+            shift_code = None
+            for day_name, day_code in day_map.items():
+                if day_name in label:
+                    if "AM" in label:
+                        shift_code = f"{day_code}AM"
+                    elif "PM" in label:
+                        shift_code = f"{day_code}PM"
+                    break
+
+            if not shift_code:
+                continue
+
+            # Look for employee amounts in the detail lines
+            # Pattern: "Employee Name: $XX.XX" at end of line
+            for line in lines:
+                # Match patterns like "Kevin Worley: $99.98" or "Austin Kelley: $99.98"
+                match = re.search(r'^([A-Z][a-z]+ [A-Z][a-z]+): \$(\d+\.?\d*)\s*$', line)
+                if match:
+                    employee = match.group(1)
+                    amount = float(match.group(2))
+
+                    # Check if this employee has this shift in per_shift
+                    if employee in per_shift:
+                        employee_shifts = per_shift[employee]
+                        if shift_code not in employee_shifts:
+                            warnings.append(
+                                f"{employee} has ${amount:.2f} in {label} detail but {shift_code} missing from per_shift"
+                            )
+                        else:
+                            per_shift_amount = employee_shifts[shift_code]
+                            if abs(per_shift_amount - amount) > 0.02:
+                                warnings.append(
+                                    f"{employee} {shift_code}: detail shows ${amount:.2f} but per_shift has ${per_shift_amount:.2f}"
+                                )
+
+        return warnings
+
+    def _auto_correct_approval_json(self, data: Dict[str, Any]) -> list:
+        """Auto-correct inconsistencies between detail_blocks and per_shift.
+
+        Parses detail_blocks, finds missing/incorrect per_shift entries,
+        fixes them, and recalculates weekly_totals.
+
+        Returns list of correction descriptions for audit trail.
+        """
+        import re
+
+        corrections = []
+        per_shift = data.get("per_shift", {})
+        weekly_totals = data.get("weekly_totals", {})
+
+        # Map shift labels to shift codes
+        day_map = {
+            "Mon": "M", "Tue": "T", "Wed": "W", "Thu": "Th",
+            "Fri": "F", "Sat": "Sa", "Sun": "Su"
+        }
+
+        # Extract expected values from detail_blocks
+        expected_values = {}  # {employee: {shift_code: amount}}
+
+        for block in data.get("detail_blocks", []):
+            if not isinstance(block, list) or len(block) < 2:
+                continue
+
+            label = block[0]
+            lines = block[1]
+
+            # Parse day and AM/PM from label
+            shift_code = None
+            for day_name, day_code in day_map.items():
+                if day_name in label:
+                    if "AM" in label:
+                        shift_code = f"{day_code}AM"
+                    elif "PM" in label:
+                        shift_code = f"{day_code}PM"
+                    break
+
+            if not shift_code:
+                continue
+
+            # Extract employee amounts from detail lines
+            for line in lines:
+                # Pattern: "Employee Name: $XX.XX" at end of line (final amount)
+                match = re.search(r'^([A-Z][a-z]+ [A-Z][a-z]+): \$(\d+\.?\d*)\s*$', line)
+                if match:
+                    employee = match.group(1)
+                    amount = float(match.group(2))
+
+                    # Skip utility/support staff lines (they have "(utility)" suffix)
+                    if "(utility)" in line.lower():
+                        continue
+
+                    if employee not in expected_values:
+                        expected_values[employee] = {}
+                    expected_values[employee][shift_code] = amount
+
+        # Compare and correct per_shift
+        for employee, shifts in expected_values.items():
+            if employee not in per_shift:
+                per_shift[employee] = {}
+                corrections.append(f"Added missing employee to per_shift: {employee}")
+
+            for shift_code, expected_amount in shifts.items():
+                actual_amount = per_shift[employee].get(shift_code)
+
+                if actual_amount is None:
+                    # Missing shift - add it
+                    per_shift[employee][shift_code] = expected_amount
+                    corrections.append(
+                        f"{employee} {shift_code}: ADDED ${expected_amount:.2f} (was missing)"
+                    )
+                elif abs(actual_amount - expected_amount) > 0.02:
+                    # Wrong amount - correct it
+                    old_amount = actual_amount
+                    per_shift[employee][shift_code] = expected_amount
+                    corrections.append(
+                        f"{employee} {shift_code}: CORRECTED ${old_amount:.2f} → ${expected_amount:.2f}"
+                    )
+
+        # Recalculate weekly_totals from corrected per_shift
+        for employee, shifts in per_shift.items():
+            calculated_total = sum(shifts.values())
+            old_total = weekly_totals.get(employee, 0)
+
+            if abs(calculated_total - old_total) > 0.02:
+                weekly_totals[employee] = round(calculated_total, 2)
+                corrections.append(
+                    f"{employee} weekly_total: CORRECTED ${old_total:.2f} → ${calculated_total:.2f}"
+                )
+
+        # Ensure all per_shift employees are in weekly_totals
+        for employee in per_shift:
+            if employee not in weekly_totals:
+                total = sum(per_shift[employee].values())
+                weekly_totals[employee] = round(total, 2)
+                corrections.append(
+                    f"{employee}: ADDED to weekly_totals (${total:.2f})"
+                )
+
+        return corrections
 
 
 # Module-level instance for simple usage

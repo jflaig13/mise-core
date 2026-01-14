@@ -63,6 +63,14 @@ class AudioProcessResponse(BaseModel):
     error: Optional[str] = Field(None, description="Error message if status is 'error'")
     errors: Optional[list[str]] = Field(None, description="List of errors if any occurred")
     usage: Optional[Dict[str, int]] = Field(None, description="Token usage if Claude was called")
+    corrections: Optional[list[str]] = Field(
+        None,
+        description="Auto-corrections applied to fix inconsistencies (for audit trail)"
+    )
+    warnings: Optional[list[str]] = Field(
+        None,
+        description="Validation warnings that couldn't be auto-corrected"
+    )
 
 
 class AudioErrorResponse(BaseModel):
@@ -199,6 +207,8 @@ async def process_audio(
         approval_json=payload.get("approval_json"),
         error=payload.get("error"),
         usage=payload.get("usage"),
+        corrections=payload.get("corrections"),
+        warnings=payload.get("warnings"),
     )
 
 
