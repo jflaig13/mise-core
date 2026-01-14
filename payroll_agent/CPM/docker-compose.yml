@@ -44,7 +44,7 @@ services:
   # Payroll engine (FastAPI)
   payroll_engine:
     build:
-      context: ../../..  # Build from mise-core root
+      context: ../..  # Build from mise-core root
       dockerfile: payroll_agent/CPM/engine/Dockerfile.local
     container_name: cpm-payroll-engine
     environment:
@@ -62,9 +62,9 @@ services:
       - "8080:8080"
     volumes:
       # Mount source for hot reload
-      - ../../../payroll_agent:/app/payroll_agent
-      - ../../../roster:/app/roster
-      - ../../../workflow_specs:/app/workflow_specs
+      - ../../payroll_agent:/app/payroll_agent
+      - ../../roster:/app/roster
+      - ../../workflow_specs:/app/workflow_specs
     depends_on:
       postgres:
         condition: service_healthy
