@@ -24,6 +24,7 @@ from dateutil import parser as dtp
 from roster.loader import load_roster, normalize_employee_name, get_roster_path
 from .parse_shift import router as ParseShiftRouter
 from .commit_shift import router as CommitShiftRouter
+from .database import get_db
 
 app = FastAPI()
 app.include_router(ParseShiftRouter)
@@ -39,13 +40,14 @@ BQ_DATASET = os.getenv("BQ_DATASET", "payroll")
 BQ_TABLE_SHIFTS = os.getenv("BQ_TABLE_SHIFTS", "shifts")
 
 # Lazy-load BigQuery client to avoid blocking container startup
-_bq_client = None
-
-def get_bq_client():
-    global _bq_client
-    if _bq_client is None:
-        _bq_client = bigquery.Client(project=PROJECT_ID)
-    return _bq_client
+# NOTE: Replaced with database abstraction layer (database/__init__.py)
+# _bq_client = None
+#
+# def get_bq_client():
+#     global _bq_client
+#     if _bq_client is None:
+#         _bq_client = bigquery.Client(project=PROJECT_ID)
+#     return _bq_client
 
 
 # ----------------------------------------------------
@@ -1123,11 +1125,13 @@ def parse_transcript_to_rows(payload: TranscriptIn) -> List[ShiftRow]:
 
 
 # ----------------------------------------------------
-# BigQuery Insert with De-dupe
+# Database Insert with De-dupe (uses abstraction layer)
 # ----------------------------------------------------
 def insert_shift_rows(rows: List[ShiftRow]):
-    table = f"{PROJECT_ID}.{BQ_DATASET}.{BQ_TABLE_SHIFTS}"
-
+    """
+    Insert shift rows using database abstraction.
+    Supports both BigQuery (production) and PostgreSQL (local dev).
+    """
     to_insert = []
     row_ids = []
 
@@ -1154,12 +1158,11 @@ def insert_shift_rows(rows: List[ShiftRow]):
             }
         )
 
-    errors = get_bq_client().insert_rows_json(table, to_insert, row_ids=row_ids)
-
-    if errors:
-        raise HTTPException(status_code=500, detail=str(errors))
-
-    return {"ok": True, "inserted": len(rows)}
+    try:
+        result = get_db().insert_shift_rows(to_insert, row_ids)
+        return result
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 
 
 # ----------------------------------------------------
@@ -1220,4 +1223,11 @@ async def transcribe_and_ingest(
 
 @app.get("/ping")
 def ping():
-    return {"ok": True, "project": PROJECT_ID, "dataset": BQ_DATASET}
+    """Health check endpoint with database backend info."""
+    db_health = get_db().health_check()
+    return {
+        "ok": True,
+        "project": PROJECT_ID,
+        "dataset": BQ_DATASET,
+        "database": db_health,
+    }

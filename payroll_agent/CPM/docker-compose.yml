@@ -1,0 +1,86 @@
+version: '3.8'
+
+services:
+  # PostgreSQL database for local development
+  postgres:
+    image: postgres:15-alpine
+    container_name: cpm-postgres
+    environment:
+      POSTGRES_DB: payroll
+      POSTGRES_USER: payroll_user
+      POSTGRES_PASSWORD: payroll_pass
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./local_dev/init_db.sql:/docker-entrypoint-initdb.d/init.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U payroll_user -d payroll"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - cpm-local
+
+  # Mock transcriber service
+  mock_transcriber:
+    build:
+      context: ./mock_transcriber
+      dockerfile: Dockerfile
+    container_name: cpm-mock-transcriber
+    ports:
+      - "8081:8081"
+    volumes:
+      # Mount fixtures directory
+      - ./local_dev/fixtures:/app/fixtures:ro
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8081/health"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - cpm-local
+
+  # Payroll engine (FastAPI)
+  payroll_engine:
+    build:
+      context: ../../..  # Build from mise-core root
+      dockerfile: payroll_agent/CPM/engine/Dockerfile.local
+    container_name: cpm-payroll-engine
+    environment:
+      DATABASE_BACKEND: postgres
+      POSTGRES_HOST: postgres
+      POSTGRES_PORT: 5432
+      POSTGRES_DB: payroll
+      POSTGRES_USER: payroll_user
+      POSTGRES_PASSWORD: payroll_pass
+      TRANSCRIBE_BASE: http://mock_transcriber:8081
+      PROJECT_ID: local-dev
+      BQ_DATASET: payroll
+      BQ_TABLE_SHIFTS: shifts
+    ports:
+      - "8080:8080"
+    volumes:
+      # Mount source for hot reload
+      - ../../../payroll_agent:/app/payroll_agent
+      - ../../../roster:/app/roster
+      - ../../../workflow_specs:/app/workflow_specs
+    depends_on:
+      postgres:
+        condition: service_healthy
+      mock_transcriber:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - cpm-local
+
+networks:
+  cpm-local:
+    driver: bridge
+
+volumes:
+  postgres_data:

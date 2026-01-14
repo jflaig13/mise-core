@@ -1,0 +1,192 @@
+{
+  "out_base": "TipReport_010526_011126",
+  "header": "Week of January 5–11, 2026",
+  "shift_cols": [
+    "MAM","MPM",
+    "TAM","TPM",
+    "WAM","WPM",
+    "ThAM","ThPM",
+    "FAM","FPM",
+    "SaAM","SaPM",
+    "SuAM","SuPM"
+  ],
+  "per_shift": {
+    "Ryan Alexander": { "MAM": 25.33, "MPM": 41.09, "TAM": 19.20, "TPM": 44.35, "WPM": 30.45, "FAM": 28.84, "FPM": 47.79, "SaAM": 39.51 },
+    "John Neal": { "WAM": 50.00, "ThAM": 8.00, "ThPM": 31.00, "FPM": 47.79, "SaPM": 42.39, "SuAM": 47.06, "SuPM": 20.35 },
+    "Brooke Neal": { "MAM": 108.10, "TAM": 96.69, "WAM": 26.27, "FPM": 299.22 },
+    "Austin Kelley": { "MPM": 277.17, "TPM": 329.86, "WPM": 182.12, "ThAM": 144.67, "ThPM": 99.98, "FAM": 182.52, "FPM": 299.22 },
+    "Kevin Worley": { "ThPM": 99.98, "FPM": 299.22, "SaAM": 103.93, "SaPM": 119.95, "SuAM": 257.34, "SuPM": 68.53 },
+    "Mark Buryanek": { "SaAM": 103.93, "SaPM": 119.95 },
+    "Mike Walton": { "SuPM": 68.53 }
+  },
+  "cook_tips": {},
+  "weekly_totals": {
+    "Ryan Alexander": 276.56,
+    "Mark Buryanek": 223.88,
+    "Austin Kelley": 1515.54,
+    "Brooke Neal": 530.28,
+    "John Neal": 246.59,
+    "Mike Walton": 68.53,
+    "Kevin Worley": 948.95
+  },
+  "detail_blocks": [
+    [
+      "Mon Jan 5 — AM (solo)",
+      [
+        "Brooke Neal tips $133.43, food sales $506.55",
+        "Total food sales: $506.55",
+        "Tipout: Utility 5% ($506.55) = $25.33",
+        "Brooke Neal $133.43 − $25.33 = $108.10",
+        "Utility: Ryan Alexander $25.33"
+      ]
+    ],
+    [
+      "Mon Jan 5 — PM (solo)",
+      [
+        "Austin Kelley tips $318.26, food sales $821.70",
+        "Total food sales: $821.70",
+        "Tipout: Utility 5% ($821.70) = $41.09",
+        "Austin Kelley $318.26 − $41.09 = $277.17",
+        "Utility: Ryan Alexander $41.09"
+      ]
+    ],
+    [
+      "Tue Jan 6 — AM (solo)",
+      [
+        "Brooke Neal tips $115.89, food sales $384.00",
+        "Total food sales: $384.00",
+        "Tipout: Utility 5% ($384.00) = $19.20",
+        "Brooke Neal $115.89 − $19.20 = $96.69",
+        "Utility: Ryan Alexander $19.20"
+      ]
+    ],
+    [
+      "Tue Jan 6 — PM (solo)",
+      [
+        "Austin Kelley tips $374.21, food sales $887.00",
+        "Total food sales: $887.00",
+        "Tipout: Utility 5% ($887.00) = $44.35",
+        "Austin Kelley $374.21 − $44.35 = $329.86",
+        "Utility: Ryan Alexander $44.35"
+      ]
+    ],
+    [
+      "Wed Jan 7 — AM (explicit tipout)",
+      [
+        "Brooke Neal tips $76.27, tip out $50.00",
+        "Brooke Neal $76.27 − $50.00 = $26.27",
+        "Utility: John Neal $50.00"
+      ]
+    ],
+    [
+      "Wed Jan 7 — PM (solo)",
+      [
+        "Austin Kelley tips $212.57, food sales $609.00",
+        "Total food sales: $609.00",
+        "Tipout: Utility 5% ($609.00) = $30.45",
+        "Austin Kelley $212.57 − $30.45 = $182.12",
+        "Utility: Ryan Alexander $30.45"
+      ]
+    ],
+    [
+      "Thu Jan 8 — AM (explicit tipout)",
+      [
+        "Austin Kelley tips $152.67, tip out $8.00",
+        "Austin Kelley $152.67 − $8.00 = $144.67",
+        "Utility: John Neal $8.00"
+      ]
+    ],
+    [
+      "Thu Jan 8 — PM (tip pool)",
+      [
+        "Kevin Worley tips $65.01, food sales $295.00",
+        "Austin Kelley tips $165.95, food sales $325.00",
+        "Total tips: $230.96",
+        "Total food sales: $620.00",
+        "Tipout: Utility 5% ($620.00) = $31.00",
+        "Pool after tipout: $230.96 − $31.00 = $199.96 ÷ 2 = $99.98 each",
+        "Kevin Worley $99.98, Austin Kelley $99.98",
+        "Utility: John Neal $31.00"
+      ]
+    ],
+    [
+      "Fri Jan 9 — AM (solo)",
+      [
+        "Austin Kelley tips $211.36, food sales $576.80",
+        "Total food sales: $576.80",
+        "Tipout: Utility 5% ($576.80) = $28.84",
+        "Austin Kelley $211.36 − $28.84 = $182.52",
+        "Utility: Ryan Alexander $28.84"
+      ]
+    ],
+    [
+      "Fri Jan 9 — PM (tip pool)",
+      [
+        "Kevin Worley tips $368.70, food sales $858.00",
+        "Brooke Neal tips $213.08, food sales $170.50",
+        "Austin Kelley tips $411.46, food sales $883.00",
+        "Total tips: $993.24",
+        "Total food sales: $1,911.50",
+        "Tipout: Utility 5% ($1,911.50) = $95.58 ÷ 2 = $47.79 each",
+        "Pool after tipout: $993.24 − $95.58 = $897.66 ÷ 3 = $299.22 each",
+        "Kevin Worley $299.22, Brooke Neal $299.22, Austin Kelley $299.22",
+        "Utility: John Neal $47.79, Ryan Alexander $47.79"
+      ]
+    ],
+    [
+      "Sat Jan 10 — AM (tip pool)",
+      [
+        "Kevin Worley tips $94.69, food sales $300.70",
+        "Mark Buryanek tips $152.68, food sales $489.50",
+        "Total tips: $247.37",
+        "Total food sales: $790.20",
+        "Tipout: Utility 5% ($790.20) = $39.51",
+        "Pool after tipout: $247.37 − $39.51 = $207.86 ÷ 2 = $103.93 each",
+        "Kevin Worley $103.93, Mark Buryanek $103.93",
+        "Utility: Ryan Alexander $39.51"
+      ]
+    ],
+    [
+      "Sat Jan 10 — PM (tip pool)",
+      [
+        "Mark Buryanek tips $104.99, food sales $368.70",
+        "Kevin Worley tips $177.29, food sales $479.00",
+        "Total tips: $282.28",
+        "Total food sales: $847.70",
+        "Tipout: Utility 5% ($847.70) = $42.39",
+        "Pool after tipout: $282.28 − $42.39 = $239.89 ÷ 2 = $119.95 each",
+        "Mark Buryanek $119.95, Kevin Worley $119.95",
+        "Utility: John Neal $42.39"
+      ]
+    ],
+    [
+      "Sun Jan 11 — AM (solo)",
+      [
+        "Kevin Worley tips $304.40, food sales $941.28",
+        "Total food sales: $941.28",
+        "Tipout: Utility 5% ($941.28) = $47.06",
+        "Kevin Worley $304.40 − $47.06 = $257.34",
+        "Utility: John Neal $47.06"
+      ]
+    ],
+    [
+      "Sun Jan 11 — PM (tip pool)",
+      [
+        "Kevin Worley tips $98.78, food sales $267.00",
+        "Mike Walton tips $58.63, food sales $140.00",
+        "Total tips: $157.41",
+        "Total food sales: $407.00",
+        "Tipout: Utility 5% ($407.00) = $20.35",
+        "Pool after tipout: $157.41 − $20.35 = $137.06 ÷ 2 = $68.53 each",
+        "Kevin Worley $68.53, Mike Walton $68.53",
+        "Utility: John Neal $20.35"
+      ]
+    ],
+    [
+      "Cook Tips (weekly total)",
+      [
+        "None this week"
+      ]
+    ]
+  ]
+}

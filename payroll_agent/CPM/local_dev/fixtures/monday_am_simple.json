@@ -1,0 +1,6 @@
+{
+  "description": "Simple Monday AM shift with 3 servers",
+  "filename": "monday_am_120925.wav",
+  "expected_rows": 3,
+  "transcript": "Monday December 9th, 2025. AM shift. Servers Mike Walton $300.67, John Neal $250.45, Kevin Worley $275.30."
+}

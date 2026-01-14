@@ -1,0 +1,15 @@
+FROM python:3.11-slim
+
+WORKDIR /app
+
+# Install dependencies
+COPY payroll_agent/CPM/engine/requirements.txt /tmp/requirements.txt
+RUN pip install --no-cache-dir -r /tmp/requirements.txt
+
+# Copy roster module and workflow_specs (needed for employee roster)
+# Source code is mounted as volume for hot reload
+
+EXPOSE 8080
+
+# Run with hot reload for development
+CMD ["uvicorn", "payroll_agent.CPM.engine.payroll_engine:app", "--host", "0.0.0.0", "--port", "8080", "--reload"]

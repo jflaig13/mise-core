@@ -1,0 +1,6 @@
+{
+  "description": "Test Whisper transcription errors - name normalization",
+  "filename": "hallucinations.wav",
+  "expected_rows": 4,
+  "transcript": "Monday AM shift. Servers lost him $300.67, covid $250.45, broke Neil $275.30, run $180.25."
+}

@@ -1,0 +1,6 @@
+{
+  "description": "Test amount parsing edge cases",
+  "filename": "amounts.wav",
+  "expected_rows": 4,
+  "transcript": "Monday AM. Mike 219 68. John 7504. Kevin $120. Brooke 300 and 67 cents."
+}
