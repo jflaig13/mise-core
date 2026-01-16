@@ -1,0 +1,18 @@
+# Mise Transrouter API
+FROM python:3.11-slim
+
+WORKDIR /app
+
+# Install dependencies
+COPY transrouter/requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copy transrouter code
+COPY transrouter/ ./transrouter/
+
+ENV PYTHONUNBUFFERED=1
+ENV PORT=8080
+
+EXPOSE 8080
+
+CMD ["sh", "-c", "uvicorn transrouter.api.main:app --host 0.0.0.0 --port ${PORT:-8080}"]
