@@ -16,32 +16,34 @@ STORAGE_DIR = Path(__file__).parent / "data"
 
 
 class LocalApprovalStorage:
-    """Local JSON storage for approval queue (replaces Google Sheets)."""
+    """Local JSON storage for approval queue, isolated by pay period."""
 
     def __init__(self, storage_dir: Path = STORAGE_DIR):
         self.storage_dir = storage_dir
-        self.storage_dir.mkdir(parents=True, exist_ok=True)
-        self.approval_file = self.storage_dir / "approval_queue.json"
-        self._ensure_file()
 
-    def _ensure_file(self):
-        if not self.approval_file.exists():
-            self._save([])
+    def _get_approval_file(self, period_id: str) -> Path:
+        period_dir = self.storage_dir / period_id
+        period_dir.mkdir(parents=True, exist_ok=True)
+        return period_dir / "approval_queue.json"
 
-    def _load(self) -> List[Dict[str, Any]]:
+    def _load(self, period_id: str) -> List[Dict[str, Any]]:
+        approval_file = self._get_approval_file(period_id)
+        if not approval_file.exists():
+            return []
         try:
-            with open(self.approval_file) as f:
+            with open(approval_file) as f:
                 return json.load(f)
         except (json.JSONDecodeError, FileNotFoundError):
             return []
 
-    def _save(self, data: List[Dict[str, Any]]):
-        with open(self.approval_file, 'w') as f:
+    def _save(self, period_id: str, data: List[Dict[str, Any]]):
+        approval_file = self._get_approval_file(period_id)
+        with open(approval_file, 'w') as f:
             json.dump(data, f, indent=2)
 
-    def add_shifty(self, rows: List[Dict[str, Any]], filename: str, transcript: str) -> int:
-        """Add parsed shifty data to approval queue."""
-        data = self._load()
+    def add_shifty(self, period_id: str, rows: List[Dict[str, Any]], filename: str, transcript: str) -> int:
+        """Add parsed shifty data to approval queue for a pay period."""
+        data = self._load(period_id)
         start_idx = len(data)
 
         for i, row in enumerate(rows):
@@ -58,60 +60,60 @@ class LocalApprovalStorage:
                 "created_at": datetime.now().isoformat(),
             })
 
-        self._save(data)
-        log.info(f"Added {len(rows)} rows for {filename}")
+        self._save(period_id, data)
+        log.info(f"Added {len(rows)} rows for {filename} in period {period_id}")
         return start_idx
 
-    def get_by_filename(self, filename: str) -> List[Dict[str, Any]]:
-        """Get all rows for a filename."""
-        data = self._load()
+    def get_by_filename(self, period_id: str, filename: str) -> List[Dict[str, Any]]:
+        """Get all rows for a filename in a pay period."""
+        data = self._load(period_id)
         return [r for r in data if r.get("Filename") == filename]
 
-    def get_pending_by_filename(self, filename: str) -> List[Dict[str, Any]]:
-        """Get pending rows for a filename."""
-        return [r for r in self.get_by_filename(filename) if r.get("Status") == "Pending"]
+    def get_pending_by_filename(self, period_id: str, filename: str) -> List[Dict[str, Any]]:
+        """Get pending rows for a filename in a pay period."""
+        return [r for r in self.get_by_filename(period_id, filename) if r.get("Status") == "Pending"]
 
-    def is_approved(self, filename: str) -> bool:
-        """Check if all rows for a filename are approved."""
-        rows = self.get_by_filename(filename)
+    def is_approved(self, period_id: str, filename: str) -> bool:
+        """Check if all rows for a filename are approved in a pay period."""
+        rows = self.get_by_filename(period_id, filename)
         if not rows:
             return False
         return all(r.get("Status") == "Approved" for r in rows)
 
-    def approve_all(self, filename: str):
-        """Approve all rows for a filename."""
-        data = self._load()
+    def approve_all(self, period_id: str, filename: str):
+        """Approve all rows for a filename in a pay period."""
+        data = self._load(period_id)
         for row in data:
             if row.get("Filename") == filename:
                 row["Status"] = "Approved"
                 row["approved_at"] = datetime.now().isoformat()
-        self._save(data)
-        log.info(f"Approved all rows for {filename}")
+        self._save(period_id, data)
+        log.info(f"Approved all rows for {filename} in period {period_id}")
 
-    def get_approved_data(self, filename: str) -> List[Dict[str, Any]]:
-        """Get approved data for a filename."""
-        return [r for r in self.get_by_filename(filename) if r.get("Status") == "Approved"]
+    def get_approved_data(self, period_id: str, filename: str) -> List[Dict[str, Any]]:
+        """Get approved data for a filename in a pay period."""
+        return [r for r in self.get_by_filename(period_id, filename) if r.get("Status") == "Approved"]
 
-    def update_row(self, row_id: str, updates: Dict[str, Any]):
-        """Update a specific row."""
-        data = self._load()
+    def update_row(self, period_id: str, row_id: str, updates: Dict[str, Any]):
+        """Update a specific row in a pay period."""
+        data = self._load(period_id)
         for row in data:
             if row.get("id") == row_id:
                 row.update(updates)
                 break
-        self._save(data)
+        self._save(period_id, data)
 
-    def get_all(self) -> List[Dict[str, Any]]:
-        """Get all rows."""
-        return self._load()
+    def get_all(self, period_id: str) -> List[Dict[str, Any]]:
+        """Get all rows for a pay period."""
+        return self._load(period_id)
 
-    def clear(self):
-        """Clear all data."""
-        self._save([])
+    def clear(self, period_id: str):
+        """Clear all data for a pay period."""
+        self._save(period_id, [])
 
 
 class LocalTotalsStorage:
-    """Local JSON storage for weekly totals."""
+    """Local JSON storage for weekly totals, isolated by pay period."""
 
     SHIFT_COLS = [
         "MAM", "MPM", "TAM", "TPM", "WAM", "WPM",
@@ -120,46 +122,48 @@ class LocalTotalsStorage:
 
     def __init__(self, storage_dir: Path = STORAGE_DIR):
         self.storage_dir = storage_dir
-        self.storage_dir.mkdir(parents=True, exist_ok=True)
-        self.totals_file = self.storage_dir / "weekly_totals.json"
-        self._ensure_file()
 
-    def _ensure_file(self):
-        if not self.totals_file.exists():
-            self._save({})
+    def _get_totals_file(self, period_id: str) -> Path:
+        period_dir = self.storage_dir / period_id
+        period_dir.mkdir(parents=True, exist_ok=True)
+        return period_dir / "weekly_totals.json"
 
-    def _load(self) -> Dict[str, Dict[str, float]]:
+    def _load(self, period_id: str) -> Dict[str, Dict[str, float]]:
+        totals_file = self._get_totals_file(period_id)
+        if not totals_file.exists():
+            return {}
         try:
-            with open(self.totals_file) as f:
+            with open(totals_file) as f:
                 return json.load(f)
         except (json.JSONDecodeError, FileNotFoundError):
             return {}
 
-    def _save(self, data: Dict[str, Dict[str, float]]):
-        with open(self.totals_file, 'w') as f:
+    def _save(self, period_id: str, data: Dict[str, Dict[str, float]]):
+        totals_file = self._get_totals_file(period_id)
+        with open(totals_file, 'w') as f:
             json.dump(data, f, indent=2)
 
-    def add_shift_amount(self, employee: str, shift_code: str, amount: float):
-        """Add/update amount for employee's shift."""
-        data = self._load()
+    def add_shift_amount(self, period_id: str, employee: str, shift_code: str, amount: float):
+        """Add/update amount for employee's shift in a pay period."""
+        data = self._load(period_id)
 
         if employee not in data:
             data[employee] = {}
 
         data[employee][shift_code] = amount
-        self._save(data)
-        log.info(f"Updated {employee} {shift_code} = ${amount:.2f}")
+        self._save(period_id, data)
+        log.info(f"Updated {employee} {shift_code} = ${amount:.2f} in period {period_id}")
 
-    def get_employee_total(self, employee: str) -> float:
-        """Get current weekly total for an employee."""
-        data = self._load()
+    def get_employee_total(self, period_id: str, employee: str) -> float:
+        """Get current weekly total for an employee in a pay period."""
+        data = self._load(period_id)
         if employee not in data:
             return 0.0
         return sum(data[employee].values())
 
-    def get_all_totals(self) -> List[Dict[str, Any]]:
-        """Get all employee totals for display."""
-        data = self._load()
+    def get_all_totals(self, period_id: str) -> List[Dict[str, Any]]:
+        """Get all employee totals for display in a pay period."""
+        data = self._load(period_id)
         results = []
 
         for employee, shifts in data.items():
@@ -177,9 +181,9 @@ class LocalTotalsStorage:
         results.sort(key=lambda x: x["total"], reverse=True)
         return results
 
-    def clear(self):
-        """Clear all data."""
-        self._save({})
+    def clear(self, period_id: str):
+        """Clear all data for a pay period."""
+        self._save(period_id, {})
 
 
 # Singletons

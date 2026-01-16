@@ -11,19 +11,23 @@ import requests
 from fastapi import APIRouter, File, Form, Request, UploadFile
 from fastapi.responses import HTMLResponse, JSONResponse, RedirectResponse
 
-from mise_app.config import SHIFTY_DEFINITIONS, get_shifty_by_code
+from mise_app.config import SHIFTY_DEFINITIONS, get_shifty_by_code, PayPeriod
 from mise_app.local_storage import get_approval_storage, get_totals_storage
 
 log = logging.getLogger(__name__)
 
-router = APIRouter(tags=["Recording"])
+router = APIRouter(prefix="/period/{period_id}", tags=["Recording"])
 
 
 @router.get("/record/{shifty_code}", response_class=HTMLResponse)
-async def record_page(request: Request, shifty_code: str):
+async def record_page(request: Request, period_id: str, shifty_code: str):
     """Render the recording page for a specific shifty."""
-    config = request.app.state.config
     templates = request.app.state.templates
+
+    try:
+        period = PayPeriod.from_id(period_id)
+    except ValueError:
+        return HTMLResponse(f"Invalid pay period: {period_id}", status_code=404)
 
     try:
         shifty = get_shifty_by_code(shifty_code)
@@ -31,15 +35,17 @@ async def record_page(request: Request, shifty_code: str):
         return HTMLResponse(f"Unknown shifty code: {shifty_code}", status_code=404)
 
     # Calculate the date for this shifty
-    shifty_date = config.pay_period_start + timedelta(days=shifty["date_offset"])
+    shifty_date = period.start_date + timedelta(days=shifty["date_offset"])
 
     return templates.TemplateResponse(
         "record.html",
         {
             "request": request,
+            "period": period,
+            "periods": PayPeriod.get_available_periods(),
             "shifty": shifty,
             "shifty_date": shifty_date.strftime("%m/%d/%Y"),
-            "pay_period": config.pay_period_label,
+            "pay_period": period.label,
         }
     )
 
@@ -47,6 +53,7 @@ async def record_page(request: Request, shifty_code: str):
 @router.post("/process/{shifty_code}")
 async def process_shifty(
     request: Request,
+    period_id: str,
     shifty_code: str,
     file: UploadFile = File(...),
 ):
@@ -54,7 +61,15 @@ async def process_shifty(
     config = request.app.state.config
     shifty_state = request.app.state.shifty_state
 
-    log.info(f"Processing shifty {shifty_code} from file {file.filename}")
+    try:
+        period = PayPeriod.from_id(period_id)
+    except ValueError:
+        return JSONResponse(
+            {"status": "error", "error": f"Invalid pay period: {period_id}"},
+            status_code=400
+        )
+
+    log.info(f"Processing shifty {shifty_code} for period {period_id} from file {file.filename}")
 
     # Read audio bytes
     audio_bytes = await file.read()
@@ -96,15 +111,15 @@ async def process_shifty(
     log.info(f"Parsed shifty {shifty_code}: transcript length={len(transcript)}")
 
     # Convert approval_json to flat rows
-    rows = flatten_approval_json(approval_json, shifty_code, config)
+    rows = flatten_approval_json(approval_json, shifty_code, period)
 
-    # Store locally
+    # Store locally (with period isolation)
     filename = f"{shifty_code}.wav"
     approval_storage = get_approval_storage()
-    approval_storage.add_shifty(rows, filename, transcript)
+    approval_storage.add_shifty(period_id, rows, filename, transcript)
 
     # Update shifty status
-    shifty_state.set_status(shifty_code, "pending")
+    shifty_state.set_status(period_id, shifty_code, "pending")
 
     # Return data for approval page
     return JSONResponse({
@@ -113,25 +128,29 @@ async def process_shifty(
         "transcript": transcript,
         "rows": rows,
         "corrections": result.get("corrections"),
-        "redirect_url": f"/approve/{shifty_code}",
+        "redirect_url": f"/period/{period_id}/approve/{shifty_code}",
     })
 
 
 @router.get("/approve/{shifty_code}", response_class=HTMLResponse)
-async def approve_page(request: Request, shifty_code: str):
+async def approve_page(request: Request, period_id: str, shifty_code: str):
     """Show approval page for a shifty."""
-    config = request.app.state.config
     templates = request.app.state.templates
+
+    try:
+        period = PayPeriod.from_id(period_id)
+    except ValueError:
+        return HTMLResponse(f"Invalid pay period: {period_id}", status_code=404)
 
     try:
         shifty = get_shifty_by_code(shifty_code)
     except ValueError:
         return HTMLResponse(f"Unknown shifty code: {shifty_code}", status_code=404)
 
-    # Get data from local storage
+    # Get data from local storage (with period isolation)
     filename = f"{shifty_code}.wav"
     approval_storage = get_approval_storage()
-    rows = approval_storage.get_by_filename(filename)
+    rows = approval_storage.get_by_filename(period_id, filename)
 
     # Get transcript from first row
     transcript = ""
@@ -140,16 +159,18 @@ async def approve_page(request: Request, shifty_code: str):
             transcript = row["Transcript"]
             break
 
-    shifty_date = config.pay_period_start + timedelta(days=shifty["date_offset"])
+    shifty_date = period.start_date + timedelta(days=shifty["date_offset"])
 
     return templates.TemplateResponse(
         "approve.html",
         {
             "request": request,
+            "period": period,
+            "periods": PayPeriod.get_available_periods(),
             "shifty": shifty,
             "shifty_code": shifty_code,
             "shifty_date": shifty_date.strftime("%m/%d/%Y"),
-            "pay_period": config.pay_period_label,
+            "pay_period": period.label,
             "rows": rows,
             "transcript": transcript,
         }
@@ -157,9 +178,8 @@ async def approve_page(request: Request, shifty_code: str):
 
 
 @router.post("/approve/{shifty_code}/confirm")
-async def confirm_approval(request: Request, shifty_code: str):
+async def confirm_approval(request: Request, period_id: str, shifty_code: str):
     """Confirm approval of a shifty."""
-    config = request.app.state.config
     shifty_state = request.app.state.shifty_state
 
     filename = f"{shifty_code}.wav"
@@ -169,8 +189,8 @@ async def confirm_approval(request: Request, shifty_code: str):
     # Get form data (in case user edited amounts)
     form_data = await request.form()
 
-    # Update any edited amounts
-    rows = approval_storage.get_by_filename(filename)
+    # Update any edited amounts (with period isolation)
+    rows = approval_storage.get_by_filename(period_id, filename)
     for row in rows:
         row_id = row.get("id")
         amount_key = f"amount_{row_id}"
@@ -178,65 +198,56 @@ async def confirm_approval(request: Request, shifty_code: str):
             try:
                 new_amount = float(form_data[amount_key])
                 if new_amount != row.get("Amount"):
-                    approval_storage.update_row(row_id, {"Amount": new_amount})
+                    approval_storage.update_row(period_id, row_id, {"Amount": new_amount})
                     row["Amount"] = new_amount
                     log.info(f"Updated {row.get('Employee')} amount to ${new_amount:.2f}")
             except ValueError:
                 pass
 
     # Approve all rows
-    approval_storage.approve_all(filename)
+    approval_storage.approve_all(period_id, filename)
 
-    # Update weekly totals
-    approved_rows = approval_storage.get_approved_data(filename)
+    # Update weekly totals (with period isolation)
+    approved_rows = approval_storage.get_approved_data(period_id, filename)
     for row in approved_rows:
         employee = row.get("Employee", "")
         amount = float(row.get("Amount", 0))
         if employee and amount > 0:
-            totals_storage.add_shift_amount(employee, shifty_code, amount)
+            totals_storage.add_shift_amount(period_id, employee, shifty_code, amount)
 
     # Mark shifty complete
-    shifty_state.set_status(shifty_code, "complete")
-    log.info(f"Approved and completed {shifty_code}")
+    shifty_state.set_status(period_id, shifty_code, "complete")
+    log.info(f"Approved and completed {shifty_code} for period {period_id}")
 
-    return RedirectResponse("/", status_code=303)
+    return RedirectResponse(f"/period/{period_id}", status_code=303)
 
 
 @router.get("/approved/{filename}")
-async def handle_legacy_approval(request: Request, filename: str):
+async def handle_legacy_approval(request: Request, period_id: str, filename: str):
     """Legacy endpoint - redirect to new approval flow."""
     shifty_code = filename.replace(".wav", "")
-    return RedirectResponse(f"/approve/{shifty_code}", status_code=303)
+    return RedirectResponse(f"/period/{period_id}/approve/{shifty_code}", status_code=303)
 
 
-def flatten_approval_json(approval_json: dict, shifty_code: str, config) -> list:
+def flatten_approval_json(approval_json: dict, shifty_code: str, period: PayPeriod) -> list:
     """Convert approval JSON to flat rows."""
+    import re
     rows = []
 
     try:
         shifty = get_shifty_by_code(shifty_code)
-        shifty_date = config.pay_period_start + timedelta(days=shifty["date_offset"])
+        shifty_date = period.start_date + timedelta(days=shifty["date_offset"])
         date_str = shifty_date.strftime("%m/%d/%Y")
         shift = "AM" if "AM" in shifty_code else "PM"
     except ValueError:
         date_str = ""
         shift = ""
+        shifty = {}
 
-    # Extract from per_shift
-    per_shift = approval_json.get("per_shift", {})
-    for employee, shifts in per_shift.items():
-        amount = shifts.get(shifty_code, 0)
-        if amount > 0:
-            rows.append({
-                "date": date_str,
-                "shift": shift,
-                "employee": employee,
-                "role": "Server",
-                "amount": amount,
-            })
-
-    # Extract support staff from detail_blocks
+    # First pass: identify support staff roles from detail_blocks
+    support_staff_roles = {}  # employee -> role
     detail_blocks = approval_json.get("detail_blocks", [])
+
     for block in detail_blocks:
         if not isinstance(block, list) or len(block) < 2:
             continue
@@ -251,21 +262,37 @@ def flatten_approval_json(approval_json: dict, shifty_code: str, config) -> list
 
         for line in lines:
             line_lower = line.lower()
-            if "(utility)" in line_lower or "(expo)" in line_lower or "(busser)" in line_lower:
-                import re
-                match = re.search(r'([A-Z][a-z]+ [A-Z][a-z]+).*\$(\d+\.?\d*)', line)
+            # Check for support staff role markers
+            if "(utility)" in line_lower:
+                match = re.search(r'([A-Z][a-z]+ [A-Z][a-z]+)', line)
                 if match:
-                    employee = match.group(1)
-                    amount = float(match.group(2))
-                    role = "Utility" if "utility" in line_lower else "Expo" if "expo" in line_lower else "Busser"
+                    support_staff_roles[match.group(1)] = "Utility"
+            elif "(expo)" in line_lower:
+                match = re.search(r'([A-Z][a-z]+ [A-Z][a-z]+)', line)
+                if match:
+                    support_staff_roles[match.group(1)] = "Expo"
+            elif "(busser)" in line_lower:
+                match = re.search(r'([A-Z][a-z]+ [A-Z][a-z]+)', line)
+                if match:
+                    support_staff_roles[match.group(1)] = "Busser"
+            elif "(host)" in line_lower:
+                match = re.search(r'([A-Z][a-z]+ [A-Z][a-z]+)', line)
+                if match:
+                    support_staff_roles[match.group(1)] = "Host"
 
-                    if not any(r["employee"] == employee for r in rows):
-                        rows.append({
-                            "date": date_str,
-                            "shift": shift,
-                            "employee": employee,
-                            "role": role,
-                            "amount": amount,
-                        })
+    # Second pass: extract from per_shift with correct roles
+    per_shift = approval_json.get("per_shift", {})
+    for employee, shifts in per_shift.items():
+        amount = shifts.get(shifty_code, 0)
+        if amount > 0:
+            # Use support staff role if identified, otherwise Server
+            role = support_staff_roles.get(employee, "Server")
+            rows.append({
+                "date": date_str,
+                "shift": shift,
+                "employee": employee,
+                "role": role,
+                "amount": amount,
+            })
 
     return rows

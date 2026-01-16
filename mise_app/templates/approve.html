@@ -1,93 +1,74 @@
 {% extends "base.html" %}
 
 {% block title %}Approve {{ shifty.label }}{% endblock %}
-{% block header_right %}
-<a href="/" class="text-gray-400 hover:text-white">&larr; Back</a>
-{% endblock %}
+{% block header_right %}Review & Approve{% endblock %}
 
 {% block content %}
-<div class="p-4 pb-24">
-    <h1 class="text-2xl font-bold mb-2">Review {{ shifty.label }}</h1>
-    <p class="text-gray-400 mb-1">{{ shifty_date }}</p>
-    <p class="text-gray-500 text-sm mb-6">{{ pay_period }}</p>
-
-    {% if transcript %}
-    <div class="bg-gray-800 rounded-lg p-4 mb-6">
-        <h2 class="text-sm font-semibold text-gray-400 mb-2">Transcript</h2>
-        <p class="text-gray-300 text-sm leading-relaxed">{{ transcript }}</p>
+<div class="p-4">
+    <!-- Header -->
+    <div class="mb-6 text-center">
+        <h1 class="text-2xl font-bold mb-1">{{ shifty.label }}</h1>
+        <p class="text-mise-navy/60">{{ shifty_date }} - {{ pay_period }}</p>
     </div>
-    {% endif %}
 
-    <form id="approval-form" action="/approve/{{ shifty_code }}/confirm" method="POST">
-        <h2 class="text-lg font-semibold mb-3">Parsed Data</h2>
+    <!-- Transcript -->
+    <div class="mb-6 bg-white border border-mise-navy/10 rounded-lg p-4">
+        <h2 class="text-sm font-semibold text-mise-navy/60 mb-2">Transcript</h2>
+        <p class="text-sm text-mise-navy/80 italic">"{{ transcript }}"</p>
+    </div>
 
-        {% if rows %}
-        <div class="space-y-3">
-            {% for row in rows %}
-            <div class="bg-gray-800 rounded-lg p-4">
-                <div class="flex justify-between items-start">
+    <!-- Parsed Data -->
+    <form action="/period/{{ period.id }}/approve/{{ shifty_code }}/confirm" method="POST">
+        <div class="mb-6">
+            <h2 class="text-sm font-semibold text-mise-navy/60 mb-3">Parsed Amounts</h2>
+
+            {% if rows %}
+            <div class="space-y-3">
+                {% for row in rows %}
+                <div class="bg-white border border-mise-navy/10 rounded-lg p-4 flex items-center justify-between">
                     <div>
-                        <div class="font-semibold text-white">{{ row.Employee }}</div>
-                        <div class="text-sm text-gray-400">{{ row.Role }}</div>
+                        <p class="font-semibold">{{ row.Employee or row.employee }}</p>
+                        <p class="text-sm text-mise-navy/60">{{ row.Role or row.role }}</p>
                     </div>
-                    <div class="flex items-center gap-2">
-                        <span class="text-gray-400">$</span>
+                    <div class="flex items-center">
+                        <span class="text-mise-navy/60 mr-1">$</span>
                         <input type="number"
-                               name="amount_{{ row.id }}"
-                               value="{{ '%.2f'|format(row.Amount) }}"
+                               name="amount_{{ row.id or loop.index }}"
+                               value="{{ '%.2f'|format(row.Amount or row.amount or 0) }}"
                                step="0.01"
-                               min="0"
-                               class="w-24 bg-gray-700 border border-gray-600 rounded px-3 py-2 text-right text-lg font-semibold text-green-400 focus:outline-none focus:border-blue-500">
+                               class="w-24 bg-mise-cream border border-mise-navy/20 rounded px-3 py-2 text-right text-lg font-mono
+                                      focus:border-mise-red focus:outline-none">
                     </div>
                 </div>
+                {% endfor %}
             </div>
-            {% endfor %}
+            {% else %}
+            <div class="bg-white border border-mise-navy/10 rounded-lg p-4 text-center text-mise-navy/60">
+                <p>No data parsed from recording.</p>
+                <p class="text-sm mt-1">Try recording again with clearer audio.</p>
+            </div>
+            {% endif %}
         </div>
 
-        <div class="mt-6 bg-gray-700 rounded-lg p-4">
-            <div class="flex justify-between items-center">
-                <span class="text-gray-300">Total</span>
-                <span id="total-amount" class="text-2xl font-bold text-green-400">
-                    ${{ "%.2f"|format(rows|sum(attribute='Amount')) }}
-                </span>
-            </div>
-        </div>
-        {% else %}
-        <div class="bg-gray-800 rounded-lg p-8 text-center">
-            <div class="text-4xl mb-4">📋</div>
-            <p class="text-gray-400">No data parsed from this recording.</p>
-            <p class="text-gray-500 text-sm mt-2">Try recording again with clearer audio.</p>
-        </div>
-        {% endif %}
+        <!-- Actions -->
+        <div class="space-y-3">
+            {% if rows %}
+            <button type="submit"
+                    class="w-full py-4 bg-green-600 hover:bg-green-700 rounded-lg font-semibold text-lg text-white transition-colors">
+                Approve & Save
+            </button>
+            {% endif %}
 
-        <div class="fixed bottom-0 left-0 right-0 p-4 bg-gray-900 border-t border-gray-800">
-            <div class="flex gap-3">
-                <a href="/record/{{ shifty_code }}"
-                   class="flex-1 py-3 px-4 bg-gray-700 hover:bg-gray-600 rounded-lg text-center font-semibold">
-                    Re-record
-                </a>
-                <button type="submit"
-                        class="flex-1 py-3 px-4 bg-green-600 hover:bg-green-500 rounded-lg text-center font-semibold"
-                        {% if not rows %}disabled{% endif %}>
-                    Approve
-                </button>
-            </div>
+            <a href="/period/{{ period.id }}/record/{{ shifty_code }}"
+               class="block w-full py-4 bg-white border border-mise-navy/10 hover:border-mise-navy/20 rounded-lg font-semibold text-lg text-center transition-colors">
+                Re-record
+            </a>
+
+            <a href="/period/{{ period.id }}"
+               class="block w-full py-3 text-mise-navy/60 hover:text-mise-navy text-center transition-colors">
+                Cancel
+            </a>
         </div>
     </form>
 </div>
-
-<script>
-// Update total when amounts change
-document.querySelectorAll('input[type="number"]').forEach(input => {
-    input.addEventListener('input', updateTotal);
-});
-
-function updateTotal() {
-    let total = 0;
-    document.querySelectorAll('input[type="number"]').forEach(input => {
-        total += parseFloat(input.value) || 0;
-    });
-    document.getElementById('total-amount').textContent = '$' + total.toFixed(2);
-}
-</script>
 {% endblock %}

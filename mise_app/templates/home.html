@@ -8,20 +8,20 @@
     <!-- Header -->
     <div class="mb-6">
         <h1 class="text-2xl font-bold mb-1">Weekly Shifties</h1>
-        <p class="text-gray-400">{{ pay_period }}</p>
+        <p class="text-mise-navy/60">{{ pay_period }}</p>
         {% if message %}
-        <p class="text-green-400 mt-2">{{ message }}</p>
+        <p class="text-green-600 mt-2">{{ message }}</p>
         {% endif %}
     </div>
 
     <!-- Progress bar -->
     {% set completed = shifties | selectattr('status', 'equalto', 'complete') | list | length %}
     <div class="mb-6">
-        <div class="flex justify-between text-sm text-gray-400 mb-1">
+        <div class="flex justify-between text-sm text-mise-navy/60 mb-1">
             <span>Progress</span>
             <span>{{ completed }}/14 shifties</span>
         </div>
-        <div class="w-full bg-gray-700 rounded-full h-2">
+        <div class="w-full bg-mise-navy/10 rounded-full h-2">
             <div class="bg-green-500 h-2 rounded-full transition-all duration-500"
                  style="width: {{ (completed / 14 * 100) | int }}%"></div>
         </div>
@@ -30,41 +30,41 @@
     <!-- Shifty grid -->
     <div class="grid grid-cols-2 gap-3">
         {% for shifty in shifties %}
-        <a href="/record/{{ shifty.code }}"
+        <a href="/period/{{ period.id }}/record/{{ shifty.code }}"
            class="block p-4 rounded-lg transition-all duration-200 active:scale-95
                   {% if shifty.status == 'complete' %}
-                  bg-green-900/50 border border-green-700
+                  bg-green-100 border border-green-300
                   {% elif shifty.status == 'pending' %}
-                  bg-yellow-900/50 border border-yellow-700
+                  bg-yellow-100 border border-yellow-300
                   {% else %}
-                  bg-gray-800 border border-gray-700 hover:border-gray-600
+                  bg-white border border-mise-navy/10 hover:border-mise-red/50
                   {% endif %}">
             <div class="flex justify-between items-start">
                 <div>
                     <div class="text-lg font-semibold">{{ shifty.label.split()[0][:3] }}</div>
-                    <div class="text-sm text-gray-400">{{ 'AM' if 'AM' in shifty.code else 'PM' }}</div>
+                    <div class="text-sm text-mise-navy/50">{{ 'AM' if 'AM' in shifty.code else 'PM' }}</div>
                 </div>
                 {% if shifty.status == 'complete' %}
-                <span class="text-green-400 text-xl">✓</span>
+                <span class="text-green-600 text-xl">✓</span>
                 {% elif shifty.status == 'pending' %}
-                <span class="text-yellow-400 text-xl">⏳</span>
+                <span class="text-yellow-600 text-xl">⏳</span>
                 {% else %}
-                <span class="text-gray-600 text-xl">○</span>
+                <span class="text-mise-navy/20 text-xl">○</span>
                 {% endif %}
             </div>
-            <div class="text-xs text-gray-500 mt-2">{{ shifty.date }}</div>
+            <div class="text-xs text-mise-navy/40 mt-2">{{ shifty.date }}</div>
         </a>
         {% endfor %}
     </div>
 
     <!-- Quick actions -->
     <div class="mt-6 space-y-3">
-        <a href="/totals"
-           class="block w-full p-4 bg-blue-600 hover:bg-blue-700 rounded-lg text-center font-semibold transition-colors">
+        <a href="/period/{{ period.id }}/totals"
+           class="block w-full p-4 bg-mise-navy hover:bg-mise-navy/90 rounded-lg text-center font-semibold text-white transition-colors">
             View Weekly Totals
         </a>
-        <a href="/reset"
-           class="block w-full p-3 bg-gray-800 hover:bg-gray-700 rounded-lg text-center text-sm text-gray-400 transition-colors">
+        <a href="/period/{{ period.id }}/reset"
+           class="block w-full p-3 bg-white border border-mise-navy/10 hover:border-mise-navy/20 rounded-lg text-center text-sm text-mise-navy/60 transition-colors">
             Reset All (Demo)
         </a>
     </div>

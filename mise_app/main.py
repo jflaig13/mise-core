@@ -10,14 +10,16 @@ import os
 import sys
 
 from fastapi import FastAPI, Request
-from fastapi.responses import HTMLResponse
+from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import HTMLResponse, RedirectResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
+from starlette.middleware.base import BaseHTTPMiddleware
 
 # Add parent directory to path for imports
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from mise_app.config import ShiftyConfig, shifty_state
+from mise_app.config import ShiftyConfig, shifty_state_manager, PayPeriod
 from mise_app.routes import home, recording, totals
 
 # Configure logging
@@ -37,6 +39,28 @@ app = FastAPI(
     version="1.0.0",
 )
 
+# Add CORS middleware for cross-origin requests
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+
+# No-cache middleware to prevent stale content on mobile
+class NoCacheMiddleware(BaseHTTPMiddleware):
+    async def dispatch(self, request, call_next):
+        response = await call_next(request)
+        response.headers["Cache-Control"] = "no-cache, no-store, must-revalidate"
+        response.headers["Pragma"] = "no-cache"
+        response.headers["Expires"] = "0"
+        return response
+
+
+app.add_middleware(NoCacheMiddleware)
+
 # Mount static files
 static_path = os.path.join(os.path.dirname(__file__), "static")
 if os.path.exists(static_path):
@@ -54,20 +78,21 @@ app.include_router(totals.router)
 # Make config and templates available to routes
 app.state.config = config
 app.state.templates = templates
-app.state.shifty_state = shifty_state
+app.state.shifty_state = shifty_state_manager
 
 
-@app.get("/", response_class=HTMLResponse)
-async def root(request: Request):
-    """Redirect to home page."""
-    return templates.TemplateResponse(
-        "home.html",
-        {
-            "request": request,
-            "shifties": shifty_state.get_all_shifties(config),
-            "pay_period": config.pay_period_label,
-        }
-    )
+@app.get("/", response_class=RedirectResponse)
+async def root():
+    """Redirect to current pay period."""
+    current = PayPeriod.current()
+    return RedirectResponse(f"/period/{current.id}", status_code=302)
+
+
+@app.get("/home", response_class=RedirectResponse)
+async def legacy_home():
+    """Legacy redirect - /home now redirects to /period/{current}."""
+    current = PayPeriod.current()
+    return RedirectResponse(f"/period/{current.id}", status_code=302)
 
 
 @app.get("/health")

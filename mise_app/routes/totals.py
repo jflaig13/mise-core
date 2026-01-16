@@ -9,21 +9,28 @@ import logging
 from fastapi import APIRouter, Request
 from fastapi.responses import HTMLResponse
 
+from mise_app.config import PayPeriod
+
 log = logging.getLogger(__name__)
 
-router = APIRouter(tags=["Totals"])
+router = APIRouter(prefix="/period/{period_id}", tags=["Totals"])
 
 
 @router.get("/totals", response_class=HTMLResponse)
-async def totals_page(request: Request):
-    """Render the weekly totals page."""
+async def totals_page(request: Request, period_id: str):
+    """Render the weekly totals page for a pay period."""
     config = request.app.state.config
     templates = request.app.state.templates
 
-    # Get totals from local storage
+    try:
+        period = PayPeriod.from_id(period_id)
+    except ValueError:
+        return HTMLResponse(f"Invalid pay period: {period_id}", status_code=404)
+
+    # Get totals from local storage (with period isolation)
     from mise_app.local_storage import get_totals_storage
     totals_storage = get_totals_storage()
-    employees = totals_storage.get_all_totals()
+    employees = totals_storage.get_all_totals(period_id)
 
     # Generate QR code for staff access
     qr_code = None
@@ -35,8 +42,10 @@ async def totals_page(request: Request):
         "totals.html",
         {
             "request": request,
+            "period": period,
+            "periods": PayPeriod.get_available_periods(),
             "employees": employees,
-            "pay_period": config.pay_period_label,
+            "pay_period": period.label,
             "sheet_id": config.totals_sheet_id,
             "qr_code": qr_code,
         }
@@ -44,10 +53,15 @@ async def totals_page(request: Request):
 
 
 @router.get("/qr", response_class=HTMLResponse)
-async def qr_page(request: Request):
+async def qr_page(request: Request, period_id: str):
     """Render a full-screen QR code for staff access."""
     config = request.app.state.config
     templates = request.app.state.templates
+
+    try:
+        period = PayPeriod.from_id(period_id)
+    except ValueError:
+        return HTMLResponse(f"Invalid pay period: {period_id}", status_code=404)
 
     if not config.totals_sheet_id:
         return HTMLResponse("No totals sheet configured", status_code=404)
@@ -59,9 +73,11 @@ async def qr_page(request: Request):
         "qr.html",
         {
             "request": request,
+            "period": period,
+            "periods": PayPeriod.get_available_periods(),
             "qr_code": qr_code,
             "sheet_url": sheet_url,
-            "pay_period": config.pay_period_label,
+            "pay_period": period.label,
         }
     )
 

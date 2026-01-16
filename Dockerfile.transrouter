@@ -1,4 +1,5 @@
 # Mise Transrouter API
+# Build: 2026-01-16-v4-config-auto
 FROM python:3.11-slim
 
 WORKDIR /app

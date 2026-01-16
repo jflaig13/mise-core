@@ -4,28 +4,43 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="theme-color" content="#111827">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="theme-color" content="#F9F6F1">
     <title>Mise - {% block title %}{% endblock %}</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        mise: {
+                            cream: '#F9F6F1',
+                            navy: '#1B2A4E',
+                            red: '#B5402F',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
     <script src="https://unpkg.com/htmx.org@1.9.10"></script>
     <style>
         /* Custom scrollbar */
         ::-webkit-scrollbar { width: 4px; }
-        ::-webkit-scrollbar-track { background: #1f2937; }
-        ::-webkit-scrollbar-thumb { background: #4b5563; border-radius: 2px; }
+        ::-webkit-scrollbar-track { background: #E8E4DF; }
+        ::-webkit-scrollbar-thumb { background: #1B2A4E; border-radius: 2px; }
 
         /* Pulsing animation for recording */
         @keyframes pulse-red {
-            0%, 100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); }
-            50% { box-shadow: 0 0 0 20px rgba(239, 68, 68, 0); }
+            0%, 100% { box-shadow: 0 0 0 0 rgba(181, 64, 47, 0.7); }
+            50% { box-shadow: 0 0 0 20px rgba(181, 64, 47, 0); }
         }
         .recording { animation: pulse-red 1.5s infinite; }
 
         /* Loading spinner */
         .spinner {
-            border: 4px solid #374151;
-            border-top: 4px solid #3b82f6;
+            border: 4px solid #E8E4DF;
+            border-top: 4px solid #B5402F;
             border-radius: 50%;
             width: 40px;
             height: 40px;
@@ -38,12 +53,82 @@
     </style>
     {% block head %}{% endblock %}
 </head>
-<body class="bg-gray-900 text-white min-h-screen">
+<body class="bg-mise-cream text-mise-navy min-h-screen">
     <!-- Header -->
-    <header class="bg-gray-800 border-b border-gray-700 px-4 py-3">
+    <header class="bg-mise-cream border-b border-mise-navy/10 px-4 py-3">
         <div class="flex items-center justify-between">
-            <a href="/" class="text-xl font-bold text-blue-400">Mise</a>
-            <span class="text-sm text-gray-400">{% block header_right %}{% endblock %}</span>
+            <!-- Mise Logo -->
+            <a href="/" class="flex items-center space-x-1">
+                <span class="text-2xl font-serif font-bold text-mise-navy">Mise</span>
+                <!-- Soundwave icon -->
+                <svg class="w-5 h-5" viewBox="0 0 24 24" fill="#B5402F">
+                    <rect x="2" y="10" width="3" height="4" rx="1.5"/>
+                    <rect x="7" y="6" width="3" height="12" rx="1.5"/>
+                    <rect x="12" y="3" width="3" height="18" rx="1.5"/>
+                    <rect x="17" y="6" width="3" height="12" rx="1.5"/>
+                    <rect x="22" y="10" width="3" height="4" rx="1.5" transform="translate(-3 0)"/>
+                </svg>
+            </a>
+
+            <!-- Pay Period Selector -->
+            {% if period %}
+            <div class="flex items-center space-x-1">
+                <!-- Previous Period Arrow -->
+                {% if period.previous() %}
+                <a href="/period/{{ period.previous().id }}"
+                   class="p-1.5 text-mise-navy/50 hover:text-mise-navy transition-colors rounded hover:bg-mise-navy/5"
+                   title="{{ period.previous().label }}">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+                    </svg>
+                </a>
+                {% else %}
+                <span class="p-1.5 text-mise-navy/20">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+                    </svg>
+                </span>
+                {% endif %}
+
+                <!-- Period Dropdown -->
+                <div class="relative">
+                    <select id="period-selector"
+                            class="bg-white border border-mise-navy/20 text-xs rounded-lg px-2 py-1.5
+                                   text-mise-navy focus:border-mise-red focus:outline-none appearance-none pr-6 max-w-[140px]"
+                            onchange="window.location.href='/period/' + this.value + window.location.pathname.replace(/^\/period\/[^\/]+/, '')">
+                        {% for p in periods %}
+                        <option value="{{ p.id }}" {% if p.id == period.id %}selected{% endif %}>
+                            {{ p.label }}{% if p.is_current() %} *{% endif %}
+                        </option>
+                        {% endfor %}
+                    </select>
+                    <div class="absolute inset-y-0 right-0 flex items-center pr-1.5 pointer-events-none">
+                        <svg class="w-3 h-3 text-mise-navy/50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                        </svg>
+                    </div>
+                </div>
+
+                <!-- Next Period Arrow -->
+                {% if period.next() %}
+                <a href="/period/{{ period.next().id }}"
+                   class="p-1.5 text-mise-navy/50 hover:text-mise-navy transition-colors rounded hover:bg-mise-navy/5"
+                   title="{{ period.next().label }}">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                    </svg>
+                </a>
+                {% else %}
+                <span class="p-1.5 text-mise-navy/20">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                    </svg>
+                </span>
+                {% endif %}
+            </div>
+            {% else %}
+            <span class="text-sm text-mise-navy/60">{% block header_right %}{% endblock %}</span>
+            {% endif %}
         </div>
     </header>
 
@@ -53,23 +138,23 @@
     </main>
 
     <!-- Bottom nav -->
-    <nav class="fixed bottom-0 left-0 right-0 bg-gray-800 border-t border-gray-700">
+    <nav class="fixed bottom-0 left-0 right-0 bg-white border-t border-mise-navy/10">
         <div class="flex justify-around py-2">
-            <a href="/" class="flex flex-col items-center p-2 text-gray-400 hover:text-white">
+            <a href="{% if period %}/period/{{ period.id }}{% else %}/{% endif %}" class="flex flex-col items-center p-2 text-mise-navy/50 hover:text-mise-red">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                           d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
                 </svg>
                 <span class="text-xs mt-1">Home</span>
             </a>
-            <a href="/totals" class="flex flex-col items-center p-2 text-gray-400 hover:text-white">
+            <a href="{% if period %}/period/{{ period.id }}/totals{% else %}/totals{% endif %}" class="flex flex-col items-center p-2 text-mise-navy/50 hover:text-mise-red">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                           d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
                 </svg>
                 <span class="text-xs mt-1">Totals</span>
             </a>
-            <a href="/qr" class="flex flex-col items-center p-2 text-gray-400 hover:text-white">
+            <a href="{% if period %}/period/{{ period.id }}/qr{% else %}/qr{% endif %}" class="flex flex-col items-center p-2 text-mise-navy/50 hover:text-mise-red">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                           d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z"/>
