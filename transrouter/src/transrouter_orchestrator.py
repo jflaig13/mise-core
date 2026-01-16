@@ -23,7 +23,7 @@ from .schemas import (
 )
 
 DEFAULT_CONFIG = {
-    "asr": {"provider": "whisper", "language": "en", "timeout_seconds": 120, "whisper_model": "base"},
+    "asr": {"provider": "auto", "language": "en", "timeout_seconds": 120, "whisper_model": "base"},
     "routing": {"default_domain": "payroll", "fallback_intent": "unknown"},
     "logging": {"level": "INFO"},
 }

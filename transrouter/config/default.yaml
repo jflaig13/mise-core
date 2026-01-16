@@ -2,7 +2,7 @@
 # Defines ASR, routing, Claude, and logging settings.
 
 asr:
-  provider: whisper  # options: whisper, amazon_transcribe, google, azure
+  provider: auto  # options: auto, openai, whisper, amazon_transcribe, google, azure
   whisper_model: base
   timeout_seconds: 120
   language: en

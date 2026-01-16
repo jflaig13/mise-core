@@ -272,7 +272,44 @@ Each detail block should show the calculation:
 - For tip pools: Show pool total, tipouts, distribution
 - For tip-outs: Show before amount, minus tipout, equals final
 - For final numbers: Just list the amounts
-- Include support staff allocations
+- **CRITICAL: Support staff MUST include their role in parentheses**
+
+**Support staff role format (REQUIRED):**
+- `John Neal (expo): $15.50`
+- `Ryan Alexander (busser): $62.00`
+- `John Neal (utility): $31.00`
+
+Example detail_block with expo + busser:
+```
+["Thu Jan 9 — PM (tip pool)", [
+  "Pool: $368.70 + $213.08 = $581.78",
+  "Food sales: $858 + $170.50 = $1,028.50",
+  "Expo tipout: $1,028.50 × 1% = $10.29",
+  "Busser tipout: $1,028.50 × 4% = $41.14",
+  "Pool after tipout: $581.78 - $10.29 - $41.14 = $530.35",
+  "Per server: $530.35 ÷ 2 = $265.18",
+  "Kevin Worley: $265.18",
+  "Austin Kelley: $265.18",
+  "John Neal (expo): $10.29",
+  "Ryan Alexander (busser): $41.14"
+]]
+```
+
+Example detail_block with utility:
+```
+["Thu Jan 9 — PM (tip pool)", [
+  "Pool: $65.01 + $165.95 = $230.96",
+  "Food sales: $295 + $325 = $620.00",
+  "Utility tipout: $620.00 × 5% = $31.00",
+  "Pool after tipout: $230.96 - $31.00 = $199.96",
+  "Per server: $199.96 ÷ 2 = $99.98",
+  "Kevin Worley: $99.98",
+  "Austin Kelley: $99.98",
+  "John Neal (utility): $31.00"
+]]
+```
+
+**NEVER omit the role marker for support staff. The web app needs it to display the correct role.**
 
 ## RESPONSE FORMAT
 
