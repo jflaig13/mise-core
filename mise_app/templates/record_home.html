@@ -5,18 +5,18 @@
 {% block content %}
 <div class="p-4 flex flex-col items-center justify-center min-h-[70vh]">
     <!-- Recording UI -->
-    <div id="recorder" class="text-center">
+    <div id="recorder" class="text-center w-full flex flex-col items-center">
         <!-- Tappable Audiowave Logo -->
         <button id="record-btn"
                 class="w-40 h-40 rounded-full bg-mise-green hover:bg-mise-green-dark flex items-center justify-center
-                       transition-all duration-200 active:scale-95 shadow-lg mx-auto"
+                       transition-all duration-200 active:scale-95 shadow-lg"
                 onclick="toggleRecording()">
-            <svg id="audiowave-icon" class="w-20 h-20" viewBox="0 0 28 24" fill="white">
+            <svg id="audiowave-icon" class="w-20 h-20" viewBox="0 0 24 24" fill="white">
                 <rect x="1" y="10" width="2.5" height="4" rx="1.25"/>
-                <rect x="6" y="6" width="2.5" height="12" rx="1.25"/>
-                <rect x="11" y="2" width="2.5" height="20" rx="1.25"/>
-                <rect x="16" y="6" width="2.5" height="12" rx="1.25"/>
-                <rect x="21" y="10" width="2.5" height="4" rx="1.25"/>
+                <rect x="5.75" y="6" width="2.5" height="12" rx="1.25"/>
+                <rect x="10.5" y="2" width="2.5" height="20" rx="1.25"/>
+                <rect x="15.25" y="6" width="2.5" height="12" rx="1.25"/>
+                <rect x="20" y="10" width="2.5" height="4" rx="1.25"/>
             </svg>
             <span id="btn-text" class="hidden text-white text-lg font-semibold">Tap to<br>Stop</span>
         </button>
@@ -25,14 +25,15 @@
         <p id="timer" class="mt-2 text-2xl font-mono text-mise-navy/50 hidden">00:00</p>
     </div>
 
-    <!-- Links below the button -->
-    <div class="mt-8 text-center space-y-2">
-        <a href="/payroll/period/{{ period.id }}/shifties" class="block text-mise-green hover:text-mise-green-dark text-sm">
-            View Weekly Shifties
-        </a>
-        <a href="/payroll/period/{{ period.id }}/totals" class="block text-mise-green hover:text-mise-green-dark text-sm">
-            View Weekly Totals
-        </a>
+    <!-- Remember section -->
+    <div class="mt-8 text-center px-4 max-w-sm">
+        <p class="text-mise-navy/50 text-sm leading-relaxed">
+            <span class="italic">Remember:</span> Date &rarr; AM or PM &rarr; Support Staff Roles, First Names &rarr; Server First Name &rarr; Total Tips &rarr; Total Food Sales
+        </p>
+        <div class="mt-4 space-y-2">
+            <p class="text-mise-green text-sm">&#9658; Support staff owed partial tipout?</p>
+            <p class="text-mise-green text-sm">&#9658; Unequal hours in tip pool?</p>
+        </div>
     </div>
 
     <!-- Or upload -->
