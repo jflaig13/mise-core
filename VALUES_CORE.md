@@ -152,7 +152,55 @@ You must treat violations of these rules as system-level errors, not subjective 
 ---
 
 Brain Ingest Protocol Reference
-- All “add to brain” / “don’t forget” instructions require a canonical mmddyy-named file in docs/brain/ (see docs/brain/121224__brain-ingest-protocol.md) and updates to related values artifacts as needed.
+- All "add to brain" / "don't forget" instructions require a canonical mmddyy-named file in docs/brain/ (see docs/brain/121224__brain-ingest-protocol.md) and updates to related values artifacts as needed.
+
+---
+
+FOUNDER STORY PILLAR (FOUNDATIONAL — NEVER FORGET)
+
+The origin of Mise is not a market opportunity or a technology insight.
+It is a personal experience that defines the entire company.
+
+THE STORY:
+> "This past summer I didn't have an assistant manager. I was doing payroll, scheduling and inventory all myself and literally felt like I was NEVER in the restaurant. Like I was in this constant loop of never-ending admin shit. I'll be honest, I felt pretty disconnected/frustrated there for a couple months. I was just constantly chasing my tail. Using these tools will be an enormous weight lifted this upcoming season. I don't DREAD payroll OR inventory anymore."
+>
+> — Jon Flaig, Founder & Owner, Papa Surf
+
+THE ONE-LINE PITCH:
+"I built Mise because I wanted my restaurant back."
+
+WHY THIS MATTERS:
+1. Jon is not selling TO restaurant owners. Jon IS a restaurant owner.
+2. He built this for himself first. It works. He uses it.
+3. The pain is lived, not researched: dread, disconnection, chasing your tail.
+4. The solution is proven: weight lifted, done in minutes, no more dread.
+
+WHAT WE'RE SELLING:
+Not software. Not AI. RELIEF.
+
+TARGET CUSTOMER:
+- Single-location owner-operators (500,000+ in the US)
+- 8-25 employees, full-service, tip-heavy
+- Doing payroll personally, spending 2+ hours/week
+- Drowning in admin, feeling disconnected from their restaurant
+
+SUPPORT PILLAR (NON-NEGOTIABLE):
+- US-based, English-speaking support only
+- Restaurant-experienced team
+- Response time in minutes, not hours
+- Direct line to someone who can fix it NOW
+
+This is a competitive differentiator, not a cost center.
+Toast has 2.5 stars on support. We answer when you call.
+
+MANDATORY BEHAVIOR:
+When discussing Mise's purpose, positioning, or pitch:
+- Reference the founder story as the origin
+- Use the emotional language: dread, weight lifted, got my restaurant back
+- Never reduce Mise to "AI software" — it is relief from admin burden
+- Remember: every feature serves the mission of giving owners their restaurant back
+
+See: docs/brain/011826__founder-story-pitch-pillar.md for full positioning details.
 
 ---
 
