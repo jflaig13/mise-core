@@ -1,14 +1,83 @@
 {% extends "base.html" %}
 
 {% block title %}{{ pay_period }}{% endblock %}
-{% block header_right %}{{ pay_period }}{% endblock %}
+{% block back_button %}{% endblock %}
+
+{% block subheader %}
+<!-- Title + Period Selector Row -->
+<div class="px-4 pt-3 flex items-center justify-between">
+    <!-- Title on left -->
+    <h1 class="text-2xl font-bold">Weekly Shifties</h1>
+
+    <!-- Period Selector on right -->
+    {% if period %}
+    <div class="flex items-center space-x-1">
+        <!-- Previous Period Arrow -->
+        {% if period.previous() %}
+        <a href="/period/{{ period.previous().id }}"
+           class="p-1.5 text-mise-navy/50 hover:text-mise-navy transition-colors rounded hover:bg-mise-navy/5"
+           title="{{ period.previous().label }}">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+            </svg>
+        </a>
+        {% else %}
+        <span class="p-1.5 text-mise-navy/20">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+            </svg>
+        </span>
+        {% endif %}
+
+        <!-- Period Dropdown -->
+        <div class="relative">
+            <select id="period-selector"
+                    class="bg-white border border-mise-navy/20 text-sm rounded-lg px-3 py-1.5
+                           text-mise-navy focus:border-mise-red focus:outline-none appearance-none pr-8"
+                    onchange="window.location.href='/period/' + this.value">
+                {% for p in periods %}
+                <option value="{{ p.id }}" {% if p.id == period.id %}selected{% endif %}>
+                    {{ p.label }}{% if p.is_current() %} *{% endif %}
+                </option>
+                {% endfor %}
+            </select>
+            <div class="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
+                <svg class="w-4 h-4 text-mise-navy/50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                </svg>
+            </div>
+        </div>
+
+        <!-- Next Period Arrow -->
+        {% if period.next() %}
+        <a href="/period/{{ period.next().id }}"
+           class="p-1.5 text-mise-navy/50 hover:text-mise-navy transition-colors rounded hover:bg-mise-navy/5"
+           title="{{ period.next().label }}">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+            </svg>
+        </a>
+        {% else %}
+        <span class="p-1.5 text-mise-navy/20">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+            </svg>
+        </span>
+        {% endif %}
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
 
 {% block content %}
 <div class="p-4">
-    <!-- Header -->
+    <!-- Subheading and explainer -->
     <div class="mb-6">
-        <h1 class="text-2xl font-bold mb-1">Weekly Shifties</h1>
         <p class="text-mise-navy/60">{{ pay_period }}</p>
+        <p class="text-xs text-mise-navy/40 mt-2 leading-relaxed">
+            A <em>shifty</em> = one shift's payroll data: date, AM/PM, support staff, servers, tips & food sales.<br>
+            7 days &times; 2 shifts = 14 shifties per week.
+        </p>
         {% if message %}
         <p class="text-green-600 mt-2">{{ message }}</p>
         {% endif %}

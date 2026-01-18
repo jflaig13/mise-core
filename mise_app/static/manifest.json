@@ -1,0 +1,17 @@
+{
+  "name": "Mise",
+  "short_name": "Mise",
+  "description": "Restaurant payroll & operations",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#F9F6F1",
+  "theme_color": "#F9F6F1",
+  "icons": [
+    {
+      "src": "/static/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

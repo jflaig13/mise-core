@@ -68,12 +68,14 @@ class PayrollAgent:
         self,
         transcript: str,
         pay_period_hint: str = "",
+        shift_code: str = "",
     ) -> Dict[str, Any]:
         """Parse a payroll transcript into approval JSON.
 
         Args:
             transcript: The payroll transcript text to parse.
             pay_period_hint: Optional hint about pay period dates.
+            shift_code: Optional shift code from filename (e.g., "ThAM", "FPM").
 
         Returns:
             Dict with keys:
@@ -84,9 +86,9 @@ class PayrollAgent:
                 - error: Error message (if failed)
                 - usage: Token usage stats
         """
-        log.info("Parsing payroll transcript (%d chars)", len(transcript))
+        log.info("Parsing payroll transcript (%d chars, shift_code=%s)", len(transcript), shift_code or "none")
 
-        user_prompt = build_payroll_user_prompt(transcript, pay_period_hint)
+        user_prompt = build_payroll_user_prompt(transcript, pay_period_hint, shift_code)
 
         response: ClaudeResponse = self.claude_client.call(
             system_prompt=self.system_prompt,
@@ -442,6 +444,14 @@ def handle_payroll_request(request: Dict[str, Any]) -> Dict[str, Any]:
     # Get pay period hint if available
     pay_period_hint = request.get("meta", {}).get("pay_period", "")
 
+    # Extract shift code from filename (e.g., "ThAM.wav" -> "ThAM")
+    filename = request.get("meta", {}).get("filename", "")
+    shift_code = ""
+    if filename:
+        # Remove extension and extract shift code
+        shift_code = filename.replace(".wav", "").replace(".mp3", "").replace(".m4a", "")
+        log.info("Extracted shift code from filename: %s -> %s", filename, shift_code)
+
     # Parse the transcript
     agent = get_agent()
-    return agent.parse_transcript(transcript, pay_period_hint)
+    return agent.parse_transcript(transcript, pay_period_hint, shift_code)

@@ -346,18 +346,22 @@ If per_shift doesn't match detail_blocks, FIX IT before returning.
 '''
 
 
-def build_payroll_user_prompt(transcript: str, pay_period_hint: str = "") -> str:
+def build_payroll_user_prompt(transcript: str, pay_period_hint: str = "", shift_code: str = "") -> str:
     """Build the user prompt containing the transcript to parse.
 
     Args:
         transcript: The payroll transcript text.
         pay_period_hint: Optional hint about the pay period dates.
+        shift_code: Optional shift code from filename (e.g., "ThAM", "FPM").
 
     Returns:
         User prompt string for Claude API call.
     """
     prompt = "Parse this payroll transcript and return the approval JSON:\n\n"
     prompt += transcript
+
+    if shift_code:
+        prompt += f"\n\n**IMPORTANT: This recording is for shift code {shift_code}. Use this exact shift code in your per_shift output regardless of what day you calculate from the transcript date.**"
 
     if pay_period_hint:
         prompt += f"\n\nPay period hint: {pay_period_hint}"
