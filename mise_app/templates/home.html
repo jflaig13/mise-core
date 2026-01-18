@@ -130,12 +130,16 @@
 
     <!-- Quick actions -->
     <div class="mt-6 space-y-3">
-        <a href="/payroll/period/{{ period.id }}/totals"
+        <a href="/payroll/period/{{ period.id }}"
            class="block w-full p-4 bg-mise-green hover:bg-mise-green-dark rounded-lg text-center font-semibold text-white transition-colors">
+            Record a Shifty
+        </a>
+        <a href="/payroll/period/{{ period.id }}/totals"
+           class="block w-full p-3 bg-white border border-mise-green/20 hover:border-mise-green/40 rounded-lg text-center text-mise-navy/60 transition-colors">
             View Weekly Totals
         </a>
         <a href="/payroll/period/{{ period.id }}/reset"
-           class="block w-full p-3 bg-white border border-mise-green/20 hover:border-mise-green/40 rounded-lg text-center text-sm text-mise-navy/60 transition-colors">
+           class="block w-full p-3 bg-white border border-mise-green/20 hover:border-mise-green/40 rounded-lg text-center text-sm text-mise-navy/40 transition-colors">
             Reset All (Demo)
         </a>
     </div>

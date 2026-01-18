@@ -13,7 +13,29 @@ router = APIRouter(prefix="/payroll/period/{period_id}", tags=["Payroll Home"])
 
 @router.get("", response_class=HTMLResponse)
 async def home_page(request: Request, period_id: str):
-    """Render the weekly shifties page (the main payroll dashboard)."""
+    """Render the 'tap to record a shifty' page (the main payroll landing)."""
+    templates = request.app.state.templates
+
+    try:
+        period = PayPeriod.from_id(period_id)
+    except ValueError:
+        return HTMLResponse(f"Invalid pay period: {period_id}", status_code=404)
+
+    return templates.TemplateResponse(
+        "record_home.html",
+        {
+            "request": request,
+            "period": period,
+            "periods": PayPeriod.get_available_periods(),
+            "pay_period": period.label,
+            "active_tab": "shifties",
+        }
+    )
+
+
+@router.get("/shifties", response_class=HTMLResponse)
+async def shifties_page(request: Request, period_id: str):
+    """Render the weekly shifties grid showing all 14 shifties."""
     templates = request.app.state.templates
     shifty_state = request.app.state.shifty_state
 
@@ -33,13 +55,6 @@ async def home_page(request: Request, period_id: str):
             "active_tab": "shifties",
         }
     )
-
-
-@router.get("/shifties", response_class=HTMLResponse)
-async def shifties_redirect(request: Request, period_id: str):
-    """Legacy redirect - /shifties now just goes to home."""
-    from fastapi.responses import RedirectResponse
-    return RedirectResponse(f"/payroll/period/{period_id}", status_code=302)
 
 
 @router.get("/reset", response_class=HTMLResponse)
