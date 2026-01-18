@@ -47,7 +47,7 @@ Equity shall be granted as [common stock / stock options with an exercise price 
 ### 3.2 Milestone Definitions
 
 **Milestone 1 — Funding:**
-The Company closes a qualified financing round of at least **$250,000** in aggregate proceeds, where Advisor made material contributions to the round through investor introductions, pitch assistance, or other direct involvement. "Material contribution" means Advisor introduced at least one investor who participated in the round, OR provided substantive assistance with pitch materials, investor meetings, or deal negotiation as acknowledged by the Company.
+The Company closes a qualified financing round of at least **$150,000** in aggregate proceeds, where Advisor made material contributions to the round through investor introductions, pitch assistance, or other direct involvement. "Material contribution" means Advisor introduced at least one investor who participated in the round, OR provided substantive assistance with pitch materials, investor meetings, or deal negotiation as acknowledged by the Company.
 
 **Milestone 2 — Lead Engineer:**
 The Company hires a lead software engineer who:
@@ -202,7 +202,7 @@ Assuming 2% equity grant and Effective Date of January 15, 2026:
 |------|-------|
 | Equity Grant | [2.0]% per advisor |
 | Vesting Period | 4 years from Milestone 1 |
-| Milestone 1 | Close funding round ≥$250k |
+| Milestone 1 | Close funding round ≥$150k |
 | Milestone 2 | Hire lead engineer (90-day retention) |
 | Milestone 1 Deadline | 18 months from signing |
 | Milestone 2 Deadline | 12 months from Milestone 1 |
