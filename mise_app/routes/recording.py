@@ -5,7 +5,8 @@ from __future__ import annotations
 import logging
 import os
 import re
-from datetime import timedelta, date
+from datetime import datetime, timedelta, date
+from pathlib import Path
 from typing import Optional
 
 import requests
@@ -16,6 +17,48 @@ from mise_app.config import SHIFTY_DEFINITIONS, get_shifty_by_code, PayPeriod
 from mise_app.local_storage import get_approval_storage, get_totals_storage
 
 log = logging.getLogger(__name__)
+
+# Recordings storage directory
+RECORDINGS_DIR = Path(__file__).parent.parent.parent / "recordings"
+
+
+def save_recording(audio_bytes: bytes, period_id: str, shifty_code: str = None, original_filename: str = None) -> Path:
+    """Save audio recording to the recordings folder.
+
+    Args:
+        audio_bytes: The raw audio bytes
+        period_id: Pay period ID (e.g., '2025-01-12')
+        shifty_code: Optional shifty code if known (e.g., 'MAM', 'TPM')
+        original_filename: Original filename from upload
+
+    Returns:
+        Path to the saved file
+    """
+    # Ensure recordings directory exists
+    RECORDINGS_DIR.mkdir(parents=True, exist_ok=True)
+
+    # Determine file extension
+    ext = ".webm"  # Default for browser recordings
+    if original_filename:
+        if original_filename.endswith(".wav"):
+            ext = ".wav"
+        elif original_filename.endswith(".m4a"):
+            ext = ".m4a"
+        elif original_filename.endswith(".mp3"):
+            ext = ".mp3"
+
+    # Build filename: {period_id}_{shifty_code}_{timestamp}{ext}
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    if shifty_code:
+        filename = f"{period_id}_{shifty_code}_{timestamp}{ext}"
+    else:
+        filename = f"{period_id}_unknown_{timestamp}{ext}"
+
+    filepath = RECORDINGS_DIR / filename
+    filepath.write_bytes(audio_bytes)
+
+    log.info(f"Saved recording to {filepath}")
+    return filepath
 
 router = APIRouter(prefix="/payroll/period/{period_id}", tags=["Payroll Recording"])
 
@@ -213,6 +256,9 @@ async def process_audio(
 
     log.info(f"Detected shifty {shifty_code} from transcript, length={len(transcript)}")
 
+    # Save recording to local storage
+    save_recording(audio_bytes, period_id, shifty_code, file.filename)
+
     # Convert approval_json to flat rows
     rows = flatten_approval_json(approval_json, shifty_code, period)
 
@@ -294,6 +340,9 @@ async def process_shifty(
     approval_json = result.get("approval_json", {})
 
     log.info(f"Parsed shifty {shifty_code}: transcript length={len(transcript)}")
+
+    # Save recording to local storage
+    save_recording(audio_bytes, period_id, shifty_code, file.filename)
 
     # Convert approval_json to flat rows
     rows = flatten_approval_json(approval_json, shifty_code, period)

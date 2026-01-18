@@ -17,6 +17,7 @@ __pycache__/
 
 # Audio folders
 Payroll Voice Recordings/
+recordings/
 
 # Binary or temp files
 *.xlsx
