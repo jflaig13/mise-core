@@ -66,22 +66,17 @@
     </div>
     {% endif %}
 </div>
+<!-- Pay period label aligned under header -->
+<div class="px-4 pb-3">
+    <p class="text-mise-navy/60">{{ pay_period }}</p>
+    {% if message %}
+    <p class="text-green-600 mt-1">{{ message }}</p>
+    {% endif %}
+</div>
 {% endblock %}
 
 {% block content %}
-<div class="p-4">
-    <!-- Subheading and explainer -->
-    <div class="mb-6">
-        <p class="text-mise-navy/60">{{ pay_period }}</p>
-        <p class="text-xs text-mise-navy/40 mt-2 leading-relaxed">
-            A <em>shifty</em> = one shift's payroll data: date, AM/PM, support staff, servers, tips & food sales.<br>
-            7 days &times; 2 shifts = 14 shifties per week.
-        </p>
-        {% if message %}
-        <p class="text-green-600 mt-2">{{ message }}</p>
-        {% endif %}
-    </div>
-
+<div class="p-4 pt-0">
     <!-- Progress bar -->
     {% set completed = shifties | selectattr('status', 'equalto', 'complete') | list | length %}
     <div class="mb-6">
