@@ -1,7 +1,6 @@
-{% extends "base.html" %}
+{% extends "base_payroll.html" %}
 
 {% block title %}QR Code{% endblock %}
-{% block header_right %}Staff Access{% endblock %}
 
 {% block content %}
 <div class="flex flex-col items-center justify-center min-h-[70vh] p-4">
@@ -18,7 +17,7 @@
     </p>
 
     <a href="{{ sheet_url }}" target="_blank"
-       class="mt-4 text-mise-red hover:text-mise-red/80 text-sm">
+       class="mt-4 text-mise-green hover:text-mise-green/80 text-sm">
         Or tap here to open directly →
     </a>
     {% else %}

@@ -1,7 +1,6 @@
-{% extends "base.html" %}
+{% extends "base_payroll.html" %}
 
 {% block title %}Approve {{ shifty.label }}{% endblock %}
-{% block header_right %}Review & Approve{% endblock %}
 
 {% block content %}
 <div class="p-4">
@@ -12,20 +11,20 @@
     </div>
 
     <!-- Transcript -->
-    <div class="mb-6 bg-white border border-mise-navy/10 rounded-lg p-4">
+    <div class="mb-6 bg-white border border-mise-green/20 rounded-lg p-4">
         <h2 class="text-sm font-semibold text-mise-navy/60 mb-2">Transcript</h2>
         <p class="text-sm text-mise-navy/80 italic">"{{ transcript }}"</p>
     </div>
 
     <!-- Parsed Data -->
-    <form action="/period/{{ period.id }}/approve/{{ shifty_code }}/confirm" method="POST">
+    <form action="/payroll/period/{{ period.id }}/approve/{{ shifty_code }}/confirm" method="POST">
         <div class="mb-6">
             <h2 class="text-sm font-semibold text-mise-navy/60 mb-3">Parsed Amounts</h2>
 
             {% if rows %}
             <div class="space-y-3">
                 {% for row in rows %}
-                <div class="bg-white border border-mise-navy/10 rounded-lg p-4 flex items-center justify-between">
+                <div class="bg-white border border-mise-green/20 rounded-lg p-4 flex items-center justify-between">
                     <div>
                         <p class="font-semibold">{{ row.Employee or row.employee }}</p>
                         <p class="text-sm text-mise-navy/60">{{ row.Role or row.role }}</p>
@@ -36,14 +35,14 @@
                                name="amount_{{ row.id or loop.index }}"
                                value="{{ '%.2f'|format(row.Amount or row.amount or 0) }}"
                                step="0.01"
-                               class="w-24 bg-mise-cream border border-mise-navy/20 rounded px-3 py-2 text-right text-lg font-mono
-                                      focus:border-mise-red focus:outline-none">
+                               class="w-24 bg-mise-cream border border-mise-green/30 rounded px-3 py-2 text-right text-lg font-mono
+                                      focus:border-mise-green focus:outline-none">
                     </div>
                 </div>
                 {% endfor %}
             </div>
             {% else %}
-            <div class="bg-white border border-mise-navy/10 rounded-lg p-4 text-center text-mise-navy/60">
+            <div class="bg-white border border-mise-green/20 rounded-lg p-4 text-center text-mise-navy/60">
                 <p>No data parsed from recording.</p>
                 <p class="text-sm mt-1">Try recording again with clearer audio.</p>
             </div>
@@ -54,17 +53,17 @@
         <div class="space-y-3">
             {% if rows %}
             <button type="submit"
-                    class="w-full py-4 bg-green-600 hover:bg-green-700 rounded-lg font-semibold text-lg text-white transition-colors">
+                    class="w-full py-4 bg-mise-green hover:bg-mise-green-dark rounded-lg font-semibold text-lg text-white transition-colors">
                 Approve & Save
             </button>
             {% endif %}
 
-            <a href="/period/{{ period.id }}/record/{{ shifty_code }}"
-               class="block w-full py-4 bg-white border border-mise-navy/10 hover:border-mise-navy/20 rounded-lg font-semibold text-lg text-center transition-colors">
+            <a href="/payroll/period/{{ period.id }}/record/{{ shifty_code }}"
+               class="block w-full py-4 bg-white border border-mise-green/20 hover:border-mise-green/40 rounded-lg font-semibold text-lg text-center transition-colors">
                 Re-record
             </a>
 
-            <a href="/period/{{ period.id }}"
+            <a href="/payroll/period/{{ period.id }}"
                class="block w-full py-3 text-mise-navy/60 hover:text-mise-navy text-center transition-colors">
                 Cancel
             </a>

@@ -1,7 +1,6 @@
-{% extends "base.html" %}
+{% extends "base_payroll.html" %}
 
 {% block title %}Record {{ shifty.label }}{% endblock %}
-{% block header_right %}{{ shifty.day }}{% endblock %}
 
 {% block content %}
 <div class="p-4">
@@ -31,7 +30,7 @@
 
         <!-- Support staff partial tipout expansion -->
         <details class="mt-3">
-            <summary class="text-xs text-mise-red text-center cursor-pointer hover:text-mise-red/80">
+            <summary class="text-xs text-mise-green text-center cursor-pointer hover:text-mise-green/80">
                 Support staff owed partial tipout?
             </summary>
             <div class="mt-2 text-xs text-mise-navy/60 text-left">
@@ -49,7 +48,7 @@
 
         <!-- Unequal hours expansion -->
         <details class="mt-3">
-            <summary class="text-xs text-mise-red text-center cursor-pointer hover:text-mise-red/80">
+            <summary class="text-xs text-mise-green text-center cursor-pointer hover:text-mise-green/80">
                 Unequal hours in tip pool?
             </summary>
             <p class="mt-2 text-xs text-mise-navy/60 text-center">
@@ -164,7 +163,7 @@ async function submitAudio(audioBlob) {
     try {
         processingStatus.textContent = 'Transcribing audio...';
 
-        const response = await fetch('/period/{{ period.id }}/process/{{ shifty.code }}', {
+        const response = await fetch('/payroll/period/{{ period.id }}/process/{{ shifty.code }}', {
             method: 'POST',
             body: formData
         });
@@ -182,7 +181,7 @@ async function submitAudio(audioBlob) {
                 window.location.href = result.sheet_url;
             } else {
                 // Fallback - go home
-                window.location.href = '/period/{{ period.id }}';
+                window.location.href = '/payroll/period/{{ period.id }}';
             }
         } else {
             overlay.classList.add('hidden');

@@ -13,7 +13,7 @@ from mise_app.config import PayPeriod
 
 log = logging.getLogger(__name__)
 
-router = APIRouter(prefix="/period/{period_id}", tags=["Totals"])
+router = APIRouter(prefix="/payroll/period/{period_id}", tags=["Payroll Totals"])
 
 
 @router.get("/totals", response_class=HTMLResponse)
@@ -48,6 +48,7 @@ async def totals_page(request: Request, period_id: str):
             "pay_period": period.label,
             "sheet_id": config.totals_sheet_id,
             "qr_code": qr_code,
+            "active_tab": "totals",
         }
     )
 
@@ -78,6 +79,7 @@ async def qr_page(request: Request, period_id: str):
             "qr_code": qr_code,
             "sheet_url": sheet_url,
             "pay_period": period.label,
+            "active_tab": "qr",
         }
     )
 

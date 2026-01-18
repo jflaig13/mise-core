@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="theme-color" content="#F0FAF0">
+
+    <!-- App Icon & Manifest -->
+    <link rel="icon" type="image/png" href="/static/icons/icon-512.png">
+    <link rel="apple-touch-icon" href="/static/icons/icon-512.png">
+    <link rel="manifest" href="/static/manifest.json">
+
+    <title>Mise: Payroll - {% block title %}{% endblock %}</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        mise: {
+                            cream: '#F0FAF0',
+                            navy: '#1B2A4E',
+                            green: '#2D8A4E',
+                            'green-dark': '#236B3C',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+    <style>
+        /* Custom scrollbar */
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-track { background: #E0F0E0; }
+        ::-webkit-scrollbar-thumb { background: #2D8A4E; border-radius: 2px; }
+
+        /* Pulsing animation for recording */
+        @keyframes pulse-green {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(45, 138, 78, 0.7); }
+            50% { box-shadow: 0 0 0 20px rgba(45, 138, 78, 0); }
+        }
+        .recording { animation: pulse-green 1.5s infinite; }
+
+        /* Loading spinner */
+        .spinner {
+            border: 4px solid #E0F0E0;
+            border-top: 4px solid #2D8A4E;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+    {% block head %}{% endblock %}
+</head>
+<body class="bg-mise-cream text-mise-navy min-h-screen">
+    <!-- Header -->
+    <header class="bg-mise-cream border-b border-mise-green/20 px-4 py-3">
+        <div class="flex items-center justify-between">
+            <!-- Audiowave back button (left) -->
+            <a href="/" class="p-1 rounded-lg hover:bg-mise-green/10 transition-colors" title="Back to Home">
+                <svg class="w-7 h-7" viewBox="0 0 28 24" fill="#2D8A4E">
+                    <rect x="1" y="10" width="2.5" height="4" rx="1.25"/>
+                    <rect x="6" y="6" width="2.5" height="12" rx="1.25"/>
+                    <rect x="11" y="2" width="2.5" height="20" rx="1.25"/>
+                    <rect x="16" y="6" width="2.5" height="12" rx="1.25"/>
+                    <rect x="21" y="10" width="2.5" height="4" rx="1.25"/>
+                </svg>
+            </a>
+
+            <!-- Mise: Payroll Logo (centered) -->
+            <div class="flex items-center space-x-2">
+                <span class="text-xl font-serif font-bold text-mise-navy">Mise:</span>
+                <span class="text-xl font-serif font-bold text-mise-green">Payroll</span>
+            </div>
+
+            <!-- Spacer for alignment -->
+            <div class="w-7"></div>
+        </div>
+    </header>
+
+    {% block subheader %}{% endblock %}
+
+    <!-- Main content -->
+    <main class="pb-20">
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Bottom nav - Payroll tabs -->
+    <nav class="fixed bottom-0 left-0 right-0 bg-white border-t border-mise-green/20">
+        <div class="flex justify-around py-2">
+            <a href="{% if period %}/payroll/period/{{ period.id }}{% else %}/payroll{% endif %}"
+               class="flex flex-col items-center p-2 {% if active_tab == 'shifties' %}text-mise-green{% else %}text-mise-navy/50 hover:text-mise-green{% endif %}">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                          d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"/>
+                </svg>
+                <span class="text-xs mt-1">Shifties</span>
+            </a>
+            <a href="{% if period %}/payroll/period/{{ period.id }}/totals{% else %}/payroll/totals{% endif %}"
+               class="flex flex-col items-center p-2 {% if active_tab == 'totals' %}text-mise-green{% else %}text-mise-navy/50 hover:text-mise-green{% endif %}">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                          d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
+                <span class="text-xs mt-1">Totals</span>
+            </a>
+            <a href="{% if period %}/payroll/period/{{ period.id }}/qr{% else %}/payroll/qr{% endif %}"
+               class="flex flex-col items-center p-2 {% if active_tab == 'qr' %}text-mise-green{% else %}text-mise-navy/50 hover:text-mise-green{% endif %}">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                          d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z"/>
+                </svg>
+                <span class="text-xs mt-1">QR</span>
+            </a>
+        </div>
+    </nav>
+
+    {% block scripts %}{% endblock %}
+</body>
+</html>

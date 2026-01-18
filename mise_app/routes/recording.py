@@ -4,7 +4,8 @@ from __future__ import annotations
 
 import logging
 import os
-from datetime import timedelta
+import re
+from datetime import timedelta, date
 from typing import Optional
 
 import requests
@@ -16,7 +17,89 @@ from mise_app.local_storage import get_approval_storage, get_totals_storage
 
 log = logging.getLogger(__name__)
 
-router = APIRouter(prefix="/period/{period_id}", tags=["Recording"])
+router = APIRouter(prefix="/payroll/period/{period_id}", tags=["Payroll Recording"])
+
+
+def detect_shifty_from_transcript(transcript: str, period: PayPeriod) -> Optional[str]:
+    """Detect the shifty code (e.g., 'MAM', 'TPM') from transcript content.
+
+    Looks for patterns like:
+    - "Monday AM" / "Monday PM"
+    - "Tuesday morning" / "Tuesday night"
+    - "01/15 AM shift"
+    - Date references that map to a day of the week
+    """
+    transcript_lower = transcript.lower()
+
+    # Day name mappings
+    day_prefixes = {
+        "monday": "M", "mon": "M",
+        "tuesday": "T", "tue": "T", "tues": "T",
+        "wednesday": "W", "wed": "W",
+        "thursday": "Th", "thu": "Th", "thur": "Th", "thurs": "Th",
+        "friday": "F", "fri": "F",
+        "saturday": "Sa", "sat": "Sa",
+        "sunday": "Su", "sun": "Su",
+    }
+
+    # Shift mappings
+    am_indicators = ["am", "morning", "lunch", "day shift", "day"]
+    pm_indicators = ["pm", "evening", "night", "dinner", "closing", "close"]
+
+    detected_day = None
+    detected_shift = None
+
+    # Try to find day of week
+    for day_word, prefix in day_prefixes.items():
+        if day_word in transcript_lower:
+            detected_day = prefix
+            break
+
+    # Try to find AM/PM
+    for indicator in am_indicators:
+        if indicator in transcript_lower:
+            # Make sure it's not just part of a word
+            pattern = r'\b' + re.escape(indicator) + r'\b'
+            if re.search(pattern, transcript_lower):
+                detected_shift = "AM"
+                break
+
+    if not detected_shift:
+        for indicator in pm_indicators:
+            if indicator in transcript_lower:
+                pattern = r'\b' + re.escape(indicator) + r'\b'
+                if re.search(pattern, transcript_lower):
+                    detected_shift = "PM"
+                    break
+
+    # Try to find date (MM/DD format)
+    date_match = re.search(r'(\d{1,2})[/\-](\d{1,2})', transcript_lower)
+    if date_match and not detected_day:
+        month = int(date_match.group(1))
+        day = int(date_match.group(2))
+        try:
+            # Assume current year
+            parsed_date = date(period.start_date.year, month, day)
+            # Get day of week
+            day_names = ["M", "T", "W", "Th", "F", "Sa", "Su"]
+            detected_day = day_names[parsed_date.weekday()]
+        except ValueError:
+            pass
+
+    # Build shifty code
+    if detected_day and detected_shift:
+        return f"{detected_day}{detected_shift}"
+
+    return None
+
+
+def get_shifty_date(shifty_code: str, period: PayPeriod) -> Optional[date]:
+    """Get the actual date for a shifty code within a pay period."""
+    try:
+        shifty = get_shifty_by_code(shifty_code)
+        return period.start_date + timedelta(days=shifty["date_offset"])
+    except ValueError:
+        return None
 
 
 @router.get("/record/{shifty_code}", response_class=HTMLResponse)
@@ -46,8 +129,110 @@ async def record_page(request: Request, period_id: str, shifty_code: str):
             "shifty": shifty,
             "shifty_date": shifty_date.strftime("%m/%d/%Y"),
             "pay_period": period.label,
+            "active_tab": "shifties",
         }
     )
+
+
+@router.post("/process")
+async def process_audio(
+    request: Request,
+    period_id: str,
+    file: UploadFile = File(...),
+):
+    """Process an uploaded audio file and detect shifty from transcript.
+
+    This is the primary endpoint - no pre-selection of day/shift required.
+    Mise detects the date and shift from the transcript content.
+    """
+    config = request.app.state.config
+    shifty_state = request.app.state.shifty_state
+
+    try:
+        period = PayPeriod.from_id(period_id)
+    except ValueError:
+        return JSONResponse(
+            {"status": "error", "error": f"Invalid pay period: {period_id}"},
+            status_code=400
+        )
+
+    log.info(f"Processing audio for period {period_id} from file {file.filename}")
+
+    # Read audio bytes
+    audio_bytes = await file.read()
+    if not audio_bytes:
+        return JSONResponse(
+            {"status": "error", "error": "Empty audio file"},
+            status_code=400
+        )
+
+    # Call transrouter API
+    try:
+        response = requests.post(
+            f"{config.transrouter_url}/api/v1/audio/process",
+            headers={"X-API-Key": config.transrouter_api_key},
+            files={"file": ("recording.wav", audio_bytes, "audio/wav")},
+            timeout=120,
+        )
+        response.raise_for_status()
+        result = response.json()
+    except requests.RequestException as e:
+        log.error(f"Transrouter API error: {e}")
+        return JSONResponse(
+            {"status": "error", "error": f"API error: {e}"},
+            status_code=500
+        )
+
+    if result.get("status") != "success":
+        error = result.get("error", "Unknown error")
+        log.error(f"Processing failed: {error}")
+        return JSONResponse(
+            {"status": "error", "error": error},
+            status_code=400
+        )
+
+    # Get transcript and approval JSON
+    transcript = result.get("transcript", "")
+    approval_json = result.get("approval_json", {})
+
+    # Detect shifty code from transcript
+    shifty_code = detect_shifty_from_transcript(transcript, period)
+
+    if not shifty_code:
+        # Fallback: try to get from approval_json if Transrouter detected it
+        detected_shift = approval_json.get("detected_shift", {})
+        if detected_shift.get("code"):
+            shifty_code = detected_shift["code"]
+
+    if not shifty_code:
+        log.error("Could not detect shifty from transcript")
+        return JSONResponse(
+            {"status": "error", "error": "Could not detect date/shift from recording. Please say the day and AM/PM clearly."},
+            status_code=400
+        )
+
+    log.info(f"Detected shifty {shifty_code} from transcript, length={len(transcript)}")
+
+    # Convert approval_json to flat rows
+    rows = flatten_approval_json(approval_json, shifty_code, period)
+
+    # Store locally (with period isolation)
+    filename = f"{shifty_code}.wav"
+    approval_storage = get_approval_storage()
+    approval_storage.add_shifty(period_id, rows, filename, transcript)
+
+    # Update shifty status
+    shifty_state.set_status(period_id, shifty_code, "pending")
+
+    # Return data for approval page
+    return JSONResponse({
+        "status": "success",
+        "shifty_code": shifty_code,
+        "transcript": transcript,
+        "rows": rows,
+        "corrections": result.get("corrections"),
+        "redirect_url": f"/payroll/period/{period_id}/approve/{shifty_code}",
+    })
 
 
 @router.post("/process/{shifty_code}")
@@ -57,7 +242,7 @@ async def process_shifty(
     shifty_code: str,
     file: UploadFile = File(...),
 ):
-    """Process an uploaded audio file for a shifty."""
+    """Process an uploaded audio file for a specific shifty (legacy endpoint)."""
     config = request.app.state.config
     shifty_state = request.app.state.shifty_state
 
@@ -128,7 +313,7 @@ async def process_shifty(
         "transcript": transcript,
         "rows": rows,
         "corrections": result.get("corrections"),
-        "redirect_url": f"/period/{period_id}/approve/{shifty_code}",
+        "redirect_url": f"/payroll/period/{period_id}/approve/{shifty_code}",
     })
 
 
@@ -173,6 +358,7 @@ async def approve_page(request: Request, period_id: str, shifty_code: str):
             "pay_period": period.label,
             "rows": rows,
             "transcript": transcript,
+            "active_tab": "shifties",
         }
     )
 
@@ -219,14 +405,60 @@ async def confirm_approval(request: Request, period_id: str, shifty_code: str):
     shifty_state.set_status(period_id, shifty_code, "complete")
     log.info(f"Approved and completed {shifty_code} for period {period_id}")
 
-    return RedirectResponse(f"/period/{period_id}", status_code=303)
+    return RedirectResponse(f"/payroll/period/{period_id}", status_code=303)
 
 
 @router.get("/approved/{filename}")
 async def handle_legacy_approval(request: Request, period_id: str, filename: str):
     """Legacy endpoint - redirect to new approval flow."""
     shifty_code = filename.replace(".wav", "")
-    return RedirectResponse(f"/period/{period_id}/approve/{shifty_code}", status_code=303)
+    return RedirectResponse(f"/payroll/period/{period_id}/approve/{shifty_code}", status_code=303)
+
+
+@router.get("/detail/{shifty_code}", response_class=HTMLResponse)
+async def detail_page(request: Request, period_id: str, shifty_code: str):
+    """Show detail page for a completed shifty."""
+    templates = request.app.state.templates
+
+    try:
+        period = PayPeriod.from_id(period_id)
+    except ValueError:
+        return HTMLResponse(f"Invalid pay period: {period_id}", status_code=404)
+
+    try:
+        shifty = get_shifty_by_code(shifty_code)
+    except ValueError:
+        return HTMLResponse(f"Unknown shifty code: {shifty_code}", status_code=404)
+
+    # Get data from local storage (with period isolation)
+    filename = f"{shifty_code}.wav"
+    approval_storage = get_approval_storage()
+    rows = approval_storage.get_approved_data(period_id, filename)
+
+    # Get transcript from first row
+    transcript = ""
+    for row in rows:
+        if row.get("Transcript"):
+            transcript = row["Transcript"]
+            break
+
+    shifty_date = period.start_date + timedelta(days=shifty["date_offset"])
+
+    return templates.TemplateResponse(
+        "detail.html",
+        {
+            "request": request,
+            "period": period,
+            "periods": PayPeriod.get_available_periods(),
+            "shifty": shifty,
+            "shifty_code": shifty_code,
+            "shifty_date": shifty_date.strftime("%m/%d/%Y"),
+            "pay_period": period.label,
+            "rows": rows,
+            "transcript": transcript,
+            "active_tab": "shifties",
+        }
+    )
 
 
 def flatten_approval_json(approval_json: dict, shifty_code: str, period: PayPeriod) -> list:

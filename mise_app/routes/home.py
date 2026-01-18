@@ -8,12 +8,12 @@ from fastapi.responses import HTMLResponse
 from mise_app.config import PayPeriod
 from mise_app.local_storage import get_approval_storage, get_totals_storage
 
-router = APIRouter(prefix="/period/{period_id}", tags=["Home"])
+router = APIRouter(prefix="/payroll/period/{period_id}", tags=["Payroll Home"])
 
 
 @router.get("", response_class=HTMLResponse)
 async def home_page(request: Request, period_id: str):
-    """Render the home page with all shifties for a pay period."""
+    """Render the weekly shifties page (the main payroll dashboard)."""
     templates = request.app.state.templates
     shifty_state = request.app.state.shifty_state
 
@@ -30,8 +30,16 @@ async def home_page(request: Request, period_id: str):
             "periods": PayPeriod.get_available_periods(),
             "shifties": shifty_state.get_all_shifties(period),
             "pay_period": period.label,
+            "active_tab": "shifties",
         }
     )
+
+
+@router.get("/shifties", response_class=HTMLResponse)
+async def shifties_redirect(request: Request, period_id: str):
+    """Legacy redirect - /shifties now just goes to home."""
+    from fastapi.responses import RedirectResponse
+    return RedirectResponse(f"/payroll/period/{period_id}", status_code=302)
 
 
 @router.get("/reset", response_class=HTMLResponse)
@@ -61,5 +69,6 @@ async def reset_shifties(request: Request, period_id: str):
             "shifties": shifty_state.get_all_shifties(period),
             "pay_period": period.label,
             "message": "Week reset! All data cleared.",
+            "active_tab": "shifties",
         }
     )
