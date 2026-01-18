@@ -66,9 +66,9 @@
     </div>
     {% endif %}
 </div>
-<!-- Pay period label aligned under header -->
+<!-- Pay period label - hidden on mobile since period selector shows the date -->
 <div class="px-4 pb-3">
-    <p class="text-mise-navy/60">{{ pay_period }}</p>
+    <p class="text-mise-navy/60 hidden sm:block">{{ pay_period }}</p>
     {% if message %}
     <p class="text-green-600 mt-1">{{ message }}</p>
     {% endif %}
