@@ -344,6 +344,11 @@ async def process_audio(
     # Store locally (with period isolation) - include parsed_date
     filename = f"{shifty_code}.wav"
     approval_storage = get_approval_storage()
+
+    # Delete any existing data for this shifty (in case of re-recording)
+    approval_storage.delete_by_filename(period_id, filename)
+
+    # Add the new data
     approval_storage.add_shifty(period_id, rows, filename, transcript, parsed_date_str)
 
     # Update shifty status
@@ -430,6 +435,11 @@ async def process_shifty(
     # Store locally (with period isolation)
     filename = f"{shifty_code}.wav"
     approval_storage = get_approval_storage()
+
+    # Delete any existing data for this shifty (in case of re-recording)
+    approval_storage.delete_by_filename(period_id, filename)
+
+    # Add the new data
     approval_storage.add_shifty(period_id, rows, filename, transcript)
 
     # Update shifty status

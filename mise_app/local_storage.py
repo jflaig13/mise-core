@@ -78,6 +78,22 @@ class LocalApprovalStorage:
         data = self._load(period_id)
         return [r for r in data if r.get("Filename") == filename]
 
+    def delete_by_filename(self, period_id: str, filename: str) -> int:
+        """Delete all rows for a filename in a pay period (for re-recording).
+
+        Returns the number of rows deleted.
+        """
+        data = self._load(period_id)
+        original_count = len(data)
+        data = [r for r in data if r.get("Filename") != filename]
+        deleted_count = original_count - len(data)
+
+        if deleted_count > 0:
+            self._save(period_id, data)
+            log.info(f"Deleted {deleted_count} rows for {filename} in period {period_id} (re-recording)")
+
+        return deleted_count
+
     def get_pending_by_filename(self, period_id: str, filename: str) -> List[Dict[str, Any]]:
         """Get pending rows for a filename in a pay period."""
         return [r for r in self.get_by_filename(period_id, filename) if r.get("Status") == "Pending"]
