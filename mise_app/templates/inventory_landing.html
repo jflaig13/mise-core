@@ -1,0 +1,37 @@
+{% extends "base_inventory.html" %}
+
+{% block title %}Record a Shelfy{% endblock %}
+
+{% block content %}
+<div class="p-4 flex flex-col items-center justify-center min-h-[70vh]">
+    <!-- Explanation -->
+    <div class="mb-8 px-4 py-4 bg-mise-blue/5 rounded-lg max-w-sm">
+        <p class="text-sm text-mise-navy/70 leading-relaxed text-center">
+            A <strong>Shelfy</strong> is a voice recording of your inventory count for one area.
+            Just tap the button, say the date, and read your count like you're telling a coworker
+            who's writing it down. Mise will transcribe it and let you review before saving.
+        </p>
+    </div>
+
+    <!-- Record Button -->
+    <a href="/inventory/select-category"
+       class="w-44 h-44 rounded-full bg-mise-blue hover:bg-mise-blue-dark flex items-center justify-center
+              transition-all duration-200 active:scale-95 shadow-lg">
+        <div class="text-center text-white">
+            <svg class="w-16 h-16 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"/>
+            </svg>
+            <span class="text-lg font-semibold">Record a<br>Shelfy</span>
+        </div>
+    </a>
+
+    <!-- View Totals Link (if shelfies exist) -->
+    {% if has_shelfies %}
+    <a href="/inventory/totals"
+       class="mt-8 text-mise-blue hover:text-mise-blue-dark underline text-sm">
+        View Inventory Totals
+    </a>
+    {% endif %}
+</div>
+{% endblock %}

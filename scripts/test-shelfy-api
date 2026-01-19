@@ -1,0 +1,71 @@
+#!/bin/bash
+# Shelfy Lite API Test Script
+# Run this to test all shelfy endpoints
+
+set -e
+
+BASE_URL="${1:-http://localhost:8000}"
+echo "🗄️ Shelfy Lite API Test"
+echo "========================"
+echo "Base URL: $BASE_URL"
+echo ""
+
+# Test 1: Get available areas
+echo "1️⃣ GET /inventory/areas"
+curl -s "$BASE_URL/inventory/areas" | python3 -m json.tool
+echo ""
+
+# Test 2: Get periods (may be empty initially)
+echo "2️⃣ GET /inventory/periods"
+curl -s "$BASE_URL/inventory/periods" | python3 -m json.tool
+echo ""
+
+# Test 3: Record a shelfy (requires audio file)
+# Create a test audio file if needed
+if [ -f "/tmp/test_shelfy.wav" ]; then
+    echo "3️⃣ POST /inventory/record_shelfy"
+    curl -s -X POST "$BASE_URL/inventory/record_shelfy" \
+        -F "file=@/tmp/test_shelfy.wav" \
+        -F "area=Walk-in" \
+        -F "category=kitchen" | python3 -m json.tool
+    echo ""
+else
+    echo "3️⃣ SKIPPED: POST /inventory/record_shelfy (no test audio file at /tmp/test_shelfy.wav)"
+    echo "   To test, create an audio file and run:"
+    echo "   curl -X POST '$BASE_URL/inventory/record_shelfy' -F 'file=@your_audio.wav' -F 'area=Walk-in' -F 'category=kitchen'"
+    echo ""
+fi
+
+# Test 4: Get totals for current month
+PERIOD_ID=$(date +%Y-%m-31)
+# Adjust for months with fewer days
+YEAR=$(date +%Y)
+MONTH=$(date +%m)
+LAST_DAY=$(date -d "$YEAR-$MONTH-01 +1 month -1 day" +%d 2>/dev/null || cal $MONTH $YEAR | awk 'NF {LAST = $NF} END {print LAST}')
+PERIOD_ID="$YEAR-$MONTH-$LAST_DAY"
+
+echo "4️⃣ GET /inventory/totals/$PERIOD_ID"
+curl -s "$BASE_URL/inventory/totals/$PERIOD_ID" | python3 -m json.tool
+echo ""
+
+echo "✅ Shelfy API test complete!"
+echo ""
+echo "Manual test commands:"
+echo "====================="
+echo ""
+echo "# Record a shelfy (requires audio file):"
+echo "curl -X POST '$BASE_URL/inventory/record_shelfy' \\"
+echo "  -F 'file=@your_audio.wav' \\"
+echo "  -F 'area=Walk-in' \\"
+echo "  -F 'category=kitchen'"
+echo ""
+echo "# Approve a shelfy:"
+echo "curl -X POST '$BASE_URL/inventory/approve_shelfy' \\"
+echo "  -H 'Content-Type: application/json' \\"
+echo "  -d '{\"shelfy_id\": \"shelfy_YYYYMMDD_HHMMSS_walk-in\"}'"
+echo ""
+echo "# Get shelfy details:"
+echo "curl '$BASE_URL/inventory/shelfy/shelfy_YYYYMMDD_HHMMSS_walk-in'"
+echo ""
+echo "# Get totals for a period:"
+echo "curl '$BASE_URL/inventory/totals/2026-01-31'"

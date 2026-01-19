@@ -21,7 +21,7 @@ from starlette.middleware.base import BaseHTTPMiddleware
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from mise_app.config import ShiftyConfig, shifty_state_manager, PayPeriod
-from mise_app.routes import home, recording, totals
+from mise_app.routes import home, recording, totals, inventory
 
 # Configure logging
 logging.basicConfig(
@@ -75,6 +75,7 @@ templates = Jinja2Templates(directory=templates_path)
 app.include_router(home.router)
 app.include_router(recording.router)
 app.include_router(totals.router)
+app.include_router(inventory.router)
 
 # Make config and templates available to routes
 app.state.config = config
@@ -85,11 +86,13 @@ app.state.shifty_state = shifty_state_manager
 @app.get("/", response_class=HTMLResponse)
 async def landing_page(request: Request):
     """Render the main landing page with voice-first interface."""
+    current_period = PayPeriod.current()
     return templates.TemplateResponse(
         "landing.html",
         {
             "request": request,
             "active_tab": "home",
+            "current_period_id": current_period.id,
         }
     )
 

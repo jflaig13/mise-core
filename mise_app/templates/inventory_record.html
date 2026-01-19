@@ -1,0 +1,209 @@
+{% extends "base_inventory.html" %}
+
+{% block title %}Record {{ area }}{% endblock %}
+
+{% block content %}
+<div class="p-4 flex flex-col items-center justify-center min-h-[70vh]">
+    <!-- Area info -->
+    <div class="mb-6 text-center">
+        <h1 class="text-2xl font-bold text-mise-navy">{{ area }}</h1>
+        <p class="text-mise-navy/50 text-sm mt-1">
+            {% if category == 'kitchen' %}Kitchen{% else %}Bar{% endif %} Inventory
+        </p>
+    </div>
+
+    <!-- Recording UI -->
+    <div id="recorder" class="text-center w-full flex flex-col items-center">
+        <!-- Tappable Microphone Button -->
+        <button id="record-btn"
+                class="w-40 h-40 rounded-full bg-mise-blue hover:bg-mise-blue-dark flex items-center justify-center
+                       transition-all duration-200 active:scale-95 shadow-lg"
+                onclick="toggleRecording()">
+            <svg id="mic-icon" class="w-20 h-20" fill="none" stroke="white" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"/>
+            </svg>
+            <span id="btn-text" class="hidden text-white text-lg font-semibold">Tap to<br>Stop</span>
+        </button>
+
+        <p id="status" class="mt-6 text-mise-navy/60 text-lg">Tap to start recording</p>
+        <p id="timer" class="mt-2 text-2xl font-mono text-mise-navy/50 hidden">00:00</p>
+    </div>
+
+    <!-- Instructions -->
+    <div class="mt-8 text-center px-4 max-w-sm">
+        <p class="text-mise-navy/50 text-sm leading-relaxed">
+            Say the date, then read your count naturally.
+            <br><em>"January 31st, walk-in count. Burger patties, 3 boxes..."</em>
+        </p>
+    </div>
+
+    <!-- Or upload -->
+    <div class="mt-6 text-center">
+        <div class="relative inline-block">
+            <p class="text-mise-navy/40 mb-3 text-sm">or upload a recording</p>
+            <label class="inline-block px-4 py-2 bg-white border border-mise-blue/20 hover:border-mise-blue/40 rounded-lg cursor-pointer transition-colors">
+                <span class="text-sm text-mise-navy/60">Choose File</span>
+                <input type="file" accept="audio/*,.wav,.m4a,.mp3"
+                       class="hidden" onchange="uploadFile(this)">
+            </label>
+        </div>
+    </div>
+
+    <!-- Processing overlay -->
+    <div id="processing-overlay" class="hidden fixed inset-0 bg-mise-cream/95 flex items-center justify-center z-50">
+        <div class="text-center">
+            <div class="spinner mx-auto mb-4"></div>
+            <p class="text-xl font-semibold mb-2">Processing...</p>
+            <p class="text-mise-navy/60" id="processing-status">Transcribing audio</p>
+        </div>
+    </div>
+
+    <!-- Error message -->
+    <div id="error-message" class="hidden fixed bottom-24 left-4 right-4 p-4 bg-red-100 border border-red-300 rounded-lg z-40">
+        <p class="text-red-600" id="error-text"></p>
+        <button onclick="document.getElementById('error-message').classList.add('hidden')"
+                class="mt-2 text-sm text-mise-navy/60 hover:text-mise-navy">Dismiss</button>
+    </div>
+
+    <!-- Back link -->
+    <div class="mt-6">
+        <a href="/inventory/select-area/{{ category }}" class="text-mise-blue hover:text-mise-blue-dark text-sm">
+            &larr; Change area
+        </a>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+let mediaRecorder;
+let chunks = [];
+let timerInterval;
+let seconds = 0;
+
+function updateTimer() {
+    seconds++;
+    const mins = Math.floor(seconds / 60).toString().padStart(2, '0');
+    const secs = (seconds % 60).toString().padStart(2, '0');
+    document.getElementById('timer').textContent = `${mins}:${secs}`;
+}
+
+async function toggleRecording() {
+    const btn = document.getElementById('record-btn');
+    const btnText = document.getElementById('btn-text');
+    const micIcon = document.getElementById('mic-icon');
+    const status = document.getElementById('status');
+    const timer = document.getElementById('timer');
+
+    if (!mediaRecorder || mediaRecorder.state === 'inactive') {
+        // Start recording
+        try {
+            const stream = await navigator.mediaDevices.getUserMedia({audio: true});
+            mediaRecorder = new MediaRecorder(stream);
+            chunks = [];
+
+            mediaRecorder.ondataavailable = e => chunks.push(e.data);
+            mediaRecorder.onstop = () => {
+                const blob = new Blob(chunks, {type: 'audio/webm'});
+                submitAudio(blob);
+            };
+
+            mediaRecorder.start();
+            btn.classList.add('recording');
+            btn.classList.remove('bg-mise-blue');
+            btn.classList.add('bg-red-500');
+            micIcon.classList.add('hidden');
+            btnText.classList.remove('hidden');
+            btnText.innerHTML = 'Tap to<br>Stop';
+            status.textContent = 'Recording...';
+            timer.classList.remove('hidden');
+            seconds = 0;
+            timerInterval = setInterval(updateTimer, 1000);
+
+        } catch (err) {
+            showError('Microphone access denied. Please allow microphone access and try again.');
+        }
+    } else {
+        // Stop recording
+        mediaRecorder.stop();
+        mediaRecorder.stream.getTracks().forEach(track => track.stop());
+        btn.classList.remove('recording', 'bg-red-500');
+        btn.classList.add('bg-mise-blue');
+        micIcon.classList.remove('hidden');
+        btnText.classList.add('hidden');
+        status.textContent = 'Processing...';
+        clearInterval(timerInterval);
+    }
+}
+
+function uploadFile(input) {
+    if (input.files[0]) {
+        const file = input.files[0];
+        document.getElementById('status').textContent = `Uploading ${file.name}...`;
+        submitAudio(file);
+    }
+}
+
+async function submitAudio(audioBlob) {
+    const overlay = document.getElementById('processing-overlay');
+    const processingStatus = document.getElementById('processing-status');
+
+    overlay.classList.remove('hidden');
+    processingStatus.textContent = 'Uploading audio...';
+
+    const formData = new FormData();
+    formData.append('file', audioBlob, 'recording.webm');
+    formData.append('area', '{{ area }}');
+    formData.append('category', '{{ category }}');
+
+    try {
+        processingStatus.textContent = 'Transcribing audio...';
+
+        const response = await fetch('/inventory/record_shelfy', {
+            method: 'POST',
+            body: formData
+        });
+
+        const result = await response.json();
+
+        if (result.status === 'success' || result.shelfy_id) {
+            processingStatus.textContent = 'Opening approval page...';
+            window.location.href = '/inventory/approve/' + result.shelfy_id;
+        } else {
+            overlay.classList.add('hidden');
+            showError(result.error || 'Processing failed');
+            resetRecordButton();
+        }
+
+    } catch (err) {
+        overlay.classList.add('hidden');
+        showError('Network error: ' + err.message);
+        resetRecordButton();
+    }
+}
+
+function showError(message) {
+    const errorDiv = document.getElementById('error-message');
+    const errorText = document.getElementById('error-text');
+    errorText.textContent = message;
+    errorDiv.classList.remove('hidden');
+}
+
+function resetRecordButton() {
+    const btn = document.getElementById('record-btn');
+    const btnText = document.getElementById('btn-text');
+    const micIcon = document.getElementById('mic-icon');
+    const status = document.getElementById('status');
+    const timer = document.getElementById('timer');
+
+    btn.classList.remove('recording', 'bg-red-500');
+    btn.classList.add('bg-mise-blue');
+    micIcon.classList.remove('hidden');
+    btnText.classList.add('hidden');
+    status.textContent = 'Tap to start recording';
+    timer.classList.add('hidden');
+    clearInterval(timerInterval);
+}
+</script>
+{% endblock %}

@@ -1,0 +1,34 @@
+{% extends "base_inventory.html" %}
+
+{% block title %}Select Area{% endblock %}
+
+{% block content %}
+<div class="p-4">
+    <h1 class="text-2xl font-bold text-center mb-2">Select Area</h1>
+    <p class="text-mise-navy/60 text-center mb-6">
+        {% if category == 'kitchen' %}Kitchen (Food){% else %}Bar (Alcohol){% endif %} - Choose area to count
+    </p>
+
+    <div class="space-y-3 max-w-sm mx-auto">
+        {% for area in areas %}
+        <a href="/inventory/record/{{ category }}/{{ area.slug }}"
+           class="block p-4 bg-white border-2 border-mise-blue/20 hover:border-mise-blue rounded-xl
+                  transition-all duration-200 active:scale-98 shadow-sm">
+            <div class="flex items-center justify-between">
+                <span class="text-lg font-medium text-mise-navy">{{ area.name }}</span>
+                <svg class="w-5 h-5 text-mise-navy/30" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                </svg>
+            </div>
+        </a>
+        {% endfor %}
+    </div>
+
+    <!-- Back link -->
+    <div class="text-center mt-8">
+        <a href="/inventory/select-category" class="text-mise-blue hover:text-mise-blue-dark text-sm">
+            &larr; Change category
+        </a>
+    </div>
+</div>
+{% endblock %}
