@@ -20,7 +20,7 @@
         </svg>
         <p class="text-mise-navy/40 mb-4">No inventory recorded yet</p>
         <a href="/inventory"
-           class="inline-block px-6 py-3 bg-mise-blue hover:bg-mise-blue-dark rounded-lg text-white font-semibold">
+           class="inline-block px-6 py-3 bg-mise-red hover:bg-mise-red-dark rounded-lg text-white font-semibold">
             Record First Shelfy
         </a>
     </div>
@@ -41,7 +41,7 @@
         <div class="space-y-2">
             {% for s in kitchen_shelfies %}
             <a href="/inventory/shelfy-page/{{ s.shelfy_id }}"
-               class="block p-3 bg-white rounded-lg border border-mise-blue/10 hover:border-mise-blue/30 transition-colors">
+               class="block p-3 bg-white rounded-lg border border-mise-red/10 hover:border-mise-red/30 transition-colors">
                 <div class="flex items-center justify-between">
                     <div>
                         <span class="font-medium text-mise-navy">{{ s.area }}</span>
@@ -72,7 +72,7 @@
         <div class="space-y-2">
             {% for s in bar_shelfies %}
             <a href="/inventory/shelfy-page/{{ s.shelfy_id }}"
-               class="block p-3 bg-white rounded-lg border border-mise-blue/10 hover:border-mise-blue/30 transition-colors">
+               class="block p-3 bg-white rounded-lg border border-mise-red/10 hover:border-mise-red/30 transition-colors">
                 <div class="flex items-center justify-between">
                     <div>
                         <span class="font-medium text-mise-navy">{{ s.area }}</span>
@@ -93,7 +93,7 @@
     <!-- Record More Button -->
     <div class="mt-6">
         <a href="/inventory"
-           class="block w-full p-4 bg-mise-blue hover:bg-mise-blue-dark rounded-xl text-center text-white font-semibold
+           class="block w-full p-4 bg-mise-red hover:bg-mise-red-dark rounded-xl text-center text-white font-semibold
                   transition-all duration-200 active:scale-98 shadow-lg">
             Record Another Shelfy
         </a>

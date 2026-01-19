@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
-    <meta name="theme-color" content="#EFF6FF">
+    <meta name="theme-color" content="#FEF2F2">
 
     <!-- App Icon & Manifest -->
     <link rel="icon" type="image/png" href="/static/icons/icon-512.png">
@@ -20,11 +20,11 @@
                 extend: {
                     colors: {
                         mise: {
-                            cream: '#EFF6FF',
+                            cream: '#FEF2F2',
                             navy: '#1B2A4E',
-                            blue: '#2563EB',
-                            'blue-dark': '#1D4ED8',
-                            'blue-light': '#DBEAFE',
+                            red: '#B5402F',
+                            'red-dark': '#922F21',
+                            'red-light': '#FECACA',
                         }
                     }
                 }
@@ -35,20 +35,20 @@
     <style>
         /* Custom scrollbar */
         ::-webkit-scrollbar { width: 4px; }
-        ::-webkit-scrollbar-track { background: #DBEAFE; }
-        ::-webkit-scrollbar-thumb { background: #2563EB; border-radius: 2px; }
+        ::-webkit-scrollbar-track { background: #FECACA; }
+        ::-webkit-scrollbar-thumb { background: #B5402F; border-radius: 2px; }
 
         /* Pulsing animation for recording */
-        @keyframes pulse-blue {
-            0%, 100% { box-shadow: 0 0 0 0 rgba(37, 99, 235, 0.7); }
-            50% { box-shadow: 0 0 0 20px rgba(37, 99, 235, 0); }
+        @keyframes pulse-red {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(181, 64, 47, 0.7); }
+            50% { box-shadow: 0 0 0 20px rgba(181, 64, 47, 0); }
         }
-        .recording { animation: pulse-blue 1.5s infinite; }
+        .recording { animation: pulse-red 1.5s infinite; }
 
         /* Loading spinner */
         .spinner {
-            border: 4px solid #DBEAFE;
-            border-top: 4px solid #2563EB;
+            border: 4px solid #FECACA;
+            border-top: 4px solid #B5402F;
             border-radius: 50%;
             width: 40px;
             height: 40px;
@@ -63,21 +63,23 @@
 </head>
 <body class="bg-mise-cream text-mise-navy min-h-screen">
     <!-- Header -->
-    <header class="bg-mise-cream border-b border-mise-blue/20 px-4 py-3">
+    <header class="bg-mise-cream border-b border-mise-red/20 px-4 py-3">
         <div class="flex items-center justify-between">
-            <!-- Shelf icon back button (left) -->
-            <a href="/inventory" class="p-1 rounded-lg hover:bg-mise-blue/10 transition-colors" title="Back to Inventory">
-                <svg class="w-7 h-7" viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="2">
-                    <rect x="3" y="4" width="18" height="4" rx="1"/>
-                    <rect x="3" y="10" width="18" height="4" rx="1"/>
-                    <rect x="3" y="16" width="18" height="4" rx="1"/>
+            <!-- Home button (left) - audiowave icon matching payroll -->
+            <a href="/" class="p-1 rounded-lg hover:bg-mise-red/10 transition-colors" title="Back to Home">
+                <svg class="w-7 h-7" viewBox="0 0 28 24" fill="#B5402F">
+                    <rect x="1" y="10" width="2.5" height="4" rx="1.25"/>
+                    <rect x="6" y="6" width="2.5" height="12" rx="1.25"/>
+                    <rect x="11" y="2" width="2.5" height="20" rx="1.25"/>
+                    <rect x="16" y="6" width="2.5" height="12" rx="1.25"/>
+                    <rect x="21" y="10" width="2.5" height="4" rx="1.25"/>
                 </svg>
             </a>
 
             <!-- Mise: Inventory Logo (centered) -->
             <div class="flex items-center space-x-2">
                 <span class="text-xl font-serif font-bold text-mise-navy">Mise:</span>
-                <span class="text-xl font-serif font-bold text-mise-blue">Inventory</span>
+                <span class="text-xl font-serif font-bold text-mise-red">Inventory</span>
             </div>
 
             <!-- Spacer for alignment -->
@@ -93,10 +95,10 @@
     </main>
 
     <!-- Bottom nav - Inventory tabs -->
-    <nav class="fixed bottom-0 left-0 right-0 bg-white border-t border-mise-blue/20">
+    <nav class="fixed bottom-0 left-0 right-0 bg-white border-t border-mise-red/20">
         <div class="flex justify-around py-2">
             <a href="/inventory"
-               class="flex flex-col items-center p-2 {% if active_tab == 'record' %}text-mise-blue{% else %}text-mise-navy/50 hover:text-mise-blue{% endif %}">
+               class="flex flex-col items-center p-2 {% if active_tab == 'record' %}text-mise-red{% else %}text-mise-navy/50 hover:text-mise-red{% endif %}">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                           d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"/>
@@ -104,7 +106,7 @@
                 <span class="text-xs mt-1">Record</span>
             </a>
             <a href="/inventory/totals-page"
-               class="flex flex-col items-center p-2 {% if active_tab == 'totals' %}text-mise-blue{% else %}text-mise-navy/50 hover:text-mise-blue{% endif %}"
+               class="flex flex-col items-center p-2 {% if active_tab == 'totals' %}text-mise-red{% else %}text-mise-navy/50 hover:text-mise-red{% endif %}">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                           d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"/>

@@ -14,7 +14,7 @@
             </span>
         </div>
         <div class="flex items-center mt-2 text-mise-navy/60">
-            <span class="px-2 py-1 bg-mise-blue/10 rounded text-sm">{{ shelfy.category | capitalize }}</span>
+            <span class="px-2 py-1 bg-mise-red/10 rounded text-sm">{{ shelfy.category | capitalize }}</span>
         </div>
         <p class="text-sm text-mise-navy/40 mt-2">
             Recorded {{ shelfy.recorded_at_display }}
@@ -22,7 +22,7 @@
     </div>
 
     <!-- Transcript Box -->
-    <div class="bg-white rounded-xl border border-mise-blue/20 p-4 mb-6 shadow-sm">
+    <div class="bg-white rounded-xl border border-mise-red/20 p-4 mb-6 shadow-sm">
         <h2 class="text-sm font-semibold text-mise-navy/60 mb-3">Transcript</h2>
         <div class="text-mise-navy leading-relaxed">
             {{ shelfy.transcript }}
@@ -30,7 +30,7 @@
     </div>
 
     <!-- Metadata -->
-    <div class="bg-mise-blue/5 rounded-lg p-4 mb-6">
+    <div class="bg-mise-red/5 rounded-lg p-4 mb-6">
         <h2 class="text-sm font-semibold text-mise-navy/60 mb-3">Details</h2>
         <div class="space-y-2 text-sm">
             <div class="flex justify-between">
@@ -50,7 +50,7 @@
         <form action="/inventory/approve_shelfy_form" method="POST">
             <input type="hidden" name="shelfy_id" value="{{ shelfy.shelfy_id }}">
             <button type="submit"
-                    class="w-full p-4 bg-mise-blue hover:bg-mise-blue-dark rounded-xl text-white font-semibold
+                    class="w-full p-4 bg-mise-red hover:bg-mise-red-dark rounded-xl text-white font-semibold
                            transition-all duration-200 active:scale-98">
                 Approve
             </button>
@@ -58,7 +58,7 @@
         {% endif %}
 
         <a href="/inventory/totals-page"
-           class="block w-full p-3 bg-white border border-mise-blue/20 hover:border-mise-blue/40 rounded-xl
+           class="block w-full p-3 bg-white border border-mise-red/20 hover:border-mise-red/40 rounded-xl
                   text-center text-mise-navy transition-colors">
             &larr; Back to Totals
         </a>
