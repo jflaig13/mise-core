@@ -1,0 +1,64 @@
+#!/bin/bash
+# Port conflict checker for Mise
+# Ensures proper service separation and prevents conflicts
+
+echo "🔍 Mise Port Checker"
+echo "==================="
+echo ""
+
+errors=0
+
+# Check port 8000 (mise_app)
+echo "Checking port 8000 (mise_app)..."
+if curl -s http://localhost:8000/health 2>/dev/null | grep -q "mise"; then
+    echo "✓ Port 8000: mise_app running correctly"
+else
+    echo "✗ Port 8000: mise_app not responding"
+    ((errors++))
+fi
+
+# Check port 8080 (transrouter)
+echo "Checking port 8080 (transrouter)..."
+if curl -s http://localhost:8080/api/v1/health 2>/dev/null | grep -q "transrouter"; then
+    echo "✓ Port 8080: transrouter running correctly"
+elif curl -s http://localhost:8080/ping 2>/dev/null | grep -q "database"; then
+    echo "✗ Port 8080: CPM detected (should be transrouter!)"
+    echo "  Fix: cd payroll_agent/CPM && make down"
+    ((errors++))
+else
+    echo "✗ Port 8080: No service responding"
+    ((errors++))
+fi
+
+# Check for CPM Docker containers
+echo ""
+echo "Checking for CPM Docker conflicts..."
+if docker ps --format '{{.Names}}' | grep -q "cpm-"; then
+    echo "✗ CPM Docker containers running (conflicts with transrouter)"
+    echo "  Running containers:"
+    docker ps --format '  - {{.Names}}' | grep "cpm-"
+    echo "  Fix: cd payroll_agent/CPM && make down"
+    ((errors++))
+else
+    echo "✓ No CPM Docker containers (correct)"
+fi
+
+echo ""
+echo "==================="
+
+if [ $errors -eq 0 ]; then
+    echo "✅ All services configured correctly!"
+    echo ""
+    echo "Active services:"
+    echo "  - mise_app:    http://localhost:8000"
+    echo "  - transrouter: http://localhost:8080"
+    exit 0
+else
+    echo "❌ Found $errors issue(s)"
+    echo ""
+    echo "Expected configuration:"
+    echo "  Port 8000: mise_app (web UI)"
+    echo "  Port 8080: transrouter (API gateway)"
+    echo "  CPM Docker: STOPPED (only for isolated testing)"
+    exit 1
+fi

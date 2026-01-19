@@ -40,3 +40,6 @@ Icon?
 folder.txt
 
 .tmp.driveupload/
+
+# Cowork sandbox (working files)
+cowork_sandbox/

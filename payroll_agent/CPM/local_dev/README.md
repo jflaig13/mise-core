@@ -2,6 +2,40 @@
 
 Complete local Docker testing environment for the CPM (Cloud Payroll Machine) payroll engine.
 
+## ⚠️ IMPORTANT: When to Use This
+
+**CPM Docker is for ISOLATED payroll engine testing ONLY.**
+
+### ❌ DON'T Use CPM Docker When:
+- Running the full Mise web app
+- Using mise_app + transrouter
+- Testing end-to-end shifty flows
+
+**Why:** CPM Docker uses port 8080, which conflicts with transrouter.
+
+### ✅ DO Use CPM Docker When:
+- Testing payroll parsing logic changes in isolation
+- Debugging database backends (BigQuery ↔ PostgreSQL)
+- Running payroll-specific unit/integration tests
+- NOT using the full Mise app
+
+### Clean Architecture Check
+
+Before starting CPM Docker, verify no conflicts:
+```bash
+# From mise-core root
+scripts/check-ports
+
+# If transrouter is running, you'll see a warning
+# Stop CPM before using full Mise:
+cd payroll_agent/CPM
+make down
+```
+
+See `/Users/jonathanflaig/mise-core/START_MISE.md` for the correct full Mise setup.
+
+---
+
 ## Quick Start
 
 ```bash
