@@ -52,9 +52,13 @@ class PayPeriod:
     @classmethod
     def current(cls) -> "PayPeriod":
         """Get the current pay period containing today."""
-        today = date.today()
+        return cls.containing(date.today())
+
+    @classmethod
+    def containing(cls, target_date: date) -> "PayPeriod":
+        """Get the pay period containing a specific date."""
         ref = cls.REFERENCE_DATE
-        days_since_ref = (today - ref).days
+        days_since_ref = (target_date - ref).days
         periods_since_ref = days_since_ref // cls.PERIOD_LENGTH
         period_start = ref + timedelta(days=periods_since_ref * cls.PERIOD_LENGTH)
         return cls(start_date=period_start)

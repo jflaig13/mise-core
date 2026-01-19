@@ -41,8 +41,16 @@ class LocalApprovalStorage:
         with open(approval_file, 'w') as f:
             json.dump(data, f, indent=2)
 
-    def add_shifty(self, period_id: str, rows: List[Dict[str, Any]], filename: str, transcript: str) -> int:
-        """Add parsed shifty data to approval queue for a pay period."""
+    def add_shifty(self, period_id: str, rows: List[Dict[str, Any]], filename: str, transcript: str, parsed_date: str = None) -> int:
+        """Add parsed shifty data to approval queue for a pay period.
+
+        Args:
+            period_id: Pay period ID
+            rows: List of row dicts with employee, role, amount, etc.
+            filename: Audio filename
+            transcript: Transcribed text
+            parsed_date: The actual date parsed from transcript (MM/DD/YYYY format)
+        """
         data = self._load(period_id)
         start_idx = len(data)
 
@@ -57,11 +65,12 @@ class LocalApprovalStorage:
                 "Status": "Pending",
                 "Filename": filename,
                 "Transcript": transcript if i == 0 else "",
+                "ParsedDate": parsed_date or "",  # Store the parsed date from transcript
                 "created_at": datetime.now().isoformat(),
             })
 
         self._save(period_id, data)
-        log.info(f"Added {len(rows)} rows for {filename} in period {period_id}")
+        log.info(f"Added {len(rows)} rows for {filename} in period {period_id} (date: {parsed_date})")
         return start_idx
 
     def get_by_filename(self, period_id: str, filename: str) -> List[Dict[str, Any]]:

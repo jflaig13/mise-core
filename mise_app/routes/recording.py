@@ -72,16 +72,22 @@ def save_recording(audio_bytes: bytes, period_id: str, shifty_code: str = None, 
 router = APIRouter(prefix="/payroll/period/{period_id}", tags=["Payroll Recording"])
 
 
-def detect_shifty_from_transcript(transcript: str, period: PayPeriod) -> Optional[str]:
-    """Detect the shifty code (e.g., 'MAM', 'TPM') from transcript content.
+def detect_shifty_from_transcript(transcript: str, period: PayPeriod) -> dict:
+    """Detect the shifty code and actual date from transcript content.
 
     Looks for patterns like:
     - "Monday AM" / "Monday PM"
     - "Tuesday morning" / "Tuesday night"
+    - "January 19th, 2026 AM shift"
     - "01/15 AM shift"
-    - Date references that map to a day of the week
+
+    Returns:
+        dict with keys:
+        - 'code': shifty code (e.g., 'MAM', 'TPM') or None
+        - 'parsed_date': the actual date parsed from transcript, or None
     """
     transcript_lower = transcript.lower()
+    parsed_date_result = None  # Track the actual date parsed
 
     # Day name mappings
     day_prefixes = {
@@ -124,25 +130,75 @@ def detect_shifty_from_transcript(transcript: str, period: PayPeriod) -> Optiona
                     detected_shift = "PM"
                     break
 
-    # Try to find date (MM/DD format)
-    date_match = re.search(r'(\d{1,2})[/\-](\d{1,2})', transcript_lower)
-    if date_match and not detected_day:
-        month = int(date_match.group(1))
-        day = int(date_match.group(2))
-        try:
-            # Assume current year
-            parsed_date = date(period.start_date.year, month, day)
-            # Get day of week
-            day_names = ["M", "T", "W", "Th", "F", "Sa", "Su"]
-            detected_day = day_names[parsed_date.weekday()]
-        except ValueError:
-            pass
+    # Try to find date from transcript
+    # Month name mappings
+    month_names = {
+        "january": 1, "jan": 1,
+        "february": 2, "feb": 2,
+        "march": 3, "mar": 3,
+        "april": 4, "apr": 4,
+        "may": 5,
+        "june": 6, "jun": 6,
+        "july": 7, "jul": 7,
+        "august": 8, "aug": 8,
+        "september": 9, "sep": 9, "sept": 9,
+        "october": 10, "oct": 10,
+        "november": 11, "nov": 11,
+        "december": 12, "dec": 12,
+    }
 
-    # Build shifty code
+    if not detected_day:
+        # Try spoken date format: "January 19th" or "January 19"
+        for month_word, month_num in month_names.items():
+            # Match "January 19th" or "January 19" or "January nineteenth"
+            pattern = rf'\b{month_word}\s+(\d{{1,2}})(?:st|nd|rd|th)?\b'
+            match = re.search(pattern, transcript_lower)
+            if match:
+                day_num = int(match.group(1))
+                try:
+                    # Try to extract year from transcript (e.g., "January 12, 2026")
+                    year_pattern = rf'\b{month_word}\s+\d{{1,2}}(?:st|nd|rd|th)?(?:\s*,)?\s*(\d{{4}})\b'
+                    year_match = re.search(year_pattern, transcript_lower)
+                    if year_match:
+                        year = int(year_match.group(1))
+                    else:
+                        # Default to pay period year
+                        year = period.start_date.year
+                        # If month is less than period start month and we're near year boundary, use next year
+                        if month_num < period.start_date.month and period.start_date.month >= 11:
+                            year += 1
+                    parsed_date = date(year, month_num, day_num)
+                    parsed_date_result = parsed_date  # Store the actual parsed date
+                    day_names = ["M", "T", "W", "Th", "F", "Sa", "Su"]
+                    detected_day = day_names[parsed_date.weekday()]
+                    log.info(f"Detected date from spoken format: {month_word} {day_num}, {year} -> {parsed_date.strftime('%A %B %d, %Y')} ({detected_day})")
+                except ValueError:
+                    pass
+                break
+
+        # Fallback: Try MM/DD format
+        if not detected_day:
+            date_match = re.search(r'(\d{1,2})[/\-](\d{1,2})', transcript_lower)
+            if date_match:
+                month = int(date_match.group(1))
+                day = int(date_match.group(2))
+                try:
+                    parsed_date = date(period.start_date.year, month, day)
+                    parsed_date_result = parsed_date
+                    day_names = ["M", "T", "W", "Th", "F", "Sa", "Su"]
+                    detected_day = day_names[parsed_date.weekday()]
+                except ValueError:
+                    pass
+
+    # Build shifty code and return with parsed date
+    shifty_code = None
     if detected_day and detected_shift:
-        return f"{detected_day}{detected_shift}"
+        shifty_code = f"{detected_day}{detected_shift}"
 
-    return None
+    return {
+        "code": shifty_code,
+        "parsed_date": parsed_date_result
+    }
 
 
 def get_shifty_date(shifty_code: str, period: PayPeriod) -> Optional[date]:
@@ -247,8 +303,10 @@ async def process_audio(
     transcript = result.get("transcript", "")
     approval_json = result.get("approval_json", {})
 
-    # Detect shifty code from transcript
-    shifty_code = detect_shifty_from_transcript(transcript, period)
+    # Detect shifty code and parsed date from transcript
+    detection_result = detect_shifty_from_transcript(transcript, period)
+    shifty_code = detection_result.get("code")
+    parsed_date = detection_result.get("parsed_date")
 
     if not shifty_code:
         # Fallback: try to get from approval_json if Transrouter detected it
@@ -263,7 +321,19 @@ async def process_audio(
             status_code=400
         )
 
-    log.info(f"Detected shifty {shifty_code} from transcript, length={len(transcript)}")
+    # If a specific date was parsed, use it to determine the correct pay period
+    parsed_date_str = None
+    if parsed_date:
+        parsed_date_str = parsed_date.strftime("%m/%d/%Y")
+        # Find the correct pay period for this date
+        correct_period = PayPeriod.containing(parsed_date)
+        if correct_period.id != period_id:
+            log.info(f"Date {parsed_date_str} belongs to period {correct_period.id}, not {period_id} - auto-correcting")
+            period = correct_period
+            period_id = correct_period.id
+        log.info(f"Detected shifty {shifty_code} for date {parsed_date_str} in period {period_id}")
+    else:
+        log.info(f"Detected shifty {shifty_code} from transcript (no specific date parsed, using period {period_id})")
 
     # Save recording to local storage
     save_recording(audio_bytes, period_id, shifty_code, file.filename)
@@ -271,10 +341,10 @@ async def process_audio(
     # Convert approval_json to flat rows
     rows = flatten_approval_json(approval_json, shifty_code, period)
 
-    # Store locally (with period isolation)
+    # Store locally (with period isolation) - include parsed_date
     filename = f"{shifty_code}.wav"
     approval_storage = get_approval_storage()
-    approval_storage.add_shifty(period_id, rows, filename, transcript)
+    approval_storage.add_shifty(period_id, rows, filename, transcript, parsed_date_str)
 
     # Update shifty status
     shifty_state.set_status(period_id, shifty_code, "pending")
@@ -285,6 +355,7 @@ async def process_audio(
         "shifty_code": shifty_code,
         "transcript": transcript,
         "rows": rows,
+        "parsed_date": parsed_date_str,
         "corrections": result.get("corrections"),
         "redirect_url": f"/payroll/period/{period_id}/approve/{shifty_code}",
     })
@@ -395,14 +466,23 @@ async def approve_page(request: Request, period_id: str, shifty_code: str):
     approval_storage = get_approval_storage()
     rows = approval_storage.get_by_filename(period_id, filename)
 
-    # Get transcript from first row
+    # Get transcript and parsed date from first row
     transcript = ""
+    parsed_date_str = ""
     for row in rows:
         if row.get("Transcript"):
             transcript = row["Transcript"]
+        if row.get("ParsedDate"):
+            parsed_date_str = row["ParsedDate"]
+        if transcript and parsed_date_str:
             break
 
-    shifty_date = period.start_date + timedelta(days=shifty["date_offset"])
+    # Use parsed date from transcript if available, otherwise calculate from period
+    if parsed_date_str:
+        shifty_date_display = parsed_date_str
+    else:
+        shifty_date = period.start_date + timedelta(days=shifty["date_offset"])
+        shifty_date_display = shifty_date.strftime("%m/%d/%Y")
 
     return templates.TemplateResponse(
         "approve.html",
@@ -412,7 +492,7 @@ async def approve_page(request: Request, period_id: str, shifty_code: str):
             "periods": PayPeriod.get_available_periods(),
             "shifty": shifty,
             "shifty_code": shifty_code,
-            "shifty_date": shifty_date.strftime("%m/%d/%Y"),
+            "shifty_date": shifty_date_display,
             "pay_period": period.label,
             "rows": rows,
             "transcript": transcript,
