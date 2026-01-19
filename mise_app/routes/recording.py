@@ -23,7 +23,15 @@ RECORDINGS_DIR = Path(__file__).parent.parent.parent / "recordings"
 
 
 def save_recording(audio_bytes: bytes, period_id: str, shifty_code: str = None, original_filename: str = None) -> Path:
-    """Save audio recording to the recordings folder.
+    """ARCHIVE audio recording - PERMANENT STORAGE, NEVER DELETE.
+
+    Every audio file ever recorded in Mise is saved here for:
+    - Audit trail
+    - Dispute resolution
+    - Re-processing if needed
+    - Historical analysis
+
+    Organized by pay period for easy retrieval.
 
     Args:
         audio_bytes: The raw audio bytes
@@ -34,8 +42,9 @@ def save_recording(audio_bytes: bytes, period_id: str, shifty_code: str = None, 
     Returns:
         Path to the saved file
     """
-    # Ensure recordings directory exists
-    RECORDINGS_DIR.mkdir(parents=True, exist_ok=True)
+    # Create period-specific archive directory
+    period_dir = RECORDINGS_DIR / period_id
+    period_dir.mkdir(parents=True, exist_ok=True)
 
     # Determine file extension
     ext = ".webm"  # Default for browser recordings
@@ -47,17 +56,17 @@ def save_recording(audio_bytes: bytes, period_id: str, shifty_code: str = None, 
         elif original_filename.endswith(".mp3"):
             ext = ".mp3"
 
-    # Build filename: {period_id}_{shifty_code}_{timestamp}{ext}
+    # Build filename: {shifty_code}_{timestamp}{ext}
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
     if shifty_code:
-        filename = f"{period_id}_{shifty_code}_{timestamp}{ext}"
+        filename = f"{shifty_code}_{timestamp}{ext}"
     else:
-        filename = f"{period_id}_unknown_{timestamp}{ext}"
+        filename = f"unknown_{timestamp}{ext}"
 
-    filepath = RECORDINGS_DIR / filename
+    filepath = period_dir / filename
     filepath.write_bytes(audio_bytes)
 
-    log.info(f"Saved recording to {filepath}")
+    log.info(f"📼 ARCHIVED: {filepath.relative_to(RECORDINGS_DIR.parent)} ({len(audio_bytes):,} bytes)")
     return filepath
 
 router = APIRouter(prefix="/payroll/period/{period_id}", tags=["Payroll Recording"])
