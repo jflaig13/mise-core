@@ -30,9 +30,9 @@ This ensures every new session is properly initialized with project context.
 
 **Workflow Specs (Master References):**
 - `workflow_specs/LPM/LPM_Workflow_Master.txt` — Local Payroll Machine
-
 - `workflow_specs/CPM/CPM_Workflow_Master.txt` — Cloud Payroll Machine
 - `workflow_specs/LIM/LIM_Workflow_Master.txt` — Local Inventory Machine
+- `workflow_specs/SWARM/SWARM_Workflow_Master.txt` — Multi-Window Task Management
 
 **Architecture:**
 Mise is a multi-agent restaurant ops system. Transrouter coordinates domain agents (Payroll, Inventory, Ordering, Scheduling, Forecasting, General Ops). Each agent has its own brain with Claude integration.

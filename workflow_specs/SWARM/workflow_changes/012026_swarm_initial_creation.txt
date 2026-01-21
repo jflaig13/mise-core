@@ -1,0 +1,245 @@
+WORKFLOW CHANGE LOG - SWARM
+Date: 2026-01-20
+Change: Initial Swarm Workflow Creation
+
+================================================================================
+## SUMMARY
+================================================================================
+
+Created the Mise Swarm workflow - a multi-window task management system for
+Claude Code that enables parallel development across up to 6 simultaneous
+windows using file-based task queues.
+
+================================================================================
+## MOTIVATION
+================================================================================
+
+As Mise development accelerates (especially with investor funding secured),
+we need a systematic way to:
+
+1. Coordinate multiple Claude Code windows working simultaneously
+2. Queue and prioritize development tasks without blocking
+3. Archive completed work for audit trail and context
+4. Enable fast iteration on complex multi-step tasks
+
+Traditional task management tools (Jira, Linear, etc.) don't integrate well
+with Claude Code's file-based workflow. The Swarm approach leverages Mise's
+file-based intelligence philosophy to create a lightweight, zero-friction
+task queue system.
+
+================================================================================
+## FILES CREATED
+================================================================================
+
+### Core Workflow Spec
+- workflow_specs/SWARM/SWARM_Workflow_Master.txt
+  - Complete specification of Swarm architecture
+  - Command queue protocol definition
+  - Window assignment guidelines
+  - Task file format standards
+  - Examples and troubleshooting
+
+- workflow_specs/SWARM/README.md
+  - Quick start guide for Swarm usage
+  - Common workflows and best practices
+  - Integration with other Mise workflows
+
+- workflow_specs/SWARM/workflow_changes/
+  - Created directory for tracking Swarm changes
+  - This file (012026_swarm_initial_creation.txt)
+
+### Directory Structure
+Created command queue directories:
+- ~/mise-core/claude_commands/ccw1/ (primary, also called "ccqb")
+- ~/mise-core/claude_commands/ccw2/ (testing window)
+- ~/mise-core/claude_commands/ccw3/ (documentation window)
+- ~/mise-core/claude_commands/ccw4/ (deployment window)
+- ~/mise-core/claude_commands/ccw5/ (hotfix window)
+- ~/mise-core/claude_commands/ccw6/ (research window)
+
+Each window has an archive/ subdirectory for completed tasks.
+
+================================================================================
+## FILES MODIFIED
+================================================================================
+
+### Brain Integration
+- transrouter/src/brain_sync.py
+  - Added "swarm" entry to DOMAIN_WORKFLOW_SPECS
+  - Updated docstring to list Swarm alongside LPM, CPM, LIM
+  - Location: Lines 8, 54-58
+  - Purpose: Load Swarm workflow specs into Mise brain on startup
+
+### Documentation Updates
+- CLAUDE.md
+  - Added SWARM_Workflow_Master.txt to "Workflow Specs" section
+  - Location: Line 35
+  - Purpose: Ensure Claude Code knows to reference Swarm docs
+
+- workflow_specs/README.md
+  - Added SWARM to list of workflows (line 3)
+  - Location: Line 3
+  - Purpose: Include Swarm in general workflow governance rules
+
+================================================================================
+## KEY ARCHITECTURAL DECISIONS
+================================================================================
+
+### 1. ccqb = ccw1 (Unified Primary Window)
+Decision: Use ccw1/ as the primary window, with "ccqb" as a conversational alias
+Rationale: Simpler architecture, no special "distribution" logic needed
+Impact: All windows (ccw1-6) operate identically with same execution protocol
+
+### 2. File-Based Task Queue
+Decision: Tasks are .md files in ccw directories, not database entries
+Rationale: Aligns with Mise's file-based intelligence philosophy
+Benefits:
+  - Zero infrastructure (no DB, no server)
+  - Git-trackable (full audit trail)
+  - Human-readable (can inspect/edit tasks directly)
+  - Fast (no network latency, instant queue updates)
+
+### 3. Archive, Don't Delete
+Decision: Completed tasks move to archive/ instead of being deleted
+Rationale: Maintain complete audit trail for debugging and context
+Benefits:
+  - Full history of what was done and when
+  - Can review past work for patterns/insights
+  - Supports "context recovery" for debugging
+
+### 4. Sequential Execution Within Windows
+Decision: Each window executes tasks sequentially (alphabetically)
+Rationale: Prevents race conditions and conflicting file edits
+Benefits:
+  - Predictable execution order
+  - No coordination needed between tasks in same window
+  - Can use numbered prefixes (1_, 2_, 3_) for explicit ordering
+
+### 5. Parallel Execution Across Windows
+Decision: Multiple windows can run simultaneously (user opens multiple instances)
+Rationale: Enable parallelization for independent tasks
+Constraint: User must ensure tasks in different windows don't conflict
+Benefits:
+  - Speed up development when tasks are parallelizable
+  - Flexible workload distribution
+
+================================================================================
+## INTEGRATION WITH MISE ECOSYSTEM
+================================================================================
+
+### Brain System
+- Swarm workflow specs loaded via brain_sync.py
+- Available to all domain agents (LPM, CPM, LIM, Transrouter)
+- Changes tracked in workflow_changes/ per Mise standards
+
+### Other Workflows
+Swarm coordinates development across:
+- **LPM** (Local Payroll Machine) - Local payroll processing
+- **CPM** (Cloud Payroll Machine) - Cloud payroll engine
+- **LIM** (Local Inventory Machine) - Inventory management
+- **Transrouter** - API routing and domain coordination
+
+Example: A CPM deployment task goes in ccw4/, LPM testing goes in ccw2/
+
+### Documentation
+- Follows same structure as LPM/CPM/LIM workflows
+- Master spec + README + workflow_changes/ directory
+- Referenced in CLAUDE.md and workflow_specs/README.md
+
+================================================================================
+## USAGE PROTOCOL
+================================================================================
+
+### Creating a Task
+```bash
+# User creates task file
+cat > ~/mise-core/claude_commands/ccw1/fix_bug.md <<'EOF'
+# Fix Name Normalization Bug
+
+## Context
+Production bug: Claude hallucinating names
+
+## Actions
+1. Update payroll_prompt.py with strict roster lookup
+2. Deploy to Cloud Run
+3. Test with "Mark" → should output "Mark Buryanek"
+
+## Success Criteria
+- Deployment successful
+- Test passes
+EOF
+```
+
+### Executing Tasks
+```
+User: "Run the ccw1 command"
+
+Claude Code:
+1. Lists all .md files in ccw1/ (excluding archive/)
+2. Reads each file alphabetically
+3. Executes actions described in file
+4. Verifies success criteria
+5. Moves file to ccw1/archive/
+6. Reports: "✓ Completed fix_bug.md"
+```
+
+### Checking Status
+```bash
+# Pending tasks
+ls ~/mise-core/claude_commands/ccw1/
+
+# Recently completed
+ls -lt ~/mise-core/claude_commands/ccw1/archive/ | head -10
+```
+
+================================================================================
+## TESTING
+================================================================================
+
+Tested with:
+- ccw1 directory creation and archive folder setup
+- Example task file (ccqb/deploy_all.md) successfully detected
+- File listing across all ccw directories
+
+Next tests needed:
+- Full task execution cycle (create → execute → archive)
+- Multi-file sequential execution (numbered tasks)
+- Parallel execution across multiple windows
+
+================================================================================
+## NEXT STEPS
+================================================================================
+
+1. Create example task files for common workflows:
+   - Deployment task (ccw4/)
+   - Test task (ccw2/)
+   - Documentation task (ccw3/)
+
+2. Test full execution cycle with real tasks
+
+3. Add Swarm usage examples to ONBOARDING.md
+
+4. Consider adding Swarm status command to CLAUDE.md
+   (e.g., "Show swarm status" → lists pending/completed tasks across all windows)
+
+================================================================================
+## REFERENCES
+================================================================================
+
+- SWARM_Workflow_Master.txt - Complete specification
+- SWARM/README.md - Quick start guide
+- brain_sync.py - Brain integration
+- CLAUDE.md - Claude Code instructions
+- workflow_specs/README.md - General workflow governance
+
+================================================================================
+## AUTHOR
+================================================================================
+
+Created by: Claude Code (ccw1)
+Requested by: Jon (Mise founder)
+Date: 2026-01-20
+
+================================================================================
+END OF CHANGE LOG
+================================================================================

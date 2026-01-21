@@ -5,7 +5,7 @@ Mise is a FILE-BASED INTELLIGENCE SYSTEM. The brain is ALL files within
 configs from the authoritative brain store.
 
 Responsibilities:
-- Load workflow specs for each domain (LPM, CPM, LIM, etc.)
+- Load workflow specs for each domain (LPM, CPM, LIM, Swarm, etc.)
 - Load brain docs from docs/brain/
 - Load shared resources (roster, critical paths)
 - Provide clean interface for domain agents to access their brain
@@ -50,6 +50,11 @@ DOMAIN_WORKFLOW_SPECS = {
         "master": WORKFLOW_SPECS_DIR / "transrouter" / "Transrouter_Workflow_Master.txt",
         "readme": WORKFLOW_SPECS_DIR / "transrouter" / "README.md",
         "changes_dir": WORKFLOW_SPECS_DIR / "transrouter" / "workflow_changes",
+    },
+    "swarm": {
+        "master": WORKFLOW_SPECS_DIR / "SWARM" / "SWARM_Workflow_Master.txt",
+        "readme": WORKFLOW_SPECS_DIR / "SWARM" / "README.md",
+        "changes_dir": WORKFLOW_SPECS_DIR / "SWARM" / "workflow_changes",
     },
 }
 

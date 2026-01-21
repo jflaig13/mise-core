@@ -44,3 +44,6 @@ folder.txt
 
 # Cowork sandbox (working files)
 cowork_sandbox/
+
+# Swarm task queues (working files - task files and archives)
+claude_commands/ccw*/
