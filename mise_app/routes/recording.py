@@ -15,6 +15,7 @@ from fastapi.responses import HTMLResponse, JSONResponse, RedirectResponse
 
 from mise_app.config import SHIFTY_DEFINITIONS, get_shifty_by_code, PayPeriod
 from mise_app.local_storage import get_approval_storage, get_totals_storage
+from mise_app.drive_storage import upload_recording_to_drive
 
 log = logging.getLogger(__name__)
 
@@ -31,6 +32,10 @@ def save_recording(audio_bytes: bytes, period_id: str, shifty_code: str = None, 
     - Re-processing if needed
     - Historical analysis
 
+    Saves to:
+    1. Local filesystem (for local dev)
+    2. Google Drive (for cloud persistence)
+
     Organized by pay period for easy retrieval.
 
     Args:
@@ -40,7 +45,7 @@ def save_recording(audio_bytes: bytes, period_id: str, shifty_code: str = None, 
         original_filename: Original filename from upload
 
     Returns:
-        Path to the saved file
+        Path to the saved file (local)
     """
     # Create period-specific archive directory
     period_dir = RECORDINGS_DIR / period_id
@@ -66,7 +71,18 @@ def save_recording(audio_bytes: bytes, period_id: str, shifty_code: str = None, 
     filepath = period_dir / filename
     filepath.write_bytes(audio_bytes)
 
-    log.info(f"📼 ARCHIVED: {filepath.relative_to(RECORDINGS_DIR.parent)} ({len(audio_bytes):,} bytes)")
+    log.info(f"📼 ARCHIVED (local): {filepath.relative_to(RECORDINGS_DIR.parent)} ({len(audio_bytes):,} bytes)")
+
+    # Also upload to Google Drive for permanent cloud storage
+    try:
+        drive_file_id = upload_recording_to_drive(
+            audio_bytes, period_id, shifty_code or "unknown", original_filename
+        )
+        if drive_file_id:
+            log.info(f"☁️ ARCHIVED (Drive): {filename} -> {drive_file_id}")
+    except Exception as e:
+        log.warning(f"Failed to upload to Drive (continuing anyway): {e}")
+
     return filepath
 
 router = APIRouter(prefix="/payroll/period/{period_id}", tags=["Payroll Recording"])
@@ -101,8 +117,8 @@ def detect_shifty_from_transcript(transcript: str, period: PayPeriod) -> dict:
     }
 
     # Shift mappings
-    am_indicators = ["am", "morning", "lunch", "day shift", "day"]
-    pm_indicators = ["pm", "evening", "night", "dinner", "closing", "close"]
+    am_indicators = ["a.m.", "am", "morning", "lunch", "day shift", "day"]
+    pm_indicators = ["p.m.", "pm", "evening", "night", "dinner", "closing", "close"]
 
     detected_day = None
     detected_shift = None
@@ -116,21 +132,30 @@ def detect_shifty_from_transcript(transcript: str, period: PayPeriod) -> dict:
     # Try to find AM/PM
     for indicator in am_indicators:
         if indicator in transcript_lower:
-            # Make sure it's not just part of a word
-            pattern = r'\b' + re.escape(indicator) + r'\b'
-            if re.search(pattern, transcript_lower):
+            # For indicators with periods (a.m., p.m.), direct match is sufficient
+            # For short ones (am, pm), use word boundary to avoid matching "dam", "spam", etc.
+            if '.' in indicator:
                 detected_shift = "AM"
                 break
+            else:
+                pattern = r'\b' + re.escape(indicator) + r'\b'
+                if re.search(pattern, transcript_lower):
+                    detected_shift = "AM"
+                    break
 
     if not detected_shift:
         for indicator in pm_indicators:
             if indicator in transcript_lower:
-                pattern = r'\b' + re.escape(indicator) + r'\b'
-                if re.search(pattern, transcript_lower):
+                if '.' in indicator:
                     detected_shift = "PM"
                     break
+                else:
+                    pattern = r'\b' + re.escape(indicator) + r'\b'
+                    if re.search(pattern, transcript_lower):
+                        detected_shift = "PM"
+                        break
 
-    # Try to find date from transcript
+    # Try to find date from transcript (always try, for pay period auto-correction)
     # Month name mappings
     month_names = {
         "january": 1, "jan": 1,
@@ -147,48 +172,50 @@ def detect_shifty_from_transcript(transcript: str, period: PayPeriod) -> dict:
         "december": 12, "dec": 12,
     }
 
-    if not detected_day:
-        # Try spoken date format: "January 19th" or "January 19"
-        for month_word, month_num in month_names.items():
-            # Match "January 19th" or "January 19" or "January nineteenth"
-            pattern = rf'\b{month_word}\s+(\d{{1,2}})(?:st|nd|rd|th)?\b'
-            match = re.search(pattern, transcript_lower)
-            if match:
-                day_num = int(match.group(1))
-                try:
-                    # Try to extract year from transcript (e.g., "January 12, 2026")
-                    year_pattern = rf'\b{month_word}\s+\d{{1,2}}(?:st|nd|rd|th)?(?:\s*,)?\s*(\d{{4}})\b'
-                    year_match = re.search(year_pattern, transcript_lower)
-                    if year_match:
-                        year = int(year_match.group(1))
-                    else:
-                        # Default to pay period year
-                        year = period.start_date.year
-                        # If month is less than period start month and we're near year boundary, use next year
-                        if month_num < period.start_date.month and period.start_date.month >= 11:
-                            year += 1
-                    parsed_date = date(year, month_num, day_num)
-                    parsed_date_result = parsed_date  # Store the actual parsed date
+    # Always try to parse a date for pay period auto-correction
+    for month_word, month_num in month_names.items():
+        # Match "January 19th" or "January 19"
+        pattern = rf'\b{month_word}\s+(\d{{1,2}})(?:st|nd|rd|th)?\b'
+        match = re.search(pattern, transcript_lower)
+        if match:
+            day_num = int(match.group(1))
+            try:
+                # Try to extract year from transcript (e.g., "January 12, 2026")
+                year_pattern = rf'\b{month_word}\s+\d{{1,2}}(?:st|nd|rd|th)?(?:\s*,)?\s*(\d{{4}})\b'
+                year_match = re.search(year_pattern, transcript_lower)
+                if year_match:
+                    year = int(year_match.group(1))
+                else:
+                    # Default to pay period year
+                    year = period.start_date.year
+                    # If month is less than period start month and we're near year boundary, use next year
+                    if month_num < period.start_date.month and period.start_date.month >= 11:
+                        year += 1
+                parsed_date = date(year, month_num, day_num)
+                parsed_date_result = parsed_date  # Store the actual parsed date
+                # If we didn't already detect the day from a day name, use the parsed date
+                if not detected_day:
                     day_names = ["M", "T", "W", "Th", "F", "Sa", "Su"]
                     detected_day = day_names[parsed_date.weekday()]
-                    log.info(f"Detected date from spoken format: {month_word} {day_num}, {year} -> {parsed_date.strftime('%A %B %d, %Y')} ({detected_day})")
-                except ValueError:
-                    pass
-                break
+                log.info(f"Parsed date from transcript: {month_word} {day_num}, {year} -> {parsed_date.strftime('%A %B %d, %Y')}")
+            except ValueError:
+                pass
+            break
 
-        # Fallback: Try MM/DD format
-        if not detected_day:
-            date_match = re.search(r'(\d{1,2})[/\-](\d{1,2})', transcript_lower)
-            if date_match:
-                month = int(date_match.group(1))
-                day = int(date_match.group(2))
-                try:
-                    parsed_date = date(period.start_date.year, month, day)
-                    parsed_date_result = parsed_date
+    # Fallback: Try MM/DD format if no date found yet
+    if not parsed_date_result:
+        date_match = re.search(r'(\d{1,2})[/\-](\d{1,2})', transcript_lower)
+        if date_match:
+            month = int(date_match.group(1))
+            day = int(date_match.group(2))
+            try:
+                parsed_date = date(period.start_date.year, month, day)
+                parsed_date_result = parsed_date
+                if not detected_day:
                     day_names = ["M", "T", "W", "Th", "F", "Sa", "Su"]
                     detected_day = day_names[parsed_date.weekday()]
-                except ValueError:
-                    pass
+            except ValueError:
+                pass
 
     # Build shifty code and return with parsed date
     shifty_code = None
@@ -210,36 +237,63 @@ def get_shifty_date(shifty_code: str, period: PayPeriod) -> Optional[date]:
         return None
 
 
-@router.get("/record/{shifty_code}", response_class=HTMLResponse)
+def fix_approval_json_shift_codes(approval_json: dict, correct_shifty_code: str) -> dict:
+    """Fix shift codes in approval_json if Claude calculated wrong day of week.
+
+    Claude sometimes miscalculates day-of-week (e.g., thinks Jan 19 2026 is Sunday
+    when it's actually Monday). This causes amounts to be stored under wrong shift
+    codes (e.g., SuPM instead of MPM).
+
+    This function remaps all shift codes in per_shift to the correct one detected
+    by mise-app from the actual date.
+
+    Args:
+        approval_json: The approval JSON from transrouter
+        correct_shifty_code: The correct shift code (e.g., "MPM") from date detection
+
+    Returns:
+        Fixed approval_json with corrected shift codes
+    """
+    if not approval_json or not correct_shifty_code:
+        return approval_json
+
+    # All valid shift codes
+    all_shift_codes = [
+        "MAM", "MPM", "TAM", "TPM", "WAM", "WPM",
+        "ThAM", "ThPM", "FAM", "FPM", "SaAM", "SaPM", "SuAM", "SuPM"
+    ]
+
+    # Fix per_shift: remap any wrong shift codes to the correct one
+    per_shift = approval_json.get("per_shift", {})
+    fixed_per_shift = {}
+
+    for employee, shifts in per_shift.items():
+        fixed_shifts = {}
+        for shift_code, amount in shifts.items():
+            if shift_code in all_shift_codes and shift_code != correct_shifty_code:
+                # This is a wrong shift code - remap to correct one
+                log.info(f"Fixing shift code for {employee}: {shift_code} → {correct_shifty_code}")
+                fixed_shifts[correct_shifty_code] = amount
+            else:
+                fixed_shifts[shift_code] = amount
+        fixed_per_shift[employee] = fixed_shifts
+
+    approval_json["per_shift"] = fixed_per_shift
+
+    # Recalculate weekly_totals from fixed per_shift
+    weekly_totals = {}
+    for employee, shifts in fixed_per_shift.items():
+        weekly_totals[employee] = round(sum(shifts.values()), 2)
+    approval_json["weekly_totals"] = weekly_totals
+
+    return approval_json
+
+
+@router.get("/record/{shifty_code}")
 async def record_page(request: Request, period_id: str, shifty_code: str):
-    """Render the recording page for a specific shifty."""
-    templates = request.app.state.templates
-
-    try:
-        period = PayPeriod.from_id(period_id)
-    except ValueError:
-        return HTMLResponse(f"Invalid pay period: {period_id}", status_code=404)
-
-    try:
-        shifty = get_shifty_by_code(shifty_code)
-    except ValueError:
-        return HTMLResponse(f"Unknown shifty code: {shifty_code}", status_code=404)
-
-    # Calculate the date for this shifty
-    shifty_date = period.start_date + timedelta(days=shifty["date_offset"])
-
-    return templates.TemplateResponse(
-        "record.html",
-        {
-            "request": request,
-            "period": period,
-            "periods": PayPeriod.get_available_periods(),
-            "shifty": shifty,
-            "shifty_date": shifty_date.strftime("%m/%d/%Y"),
-            "pay_period": period.label,
-            "active_tab": "shifties",
-        }
-    )
+    """Redirect to main recording page (legacy route for re-recording)."""
+    from fastapi.responses import RedirectResponse
+    return RedirectResponse(f"/payroll/period/{period_id}", status_code=303)
 
 
 @router.post("/process")
@@ -268,13 +322,16 @@ async def process_audio(
 
     # Read audio bytes
     audio_bytes = await file.read()
+    log.info(f"Audio bytes received: {len(audio_bytes)} bytes")
     if not audio_bytes:
+        log.error("Empty audio file received")
         return JSONResponse(
             {"status": "error", "error": "Empty audio file"},
             status_code=400
         )
 
     # Call transrouter API
+    log.info(f"Calling transrouter at {config.transrouter_url}/api/v1/audio/process")
     try:
         response = requests.post(
             f"{config.transrouter_url}/api/v1/audio/process",
@@ -282,8 +339,10 @@ async def process_audio(
             files={"file": ("recording.wav", audio_bytes, "audio/wav")},
             timeout=120,
         )
+        log.info(f"Transrouter response status: {response.status_code}")
         response.raise_for_status()
         result = response.json()
+        log.info(f"Transrouter result status: {result.get('status')}")
     except requests.RequestException as e:
         log.error(f"Transrouter API error: {e}")
         return JSONResponse(
@@ -303,8 +362,11 @@ async def process_audio(
     transcript = result.get("transcript", "")
     approval_json = result.get("approval_json", {})
 
+    log.info(f"Transcript received: '{transcript}'")
+
     # Detect shifty code and parsed date from transcript
     detection_result = detect_shifty_from_transcript(transcript, period)
+    log.info(f"Detection result: {detection_result}")
     shifty_code = detection_result.get("code")
     parsed_date = detection_result.get("parsed_date")
 
@@ -338,18 +400,27 @@ async def process_audio(
     # Save recording to local storage
     save_recording(audio_bytes, period_id, shifty_code, file.filename)
 
-    # Convert approval_json to flat rows
-    rows = flatten_approval_json(approval_json, shifty_code, period)
+    # Fix approval_json shift codes if Claude calculated wrong day of week
+    # Claude sometimes gets day-of-week wrong (e.g., thinks Jan 19 2026 is Sunday when it's Monday)
+    approval_json = fix_approval_json_shift_codes(approval_json, shifty_code)
 
-    # Store locally (with period isolation) - include parsed_date
+    # Convert approval_json to flat rows
+    log.info(f"Approval JSON from transrouter: {approval_json}")
+    rows = flatten_approval_json(approval_json, shifty_code, period)
+    log.info(f"Flattened rows: {rows}")
+
+    # Store locally (with period isolation) - include parsed_date and detail_blocks
     filename = f"{shifty_code}.wav"
     approval_storage = get_approval_storage()
 
     # Delete any existing data for this shifty (in case of re-recording)
     approval_storage.delete_by_filename(period_id, filename)
 
+    # Get detail_blocks for calculation display
+    detail_blocks = approval_json.get("detail_blocks", [])
+
     # Add the new data
-    approval_storage.add_shifty(period_id, rows, filename, transcript, parsed_date_str)
+    approval_storage.add_shifty(period_id, rows, filename, transcript, parsed_date_str, detail_blocks)
 
     # Update shifty status
     shifty_state.set_status(period_id, shifty_code, "pending")
@@ -439,8 +510,11 @@ async def process_shifty(
     # Delete any existing data for this shifty (in case of re-recording)
     approval_storage.delete_by_filename(period_id, filename)
 
+    # Get detail_blocks for calculation display
+    detail_blocks = approval_json.get("detail_blocks", [])
+
     # Add the new data
-    approval_storage.add_shifty(period_id, rows, filename, transcript)
+    approval_storage.add_shifty(period_id, rows, filename, transcript, None, detail_blocks)
 
     # Update shifty status
     shifty_state.set_status(period_id, shifty_code, "pending")
@@ -476,16 +550,23 @@ async def approve_page(request: Request, period_id: str, shifty_code: str):
     approval_storage = get_approval_storage()
     rows = approval_storage.get_by_filename(period_id, filename)
 
-    # Get transcript and parsed date from first row
+    # Get transcript, parsed date, and detail_blocks from first row
+    # All three are stored on the first row only (see local_storage.py add_shifty)
     transcript = ""
     parsed_date_str = ""
-    for row in rows:
-        if row.get("Transcript"):
-            transcript = row["Transcript"]
-        if row.get("ParsedDate"):
-            parsed_date_str = row["ParsedDate"]
-        if transcript and parsed_date_str:
-            break
+    detail_blocks = []
+
+    if rows:
+        first_row = rows[0]
+        transcript = first_row.get("Transcript", "")
+        parsed_date_str = first_row.get("ParsedDate", "")
+
+        if first_row.get("DetailBlocks"):
+            try:
+                import json
+                detail_blocks = json.loads(first_row["DetailBlocks"])
+            except (json.JSONDecodeError, TypeError):
+                detail_blocks = []
 
     # Use parsed date from transcript if available, otherwise calculate from period
     if parsed_date_str:
@@ -506,6 +587,7 @@ async def approve_page(request: Request, period_id: str, shifty_code: str):
             "pay_period": period.label,
             "rows": rows,
             "transcript": transcript,
+            "detail_blocks": detail_blocks,
             "active_tab": "shifties",
         }
     )
@@ -628,16 +710,33 @@ def flatten_approval_json(approval_json: dict, shifty_code: str, period: PayPeri
     support_staff_roles = {}  # employee -> role
     detail_blocks = approval_json.get("detail_blocks", [])
 
+    # Day abbreviation mappings for matching
+    day_abbrevs = {
+        "M": ["mon", "monday"],
+        "T": ["tue", "tues", "tuesday"],
+        "W": ["wed", "wednesday"],
+        "Th": ["thu", "thur", "thurs", "thursday"],
+        "F": ["fri", "friday"],
+        "Sa": ["sat", "saturday"],
+        "Su": ["sun", "sunday"],
+    }
+
     for block in detail_blocks:
         if not isinstance(block, list) or len(block) < 2:
             continue
 
-        label = block[0]
+        label = block[0].lower()
         lines = block[1]
 
-        # Check if this block matches our shifty
-        shifty_label = shifty.get("label", "").split()[0] if shifty else ""
-        if shifty_code not in label and shifty_label not in label:
+        # Check if this block matches our shifty by day and AM/PM
+        day_prefix = shifty_code[:-2]  # e.g., "M" from "MPM"
+        shift_suffix = shifty_code[-2:]  # e.g., "PM" from "MPM"
+
+        # Check if any day abbreviation matches the label
+        day_matches = any(abbrev in label for abbrev in day_abbrevs.get(day_prefix, []))
+        shift_matches = shift_suffix.lower() in label
+
+        if not (day_matches and shift_matches):
             continue
 
         for line in lines:
