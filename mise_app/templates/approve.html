@@ -17,6 +17,41 @@
         <p class="text-sm text-mise-navy/80 italic">"{{ transcript }}"</p>
     </div>
 
+    <!-- Calculation Logic (collapsible, expanded by default) -->
+    {% if detail_blocks %}
+    <div class="mb-6">
+        <details open class="bg-white border border-mise-green/20 rounded-lg overflow-hidden">
+            <summary class="px-4 py-3 bg-mise-green/5 cursor-pointer hover:bg-mise-green/10 transition-colors">
+                <span class="font-semibold text-mise-green">Click here for full calculation breakdown</span>
+            </summary>
+            <div class="p-4 border-t border-mise-green/10">
+                {% for block in detail_blocks %}
+                {% if block|length >= 2 %}
+                <div class="{% if not loop.first %}mt-4 pt-4 border-t border-mise-green/10{% endif %}">
+                    <!-- Block header (e.g., "Thu Jan 9 — PM (tip pool)") -->
+                    <h3 class="text-sm font-semibold text-mise-green mb-2">{{ block[0] }}</h3>
+
+                    <!-- Calculation lines -->
+                    <div class="font-mono text-sm space-y-1 bg-mise-cream/50 rounded p-3">
+                        {% for line in block[1] %}
+                        {% set line_lower = line|lower %}
+                        {% set is_tipout = 'tipout' in line_lower %}
+                        {% set is_subtraction = ' - ' in line and '$' in line and 'after' in line_lower %}
+                        {% set is_final_amount = ':' in line and '$' in line and not '=' in line %}
+                        {% set is_support_staff = '(utility)' in line_lower or '(busser)' in line_lower or '(expo)' in line_lower or '(host)' in line_lower %}
+                        <div class="{% if is_tipout %}text-red-600{% elif is_subtraction %}text-red-600{% elif is_final_amount and not is_support_staff %}text-green-700 font-medium{% elif is_support_staff %}text-amber-600{% else %}text-mise-navy/80{% endif %}">
+                            {{ line }}
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endif %}
+                {% endfor %}
+            </div>
+        </details>
+    </div>
+    {% endif %}
+
     <!-- Parsed Data -->
     <form action="/payroll/period/{{ period.id }}/approve/{{ shifty_code }}/confirm" method="POST">
         <div class="mb-6">
@@ -36,7 +71,7 @@
                                name="amount_{{ row.id or loop.index }}"
                                value="{{ '%.2f'|format(row.Amount or row.amount or 0) }}"
                                step="0.01"
-                               class="w-24 bg-mise-cream border border-mise-green/30 rounded px-3 py-2 text-right text-lg font-mono
+                               class="w-28 bg-mise-cream border border-mise-green/30 rounded px-3 py-2 text-right text-lg font-mono
                                       focus:border-mise-green focus:outline-none">
                     </div>
                 </div>
@@ -67,6 +102,11 @@
             <a href="/payroll/period/{{ period.id }}"
                class="block w-full py-3 text-mise-navy/60 hover:text-mise-navy text-center transition-colors">
                 Cancel
+            </a>
+
+            <a href="/payroll/period/{{ period.id }}/reset/{{ shifty_code }}"
+               class="block w-full py-2 text-mise-navy/40 hover:text-mise-red text-sm text-center transition-colors">
+                Reset This Shift
             </a>
         </div>
     </form>
