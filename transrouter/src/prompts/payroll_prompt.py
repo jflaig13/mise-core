@@ -13,11 +13,90 @@ from __future__ import annotations
 
 import json
 import logging
-from typing import Dict
+import re
+from datetime import date
+from typing import Dict, Optional, Tuple
 
 from ..brain_sync import get_brain
 
 log = logging.getLogger(__name__)
+
+
+def detect_date_from_transcript(transcript: str) -> Optional[Tuple[date, str, str]]:
+    """Parse date from transcript and return actual day-of-week using Python's calendar.
+
+    This is the SOURCE OF TRUTH for day-of-week calculations. Never let Claude guess.
+
+    Args:
+        transcript: The payroll transcript text
+
+    Returns:
+        Tuple of (parsed_date, day_name, shift_code_prefix) or None if no date found.
+        E.g., (date(2026, 1, 19), "Monday", "M")
+    """
+    transcript_lower = transcript.lower()
+
+    # Month name mappings
+    month_names = {
+        "january": 1, "jan": 1,
+        "february": 2, "feb": 2,
+        "march": 3, "mar": 3,
+        "april": 4, "apr": 4,
+        "may": 5,
+        "june": 6, "jun": 6,
+        "july": 7, "jul": 7,
+        "august": 8, "aug": 8,
+        "september": 9, "sep": 9, "sept": 9,
+        "october": 10, "oct": 10,
+        "november": 11, "nov": 11,
+        "december": 12, "dec": 12,
+    }
+
+    # Day-of-week mappings (Python weekday() returns 0=Monday, 1=Tuesday, etc.)
+    day_names = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
+    shift_prefixes = ["M", "T", "W", "Th", "F", "Sa", "Su"]
+
+    # Try to find date in transcript
+    for month_word, month_num in month_names.items():
+        # Match "January 19th" or "January 19" with optional year
+        pattern = rf'\b{month_word}\s+(\d{{1,2}})(?:st|nd|rd|th)?(?:\s*,?\s*(\d{{4}}))?\b'
+        match = re.search(pattern, transcript_lower)
+        if match:
+            day_num = int(match.group(1))
+            year = int(match.group(2)) if match.group(2) else date.today().year
+
+            try:
+                parsed_date = date(year, month_num, day_num)
+                weekday_idx = parsed_date.weekday()  # 0=Monday, 6=Sunday
+                day_name = day_names[weekday_idx]
+                shift_prefix = shift_prefixes[weekday_idx]
+
+                log.info(f"Date detected: {month_word.title()} {day_num}, {year} = {day_name} (shift prefix: {shift_prefix})")
+                return parsed_date, day_name, shift_prefix
+            except ValueError:
+                continue
+
+    # Fallback: try MM/DD or MM/DD/YYYY format
+    date_match = re.search(r'(\d{1,2})[/\-](\d{1,2})(?:[/\-](\d{2,4}))?', transcript_lower)
+    if date_match:
+        month = int(date_match.group(1))
+        day = int(date_match.group(2))
+        year = int(date_match.group(3)) if date_match.group(3) else date.today().year
+        if year < 100:
+            year += 2000
+
+        try:
+            parsed_date = date(year, month, day)
+            weekday_idx = parsed_date.weekday()
+            day_name = day_names[weekday_idx]
+            shift_prefix = shift_prefixes[weekday_idx]
+
+            log.info(f"Date detected (MM/DD): {month}/{day}/{year} = {day_name} (shift prefix: {shift_prefix})")
+            return parsed_date, day_name, shift_prefix
+        except ValueError:
+            pass
+
+    return None
 
 
 def build_payroll_system_prompt() -> str:
@@ -101,11 +180,22 @@ Result:
 Only if the transcript explicitly says "NOT tip pooling", "keeping their own tips", "no pool", or similar should you NOT pool tips.
 
 ### Single Server Shift (NO pool needed)
-When only ONE server works a shift, there is no pool - just calculate their tipout:
+**CRITICAL: When only ONE server works a shift, you MUST subtract the tipout from their tips.**
+
+The server does NOT keep the full amount - the tipout MUST be subtracted.
+
+**Step-by-step calculation for single server:**
+1. Calculate tipout: food_sales × tipout_percentage
+2. **SUBTRACT tipout from server's tips**: server_final = server_tips - tipout
+3. Support staff gets: tipout amount
 
 Example: "Monday AM, utility Ryan. Austin $200, food sales $400."
-- Austin: $200 - ($400 × 5%) = $200 - $20 = $180.00
-- Ryan (utility): $20.00
+- Step 1: Utility tipout = $400 × 5% = $20.00
+- Step 2: Austin final = $200 - $20 = **$180.00** (NOT $200!)
+- Ryan (utility) gets: $20.00
+
+**WRONG:** Austin: $200.00, Ryan: $20.00
+**CORRECT:** Austin: $180.00, Ryan: $20.00
 
 ### Tip Pool with Unequal Hours
 When a tip pool has unequal hours:
@@ -219,7 +309,12 @@ The transcript may contain transcription errors. Normalize all names using this 
 
 **Canonical employee names**: {canonical_names_str}
 
-If a name doesn't match the roster, use your best judgment to match it to a canonical name, or flag it as unknown.
+**CRITICAL: You MUST ONLY use names from the roster above. NEVER invent or guess last names.**
+
+If you hear "Mark", the roster shows "mark" maps to "Mark Buryanek" - use that EXACT name.
+If you hear "Kevin", the roster shows "kevin" maps to "Kevin Worley" - use that EXACT name.
+
+If a first name appears in the transcript but you cannot find it in the roster keys above, flag it as "UNKNOWN: [FirstName]" in your response so the manager can identify it.
 
 ## SHIFT CODES (Fixed)
 
@@ -360,8 +455,22 @@ def build_payroll_user_prompt(transcript: str, pay_period_hint: str = "", shift_
     prompt = "Parse this payroll transcript and return the approval JSON:\n\n"
     prompt += transcript
 
-    if shift_code:
-        prompt += f"\n\n**IMPORTANT: This recording is for shift code {shift_code}. Use this exact shift code in your per_shift output regardless of what day you calculate from the transcript date.**"
+    # CRITICAL: Detect date from transcript and tell Claude the ACTUAL day-of-week
+    # This uses Python's calendar - the SOURCE OF TRUTH. Never let Claude guess dates.
+    date_info = detect_date_from_transcript(transcript)
+    if date_info:
+        parsed_date, day_name, shift_prefix = date_info
+        date_str = parsed_date.strftime("%B %d, %Y")
+
+        prompt += f"\n\n**CRITICAL DATE INFORMATION (DO NOT CALCULATE - USE THIS):**"
+        prompt += f"\n- The date {date_str} is a **{day_name.upper()}**"
+        prompt += f"\n- For AM shift, use shift code: **{shift_prefix}AM**"
+        prompt += f"\n- For PM shift, use shift code: **{shift_prefix}PM**"
+        prompt += f"\n- In detail_blocks label, use: **{day_name[:3]} {parsed_date.strftime('%b')} {parsed_date.day}**"
+        prompt += f"\n\nDO NOT recalculate the day of week. The above is computed from an authoritative calendar."
+
+    if shift_code and shift_code != "recording":
+        prompt += f"\n\n**IMPORTANT: This recording is for shift code {shift_code}. Use this exact shift code in your per_shift output.**"
 
     if pay_period_hint:
         prompt += f"\n\nPay period hint: {pay_period_hint}"

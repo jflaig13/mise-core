@@ -263,13 +263,26 @@ class PayrollAgent:
                 continue
 
             # Look for employee amounts in the detail lines
-            # Pattern: "Employee Name: $XX.XX" at end of line
+            # For servers with tipouts, we need the AFTER tipout amount (after the = sign)
+            # Pattern 1: "Name: $XX.XX - $YY.YY = $ZZ.ZZ" (with tipout calculation)
+            # Pattern 2: "Name: $XX.XX" at end of line (simple, no tipout)
             for line in lines:
-                # Match patterns like "Kevin Worley: $99.98" or "Austin Kelley: $99.98"
-                match = re.search(r'^([A-Z][a-z]+ [A-Z][a-z]+): \$(\d+\.?\d*)\s*$', line)
-                if match:
-                    employee = match.group(1)
-                    amount = float(match.group(2))
+                employee = None
+                amount = None
+
+                # First try: calculation line with tipout (e.g., "Austin Kelley: $155.13 - $16.50 = $138.63")
+                calc_match = re.search(r'^([A-Z][a-z]+ [A-Z][a-z]+): \$[\d.]+ - \$[\d.]+ = \$(\d+\.?\d*)', line)
+                if calc_match:
+                    employee = calc_match.group(1)
+                    amount = float(calc_match.group(2))  # AFTER tipout amount
+                else:
+                    # Fallback: simple amount line (e.g., "Kevin Worley: $99.98")
+                    simple_match = re.search(r'^([A-Z][a-z]+ [A-Z][a-z]+): \$(\d+\.?\d*)\s*$', line)
+                    if simple_match:
+                        employee = simple_match.group(1)
+                        amount = float(simple_match.group(2))
+
+                if employee and amount is not None:
 
                     # Check if this employee has this shift in per_shift
                     if employee in per_shift:
@@ -331,17 +344,28 @@ class PayrollAgent:
                 continue
 
             # Extract employee amounts from detail lines
+            # For servers with tipouts, we need the AFTER tipout amount (after the = sign)
             for line in lines:
-                # Pattern: "Employee Name: $XX.XX" at end of line (final amount)
-                match = re.search(r'^([A-Z][a-z]+ [A-Z][a-z]+): \$(\d+\.?\d*)\s*$', line)
-                if match:
-                    employee = match.group(1)
-                    amount = float(match.group(2))
+                employee = None
+                amount = None
 
-                    # Skip utility/support staff lines (they have "(utility)" suffix)
-                    if "(utility)" in line.lower():
-                        continue
+                # Skip utility/support staff lines (they have "(utility)" etc suffix)
+                if "(utility)" in line.lower() or "(busser)" in line.lower() or "(expo)" in line.lower() or "(host)" in line.lower():
+                    continue
 
+                # First try: calculation line with tipout (e.g., "Austin Kelley: $155.13 - $16.50 = $138.63")
+                calc_match = re.search(r'^([A-Z][a-z]+ [A-Z][a-z]+): \$[\d.]+ - \$[\d.]+ = \$(\d+\.?\d*)', line)
+                if calc_match:
+                    employee = calc_match.group(1)
+                    amount = float(calc_match.group(2))  # AFTER tipout amount
+                else:
+                    # Fallback: simple amount line (e.g., "Kevin Worley: $99.98")
+                    simple_match = re.search(r'^([A-Z][a-z]+ [A-Z][a-z]+): \$(\d+\.?\d*)\s*$', line)
+                    if simple_match:
+                        employee = simple_match.group(1)
+                        amount = float(simple_match.group(2))
+
+                if employee and amount is not None:
                     if employee not in expected_values:
                         expected_values[employee] = {}
                     expected_values[employee][shift_code] = amount
