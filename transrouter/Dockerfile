@@ -34,9 +34,10 @@ COPY --from=builder /root/.local /home/appuser/.local
 
 # Make sure scripts in .local are usable
 ENV PATH=/home/appuser/.local/bin:$PATH
+ENV PYTHONPATH=/app:$PYTHONPATH
 
-# Copy application code
-COPY . .
+# Copy application code into transrouter package structure
+COPY . /app/transrouter
 
 # Change ownership to non-root user
 RUN chown -R appuser:appuser /app

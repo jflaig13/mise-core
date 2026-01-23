@@ -41,7 +41,7 @@ class LocalApprovalStorage:
         with open(approval_file, 'w') as f:
             json.dump(data, f, indent=2)
 
-    def add_shifty(self, period_id: str, rows: List[Dict[str, Any]], filename: str, transcript: str, parsed_date: str = None) -> int:
+    def add_shifty(self, period_id: str, rows: List[Dict[str, Any]], filename: str, transcript: str, parsed_date: str = None, detail_blocks: List = None) -> int:
         """Add parsed shifty data to approval queue for a pay period.
 
         Args:
@@ -50,9 +50,13 @@ class LocalApprovalStorage:
             filename: Audio filename
             transcript: Transcribed text
             parsed_date: The actual date parsed from transcript (MM/DD/YYYY format)
+            detail_blocks: Calculation details from approval_json (for display)
         """
         data = self._load(period_id)
         start_idx = len(data)
+
+        # Serialize detail_blocks as JSON string for storage
+        detail_blocks_json = json.dumps(detail_blocks) if detail_blocks else ""
 
         for i, row in enumerate(rows):
             data.append({
@@ -66,6 +70,7 @@ class LocalApprovalStorage:
                 "Filename": filename,
                 "Transcript": transcript if i == 0 else "",
                 "ParsedDate": parsed_date or "",  # Store the parsed date from transcript
+                "DetailBlocks": detail_blocks_json if i == 0 else "",  # Store detail_blocks on first row
                 "created_at": datetime.now().isoformat(),
             })
 
@@ -205,6 +210,15 @@ class LocalTotalsStorage:
         # Sort by total descending
         results.sort(key=lambda x: x["total"], reverse=True)
         return results
+
+    def clear_shifty(self, period_id: str, shifty_code: str):
+        """Clear a specific shifty from all employees' totals."""
+        data = self._load(period_id)
+        for employee in data:
+            if shifty_code in data[employee]:
+                del data[employee][shifty_code]
+        self._save(period_id, data)
+        log.info(f"Cleared {shifty_code} from all employees in period {period_id}")
 
     def clear(self, period_id: str):
         """Clear all data for a pay period."""

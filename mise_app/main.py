@@ -1,6 +1,15 @@
 """Mise - Restaurant operations platform.
 
 A mobile-first web app for restaurant payroll, inventory, and operations.
+
+DEPLOYMENT:
+    Production service: "mise" in us-central1
+    Domain: app.getmise.io
+    Command: cd ~/mise-core/mise_app && gcloud run deploy mise --source . --region us-central1
+
+    DO NOT create new services (mise-app, mise2, etc.)
+    DO NOT deploy to other regions
+    DO NOT change the service name from "mise"
 """
 
 from __future__ import annotations
@@ -32,6 +41,7 @@ log = logging.getLogger(__name__)
 
 # Load config
 config = ShiftyConfig.from_env()
+log.info(f"🔧 LOADED CONFIG - TRANSROUTER_URL: {config.transrouter_url}")
 
 # Create FastAPI app
 app = FastAPI(

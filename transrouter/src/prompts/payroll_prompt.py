@@ -179,6 +179,26 @@ Result:
 
 Only if the transcript explicitly says "NOT tip pooling", "keeping their own tips", "no pool", or similar should you NOT pool tips.
 
+### Multiple Servers with NO Support Staff (NO TIPOUT)
+**CRITICAL: When multiple servers work together but there's NO support staff, they STILL pool tips and split equally.**
+
+The only difference from a normal tip pool: **There's no tipout to subtract** because there's no support staff.
+
+**Example: Saturday AM, no support staff, 2 servers:**
+Transcript: "Saturday AM. No support staff. Kevin $130.98. Mark $169.31."
+
+Step 1: Pool all tips: $130.98 + $169.31 = $300.29
+Step 2: No support staff = no tipout to subtract
+Step 3: Divide equally: $300.29 ÷ 2 = $150.15 each (rounding: $150.15)
+
+Result:
+- Kevin Worley: $150.15
+- Mark Buryanek: $150.15
+
+**WRONG (do NOT do this):** Keeping individual amounts when there's no support staff. Kevin: $130.98, Mark: $169.31. This violates the tip pooling rule.
+
+**REMEMBER:** "No support staff" does NOT mean "no tip pooling". Multiple servers ALWAYS pool unless explicitly stated otherwise.
+
 ### Single Server Shift (NO pool needed)
 **CRITICAL: When only ONE server works a shift, you MUST subtract the tipout from their tips.**
 
@@ -239,11 +259,25 @@ Managers may indicate that support staff should receive less than the full tipou
 4. **Early departure**: "Ryan left at 3:30" → Calculate based on time worked vs full shift
 5. **Late arrival**: "Ryan came in at noon" → Calculate based on time worked vs full shift
 
-### Shift Hours for Partial Tipout Calculations
+### Shift Hours - ACTUAL vs STANDARD
 
-Use these STANDARD SHIFT DURATIONS to calculate partial tipouts:
+**CRITICAL: ALWAYS use ACTUAL shift hours when provided in the transcript.**
 
-**AM Shift:** ALWAYS 6.5 hours (10:00AM–4:30PM) — never changes
+**When the transcript mentions closing time:**
+- "end of close was 8:30PM" → shift ended at 8:30PM
+- "we closed at 9PM" → shift ended at 9:00PM
+- "closed early at 7:45" → shift ended at 7:45PM
+
+**ACTUAL shift duration = closing time - start time**
+
+Example: "end of close was 8:30PM" on Tuesday PM
+- Start: 4:30PM
+- End: 8:30PM (from transcript)
+- **ACTUAL duration = 4.0 hours** ← USE THIS, not standard 3.5 hours
+
+**STANDARD SHIFT DURATIONS (use only if no closing time mentioned):**
+
+**AM Shift:** 6.5 hours (10:00AM–4:30PM) — never changes
 
 **PM Shift (Standard Time: Nov–Mar):**
 | Day | Duration |
@@ -257,29 +291,85 @@ Use these STANDARD SHIFT DURATIONS to calculate partial tipouts:
 | Sun–Thu | 4.5 hours (4:30PM–9:00PM) |
 | Fri–Sat | 5.5 hours (4:30PM–10:00PM) |
 
-**January is Standard Time (use Standard hours).**
+**January is Standard Time.**
 
-### Calculating Partial Tipout from Time
+### Partial Shifts for SERVERS
 
-**Example 1: Early departure on AM shift**
-"Ryan left at 3:30" on AM shift (10AM–4:30PM = 6.5 hours)
-- Ryan worked: 10:00AM to 3:30PM = 5.5 hours
-- Full shift: 6.5 hours
-- Percentage: 5.5 / 6.5 = 84.6%
+**CRITICAL: Servers can also work partial shifts, not just support staff.**
+
+When a server leaves early, arrives late, or takes a long break:
+1. Calculate their percentage of the full shift worked
+2. They get that percentage of their share of the tip pool
+3. **The remaining amount stays in the pool and is redistributed to the other servers**
+
+**Example: 2 servers, one leaves early**
+Transcript: "Tuesday PM. End of close was 8:30PM. Kevin left at 7PM. Austin full shift. No support staff. Kevin $130.98, Austin $169.31."
+
+Step 1: Determine shift duration
+- Actual shift: 4:30PM-8:30PM = 4.0 hours
+
+Step 2: Calculate Kevin's percentage
+- Kevin worked: 4:30PM-7:00PM = 2.5 hours
+- Percentage: 2.5 ÷ 4.0 = 62.5%
+
+Step 3: Pool tips
+- Total pool: $130.98 + $169.31 = $300.29
+- No tipout (no support staff)
+
+Step 4: Calculate base split (if both worked full shift)
+- Per server: $300.29 ÷ 2 = $150.15
+
+Step 5: Apply Kevin's partial percentage
+- Kevin gets: $150.15 × 62.5% = $93.84
+- Remainder: $150.15 - $93.84 = $56.31
+
+Step 6: Austin gets his full share + Kevin's remainder
+- Austin gets: $150.15 + $56.31 = $206.46
+
+Result:
+- Kevin Worley: $93.84
+- Austin Kelley: $206.46
+
+### Calculating Partial Tipout from Time (Support Staff)
+
+**Example 1: Early departure with ACTUAL closing time**
+Transcript: "Tuesday PM. Utility was John, he left at 7PM. End of close was 8:30PM. Austin $127.43, food sales $182.30."
+
+Step 1: Determine ACTUAL shift duration
+- Transcript says "end of close was 8:30PM"
+- Shift: 4:30PM-8:30PM = **4.0 hours** (not standard 3.5!)
+
+Step 2: Calculate John's hours
+- John worked: 4:30PM-7:00PM = 2.5 hours
+- Percentage: 2.5 ÷ 4.0 = **62.5%**
+
+Step 3: Calculate tipout
+- Full tipout: $182.30 × 5% = $9.12
+- John gets: $9.12 × 62.5% = **$5.70**
+- Unearned: $9.12 - $5.70 = $3.42 (stays with Austin)
+
+Step 4: Final amounts
+- Austin: $127.43 - $5.70 = **$121.73**
+- John (utility): **$5.70**
+
+**CRITICAL: Use these EXACT calculated amounts in your output:**
+- per_shift: {{"Austin Kelley": {{"TPM": 121.73}}, "John Neal": {{"TPM": 5.70}}}}
+- detail_blocks final lines: "Austin Kelley: $121.73" and "John Neal (utility): $5.70"
+
+**DO NOT change $5.70 to $16.80 or any other number. DO NOT change $121.73 to $106.15 or any other number. Use the calculated amounts EXACTLY.**
+
+**Example 2: Early departure on AM shift (standard hours)**
+"Ryan left at 3:30PM" on AM shift (no closing time mentioned)
+- Standard AM shift: 10:00AM-4:30PM = 6.5 hours
+- Ryan worked: 10:00AM-3:30PM = 5.5 hours
+- Percentage: 5.5 ÷ 6.5 = 84.6%
 - Ryan gets: 84.6% of calculated tipout
 
-**Example 2: Break on PM shift**
+**Example 3: Break on PM shift**
 "John took a 2 hour break" on Thursday PM (Standard time = 3.5 hours)
 - John worked: 3.5 - 2.0 = 1.5 hours
-- Percentage: 1.5 / 3.5 = 42.9%
+- Percentage: 1.5 ÷ 3.5 = 42.9%
 - John gets: 42.9% of calculated tipout
-
-**Example 3: Late arrival**
-"Ryan came in at noon" on AM shift (10AM–4:30PM)
-- Ryan worked: 12:00PM to 4:30PM = 4.5 hours
-- Full shift: 6.5 hours
-- Percentage: 4.5 / 6.5 = 69.2%
-- Ryan gets: 69.2% of calculated tipout
 
 ### What happens to the unearned tipout?
 When support staff gets partial tipout, the remainder stays with the servers:
@@ -423,6 +513,24 @@ Before returning, you MUST verify each of these. Errors here cause production fa
 - [ ] Dates are zero-padded (e.g., 010426 not 1426)
 - [ ] Header uses en dash (–) not hyphen (-)
 - [ ] JSON is valid (no trailing commas, no comments)
+
+**CRITICAL VALIDATION: Amounts in detail_blocks MUST match per_shift**
+
+For every employee amount you show in detail_blocks (e.g., "Austin Kelley: $110.16"), that EXACT amount must appear in per_shift under the correct shift code. If you calculate one thing in your math but then put a different number, THAT IS WRONG.
+
+Example of CORRECT consistency:
+```
+detail_blocks: "Austin Kelley: $110.16"
+per_shift: {{"Austin Kelley": {{"ThAM": 110.16}}}}  ✓ MATCHES
+```
+
+Example of WRONG (causes production error):
+```
+detail_blocks: "Ryan gets: $12.79" → "Ryan Alexander (utility): $16.80"
+per_shift: {{"Ryan Alexander": {{"ThAM": 16.80}}}}  ✗ WRONG - you calculated $12.79!
+```
+
+**If your calculation shows $12.79, you MUST put $12.79 in both detail_blocks AND per_shift. You cannot change the number.**
 
 ### CRITICAL: per_shift MUST match detail_blocks
 

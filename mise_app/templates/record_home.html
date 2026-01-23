@@ -120,16 +120,64 @@ async function toggleRecording() {
         // Start recording
         try {
             const stream = await navigator.mediaDevices.getUserMedia({audio: true});
-            mediaRecorder = new MediaRecorder(stream);
+
+            // Check if we got audio tracks
+            const audioTracks = stream.getAudioTracks();
+            console.log('Audio tracks:', audioTracks.length, audioTracks);
+            if (audioTracks.length === 0) {
+                showError('No microphone detected. Please check your device settings.');
+                return;
+            }
+
+            // Check track state
+            const track = audioTracks[0];
+            console.log('Track state:', track.readyState, 'enabled:', track.enabled, 'muted:', track.muted);
+
+            // Determine best mime type for this browser
+            let mimeType = 'audio/webm';
+            if (MediaRecorder.isTypeSupported('audio/webm;codecs=opus')) {
+                mimeType = 'audio/webm;codecs=opus';
+            } else if (MediaRecorder.isTypeSupported('audio/mp4')) {
+                mimeType = 'audio/mp4';
+            } else if (MediaRecorder.isTypeSupported('audio/wav')) {
+                mimeType = 'audio/wav';
+            }
+            console.log('Using mime type:', mimeType);
+
+            mediaRecorder = new MediaRecorder(stream, { mimeType });
             chunks = [];
 
-            mediaRecorder.ondataavailable = e => chunks.push(e.data);
+            mediaRecorder.ondataavailable = e => {
+                console.log('Data available:', e.data ? e.data.size : 0, 'bytes');
+                if (e.data && e.data.size > 0) {
+                    chunks.push(e.data);
+                }
+            };
             mediaRecorder.onstop = () => {
-                const blob = new Blob(chunks, {type: 'audio/webm'});
+                console.log('Recording stopped. Chunks:', chunks.length);
+                if (chunks.length === 0) {
+                    showError('No audio data captured. Please check microphone permissions and try again.');
+                    resetRecordButton();
+                    return;
+                }
+                const blob = new Blob(chunks, {type: mimeType});
+                console.log('Blob size:', blob.size);
+                if (blob.size === 0) {
+                    showError('Empty recording. Please try again.');
+                    resetRecordButton();
+                    return;
+                }
                 submitAudio(blob);
             };
 
-            mediaRecorder.start();
+            mediaRecorder.onerror = (e) => {
+                console.error('MediaRecorder error:', e);
+                showError('Recording error: ' + (e.error ? e.error.message : 'Unknown error'));
+                resetRecordButton();
+            };
+
+            // Use timeslice to collect data every 500ms for more reliable capture
+            mediaRecorder.start(500);
             btn.classList.add('recording');
             btn.classList.remove('bg-mise-green');
             btn.classList.add('bg-red-500');
@@ -145,7 +193,14 @@ async function toggleRecording() {
             showError('Microphone access denied. Please allow microphone access and try again.');
         }
     } else {
-        // Stop recording
+        // Stop recording - check minimum time
+        if (seconds < 2) {
+            showError('Recording too short. Please record for at least 2 seconds.');
+            mediaRecorder.stop();
+            mediaRecorder.stream.getTracks().forEach(track => track.stop());
+            resetRecordButton();
+            return;
+        }
         mediaRecorder.stop();
         mediaRecorder.stream.getTracks().forEach(track => track.stop());
         btn.classList.remove('recording', 'bg-red-500');
