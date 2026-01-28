@@ -132,44 +132,54 @@ Parse the provided payroll transcript and:
 
 ## CRITICAL GROUNDING RULES (Phase 1 - CoCounsel Inspired)
 
-**THE GOLDEN RULE: If it impacts money, it must be explicitly stated or confirmed.**
+**THE GOLDEN RULE: Use canonical policies from the workflow specs, but NEVER invent transaction data from historical patterns.**
 
-You MUST NOT assume or invent any data that is not explicitly in the transcript. This is the "QAnon Shaman" problem: if you "know" something from patterns or context, but it's NOT in this specific transcript, you must NOT use it.
+This is the "QAnon Shaman" problem: if you "know" something about THIS specific shift from historical patterns (not from canonical policy), you must NOT use it.
 
-### What You MUST NOT Do:
+### Two Types of Knowledge:
 
-1. **DO NOT assume typical hours**: Even if an employee usually works 6 hours, if hours aren't stated in this transcript, do NOT fill them in.
+**1. CANONICAL POLICY (from workflow specs/brain) → ALWAYS USE:**
+- ✅ Standard shift durations (AM = 6.5hr, PM = varies by DST/day)
+- ✅ Tipout percentages (utility = 5%, busser = 3%, expo = 1%)
+- ✅ Tip pooling default rule (multiple servers = pool by default)
+- ✅ Operating hours and close times
+- ✅ Employee roster (for name normalization)
 
-2. **DO NOT infer tip pool from patterns**: Even if Fridays always pool tips historically, if this transcript doesn't mention tip pool status, follow the default rules (multiple servers = pool).
-
-3. **DO NOT guess roles from history**: Even if Ryan is usually utility, if the transcript says "Ryan $150" (server amount), do NOT force him into utility role.
-
-4. **DO NOT fill in missing sales from averages**: If food sales aren't stated for a server, do NOT use historical averages.
-
-5. **DO NOT add employees based on pairing patterns**: Even if Austin and Brooke always work together, if Brooke isn't mentioned in this transcript, do NOT add her.
+**2. HISTORICAL PATTERNS (from past transcripts) → NEVER ASSUME:**
+- ❌ "Austin usually works 6 hours" (use standard shift duration instead)
+- ❌ "Fridays usually have tip pool" (use default tip pool rule instead)
+- ❌ "Ryan is usually utility" (use what the transcript says)
+- ❌ "Average Friday sales are $2,500" (don't fill in missing sales)
+- ❌ "Austin and Brooke always work together" (don't add missing employees)
 
 ### What You MUST Do:
 
-1. **Use ONLY explicit information**: If the transcript says "Austin $150", that's all you know. Don't add hours, roles, or other data from context.
+1. **Apply canonical policies from this prompt**: Standard shift durations, tipout percentages, tip pool defaults - these are YOUR SOURCE OF TRUTH.
 
-2. **Follow stated policies**: If the transcript says "tip pool" or "no support staff", use that. Otherwise, apply default rules.
+2. **Use ONLY explicit transaction data from THIS transcript**: Employee names, tip amounts, food sales, support staff mentions.
 
-3. **Calculate only from stated data**: All math must be based on numbers in the transcript, not assumptions.
+3. **When transcript is silent, apply the documented default**:
+   - Hours not mentioned? Use standard shift duration for that day/DST period
+   - Tip pool not mentioned? Apply default rule (multiple servers = pool)
+   - Close time not mentioned? Use standard close time for that day/DST period
 
-4. **Return complete data when possible**: If all required information is present, process it fully and return success status.
+4. **When transaction data conflicts with patterns, trust the transcript**: If Ryan (normally utility) is listed with a $150 server amount, treat him as a server for THIS shift.
 
-5. **Request clarification for missing critical data**: If essential information is missing (see below), you may need to ask.
+### When to Request Clarification (RARE):
 
-### When to Request Clarification:
+Only request clarification when CRITICAL transaction data is TRULY missing AND cannot be inferred from canonical policy:
 
-If truly critical data is missing that prevents accurate processing, you may return status "needs_clarification" with specific questions. However, this should be RARE - most transcripts contain complete information.
+**Ask for clarification:**
+- ❌ Employee mentioned but no amount: "Austin worked" (missing critical data)
+- ❌ Suspicious amount: "Austin $0.50" (seems like an error)
+- ❌ Physically impossible: "Austin $150, food sales $50" (tips > sales)
 
-Examples of when clarification might be needed:
-- Employee mentioned but no amount: "Austin worked" (What was his tip amount?)
-- Ambiguous amount: "Austin $0.50" (Is this really 50 cents? Seems unusually low)
-- Conflicting information: "Austin $150, food sales $50" (Tips higher than sales is physically impossible)
+**DO NOT ask for clarification:**
+- ✅ Hours not mentioned → Just apply standard shift duration
+- ✅ Close time not mentioned → Just apply standard close time
+- ✅ Tip pool status not mentioned → Just apply default rule
 
-**IMPORTANT**: Clarification requests should be specific and actionable. Don't ask for information you can infer from business rules.
+**REMEMBER**: Clarification should be RARE. Most missing information can be filled from canonical policies documented in this prompt.
 
 ## CRITICAL BUSINESS RULES
 
