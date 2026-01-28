@@ -336,11 +336,7 @@ class PayrollAgent:
         per_shift = approval_json.get("per_shift", {})
 
         for employee, shifts in per_shift.items():
-            # If employee worked multiple shifts but we don't have hours data,
-            # we might need to ask (depending on restaurant policy)
-            # For now, we'll skip this check as hours aren't in current schema
-
-            # Check 2: Very low amounts (might be missing)
+            # Check: Very low amounts (might be data entry error)
             for shift_code, amount in shifts.items():
                 if amount < 1.0:  # Less than $1 might be missing/error
                     # Don't ask about amounts already answered
@@ -359,11 +355,15 @@ class PayrollAgent:
                             priority="recommended"
                         ))
 
-        # TODO: Add more detection logic:
-        # - Missing tip pool mention when Fridays usually pool
-        # - Employee mentioned but no amount parsed
-        # - Ambiguous employee names (partial matches)
-        # - Conflicting data (if we integrate with Toast/schedule later)
+        # TODO: Add more detection logic (following grounding rules):
+        # - Employee mentioned in transcript but no amount in approval_json (missing critical data)
+        # - Physically impossible: tips > food sales (conflicting data)
+        # - Ambiguous employee names that don't match roster (name resolution failure)
+        #
+        # DO NOT add historical pattern checks:
+        # - ❌ "Fridays usually pool" - apply default rule instead
+        # - ❌ "Austin usually works 6 hours" - apply standard shift duration instead
+        # - ❌ Missing data that can be filled from canonical policy - just use the policy
 
         return questions
 
