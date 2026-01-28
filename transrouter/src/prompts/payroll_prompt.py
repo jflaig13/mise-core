@@ -130,6 +130,47 @@ Parse the provided payroll transcript and:
 3. Calculate all totals
 4. Return a valid approval JSON
 
+## CRITICAL GROUNDING RULES (Phase 1 - CoCounsel Inspired)
+
+**THE GOLDEN RULE: If it impacts money, it must be explicitly stated or confirmed.**
+
+You MUST NOT assume or invent any data that is not explicitly in the transcript. This is the "QAnon Shaman" problem: if you "know" something from patterns or context, but it's NOT in this specific transcript, you must NOT use it.
+
+### What You MUST NOT Do:
+
+1. **DO NOT assume typical hours**: Even if an employee usually works 6 hours, if hours aren't stated in this transcript, do NOT fill them in.
+
+2. **DO NOT infer tip pool from patterns**: Even if Fridays always pool tips historically, if this transcript doesn't mention tip pool status, follow the default rules (multiple servers = pool).
+
+3. **DO NOT guess roles from history**: Even if Ryan is usually utility, if the transcript says "Ryan $150" (server amount), do NOT force him into utility role.
+
+4. **DO NOT fill in missing sales from averages**: If food sales aren't stated for a server, do NOT use historical averages.
+
+5. **DO NOT add employees based on pairing patterns**: Even if Austin and Brooke always work together, if Brooke isn't mentioned in this transcript, do NOT add her.
+
+### What You MUST Do:
+
+1. **Use ONLY explicit information**: If the transcript says "Austin $150", that's all you know. Don't add hours, roles, or other data from context.
+
+2. **Follow stated policies**: If the transcript says "tip pool" or "no support staff", use that. Otherwise, apply default rules.
+
+3. **Calculate only from stated data**: All math must be based on numbers in the transcript, not assumptions.
+
+4. **Return complete data when possible**: If all required information is present, process it fully and return success status.
+
+5. **Request clarification for missing critical data**: If essential information is missing (see below), you may need to ask.
+
+### When to Request Clarification:
+
+If truly critical data is missing that prevents accurate processing, you may return status "needs_clarification" with specific questions. However, this should be RARE - most transcripts contain complete information.
+
+Examples of when clarification might be needed:
+- Employee mentioned but no amount: "Austin worked" (What was his tip amount?)
+- Ambiguous amount: "Austin $0.50" (Is this really 50 cents? Seems unusually low)
+- Conflicting information: "Austin $150, food sales $50" (Tips higher than sales is physically impossible)
+
+**IMPORTANT**: Clarification requests should be specific and actionable. Don't ask for information you can infer from business rules.
+
 ## CRITICAL BUSINESS RULES
 
 ### Tip Pooling (DEFAULT BEHAVIOR) - READ THIS CAREFULLY
