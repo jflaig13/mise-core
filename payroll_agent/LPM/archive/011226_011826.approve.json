@@ -1,0 +1,178 @@
+{
+  "out_base": "TipReport_011226_011826",
+  "header": "Week of January 12–18, 2026",
+  "shift_cols": ["MAM","MPM","TAM","TPM","WAM","WPM","ThAM","ThPM","FAM","FPM","SaAM","SaPM","SuAM","SuPM"],
+  "per_shift": {
+    "Brooke Neal": {
+      "MAM": 80.76,
+      "TAM": 68.62,
+      "WAM": 74.30
+    },
+    "Austin Kelley": {
+      "MPM": 197.56,
+      "TPM": 121.73,
+      "WPM": 138.63,
+      "ThAM": 110.16,
+      "ThPM": 353.17,
+      "FAM": 106.66,
+      "FPM": 222.06
+    },
+    "Ryan Alexander": {
+      "MPM": 30.56,
+      "WPM": 16.50,
+      "ThAM": 12.79,
+      "ThPM": 55.33
+    },
+    "John Neal": {
+      "TPM": 5.70,
+      "ThPM": 13.84,
+      "SaPM": 26.83,
+      "SuAM": 37.75,
+      "SuPM": 11.35
+    },
+    "Kevin Worley": {
+      "ThPM": 353.17,
+      "FAM": 106.66,
+      "FPM": 222.06,
+      "SaAM": 150.15,
+      "SaPM": 125.41,
+      "SuAM": 234.82,
+      "SuPM": 44.54
+    },
+    "Mark Buryanek": {
+      "SaAM": 150.15,
+      "SaPM": 125.41
+    },
+    "Mike Walton": {
+      "SuAM": 234.82,
+      "SuPM": 44.54
+    }
+  },
+  "cook_tips": {},
+  "weekly_totals": {
+    "Brooke Neal": 223.68,
+    "Austin Kelley": 1249.97,
+    "Ryan Alexander": 115.18,
+    "John Neal": 95.47,
+    "Kevin Worley": 1236.81,
+    "Mark Buryanek": 275.56,
+    "Mike Walton": 279.36
+  },
+  "detail_blocks": [
+    ["Mon Jan 12 — AM (single server)", [
+      "No support staff",
+      "Brooke Neal: $80.76"
+    ]],
+    ["Mon Jan 12 — PM (single server)", [
+      "Austin tips: $228.12",
+      "Food sales: $611.60",
+      "Utility tipout: $611.60 × 5% = $30.56",
+      "Austin final: $228.12 - $30.56 = $197.56",
+      "Ryan Alexander (utility): $30.56"
+    ]],
+    ["Tue Jan 13 — AM (single server)", [
+      "No support staff",
+      "Brooke Neal: $68.62"
+    ]],
+    ["Tue Jan 13 — PM (single server, partial tipout)", [
+      "Shift: 4:30PM-8:30PM = 4.0 hours",
+      "John worked: 4:30PM-7:00PM = 2.5 hours (62.5%)",
+      "Austin tips: $127.43",
+      "Food sales: $182.30",
+      "Full tipout: $182.30 × 5% = $9.12",
+      "John gets: $9.12 × 62.5% = $5.70",
+      "Austin final: $127.43 - $5.70 = $121.73",
+      "John Neal (utility): $5.70"
+    ]],
+    ["Wed Jan 14 — AM (single server)", [
+      "No support staff",
+      "Brooke Neal: $74.30"
+    ]],
+    ["Wed Jan 14 — PM (single server)", [
+      "Austin tips: $155.13",
+      "Food sales: $330.00",
+      "Utility tipout: $330.00 × 5% = $16.50",
+      "Austin final: $155.13 - $16.50 = $138.63",
+      "Ryan Alexander (utility): $16.50"
+    ]],
+    ["Thu Jan 15 — AM (single server, partial tipout)", [
+      "Standard AM shift: 10:00AM-4:30PM = 6.5 hours",
+      "Ryan left at 2:00PM",
+      "Ryan worked: 10:00AM-2:00PM = 4.0 hours (61.54%)",
+      "Austin tips: $122.95",
+      "Food sales: $415.90",
+      "Full tipout: $415.90 × 5% = $20.80",
+      "Ryan gets: $20.80 × 61.54% = $12.79",
+      "Austin final: $122.95 - $12.79 = $110.16",
+      "Ryan Alexander (utility): $12.79"
+    ]],
+    ["Thu Jan 15 — PM (tip pool)", [
+      "Pool: $318.13 + $451.36 = $769.49",
+      "Food sales: $717.20 + $667.10 = $1,384.30",
+      "Expo tipout: $1,384.30 × 1% = $13.84",
+      "Busser tipout: $1,384.30 × 4% = $55.33",
+      "Pool after tipout: $769.49 - $13.84 - $55.33 = $700.32",
+      "Per server: $700.32 ÷ 2 = $350.16",
+      "Rounding adjustment: $3.01",
+      "Kevin Worley: $353.17",
+      "Austin Kelley: $353.17",
+      "John Neal (expo): $13.84",
+      "Ryan Alexander (busser): $55.33"
+    ]],
+    ["Fri Jan 16 — AM (tip pool)", [
+      "No support staff",
+      "Pool: $115.56 + $97.76 = $213.32",
+      "Per server: $213.32 ÷ 2 = $106.66",
+      "Kevin Worley: $106.66",
+      "Austin Kelley: $106.66"
+    ]],
+    ["Fri Jan 16 — PM (tip pool)", [
+      "No support staff",
+      "Pool: $261.73 + $182.38 = $444.11",
+      "Per server: $444.11 ÷ 2 = $222.06",
+      "Rounding adjustment: $0.01",
+      "Kevin Worley: $222.06",
+      "Austin Kelley: $222.06"
+    ]],
+    ["Sat Jan 17 — AM (tip pool)", [
+      "No support staff",
+      "Pool: $130.98 + $169.31 = $300.29",
+      "Per server: $300.29 ÷ 2 = $150.15",
+      "Rounding adjustment: $0.01",
+      "Kevin Worley: $150.15",
+      "Mark Buryanek: $150.15"
+    ]],
+    ["Sat Jan 17 — PM (tip pool)", [
+      "Pool: $66.56 + $85.68 = $152.24",
+      "Food sales: $195.20 + $341.30 = $536.50",
+      "Utility tipout: $536.50 × 5% = $26.83",
+      "Pool after tipout: $152.24 - $26.83 = $125.41",
+      "Per server: $125.41 ÷ 2 = $62.71",
+      "Rounding adjustment: $125.41",
+      "Kevin Worley: $125.41",
+      "Mark Buryanek: $125.41",
+      "John Neal (utility): $26.83"
+    ]],
+    ["Sun Jan 18 — AM (tip pool)", [
+      "Pool: $175.85 + $96.72 = $272.57",
+      "Food sales: $450.00 + $305.00 = $755.00",
+      "Utility tipout: $755.00 × 5% = $37.75",
+      "Pool after tipout: $272.57 - $37.75 = $234.82",
+      "Per server: $234.82 ÷ 2 = $117.41",
+      "Kevin Worley: $234.82",
+      "Mike Walton: $234.82",
+      "John Neal (utility): $37.75"
+    ]],
+    ["Sun Jan 18 — PM (tip pool)", [
+      "Pool: $21.58 + $34.29 = $55.87",
+      "Food sales: $80.00 + $147.00 = $227.00",
+      "Utility tipout: $227.00 × 5% = $11.35",
+      "Pool after tipout: $55.87 - $11.35 = $44.52",
+      "Per server: $44.52 ÷ 2 = $22.26",
+      "Rounding adjustment: $44.54",
+      "Kevin Worley: $44.54",
+      "Mike Walton: $44.54",
+      "John Neal (utility): $11.35"
+    ]]
+  ]
+}

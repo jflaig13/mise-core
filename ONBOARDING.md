@@ -28,6 +28,28 @@ Read this file to get up to speed quickly on the mise-core project.
 - **workflow_specs/LIM/LIM_Workflow_Master.txt** - Local inventory workflow
 - **inventory_agent/products/** - Product catalog source files
 
+## Step 2.5: Check for Pending Plans
+
+Check if there are active plan files:
+
+```bash
+ls -la ~/.claude/plans/ 2>/dev/null || echo "No plans directory"
+```
+
+If any `.md` files exist in `~/.claude/plans/`, ask the user:
+
+**"I found pending plan files. Would you like me to execute them?"**
+
+List the plan files found and let the user choose which one to execute.
+
+**Example plans you might find:**
+- Authentication implementation
+- Feature additions
+- Refactoring tasks
+- Bug fixes
+
+If the user says yes, read the plan file and execute it step-by-step.
+
 ## Step 3: Check Recent Work (optional)
 
 ```bash
