@@ -10,6 +10,7 @@ from fastapi import APIRouter, Request
 from fastapi.responses import HTMLResponse
 
 from mise_app.config import PayPeriod
+from mise_app.tenant import require_restaurant, get_template_context
 
 log = logging.getLogger(__name__)
 
@@ -19,6 +20,7 @@ router = APIRouter(prefix="/payroll/period/{period_id}", tags=["Payroll Totals"]
 @router.get("/totals", response_class=HTMLResponse)
 async def totals_page(request: Request, period_id: str):
     """Render the weekly totals page for a pay period."""
+    restaurant_id = require_restaurant(request)
     config = request.app.state.config
     templates = request.app.state.templates
 
@@ -27,10 +29,10 @@ async def totals_page(request: Request, period_id: str):
     except ValueError:
         return HTMLResponse(f"Invalid pay period: {period_id}", status_code=404)
 
-    # Get totals from local storage (with period isolation)
+    # Get totals from local storage (with restaurant and period isolation)
     from mise_app.local_storage import get_totals_storage
     totals_storage = get_totals_storage()
-    employees = totals_storage.get_all_totals(period_id)
+    employees = totals_storage.get_all_totals(period_id, restaurant_id=restaurant_id)
 
     # Generate QR code for staff access
     qr_code = None
@@ -38,24 +40,23 @@ async def totals_page(request: Request, period_id: str):
         sheet_url = f"https://docs.google.com/spreadsheets/d/{config.totals_sheet_id}/edit"
         qr_code = generate_qr_code(sheet_url)
 
-    return templates.TemplateResponse(
-        "totals.html",
-        {
-            "request": request,
-            "period": period,
-            "periods": PayPeriod.get_available_periods(),
-            "employees": employees,
-            "pay_period": period.label,
-            "sheet_id": config.totals_sheet_id,
-            "qr_code": qr_code,
-            "active_tab": "totals",
-        }
-    )
+    context = get_template_context(request)
+    context.update({
+        "period": period,
+        "periods": PayPeriod.get_available_periods(),
+        "employees": employees,
+        "pay_period": period.label,
+        "sheet_id": config.totals_sheet_id,
+        "qr_code": qr_code,
+        "active_tab": "totals",
+    })
+    return templates.TemplateResponse("totals.html", context)
 
 
 @router.get("/qr", response_class=HTMLResponse)
 async def qr_page(request: Request, period_id: str):
     """Render a full-screen QR code for staff access."""
+    restaurant_id = require_restaurant(request)
     config = request.app.state.config
     templates = request.app.state.templates
 
@@ -70,18 +71,16 @@ async def qr_page(request: Request, period_id: str):
     sheet_url = f"https://docs.google.com/spreadsheets/d/{config.totals_sheet_id}/edit"
     qr_code = generate_qr_code(sheet_url)
 
-    return templates.TemplateResponse(
-        "qr.html",
-        {
-            "request": request,
-            "period": period,
-            "periods": PayPeriod.get_available_periods(),
-            "qr_code": qr_code,
-            "sheet_url": sheet_url,
-            "pay_period": period.label,
-            "active_tab": "qr",
-        }
-    )
+    context = get_template_context(request)
+    context.update({
+        "period": period,
+        "periods": PayPeriod.get_available_periods(),
+        "qr_code": qr_code,
+        "sheet_url": sheet_url,
+        "pay_period": period.label,
+        "active_tab": "qr",
+    })
+    return templates.TemplateResponse("qr.html", context)
 
 
 def generate_qr_code(url: str) -> str:

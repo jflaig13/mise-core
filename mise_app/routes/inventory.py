@@ -23,6 +23,7 @@ from mise_app.shelfy_storage import (
     generate_shelfy_id,
     get_audio_archive_path,
 )
+from mise_app.tenant import require_restaurant, get_template_context
 
 log = logging.getLogger(__name__)
 
@@ -402,6 +403,7 @@ def get_area_slug(area_name: str) -> str:
 @router.get("", response_class=HTMLResponse)
 async def inventory_landing_page(request: Request):
     """Render the inventory landing page with 'Record a Shelfy' button."""
+    restaurant_id = require_restaurant(request)
     templates = request.app.state.templates
     storage = get_shelfy_storage()
 
@@ -410,33 +412,29 @@ async def inventory_landing_page(request: Request):
     shelfies = storage.get_all_shelfies(period_id)
     has_shelfies = len(shelfies) > 0
 
-    return templates.TemplateResponse(
-        "inventory_landing.html",
-        {
-            "request": request,
-            "has_shelfies": has_shelfies,
-            "active_tab": "record",
-        }
-    )
+    context = get_template_context(request)
+    context.update({
+        "has_shelfies": has_shelfies,
+        "active_tab": "record",
+    })
+    return templates.TemplateResponse("inventory_landing.html", context)
 
 
 @router.get("/select-category", response_class=HTMLResponse)
 async def select_category_page(request: Request):
     """Render the category selection page (Kitchen vs Bar)."""
+    restaurant_id = require_restaurant(request)
     templates = request.app.state.templates
 
-    return templates.TemplateResponse(
-        "inventory_select_category.html",
-        {
-            "request": request,
-            "active_tab": "record",
-        }
-    )
+    context = get_template_context(request)
+    context.update({"active_tab": "record"})
+    return templates.TemplateResponse("inventory_select_category.html", context)
 
 
 @router.get("/select-area/{category}", response_class=HTMLResponse)
 async def select_area_page(request: Request, category: str):
     """Render the area selection page based on category."""
+    restaurant_id = require_restaurant(request)
     templates = request.app.state.templates
 
     if category not in ("kitchen", "bar"):
@@ -445,20 +443,19 @@ async def select_area_page(request: Request, category: str):
     area_names = KITCHEN_AREAS if category == "kitchen" else BAR_AREAS
     areas = [{"name": a, "slug": get_area_slug(a)} for a in area_names]
 
-    return templates.TemplateResponse(
-        "inventory_select_area.html",
-        {
-            "request": request,
-            "category": category,
-            "areas": areas,
-            "active_tab": "record",
-        }
-    )
+    context = get_template_context(request)
+    context.update({
+        "category": category,
+        "areas": areas,
+        "active_tab": "record",
+    })
+    return templates.TemplateResponse("inventory_select_area.html", context)
 
 
 @router.get("/record/{category}/{area_slug}", response_class=HTMLResponse)
 async def record_shelfy_page(request: Request, category: str, area_slug: str):
     """Render the recording interface for a specific area."""
+    restaurant_id = require_restaurant(request)
     templates = request.app.state.templates
 
     if category not in ("kitchen", "bar"):
@@ -466,21 +463,20 @@ async def record_shelfy_page(request: Request, category: str, area_slug: str):
 
     area_name = get_area_name_from_slug(area_slug, category)
 
-    return templates.TemplateResponse(
-        "inventory_record.html",
-        {
-            "request": request,
-            "category": category,
-            "area": area_name,
-            "area_slug": area_slug,
-            "active_tab": "record",
-        }
-    )
+    context = get_template_context(request)
+    context.update({
+        "category": category,
+        "area": area_name,
+        "area_slug": area_slug,
+        "active_tab": "record",
+    })
+    return templates.TemplateResponse("inventory_record.html", context)
 
 
 @router.get("/approve/{shelfy_id}", response_class=HTMLResponse)
 async def approve_shelfy_page(request: Request, shelfy_id: str):
     """Render the approval page for a shelfy."""
+    restaurant_id = require_restaurant(request)
     templates = request.app.state.templates
     storage = get_shelfy_storage()
 
@@ -508,14 +504,12 @@ async def approve_shelfy_page(request: Request, shelfy_id: str):
         except (ValueError, KeyError):
             shelfy["recorded_at_display"] = shelfy.get("recorded_at", "")
 
-    return templates.TemplateResponse(
-        "inventory_approve.html",
-        {
-            "request": request,
-            "shelfy": shelfy,
-            "active_tab": "record",
-        }
-    )
+    context = get_template_context(request)
+    context.update({
+        "shelfy": shelfy,
+        "active_tab": "record",
+    })
+    return templates.TemplateResponse("inventory_approve.html", context)
 
 
 @router.post("/approve_shelfy_form")
@@ -557,6 +551,7 @@ async def inventory_totals_page_current(request: Request):
 @router.get("/totals-page/{period_id}", response_class=HTMLResponse)
 async def inventory_totals_page(request: Request, period_id: str):
     """Render inventory totals page for a specific period."""
+    restaurant_id = require_restaurant(request)
     templates = request.app.state.templates
     storage = get_shelfy_storage()
 
@@ -576,23 +571,22 @@ async def inventory_totals_page(request: Request, period_id: str):
     kitchen_shelfies = [s for s in shelfies if s.get("category") == "kitchen"]
     bar_shelfies = [s for s in shelfies if s.get("category") == "bar"]
 
-    return templates.TemplateResponse(
-        "inventory_totals.html",
-        {
-            "request": request,
-            "period_id": period_id,
-            "period_label": get_period_label_html(period_id),
-            "shelfies": shelfies,
-            "kitchen_shelfies": kitchen_shelfies,
-            "bar_shelfies": bar_shelfies,
-            "active_tab": "totals",
-        }
-    )
+    context = get_template_context(request)
+    context.update({
+        "period_id": period_id,
+        "period_label": get_period_label_html(period_id),
+        "shelfies": shelfies,
+        "kitchen_shelfies": kitchen_shelfies,
+        "bar_shelfies": bar_shelfies,
+        "active_tab": "totals",
+    })
+    return templates.TemplateResponse("inventory_totals.html", context)
 
 
 @router.get("/shelfy-page/{shelfy_id}", response_class=HTMLResponse)
 async def shelfy_detail_page(request: Request, shelfy_id: str):
     """Render individual shelfy detail page."""
+    restaurant_id = require_restaurant(request)
     templates = request.app.state.templates
     storage = get_shelfy_storage()
 
@@ -620,11 +614,9 @@ async def shelfy_detail_page(request: Request, shelfy_id: str):
         except (ValueError, KeyError):
             shelfy["recorded_at_display"] = shelfy.get("recorded_at", "")
 
-    return templates.TemplateResponse(
-        "inventory_detail.html",
-        {
-            "request": request,
-            "shelfy": shelfy,
-            "active_tab": "totals",
-        }
-    )
+    context = get_template_context(request)
+    context.update({
+        "shelfy": shelfy,
+        "active_tab": "totals",
+    })
+    return templates.TemplateResponse("inventory_detail.html", context)

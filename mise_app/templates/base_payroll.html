@@ -81,8 +81,13 @@
                 <span class="text-xl font-serif font-bold text-mise-green">Payroll</span>
             </div>
 
-            <!-- Spacer for alignment -->
-            <div class="w-7"></div>
+            <!-- Restaurant Logo (right) -->
+            <div class="w-16 flex justify-end">
+                {% if restaurant_logo %}
+                <img src="{{ restaurant_logo }}" alt="{{ restaurant_name }}"
+                     class="h-7 w-auto">
+                {% endif %}
+            </div>
         </div>
     </header>
 
