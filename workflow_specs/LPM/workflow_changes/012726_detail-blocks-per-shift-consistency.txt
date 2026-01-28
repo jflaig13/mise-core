@@ -1,0 +1,70 @@
+CHANGELOG: Detail Blocks / Per-Shift Consistency Validation
+===========================================================
+
+Date: 2026-01-27 (retroactive documentation)
+Author: Jon (via Claude Code audit)
+
+SUMMARY
+-------
+Added validation requirement that amounts in detail_blocks MUST match per_shift.
+
+ISSUE THAT TRIGGERED THIS
+-------------------------
+Claude was calculating correct amounts in detail_blocks (showing the math) but
+then putting DIFFERENT numbers in per_shift. This caused production errors because
+the web app displays detail_blocks but the database uses per_shift values.
+
+Example of the bug:
+- detail_blocks: "Ryan gets: $12.79" → "Ryan Alexander (utility): $16.80"
+- per_shift: {"Ryan Alexander": {"ThAM": 16.80}}
+- ERROR: Claude calculated $12.79 but output $16.80!
+
+WHAT CHANGED
+------------
+Added to payroll_prompt.py in two places:
+
+1. Lines 355-359 - Explicit "use exact amounts" instruction:
+   **CRITICAL: Use these EXACT calculated amounts in your output:**
+   - per_shift: {{"Austin Kelley": {{"TPM": 121.73}}, "John Neal": {{"TPM": 5.70}}}}
+   **DO NOT change $5.70 to $16.80 or any other number.**
+
+2. Lines 517-547 - Validation checklist with consistency check:
+   **CRITICAL VALIDATION: Amounts in detail_blocks MUST match per_shift**
+
+   For every employee amount you show in detail_blocks (e.g., "Austin Kelley: $110.16"),
+   that EXACT amount must appear in per_shift under the correct shift code.
+
+   Example of CORRECT consistency:
+   detail_blocks: "Austin Kelley: $110.16"
+   per_shift: {{"Austin Kelley": {{"ThAM": 110.16}}}}  ✓ MATCHES
+
+   Example of WRONG (causes production error):
+   detail_blocks: "Ryan gets: $12.79" → "Ryan Alexander (utility): $16.80"
+   per_shift: {{"Ryan Alexander": {{"ThAM": 16.80}}}}  ✗ WRONG
+
+PROMPT TEXT ADDED
+-----------------
+**If your calculation shows $12.79, you MUST put $12.79 in both detail_blocks AND per_shift. You cannot change the number.**
+
+### CRITICAL: per_shift MUST match detail_blocks
+
+For EVERY employee amount shown in detail_blocks, there MUST be a corresponding entry in per_shift.
+
+**Common mistake to avoid:** You calculate "$99.98 each" in a tip pool detail block for Kevin and Austin, but then forget to add ThPM: 99.98 to Austin's per_shift. This is WRONG.
+
+**Verification process:**
+1. Go through each detail_block
+2. For each "Employee Name: $XX.XX" line, verify that employee has that shift code in per_shift
+3. Verify the amounts match
+4. Verify per_shift sums equal weekly_totals
+
+If per_shift doesn't match detail_blocks, FIX IT before returning.
+
+FILES TOUCHED
+-------------
+- transrouter/src/prompts/payroll_prompt.py (lines 355-359, 517-547)
+
+WHY
+---
+Prevents data inconsistency between display (detail_blocks) and storage (per_shift).
+The web app relies on both being in sync for accurate payroll reporting.

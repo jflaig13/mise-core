@@ -1,0 +1,71 @@
+CHANGELOG: Partial Shifts for Servers
+=====================================
+
+Date: 2026-01-27 (retroactive documentation)
+Author: Jon (via Claude Code audit)
+
+SUMMARY
+-------
+Extended partial shift handling to include servers, not just support staff.
+
+ISSUE THAT TRIGGERED THIS
+-------------------------
+The prompt only documented partial tipouts for support staff (expo, busser, utility).
+When a server left early or arrived late, Claude didn't know how to handle their
+share of the tip pool. The unearned portion wasn't being redistributed properly.
+
+WHAT CHANGED
+------------
+Added to payroll_prompt.py (lines 296-332):
+- New section "Partial Shifts for SERVERS"
+- Rule that server gets percentage of their pool share based on hours worked
+- Remaining amount stays in pool and redistributes to other servers
+- Detailed 6-step worked example with Kevin leaving early
+
+PROMPT TEXT ADDED
+-----------------
+### Partial Shifts for SERVERS
+
+**CRITICAL: Servers can also work partial shifts, not just support staff.**
+
+When a server leaves early, arrives late, or takes a long break:
+1. Calculate their percentage of the full shift worked
+2. They get that percentage of their share of the tip pool
+3. **The remaining amount stays in the pool and is redistributed to the other servers**
+
+**Example: 2 servers, one leaves early**
+Transcript: "Tuesday PM. End of close was 8:30PM. Kevin left at 7PM. Austin full shift. No support staff. Kevin $130.98, Austin $169.31."
+
+Step 1: Determine shift duration
+- Actual shift: 4:30PM-8:30PM = 4.0 hours
+
+Step 2: Calculate Kevin's percentage
+- Kevin worked: 4:30PM-7:00PM = 2.5 hours
+- Percentage: 2.5 ÷ 4.0 = 62.5%
+
+Step 3: Pool tips
+- Total pool: $130.98 + $169.31 = $300.29
+- No tipout (no support staff)
+
+Step 4: Calculate base split (if both worked full shift)
+- Per server: $300.29 ÷ 2 = $150.15
+
+Step 5: Apply Kevin's partial percentage
+- Kevin gets: $150.15 × 62.5% = $93.84
+- Remainder: $150.15 - $93.84 = $56.31
+
+Step 6: Austin gets his full share + Kevin's remainder
+- Austin gets: $150.15 + $56.31 = $206.46
+
+Result:
+- Kevin Worley: $93.84
+- Austin Kelley: $206.46
+
+FILES TOUCHED
+-------------
+- transrouter/src/prompts/payroll_prompt.py (lines 296-332)
+
+WHY
+---
+Ensures fair distribution when servers work partial shifts. The server who stays
+longer picks up the slack from the server who left early.

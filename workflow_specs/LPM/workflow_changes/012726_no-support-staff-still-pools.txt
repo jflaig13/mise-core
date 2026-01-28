@@ -1,0 +1,56 @@
+CHANGELOG: No Support Staff Still Pools Rule
+============================================
+
+Date: 2026-01-27 (retroactive documentation)
+Author: Jon (via Claude Code audit)
+
+SUMMARY
+-------
+Clarified that multiple servers STILL tip pool even when there's no support staff.
+
+ISSUE THAT TRIGGERED THIS
+-------------------------
+Claude was misinterpreting "no support staff" to mean servers keep their individual
+amounts. Example: Kevin $130.98, Mark $169.31 with no support staff - Claude was
+outputting those exact individual amounts instead of pooling ($150.15 each).
+
+WHAT CHANGED
+------------
+Added to payroll_prompt.py (lines 183-200):
+- New section "Multiple Servers with NO Support Staff"
+- Explicit statement that only difference is no tipout to subtract
+- Worked example with 2 servers, no support staff
+- WRONG vs CORRECT examples
+- Bold reminder: "No support staff" does NOT mean "no tip pooling"
+
+PROMPT TEXT ADDED
+-----------------
+### Multiple Servers with NO Support Staff (NO TIPOUT)
+**CRITICAL: When multiple servers work together but there's NO support staff, they STILL pool tips and split equally.**
+
+The only difference from a normal tip pool: **There's no tipout to subtract** because there's no support staff.
+
+**Example: Saturday AM, no support staff, 2 servers:**
+Transcript: "Saturday AM. No support staff. Kevin $130.98. Mark $169.31."
+
+Step 1: Pool all tips: $130.98 + $169.31 = $300.29
+Step 2: No support staff = no tipout to subtract
+Step 3: Divide equally: $300.29 ÷ 2 = $150.15 each (rounding: $150.15)
+
+Result:
+- Kevin Worley: $150.15
+- Mark Buryanek: $150.15
+
+**WRONG (do NOT do this):** Keeping individual amounts when there's no support staff. Kevin: $130.98, Mark: $169.31. This violates the tip pooling rule.
+
+**REMEMBER:** "No support staff" does NOT mean "no tip pooling". Multiple servers ALWAYS pool unless explicitly stated otherwise.
+
+FILES TOUCHED
+-------------
+- transrouter/src/prompts/payroll_prompt.py (lines 183-200)
+
+WHY
+---
+Reinforces the cardinal rule that multiple servers ALWAYS tip pool by default.
+The presence or absence of support staff only affects whether there's a tipout
+to subtract - it does not change the pooling behavior.

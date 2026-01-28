@@ -1,0 +1,59 @@
+CHANGELOG: Actual Closing Time Override
+=======================================
+
+Date: 2026-01-27 (retroactive documentation)
+Author: Jon (via Claude Code audit)
+
+SUMMARY
+-------
+Added rule to use ACTUAL closing time from transcript instead of standard hours.
+
+ISSUE THAT TRIGGERED THIS
+-------------------------
+Claude was using standard shift hours (e.g., 3.5 hours for Tuesday PM in winter)
+even when the transcript explicitly mentioned a different closing time like
+"end of close was 8:30PM". This caused incorrect partial shift calculations.
+
+Example: Transcript says "end of close was 8:30PM" on Tuesday PM.
+- WRONG: Claude uses standard 3.5 hours (4:30PM-8:00PM)
+- CORRECT: Claude uses actual 4.0 hours (4:30PM-8:30PM)
+
+WHAT CHANGED
+------------
+Added to payroll_prompt.py (lines 265-277):
+- New section "Shift Hours - ACTUAL vs STANDARD"
+- CRITICAL instruction to ALWAYS use actual hours when provided
+- Examples of transcript phrases that indicate closing time
+- Formula: ACTUAL shift duration = closing time - start time
+- Explicit comparison showing standard vs actual
+
+PROMPT TEXT ADDED
+-----------------
+### Shift Hours - ACTUAL vs STANDARD
+
+**CRITICAL: ALWAYS use ACTUAL shift hours when provided in the transcript.**
+
+**When the transcript mentions closing time:**
+- "end of close was 8:30PM" → shift ended at 8:30PM
+- "we closed at 9PM" → shift ended at 9:00PM
+- "closed early at 7:45" → shift ended at 7:45PM
+
+**ACTUAL shift duration = closing time - start time**
+
+Example: "end of close was 8:30PM" on Tuesday PM
+- Start: 4:30PM
+- End: 8:30PM (from transcript)
+- **ACTUAL duration = 4.0 hours** ← USE THIS, not standard 3.5 hours
+
+**STANDARD SHIFT DURATIONS (use only if no closing time mentioned):**
+[existing DST schedule follows]
+
+FILES TOUCHED
+-------------
+- transrouter/src/prompts/payroll_prompt.py (lines 265-277)
+
+WHY
+---
+Actual closing times affect partial shift calculations. If John left at 7PM and
+the transcript says close was 8:30PM (4 hours), John worked 2.5/4.0 = 62.5%.
+Using standard hours (3.5) would incorrectly calculate 2.5/3.5 = 71.4%.

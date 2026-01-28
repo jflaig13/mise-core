@@ -1,0 +1,63 @@
+CHANGELOG: Python Date Detection (Source of Truth)
+==================================================
+
+Date: 2026-01-27 (retroactive documentation)
+Author: Jon (via Claude Code audit)
+
+SUMMARY
+-------
+Added Python-based date detection to prevent Claude from guessing day-of-week.
+
+ISSUE THAT TRIGGERED THIS
+-------------------------
+Claude was incorrectly calculating day-of-week from dates. For example, Claude
+might think "January 19, 2026" is a Sunday when it's actually a Monday. This
+caused wrong shift codes (SuPM instead of MPM) and incorrect detail_block labels.
+
+The root cause: LLMs are notoriously bad at calendar math.
+
+WHAT CHANGED
+------------
+Added to payroll_prompt.py:
+
+1. New function detect_date_from_transcript() (lines 25-99):
+   - Parses dates like "January 19th" or "1/19/2026" from transcript
+   - Uses Python's date.weekday() as the SOURCE OF TRUTH
+   - Returns (parsed_date, day_name, shift_prefix) tuple
+   - Handles month names, ordinal suffixes, optional years
+   - Fallback for MM/DD/YYYY format
+
+2. User prompt injection (lines 566-578 in build_payroll_user_prompt):
+   **CRITICAL DATE INFORMATION (DO NOT CALCULATE - USE THIS):**
+   - The date January 19, 2026 is a **MONDAY**
+   - For AM shift, use shift code: **MAM**
+   - For PM shift, use shift code: **MPM**
+   - In detail_blocks label, use: **Mon Jan 19**
+
+   DO NOT recalculate the day of week. The above is computed from an authoritative calendar.
+
+CODE ADDED
+----------
+```python
+def detect_date_from_transcript(transcript: str) -> Optional[Tuple[date, str, str]]:
+    """Parse date from transcript and return actual day-of-week using Python's calendar.
+
+    This is the SOURCE OF TRUTH for day-of-week calculations. Never let Claude guess.
+    """
+    # ... parses "January 19th" or "1/19/2026"
+    parsed_date = date(year, month_num, day_num)
+    weekday_idx = parsed_date.weekday()  # 0=Monday, 6=Sunday
+    day_name = day_names[weekday_idx]
+    shift_prefix = shift_prefixes[weekday_idx]
+    return parsed_date, day_name, shift_prefix
+```
+
+FILES TOUCHED
+-------------
+- transrouter/src/prompts/payroll_prompt.py (lines 25-99, 566-578)
+
+WHY
+---
+Python's datetime module is deterministic and correct. By computing the day-of-week
+in Python and injecting it into the prompt, we eliminate an entire class of
+calendar-related errors. Claude is explicitly told NOT to recalculate.

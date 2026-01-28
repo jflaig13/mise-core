@@ -1,0 +1,67 @@
+CHANGELOG: Support Staff Role Markers in Detail Blocks
+======================================================
+
+Date: 2026-01-27 (retroactive documentation)
+Author: Jon (via Claude Code audit)
+
+SUMMARY
+-------
+Required role markers (expo), (busser), (utility) in detail_blocks for support staff.
+
+ISSUE THAT TRIGGERED THIS
+-------------------------
+The web app needed to display support staff with their roles, but detail_blocks
+only contained names and amounts without role information. The app couldn't
+distinguish between a server and support staff, or between different support roles.
+
+Example without role markers (WRONG):
+- "John Neal: $31.00"  (Is John a server? Expo? Busser? Utility?)
+
+Example with role markers (CORRECT):
+- "John Neal (utility): $31.00"
+
+WHAT CHANGED
+------------
+Added to payroll_prompt.py (lines 460-497):
+- Explicit "CRITICAL" instruction for role format
+- Required format examples for each role type
+- Full detail_block examples showing expo+busser and utility configurations
+- Bold warning: "NEVER omit the role marker for support staff"
+
+PROMPT TEXT ADDED
+-----------------
+**CRITICAL: Support staff MUST include their role in parentheses**
+
+**Support staff role format (REQUIRED):**
+- `John Neal (expo): $15.50`
+- `Ryan Alexander (busser): $62.00`
+- `John Neal (utility): $31.00`
+
+Example detail_block with expo + busser:
+```
+["Thu Jan 9 — PM (tip pool)", [
+  "Pool: $368.70 + $213.08 = $581.78",
+  "Food sales: $858 + $170.50 = $1,028.50",
+  "Expo tipout: $1,028.50 × 1% = $10.29",
+  "Busser tipout: $1,028.50 × 4% = $41.14",
+  "Pool after tipout: $581.78 - $10.29 - $41.14 = $530.35",
+  "Per server: $530.35 ÷ 2 = $265.18",
+  "Kevin Worley: $265.18",
+  "Austin Kelley: $265.18",
+  "John Neal (expo): $10.29",
+  "Ryan Alexander (busser): $41.14"
+]]
+```
+
+**NEVER omit the role marker for support staff. The web app needs it to display the correct role.**
+
+FILES TOUCHED
+-------------
+- transrouter/src/prompts/payroll_prompt.py (lines 460-497)
+
+WHY
+---
+Enables the web app to:
+1. Distinguish support staff from servers
+2. Display the correct role (expo/busser/utility) in the UI
+3. Apply role-specific styling (e.g., amber color for support staff)

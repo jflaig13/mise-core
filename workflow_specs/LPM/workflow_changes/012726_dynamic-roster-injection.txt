@@ -1,0 +1,77 @@
+CHANGELOG: Dynamic Roster Injection from Brain Sync
+===================================================
+
+Date: 2026-01-27 (retroactive documentation)
+Author: Jon (via Claude Code audit)
+
+SUMMARY
+-------
+Employee roster is now dynamically loaded from brain sync and injected into prompt.
+
+ISSUE THAT TRIGGERED THIS
+-------------------------
+Claude was guessing or inventing employee last names when only first names were
+mentioned in transcripts. For example, hearing "Kevin" and outputting "Kevin Smith"
+instead of the correct "Kevin Worley" from the actual roster.
+
+WHAT CHANGED
+------------
+Added to payroll_prompt.py (lines 392-407):
+
+1. Brain sync integration at prompt build time:
+   ```python
+   brain = get_brain()
+   roster = brain.employee_roster
+   roster_json = json.dumps(roster, indent=2)
+   canonical_names = brain.get_canonical_names()
+   ```
+
+2. Roster injection into system prompt:
+   ```
+   ## EMPLOYEE ROSTER (Name Normalization)
+
+   The transcript may contain transcription errors. Normalize all names using this roster:
+
+   ```json
+   {roster_json}
+   ```
+
+   **Canonical employee names**: Austin Kelley, Brooke Neal, John Neal, ...
+   ```
+
+3. Strict usage rules:
+   **CRITICAL: You MUST ONLY use names from the roster above. NEVER invent or guess last names.**
+
+   If you hear "Mark", the roster shows "mark" maps to "Mark Buryanek" - use that EXACT name.
+   If you hear "Kevin", the roster shows "kevin" maps to "Kevin Worley" - use that EXACT name.
+
+   If a first name appears in the transcript but you cannot find it in the roster keys above,
+   flag it as "UNKNOWN: [FirstName]" in your response so the manager can identify it.
+
+ROSTER SOURCE
+-------------
+The roster is loaded from: workflow_specs/roster/employee_roster.json
+
+Example roster structure:
+```json
+{
+  "kevin": "Kevin Worley",
+  "austin": "Austin Kelley",
+  "brooke": "Brooke Neal",
+  "mark": "Mark Buryanek",
+  ...
+}
+```
+
+FILES TOUCHED
+-------------
+- transrouter/src/prompts/payroll_prompt.py (lines 113-118, 392-407)
+- transrouter/src/brain_sync.py (provides get_brain() and employee_roster)
+
+WHY
+---
+1. Ensures consistent employee names across all payroll outputs
+2. Handles Whisper transcription errors (e.g., "Kelvin" → "Kevin" → "Kevin Worley")
+3. Prevents Claude from inventing names that don't exist in the system
+4. Flags unknown names for manager review instead of guessing
+5. Single source of truth for employee roster (brain sync)

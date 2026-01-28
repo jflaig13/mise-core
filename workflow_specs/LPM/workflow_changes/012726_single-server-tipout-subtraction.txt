@@ -1,0 +1,53 @@
+CHANGELOG: Single Server Tipout Subtraction Rule
+================================================
+
+Date: 2026-01-27 (retroactive documentation)
+Author: Jon (via Claude Code audit)
+
+SUMMARY
+-------
+Added explicit rule requiring tipout subtraction for single-server shifts.
+
+ISSUE THAT TRIGGERED THIS
+-------------------------
+Claude was leaving single servers with their full tip amounts without subtracting
+the tipout for support staff. Example: Austin had $200, utility tipout was $20,
+but Claude was outputting Austin: $200, Ryan (utility): $20 instead of
+Austin: $180, Ryan (utility): $20.
+
+WHAT CHANGED
+------------
+Added to payroll_prompt.py (lines 203-219):
+- Explicit "CRITICAL" section for single server shifts
+- Step-by-step calculation showing subtraction
+- WRONG vs CORRECT examples
+
+PROMPT TEXT ADDED
+-----------------
+### Single Server Shift (NO pool needed)
+**CRITICAL: When only ONE server works a shift, you MUST subtract the tipout from their tips.**
+
+The server does NOT keep the full amount - the tipout MUST be subtracted.
+
+**Step-by-step calculation for single server:**
+1. Calculate tipout: food_sales × tipout_percentage
+2. **SUBTRACT tipout from server's tips**: server_final = server_tips - tipout
+3. Support staff gets: tipout amount
+
+Example: "Monday AM, utility Ryan. Austin $200, food sales $400."
+- Step 1: Utility tipout = $400 × 5% = $20.00
+- Step 2: Austin final = $200 - $20 = **$180.00** (NOT $200!)
+- Ryan (utility) gets: $20.00
+
+**WRONG:** Austin: $200.00, Ryan: $20.00
+**CORRECT:** Austin: $180.00, Ryan: $20.00
+
+FILES TOUCHED
+-------------
+- transrouter/src/prompts/payroll_prompt.py (lines 203-219)
+
+WHY
+---
+Ensures tipout is properly subtracted from server earnings, not just added as
+extra money to support staff. The total tips distributed must equal the total
+tips collected.
