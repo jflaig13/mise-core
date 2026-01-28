@@ -1,5 +1,5 @@
 """Shifty app routes."""
 
-from . import home, recording, totals
+from . import home, recording, totals, inventory, auth
 
-__all__ = ["home", "recording", "totals"]
+__all__ = ["home", "recording", "totals", "inventory", "auth"]

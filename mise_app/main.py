@@ -18,6 +18,15 @@ import logging
 import os
 import sys
 
+# Set environment based on Cloud Run detection
+if os.getenv("K_SERVICE"):  # Running on Cloud Run
+    os.environ["ENVIRONMENT"] = "production"
+else:
+    os.environ["ENVIRONMENT"] = "development"
+
+# GCS bucket name for production storage
+os.environ.setdefault("GCS_BUCKET_NAME", "mise-production-data")
+
 import requests as http_requests
 from fastapi import FastAPI, File, Request, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
@@ -29,8 +38,11 @@ from starlette.middleware.base import BaseHTTPMiddleware
 # Add parent directory to path for imports
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from mise_app.config import ShiftyConfig, shifty_state_manager, PayPeriod
-from mise_app.routes import home, recording, totals, inventory
+from mise_app.config import ShiftyConfig, get_shifty_state_manager, PayPeriod
+from mise_app.routes import home, recording, totals, inventory, auth
+from mise_app.middleware import RestaurantContextMiddleware
+from mise_app.tenant import get_template_context
+from starlette.middleware.sessions import SessionMiddleware
 
 # Configure logging
 logging.basicConfig(
@@ -72,6 +84,40 @@ class NoCacheMiddleware(BaseHTTPMiddleware):
 
 app.add_middleware(NoCacheMiddleware)
 
+# Authentication middleware - protect all routes except login
+class AuthMiddleware(BaseHTTPMiddleware):
+    async def dispatch(self, request, call_next):
+        # Allow public routes
+        public_paths = ["/login", "/health", "/static"]
+        if any(request.url.path.startswith(p) for p in public_paths):
+            return await call_next(request)
+
+        # Check authentication
+        if not request.session.get("authenticated"):
+            return RedirectResponse("/login", status_code=302)
+
+        # Authenticated - proceed
+        return await call_next(request)
+
+app.add_middleware(AuthMiddleware)
+
+# Restaurant context middleware (runs after session, before auth in execution order)
+app.add_middleware(RestaurantContextMiddleware)
+
+# Session middleware for authentication (must be added AFTER AuthMiddleware)
+SESSION_SECRET = os.environ.get(
+    "SESSION_SECRET_KEY",
+    "dev-secret-key-change-in-production-min-32-chars-long"
+)
+app.add_middleware(
+    SessionMiddleware,
+    secret_key=SESSION_SECRET,
+    session_cookie="mise_session",
+    max_age=86400,  # 24 hours
+    same_site="lax",
+    https_only=False  # Set to True in production, False for local testing
+)
+
 # Mount static files
 static_path = os.path.join(os.path.dirname(__file__), "static")
 if os.path.exists(static_path):
@@ -86,25 +132,28 @@ app.include_router(home.router)
 app.include_router(recording.router)
 app.include_router(totals.router)
 app.include_router(inventory.router)
+app.include_router(auth.router)
 
 # Make config and templates available to routes
 app.state.config = config
 app.state.templates = templates
-app.state.shifty_state = shifty_state_manager
+app.state.shifty_state = get_shifty_state_manager()
 
 
 @app.get("/", response_class=HTMLResponse)
 async def landing_page(request: Request):
     """Render the main landing page with voice-first interface."""
+    # Explicit auth check - belt and suspenders
+    if not request.session.get("authenticated"):
+        return RedirectResponse("/login", status_code=302)
+
     current_period = PayPeriod.current()
-    return templates.TemplateResponse(
-        "landing.html",
-        {
-            "request": request,
-            "active_tab": "home",
-            "current_period_id": current_period.id,
-        }
-    )
+    context = get_template_context(request)
+    context.update({
+        "active_tab": "home",
+        "current_period_id": current_period.id,
+    })
+    return templates.TemplateResponse("landing.html", context)
 
 
 @app.post("/process")

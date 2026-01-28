@@ -153,50 +153,60 @@ def get_shifty_by_code(code: str) -> dict:
     raise ValueError(f"Unknown shifty code: {code}")
 
 
-# Shifty state management with per-period persistence
+# Default restaurant_id for backward compatibility during migration
+DEFAULT_RESTAURANT_ID = "papasurf"
+
+
+# Shifty state management with per-period persistence and multi-tenant support
 class ShiftyStateManager:
-    """Manage shifty states across pay periods with persistence."""
+    """Manage shifty states across restaurants and pay periods with persistence."""
 
-    def __init__(self, storage_dir: Path = STORAGE_DIR):
-        self.storage_dir = storage_dir
-        self._cache: Dict[str, Dict[str, str]] = {}  # period_id -> {code -> status}
+    def __init__(self):
+        from mise_app.storage_backend import get_storage_backend
+        self.backend = get_storage_backend()
+        # Cache key is "restaurant_id/period_id" -> {code -> status}
+        self._cache: Dict[str, Dict[str, str]] = {}
 
-    def _get_state_file(self, period_id: str) -> Path:
-        period_dir = self.storage_dir / period_id
-        period_dir.mkdir(parents=True, exist_ok=True)
-        return period_dir / "shifty_state.json"
+    def _cache_key(self, restaurant_id: str, period_id: str) -> str:
+        return f"{restaurant_id}/{period_id}"
 
-    def _load_state(self, period_id: str) -> Dict[str, str]:
-        if period_id in self._cache:
-            return self._cache[period_id]
+    def _get_state_path(self, restaurant_id: str, period_id: str) -> str:
+        return f"{restaurant_id}/{period_id}/shifty_state.json"
 
-        state_file = self._get_state_file(period_id)
-        if state_file.exists():
-            with open(state_file) as f:
-                self._cache[period_id] = json.load(f)
+    def _load_state(self, restaurant_id: str, period_id: str) -> Dict[str, str]:
+        cache_key = self._cache_key(restaurant_id, period_id)
+        if cache_key in self._cache:
+            return self._cache[cache_key]
+
+        path = self._get_state_path(restaurant_id, period_id)
+        if self.backend.exists(path):
+            try:
+                self._cache[cache_key] = self.backend.read_json(path)
+            except Exception:
+                self._cache[cache_key] = {}
         else:
-            self._cache[period_id] = {}
-        return self._cache[period_id]
+            self._cache[cache_key] = {}
+        return self._cache[cache_key]
 
-    def _save_state(self, period_id: str):
-        state_file = self._get_state_file(period_id)
-        with open(state_file, 'w') as f:
-            json.dump(self._cache.get(period_id, {}), f, indent=2)
+    def _save_state(self, restaurant_id: str, period_id: str):
+        cache_key = self._cache_key(restaurant_id, period_id)
+        path = self._get_state_path(restaurant_id, period_id)
+        self.backend.write_json(path, self._cache.get(cache_key, {}))
 
-    def get_status(self, period_id: str, code: str) -> str:
-        """Get status for a shifty in a specific period."""
-        state = self._load_state(period_id)
+    def get_status(self, period_id: str, code: str, restaurant_id: str = DEFAULT_RESTAURANT_ID) -> str:
+        """Get status for a shifty in a specific restaurant and period."""
+        state = self._load_state(restaurant_id, period_id)
         return state.get(code, "not_started")
 
-    def set_status(self, period_id: str, code: str, status: str):
-        """Set status for a shifty in a specific period."""
-        state = self._load_state(period_id)
+    def set_status(self, period_id: str, code: str, status: str, restaurant_id: str = DEFAULT_RESTAURANT_ID):
+        """Set status for a shifty in a specific restaurant and period."""
+        state = self._load_state(restaurant_id, period_id)
         state[code] = status
-        self._save_state(period_id)
+        self._save_state(restaurant_id, period_id)
 
-    def get_all_shifties(self, period: PayPeriod) -> List[dict]:
-        """Get all shifties with current status for a pay period."""
-        state = self._load_state(period.id)
+    def get_all_shifties(self, period: PayPeriod, restaurant_id: str = DEFAULT_RESTAURANT_ID) -> List[dict]:
+        """Get all shifties with current status for a restaurant and pay period."""
+        state = self._load_state(restaurant_id, period.id)
         result = []
         for defn in SHIFTY_DEFINITIONS:
             shifty_date = period.start_date + timedelta(days=defn["date_offset"])
@@ -209,11 +219,23 @@ class ShiftyStateManager:
             })
         return result
 
-    def reset(self, period_id: str):
-        """Reset all statuses for a pay period."""
-        self._cache[period_id] = {}
-        self._save_state(period_id)
+    def reset(self, period_id: str, restaurant_id: str = DEFAULT_RESTAURANT_ID):
+        """Reset all statuses for a restaurant and pay period."""
+        cache_key = self._cache_key(restaurant_id, period_id)
+        self._cache[cache_key] = {}
+        self._save_state(restaurant_id, period_id)
 
 
-# Global state manager instance
-shifty_state_manager = ShiftyStateManager()
+# Global state manager instance (lazy initialization to avoid circular import)
+_shifty_state_manager: Optional['ShiftyStateManager'] = None
+
+
+def get_shifty_state_manager() -> ShiftyStateManager:
+    global _shifty_state_manager
+    if _shifty_state_manager is None:
+        _shifty_state_manager = ShiftyStateManager()
+    return _shifty_state_manager
+
+
+# Backward compatibility alias
+shifty_state_manager = None  # Will be initialized on first use

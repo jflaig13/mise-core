@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#F9F6F1">
+    <title>Mise - Login</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        mise: {
+                            cream: '#F9F6F1',
+                            navy: '#1B2A4E',
+                            red: '#B5402F',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-mise-cream text-mise-navy min-h-screen">
+    <div class="min-h-screen flex flex-col items-center justify-center p-4">
+        <!-- Mise Logo -->
+        <div class="text-center mb-8">
+            <div class="flex items-center justify-center space-x-2 mb-2">
+                <span class="text-4xl font-serif font-bold text-mise-navy">Mise</span>
+                <svg class="w-8 h-8" viewBox="0 0 28 24" fill="#B5402F">
+                    <rect x="1" y="10" width="2.5" height="4" rx="1.25"/>
+                    <rect x="6" y="6" width="2.5" height="12" rx="1.25"/>
+                    <rect x="11" y="2" width="2.5" height="20" rx="1.25"/>
+                    <rect x="16" y="6" width="2.5" height="12" rx="1.25"/>
+                    <rect x="21" y="10" width="2.5" height="4" rx="1.25"/>
+                </svg>
+            </div>
+            <p class="text-mise-navy/60">Restaurant Operations Platform</p>
+        </div>
+
+        <!-- Login Form -->
+        <div class="w-full max-w-sm">
+            <form method="POST" action="/login" class="bg-white rounded-lg shadow-lg p-6 space-y-4">
+                <div>
+                    <label for="username" class="block text-sm font-semibold text-mise-navy mb-2">
+                        Username
+                    </label>
+                    <input
+                        type="text"
+                        id="username"
+                        name="username"
+                        required
+                        autocomplete="username"
+                        class="w-full px-4 py-3 bg-mise-cream border border-mise-navy/20 rounded-lg
+                               text-mise-navy placeholder-mise-navy/40
+                               focus:border-mise-red focus:outline-none focus:ring-2 focus:ring-mise-red/20"
+                        placeholder="Enter username"
+                    >
+                </div>
+
+                <div>
+                    <label for="password" class="block text-sm font-semibold text-mise-navy mb-2">
+                        Password
+                    </label>
+                    <input
+                        type="password"
+                        id="password"
+                        name="password"
+                        required
+                        autocomplete="current-password"
+                        class="w-full px-4 py-3 bg-mise-cream border border-mise-navy/20 rounded-lg
+                               text-mise-navy placeholder-mise-navy/40
+                               focus:border-mise-red focus:outline-none focus:ring-2 focus:ring-mise-red/20"
+                        placeholder="Enter password"
+                    >
+                </div>
+
+                {% if error == 'invalid' %}
+                <div class="bg-mise-red/10 border border-mise-red/30 rounded-lg p-3">
+                    <p class="text-mise-red text-sm font-medium">
+                        Invalid username or password. Please try again.
+                    </p>
+                </div>
+                {% endif %}
+
+                <button
+                    type="submit"
+                    class="w-full py-4 bg-mise-red hover:bg-mise-red/90 rounded-lg
+                           text-white text-lg font-semibold
+                           transition-all duration-200 active:scale-[0.98] shadow-md"
+                >
+                    Sign In
+                </button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

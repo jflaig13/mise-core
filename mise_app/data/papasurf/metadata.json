@@ -1,0 +1,9 @@
+{
+  "restaurant_id": "papasurf",
+  "name": "Papa Surf",
+  "location": "Panama City Beach, FL",
+  "branding": {
+    "logo_url": "/static/logos/papasurf.png",
+    "primary_color": "#2D8A4E"
+  }
+}

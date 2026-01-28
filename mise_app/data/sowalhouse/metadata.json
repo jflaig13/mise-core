@@ -1,0 +1,9 @@
+{
+  "restaurant_id": "sowalhouse",
+  "name": "SoWal House",
+  "location": "Seaside, FL",
+  "branding": {
+    "logo_url": "/static/logos/sowalhouse.png",
+    "primary_color": "#1B2A4E"
+  }
+}
