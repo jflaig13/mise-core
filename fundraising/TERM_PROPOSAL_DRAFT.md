@@ -1,32 +1,45 @@
 # Mise Investment Term Proposal
+
 ## DRAFT - For Discussion Purposes Only
+
+**Updated:** 2026-01-18
 
 ---
 
 ## Deal Summary
 
-| Term | Value |
-|------|-------|
-| **Investment Amount** | $150,000 |
-| **Pre-Money Valuation** | $3,000,000 |
-| **Post-Money Valuation** | $3,150,000 |
-| **Equity Offered** | 10% (1,000,000 shares) |
-| **Security Type** | Common Stock |
-| **Investor Role** | Advisory (non-voting on operations) |
+| Term | Scenario A ($3M Pre) | Scenario B ($2.5M Pre) |
+|------|---------------------|------------------------|
+| **Investment Amount** | $250,000 | $250,000 |
+| **Pre-Money Valuation** | $3,000,000 | $2,500,000 |
+| **Post-Money Valuation** | $3,250,000 | $2,750,000 |
+| **Equity Offered** | 7.7% | 10% |
+| **Security Type** | Common Stock | Common Stock |
+| **Investor Role** | Advisory (non-voting) | Advisory (non-voting) |
 
 ---
 
-## Cap Table (Post-Investment)
+## Cap Table
 
-| Shareholder | Shares | Ownership |
-|-------------|--------|-----------|
-| Jonathan Flaig (Founder/CEO) | 6,000,000 | 54.5% |
-| Austin Kelley | 3,000,000 | 27.3% |
-| Boyd Barrow & Grady Kittrell | 1,000,000 | 9.1% |
-| Option Pool (reserved) | 1,000,000 | 9.1% |
-| **Total** | **11,000,000** | **100%** |
+### Scenario A: $3M Pre-Money (Target)
 
-*Note: Austin is contributing his shares to the investor allocation. New shares issued for option pool.*
+| Shareholder | Before | After | Change |
+|-------------|--------|-------|--------|
+| Jonathan Flaig (Founder/CEO) | 60% | 60% | Protected |
+| Austin Miett (Co-Founder) | 40% | 32.3% | -7.7% |
+| Investor(s) | — | 7.7% | +7.7% |
+| **Total** | **100%** | **100%** | |
+
+### Scenario B: $2.5M Pre-Money (Counter)
+
+| Shareholder | Before | After | Change |
+|-------------|--------|-------|--------|
+| Jonathan Flaig (Founder/CEO) | 60% | 60% | Protected |
+| Austin Miett (Co-Founder) | 40% | 30% | -10% |
+| Investor(s) | — | 10% | +10% |
+| **Total** | **100%** | **100%** | |
+
+*Note: Jon's ownership is protected. Austin is contributing his shares to accommodate investor allocation.*
 
 ---
 
@@ -90,7 +103,7 @@ Investor consent required only for:
 
 ### Liquidation Preference
 - 1x non-participating preferred
-- In a sale, investors get their $150k back first, then all shareholders share remaining proceeds pro-rata
+- In a sale, investors get their $250K back first, then all shareholders share remaining proceeds pro-rata
 - NO participating preferred (no double-dipping)
 
 ### No Forced Founder Vesting
@@ -101,26 +114,40 @@ Investor consent required only for:
 - Drag-along rights only activate at 75%+ shareholder approval
 - Prevents minority forcing a sale over founder objection
 
----
-
-## Use of Funds
-
-| Category | Amount | Purpose |
-|----------|--------|---------|
-| Sales & Marketing | $100,000 | Direct sales, conferences, local marketing |
-| Product Development | $30,000 | Contractor help, mobile polish, integrations |
-| Operations Buffer | $20,000 | Legal, accounting, unexpected expenses |
-| **Total** | **$150,000** | |
+### Jon's Ownership Protection
+- Jonathan Flaig's 60% ownership is protected and will not be diluted by this round
+- All investor equity comes from Austin Miett's allocation per co-founder agreement
 
 ---
 
-## Milestones (Non-Binding Targets)
+## Use of Funds ($250,000)
 
-| Timeline | Target |
-|----------|--------|
-| 6 months | 25 paying restaurants |
-| 12 months | 75 paying restaurants, $7,500 MRR |
-| 18 months | 150 paying restaurants, $15,000 MRR |
+| Category | Amount | % | Purpose |
+|----------|--------|---|---------|
+| Engineering | $120,000 | 48% | Lead full-stack engineer (12 months) |
+| Security & Compliance | $40,000 | 16% | SOC 2 prep, penetration testing, enterprise hardening |
+| Infrastructure & Cloud | $25,000 | 10% | Cloud Run, BigQuery, monitoring, logging |
+| QA & Testing | $20,000 | 8% | Automated testing, CI/CD, integration tests |
+| Sales & Onboarding | $15,000 | 6% | Customer success, training, support systems |
+| Legal & Compliance | $10,000 | 4% | Contracts, privacy policy, IP protection |
+| Contingency | $20,000 | 8% | Buffer for unknowns |
+| **Total** | **$250,000** | **100%** | |
+
+---
+
+## 12-Month Roadmap (T1-T12)
+
+| Timeline | Milestone |
+|----------|-----------|
+| **T1** (Month 1) | Lead engineer onboarded, CI/CD pipeline operational |
+| **T2** (Month 2) | API authentication hardened, monitoring deployed |
+| **T3** (Month 3) | Down Island onboarded (Pilot #2), multi-tenant validated |
+| **T4** (Month 4) | First paying customer, billing system operational |
+| **T5-T6** (Months 5-6) | Scale to 5 restaurants, ~$1.5-2K MRR |
+| **T7-T8** (Months 7-8) | SOC 2 Type 1 compliance complete |
+| **T9-T10** (Months 9-10) | Scale to 10 restaurants, ~$3-4K MRR |
+| **T11** (Month 11) | Inventory workflow launched (expand beyond payroll) |
+| **T12** (Month 12) | 15-20 restaurants, $6-8K MRR, Jon full-time on Mise |
 
 *These are goals, not contractual obligations. Failure to meet them does not trigger any penalties or changes in terms.*
 
@@ -128,7 +155,7 @@ Investor consent required only for:
 
 ## What Investors Get
 
-1. **10% equity** in a product-complete, deployed restaurant tech company
+1. **7.7-10% equity** in a production-deployed restaurant tech company
 2. **Information rights** with quarterly transparency
 3. **Pro-rata rights** to maintain ownership in future rounds
 4. **Protective provisions** on major liquidity/structure events
@@ -137,7 +164,7 @@ Investor consent required only for:
 ## What Investors Accept
 
 1. **No board seats** or operational control
-2. **Advisory role only** - CEO makes all decisions
+2. **Advisory role only** — CEO makes all decisions
 3. **Founder-friendly terms** (1x non-participating, weighted average anti-dilution)
 4. **Trust in the founder** to run the company and protect their investment
 
@@ -145,18 +172,25 @@ Investor consent required only for:
 
 ## Negotiation Notes
 
-**On Valuation ($3M pre-money):**
+**On Valuation ($3M pre-money target):**
 - Product is built and deployed (not just an idea)
-- Live customer processing real payroll weekly
+- Live customer processing real payroll weekly since Q3 2025
+- 20+ consecutive weeks of production operation
+- Second pilot (Down Island) ready to onboard
 - Solo founder = low burn rate, capital efficient
-- Comparable pre-seed restaurant tech raises: $2-4M range
-- *Open to discussion if this is the sticking point*
+- Voice AI market: $10B → $49B by 2029
+- *Open to $2.5M if valuation is the sticking point*
 
 **On Control:**
 - This is non-negotiable for the founder
 - Burned in previous deal with passive role; won't repeat
 - Will absolutely protect investor interests as fiduciary
 - But final decisions must rest with CEO
+
+**On Jon's Protected 60%:**
+- Jon is the operator — building product, running pilot, doing investor relations
+- Austin agreed to absorb dilution for this round
+- This structure was negotiated between co-founders prior to fundraise
 
 **On Structure:**
 - Standard angel terms, nothing unusual

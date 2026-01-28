@@ -121,7 +121,7 @@
 
 ## 15. "Can this scale to thousands of restaurants?"
 
-**Response:** "Architecturally, yes — Cloud Run auto-scales, costs are per-request. The scaling challenge is human: onboarding, support, and customizing for each restaurant's quirks. That's where the $150k goes — building the ops infrastructure for scale."
+**Response:** "Architecturally, yes — Cloud Run auto-scales, costs are per-request. The scaling challenge is human: onboarding, support, and customizing for each restaurant's quirks. That's where the $250k goes — building the ops infrastructure for scale."
 
 **Why this works:** Technical scale is rarely the bottleneck. Operational scale is. Show you understand both.
 
@@ -171,7 +171,7 @@
 
 ## 21. "What's your pricing model?"
 
-**Response:** "We're targeting $99/month per restaurant, flat rate. Simple, predictable, easy to sell. As we add modules — scheduling, inventory — we'll move to $199/month for the full suite."
+**Response:** "$149/month for Payroll, $249/month for Payroll + Inventory. Competitive pricing that makes it easy to say yes. Most restaurants start with payroll and upgrade when they see the value."
 
 **Why this works:** Pricing should be simple and defensible. Per-seat models are harder for SMBs; flat rate reduces friction.
 
@@ -179,7 +179,7 @@
 
 ## 22. "What are your unit economics?"
 
-**Response:** "CAC target is $500, LTV target is $2,400 at 24-month retention. LTV:CAC of ~5:1. Right now we're at one paying customer so these are projections, but the retention thesis is strong because switching costs are high once we're embedded in their workflow."
+**Response:** "CAC target is $500, LTV target is $3,600 at 24-month retention ($149/month). LTV:CAC of ~7:1. Right now we're at one paying customer so these are projections, but the retention thesis is strong because switching costs are high once we're embedded in their workflow."
 
 **Why this works:** LTV:CAC ratio shows business viability. 3:1 is minimum; 5:1+ is excellent. Be honest if you're projecting vs. measured.
 
@@ -187,15 +187,15 @@
 
 ## 23. "What's your burn rate?"
 
-**Response:** "Under $2,000/month — just API costs and hosting. I don't take a salary. This $150k gives us 18+ months of runway, or 12 months if I take a modest salary to focus full-time."
+**Response:** "Under $2,000/month — just API costs and hosting. I don't take a salary. This $250k gives us 12 months of runway with a full-time engineer, or 18+ months if we stay lean."
 
 **Why this works:** Low burn = more runway = less dilution = investor loves this. Capital efficiency is a feature.
 
 ---
 
-## 24. "How will you spend the $150k?"
+## 24. "How will you spend the $250k?"
 
-**Response:** "70% on go-to-market: sales, marketing, conference booths. 20% on product: contractor help for mobile app polish. 10% buffer. I'm not hiring a team — I'm proving the sales motion works before scaling headcount."
+**Response:** "48% on engineering ($120k for a lead engineer), 16% on security and SOC 2 ($40k), 10% on infrastructure ($25k), 8% on QA ($20k), 6% on sales and onboarding ($15k), 4% on legal ($10k), and 8% contingency ($20k). Disciplined allocation focused on building enterprise-grade infrastructure."
 
 **Why this works:** Use of funds shows priorities. Investors worry about founders who want to hire before proving product-market fit.
 
@@ -203,7 +203,7 @@
 
 ## 25. "What's your runway with this raise?"
 
-**Response:** "18 months at current burn. 12 months if I take a $50k salary. That's enough time to hit $20k MRR and raise a proper seed round at a much higher valuation."
+**Response:** "12 months with full allocation (engineer, security, infrastructure). That's enough time to hit 15-20 restaurants, prove the model, and raise a Series A at a much higher valuation."
 
 **Why this works:** Runway = cash / burn rate. Investors want 12-18 months minimum. Less means you'll be fundraising again immediately.
 
@@ -211,7 +211,7 @@
 
 ## 26. "When will you be profitable?"
 
-**Response:** "At 50 restaurants paying $99/month, we hit $60k ARR and break-even on operating costs. That's achievable in 12 months. Full profitability including my salary happens around 100 restaurants."
+**Response:** "At 35 restaurants paying $149/month, we hit $63k ARR and break-even on operating costs. That's achievable in 12 months. Full profitability including my salary happens around 60 restaurants."
 
 **Why this works:** Path to profitability shows sustainability. Even if you plan to raise more, showing you could survive without it is powerful.
 
@@ -419,7 +419,7 @@
 
 ## 51. "Walk me through your financial projections."
 
-**Response:** "Year 1: 25 restaurants at $99/month = $30k ARR. Year 2: 100 restaurants = $120k ARR. Year 3: 300 restaurants plus upsells = $500k ARR. These assume 3 new customers per month ramping to 15 per month by year 3, with 5% monthly churn. Conservative? Maybe. But I'd rather under-promise."
+**Response:** "Year 1: 20 restaurants at $149/month = $36k ARR. Year 2: 75 restaurants at blended $180/month = $162k ARR. Year 3: 200 restaurants plus upsells = $480k ARR. These assume 2-3 new customers per month ramping to 10 per month by year 3, with 5% monthly churn. Conservative? Maybe. But I'd rather under-promise."
 
 **Why this works:** Investors have seen thousands of hockey-stick projections that never materialize. Showing conservative, bottoms-up math (customers × price) is more credible than top-down ("we'll capture 1% of the market"). Always be able to defend your assumptions.
 
@@ -427,7 +427,7 @@
 
 ## 52. "What's your gross margin?"
 
-**Response:** "Around 75-80%. Our COGS is API costs — Whisper transcription and Claude parsing. At current volume, that's about $0.15 per shifty processed. At $99/month with ~60 shifties per restaurant, our cost is roughly $9/month per customer."
+**Response:** "Around 90%+. Our COGS is API costs — Whisper transcription and Claude parsing. At current volume, that's about $0.15 per shifty processed. At $149/month with ~60 shifties per restaurant, our cost is roughly $9/month per customer — about 6% of revenue."
 
 **Why this works:** Gross margin = (Revenue - Cost of Goods Sold) / Revenue. SaaS businesses should target 70-80%+. Knowing your unit-level costs shows operational sophistication.
 
@@ -491,7 +491,7 @@
 
 ## 60. "What's your break-even point in customers?"
 
-**Response:** "At $99/month with ~75% gross margin, each customer contributes ~$75/month toward fixed costs. If my loaded cost (salary + overhead) is $5k/month, I break even at 67 customers. At 100 customers, I'm profitable enough to reinvest or hire."
+**Response:** "At $149/month with ~90% gross margin, each customer contributes ~$135/month toward fixed costs. If my loaded cost (salary + overhead) is $5k/month, I break even at 37 customers. At 60 customers, I'm profitable enough to reinvest or hire."
 
 **Why this works:** Break-even analysis shows you understand your economics. It's simple division: fixed costs / contribution margin per customer.
 
