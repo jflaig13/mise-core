@@ -5,6 +5,14 @@
 2. **Repo is truth.** Search this repo for answers before asking me.
 3. **Log everything.** All changes must be documented.
 
+## ⚠️ CRITICAL: Read This First
+
+**Before making ANY code changes, read: `SEARCH_FIRST.md`**
+
+This file contains the mandatory search protocol. Violating it wastes time, breaks trust, and risks production bugs.
+
+**Key rule:** Never write code without searching the codebase for existing implementations, policies, and specs.
+
 ## New Session Initialization
 
 When starting a new session and the user's first message is just a greeting ("hi", "hello", etc.):
@@ -22,6 +30,7 @@ This ensures every new session is properly initialized with project context.
 
 ## Key Documentation (read when relevant, not every request)
 **Safety Protocols:**
+- `SEARCH_FIRST.md` — **MANDATORY:** Search protocol before ANY changes
 - `VALUES_CORE.md` — Primary Axiom, immutable constraints
 - `AGENT_POLICY.md` — Scope, boundaries, safety rules
 - `docs/brain/*.md` — System truth, memory rules, workflow primacy
