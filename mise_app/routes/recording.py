@@ -16,6 +16,14 @@ from fastapi.responses import HTMLResponse, JSONResponse, RedirectResponse
 from mise_app.config import SHIFTY_DEFINITIONS, get_shifty_by_code, PayPeriod
 from mise_app.local_storage import get_approval_storage, get_totals_storage
 from mise_app.drive_storage import upload_recording_to_drive
+from mise_app.tenant import require_restaurant, get_template_context
+
+# NEW (Phase 1.3): Import for clarification support
+import sys
+from pathlib import Path as PathLib
+sys.path.insert(0, str(PathLib(__file__).parent.parent.parent))
+from transrouter.src.conversation_manager import ConversationManager
+from transrouter.src.schemas import ClarificationResponse
 
 log = logging.getLogger(__name__)
 
@@ -307,6 +315,7 @@ async def process_audio(
     This is the primary endpoint - no pre-selection of day/shift required.
     Mise detects the date and shift from the transcript content.
     """
+    restaurant_id = require_restaurant(request)
     config = request.app.state.config
     shifty_state = request.app.state.shifty_state
 
@@ -318,7 +327,7 @@ async def process_audio(
             status_code=400
         )
 
-    log.info(f"Processing audio for period {period_id} from file {file.filename}")
+    log.info(f"[{restaurant_id}] Processing audio for period {period_id} from file {file.filename}")
 
     # Read audio bytes
     audio_bytes = await file.read()
@@ -335,7 +344,10 @@ async def process_audio(
     try:
         response = requests.post(
             f"{config.transrouter_url}/api/v1/audio/process",
-            headers={"X-API-Key": config.transrouter_api_key},
+            headers={
+                "X-API-Key": config.transrouter_api_key,
+                "X-Restaurant-ID": restaurant_id,
+            },
             files={"file": ("recording.wav", audio_bytes, "audio/wav")},
             timeout=120,
         )
@@ -349,6 +361,22 @@ async def process_audio(
             {"status": "error", "error": f"API error: {e}"},
             status_code=500
         )
+
+    # NEW (Phase 1.3): Check for clarification needed
+    if result.get("status") == "needs_clarification":
+        conversation_id = result.get("conversation_id")
+        questions = result.get("clarifications", [])
+        transcript = result.get("transcript", "")
+
+        log.info(f"Clarification needed: {len(questions)} questions (conversation={conversation_id})")
+
+        return JSONResponse({
+            "status": "needs_clarification",
+            "conversation_id": conversation_id,
+            "questions": questions,
+            "transcript": transcript,
+            "redirect_url": f"/payroll/period/{period_id}/clarify/{conversation_id}",
+        })
 
     if result.get("status") != "success":
         error = result.get("error", "Unknown error")
@@ -414,16 +442,16 @@ async def process_audio(
     approval_storage = get_approval_storage()
 
     # Delete any existing data for this shifty (in case of re-recording)
-    approval_storage.delete_by_filename(period_id, filename)
+    approval_storage.delete_by_filename(period_id, filename, restaurant_id=restaurant_id)
 
     # Get detail_blocks for calculation display
     detail_blocks = approval_json.get("detail_blocks", [])
 
     # Add the new data
-    approval_storage.add_shifty(period_id, rows, filename, transcript, parsed_date_str, detail_blocks)
+    approval_storage.add_shifty(period_id, rows, filename, transcript, parsed_date_str, detail_blocks, restaurant_id=restaurant_id)
 
     # Update shifty status
-    shifty_state.set_status(period_id, shifty_code, "pending")
+    shifty_state.set_status(period_id, shifty_code, "pending", restaurant_id=restaurant_id)
 
     # Return data for approval page
     return JSONResponse({
@@ -445,6 +473,7 @@ async def process_shifty(
     file: UploadFile = File(...),
 ):
     """Process an uploaded audio file for a specific shifty (legacy endpoint)."""
+    restaurant_id = require_restaurant(request)
     config = request.app.state.config
     shifty_state = request.app.state.shifty_state
 
@@ -470,7 +499,10 @@ async def process_shifty(
     try:
         response = requests.post(
             f"{config.transrouter_url}/api/v1/audio/process",
-            headers={"X-API-Key": config.transrouter_api_key},
+            headers={
+                "X-API-Key": config.transrouter_api_key,
+                "X-Restaurant-ID": restaurant_id,
+            },
             files={"file": (f"{shifty_code}.wav", audio_bytes, "audio/wav")},
             timeout=120,
         )
@@ -495,7 +527,7 @@ async def process_shifty(
     transcript = result.get("transcript", "")
     approval_json = result.get("approval_json", {})
 
-    log.info(f"Parsed shifty {shifty_code}: transcript length={len(transcript)}")
+    log.info(f"[{restaurant_id}] Parsed shifty {shifty_code}: transcript length={len(transcript)}")
 
     # Save recording to local storage
     save_recording(audio_bytes, period_id, shifty_code, file.filename)
@@ -508,16 +540,16 @@ async def process_shifty(
     approval_storage = get_approval_storage()
 
     # Delete any existing data for this shifty (in case of re-recording)
-    approval_storage.delete_by_filename(period_id, filename)
+    approval_storage.delete_by_filename(period_id, filename, restaurant_id=restaurant_id)
 
     # Get detail_blocks for calculation display
     detail_blocks = approval_json.get("detail_blocks", [])
 
     # Add the new data
-    approval_storage.add_shifty(period_id, rows, filename, transcript, None, detail_blocks)
+    approval_storage.add_shifty(period_id, rows, filename, transcript, None, detail_blocks, restaurant_id=restaurant_id)
 
     # Update shifty status
-    shifty_state.set_status(period_id, shifty_code, "pending")
+    shifty_state.set_status(period_id, shifty_code, "pending", restaurant_id=restaurant_id)
 
     # Return data for approval page
     return JSONResponse({
@@ -533,6 +565,7 @@ async def process_shifty(
 @router.get("/approve/{shifty_code}", response_class=HTMLResponse)
 async def approve_page(request: Request, period_id: str, shifty_code: str):
     """Show approval page for a shifty."""
+    restaurant_id = require_restaurant(request)
     templates = request.app.state.templates
 
     try:
@@ -545,10 +578,10 @@ async def approve_page(request: Request, period_id: str, shifty_code: str):
     except ValueError:
         return HTMLResponse(f"Unknown shifty code: {shifty_code}", status_code=404)
 
-    # Get data from local storage (with period isolation)
+    # Get data from local storage (with restaurant and period isolation)
     filename = f"{shifty_code}.wav"
     approval_storage = get_approval_storage()
-    rows = approval_storage.get_by_filename(period_id, filename)
+    rows = approval_storage.get_by_filename(period_id, filename, restaurant_id=restaurant_id)
 
     # Get transcript, parsed date, and detail_blocks from first row
     # All three are stored on the first row only (see local_storage.py add_shifty)
@@ -575,27 +608,26 @@ async def approve_page(request: Request, period_id: str, shifty_code: str):
         shifty_date = period.start_date + timedelta(days=shifty["date_offset"])
         shifty_date_display = shifty_date.strftime("%m/%d/%Y")
 
-    return templates.TemplateResponse(
-        "approve.html",
-        {
-            "request": request,
-            "period": period,
-            "periods": PayPeriod.get_available_periods(),
-            "shifty": shifty,
-            "shifty_code": shifty_code,
-            "shifty_date": shifty_date_display,
-            "pay_period": period.label,
-            "rows": rows,
-            "transcript": transcript,
-            "detail_blocks": detail_blocks,
-            "active_tab": "shifties",
-        }
-    )
+    context = get_template_context(request)
+    context.update({
+        "period": period,
+        "periods": PayPeriod.get_available_periods(),
+        "shifty": shifty,
+        "shifty_code": shifty_code,
+        "shifty_date": shifty_date_display,
+        "pay_period": period.label,
+        "rows": rows,
+        "transcript": transcript,
+        "detail_blocks": detail_blocks,
+        "active_tab": "shifties",
+    })
+    return templates.TemplateResponse("approve.html", context)
 
 
 @router.post("/approve/{shifty_code}/confirm")
 async def confirm_approval(request: Request, period_id: str, shifty_code: str):
     """Confirm approval of a shifty."""
+    restaurant_id = require_restaurant(request)
     shifty_state = request.app.state.shifty_state
 
     filename = f"{shifty_code}.wav"
@@ -605,8 +637,8 @@ async def confirm_approval(request: Request, period_id: str, shifty_code: str):
     # Get form data (in case user edited amounts)
     form_data = await request.form()
 
-    # Update any edited amounts (with period isolation)
-    rows = approval_storage.get_by_filename(period_id, filename)
+    # Update any edited amounts (with restaurant and period isolation)
+    rows = approval_storage.get_by_filename(period_id, filename, restaurant_id=restaurant_id)
     for row in rows:
         row_id = row.get("id")
         amount_key = f"amount_{row_id}"
@@ -614,26 +646,26 @@ async def confirm_approval(request: Request, period_id: str, shifty_code: str):
             try:
                 new_amount = float(form_data[amount_key])
                 if new_amount != row.get("Amount"):
-                    approval_storage.update_row(period_id, row_id, {"Amount": new_amount})
+                    approval_storage.update_row(period_id, row_id, {"Amount": new_amount}, restaurant_id=restaurant_id)
                     row["Amount"] = new_amount
-                    log.info(f"Updated {row.get('Employee')} amount to ${new_amount:.2f}")
+                    log.info(f"[{restaurant_id}] Updated {row.get('Employee')} amount to ${new_amount:.2f}")
             except ValueError:
                 pass
 
     # Approve all rows
-    approval_storage.approve_all(period_id, filename)
+    approval_storage.approve_all(period_id, filename, restaurant_id=restaurant_id)
 
-    # Update weekly totals (with period isolation)
-    approved_rows = approval_storage.get_approved_data(period_id, filename)
+    # Update weekly totals (with restaurant and period isolation)
+    approved_rows = approval_storage.get_approved_data(period_id, filename, restaurant_id=restaurant_id)
     for row in approved_rows:
         employee = row.get("Employee", "")
         amount = float(row.get("Amount", 0))
         if employee and amount > 0:
-            totals_storage.add_shift_amount(period_id, employee, shifty_code, amount)
+            totals_storage.add_shift_amount(period_id, employee, shifty_code, amount, restaurant_id=restaurant_id)
 
     # Mark shifty complete
-    shifty_state.set_status(period_id, shifty_code, "complete")
-    log.info(f"Approved and completed {shifty_code} for period {period_id}")
+    shifty_state.set_status(period_id, shifty_code, "complete", restaurant_id=restaurant_id)
+    log.info(f"[{restaurant_id}] Approved and completed {shifty_code} for period {period_id}")
 
     return RedirectResponse(f"/payroll/period/{period_id}", status_code=303)
 
@@ -648,6 +680,7 @@ async def handle_legacy_approval(request: Request, period_id: str, filename: str
 @router.get("/detail/{shifty_code}", response_class=HTMLResponse)
 async def detail_page(request: Request, period_id: str, shifty_code: str):
     """Show detail page for a completed shifty."""
+    restaurant_id = require_restaurant(request)
     templates = request.app.state.templates
 
     try:
@@ -660,10 +693,10 @@ async def detail_page(request: Request, period_id: str, shifty_code: str):
     except ValueError:
         return HTMLResponse(f"Unknown shifty code: {shifty_code}", status_code=404)
 
-    # Get data from local storage (with period isolation)
+    # Get data from local storage (with restaurant and period isolation)
     filename = f"{shifty_code}.wav"
     approval_storage = get_approval_storage()
-    rows = approval_storage.get_approved_data(period_id, filename)
+    rows = approval_storage.get_approved_data(period_id, filename, restaurant_id=restaurant_id)
 
     # Get transcript from first row
     transcript = ""
@@ -674,21 +707,19 @@ async def detail_page(request: Request, period_id: str, shifty_code: str):
 
     shifty_date = period.start_date + timedelta(days=shifty["date_offset"])
 
-    return templates.TemplateResponse(
-        "detail.html",
-        {
-            "request": request,
-            "period": period,
-            "periods": PayPeriod.get_available_periods(),
-            "shifty": shifty,
-            "shifty_code": shifty_code,
-            "shifty_date": shifty_date.strftime("%m/%d/%Y"),
-            "pay_period": period.label,
-            "rows": rows,
-            "transcript": transcript,
-            "active_tab": "shifties",
-        }
-    )
+    context = get_template_context(request)
+    context.update({
+        "period": period,
+        "periods": PayPeriod.get_available_periods(),
+        "shifty": shifty,
+        "shifty_code": shifty_code,
+        "shifty_date": shifty_date.strftime("%m/%d/%Y"),
+        "pay_period": period.label,
+        "rows": rows,
+        "transcript": transcript,
+        "active_tab": "shifties",
+    })
+    return templates.TemplateResponse("detail.html", context)
 
 
 def flatten_approval_json(approval_json: dict, shifty_code: str, period: PayPeriod) -> list:
@@ -775,3 +806,200 @@ def flatten_approval_json(approval_json: dict, shifty_code: str, period: PayPeri
             })
 
     return rows
+
+
+# ============================================================================
+# NEW (Phase 1.3): Clarification Routes
+# ============================================================================
+
+@router.get("/clarify/{conversation_id}")
+async def show_clarification(
+    request: Request,
+    period_id: str,
+    conversation_id: str
+):
+    """Show clarification page for a conversation that needs clarification."""
+    restaurant_id = require_restaurant(request)
+    templates = request.app.state.templates
+
+    # Load conversation state
+    conversation_manager = ConversationManager()
+    state = conversation_manager.load_conversation(conversation_id)
+
+    if not state:
+        log.error(f"Conversation {conversation_id} not found")
+        return RedirectResponse(f"/payroll/period/{period_id}", status_code=302)
+
+    # Get unanswered questions
+    questions = conversation_manager.get_unanswered_questions(conversation_id)
+
+    if not questions:
+        log.info(f"No unanswered questions for conversation {conversation_id}")
+        return RedirectResponse(f"/payroll/period/{period_id}", status_code=302)
+
+    # Get original transcript
+    transcript = state.original_input.get("transcript", "")
+
+    # Render clarification page
+    context = get_template_context(request)
+    context.update({
+        "period_id": period_id,
+        "conversation_id": conversation_id,
+        "questions": [q.model_dump() for q in questions],
+        "transcript": transcript,
+        "active_tab": "shifties",
+    })
+
+    return templates.TemplateResponse("clarification.html", context)
+
+
+@router.post("/clarify/{conversation_id}/submit")
+async def submit_clarification(
+    request: Request,
+    period_id: str,
+    conversation_id: str
+):
+    """Submit clarification responses and resume payroll processing."""
+    restaurant_id = require_restaurant(request)
+    config = request.app.state.config
+    shifty_state = request.app.state.shifty_state
+
+    # Load conversation state
+    conversation_manager = ConversationManager()
+    state = conversation_manager.load_conversation(conversation_id)
+
+    if not state:
+        log.error(f"Conversation {conversation_id} not found")
+        return JSONResponse(
+            {"status": "error", "error": "Conversation not found"},
+            status_code=404
+        )
+
+    # Parse form data
+    form_data = await request.form()
+
+    # Build clarification responses
+    responses = []
+    unanswered_questions = conversation_manager.get_unanswered_questions(conversation_id)
+
+    for question in unanswered_questions:
+        answer_key = f"answer_{question.question_id}"
+        notes_key = f"notes_{question.question_id}"
+
+        if answer_key in form_data and form_data[answer_key].strip():
+            response = ClarificationResponse(
+                question_id=question.question_id,
+                answer=form_data[answer_key].strip(),
+                notes=form_data[notes_key].strip() if notes_key in form_data else None
+            )
+            responses.append(response)
+
+    if not responses:
+        log.warning(f"No answers provided for conversation {conversation_id}")
+        return RedirectResponse(
+            f"/payroll/period/{period_id}/clarify/{conversation_id}",
+            status_code=302
+        )
+
+    # Add responses to conversation
+    conversation_manager.add_clarifications_received(conversation_id, responses)
+
+    # Resume payroll processing with clarifications
+    # Call transrouter API with clarification data
+    log.info(f"Resuming payroll processing for conversation {conversation_id} with {len(responses)} clarifications")
+
+    try:
+        # Build request with clarifications
+        transcript = state.original_input.get("transcript", "")
+        pay_period_hint = state.original_input.get("pay_period_hint", "")
+        shift_code = state.original_input.get("shift_code", "")
+
+        clarifications_data = [
+            {
+                "question_id": r.question_id,
+                "answer": r.answer,
+                "notes": r.notes,
+                "confidence": r.confidence
+            }
+            for r in responses
+        ]
+
+        # Call transrouter with clarifications
+        response = requests.post(
+            f"{config.transrouter_url}/api/v1/payroll/parse_with_clarification",
+            headers={
+                "X-API-Key": config.transrouter_api_key,
+                "X-Restaurant-ID": restaurant_id,
+            },
+            json={
+                "transcript": transcript,
+                "pay_period_hint": pay_period_hint,
+                "shift_code": shift_code,
+                "clarifications": clarifications_data,
+                "conversation_id": conversation_id,
+            },
+            timeout=120,
+        )
+
+        response.raise_for_status()
+        result = response.json()
+
+        # Check if still needs more clarification
+        if result.get("status") == "needs_clarification":
+            log.info(f"Still needs clarification after submission")
+            return RedirectResponse(
+                f"/payroll/period/{period_id}/clarify/{conversation_id}",
+                status_code=302
+            )
+
+        # Success - process the approval JSON
+        if result.get("status") == "success":
+            approval_json = result.get("approval_json", {})
+            detected_shifty = detect_shifty_from_transcript(transcript, PayPeriod.from_id(period_id))
+            shifty_code = detected_shifty.get("code") or shift_code
+
+            if not shifty_code:
+                log.error("Could not detect shifty after clarification")
+                return JSONResponse(
+                    {"status": "error", "error": "Could not detect shift code"},
+                    status_code=400
+                )
+
+            # Convert approval_json to flat rows
+            period = PayPeriod.from_id(period_id)
+            rows = flatten_approval_json(approval_json, shifty_code, period)
+
+            # Store locally
+            filename = f"{shifty_code}.wav"
+            approval_storage = get_approval_storage()
+            approval_storage.delete_by_filename(period_id, filename, restaurant_id=restaurant_id)
+
+            detail_blocks = approval_json.get("detail_blocks", [])
+            approval_storage.add_shifty(
+                period_id, rows, filename, transcript,
+                None, detail_blocks, restaurant_id=restaurant_id
+            )
+
+            # Update shifty status
+            shifty_state.set_status(period_id, shifty_code, "pending", restaurant_id=restaurant_id)
+
+            # Redirect to approval page
+            return RedirectResponse(
+                f"/payroll/period/{period_id}/approve/{shifty_code}",
+                status_code=302
+            )
+
+        # Error
+        error = result.get("error", "Unknown error")
+        log.error(f"Clarification processing failed: {error}")
+        return JSONResponse(
+            {"status": "error", "error": error},
+            status_code=400
+        )
+
+    except requests.RequestException as e:
+        log.error(f"Transrouter API error during clarification: {e}")
+        return JSONResponse(
+            {"status": "error", "error": f"API error: {e}"},
+            status_code=500
+        )

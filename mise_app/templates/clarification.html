@@ -1,0 +1,123 @@
+{% extends "base_payroll.html" %}
+
+{% block title %}Clarification Needed{% endblock %}
+
+{% block content %}
+<div class="p-4 max-w-2xl mx-auto">
+    <!-- Header -->
+    <div class="mb-6 text-center">
+        <h1 class="text-2xl font-bold mb-2 text-mise-navy">⚠️ Clarification Needed</h1>
+        <p class="text-mise-navy/70">Please answer the following questions to complete payroll processing</p>
+    </div>
+
+    <!-- Transcript Reference -->
+    <div class="mb-6 bg-white border border-mise-green/20 rounded-lg p-4">
+        <h2 class="text-sm font-semibold text-mise-navy/60 mb-2">Original Recording</h2>
+        <p class="text-sm text-mise-navy/80 italic">"{{ transcript }}"</p>
+    </div>
+
+    <!-- Clarification Form -->
+    <form method="POST" action="/payroll/period/{{ period_id }}/clarify/{{ conversation_id }}/submit" class="space-y-6">
+        {% for question in questions %}
+        <div class="bg-white border border-mise-red/20 rounded-lg p-5">
+            <!-- Question Type Badge -->
+            <div class="mb-3">
+                <span class="inline-block px-2 py-1 text-xs font-semibold rounded
+                    {% if question.priority == 'required' %}bg-red-100 text-red-700
+                    {% elif question.priority == 'recommended' %}bg-amber-100 text-amber-700
+                    {% else %}bg-blue-100 text-blue-700{% endif %}">
+                    {{ question.priority|upper }}
+                </span>
+                <span class="ml-2 text-xs text-mise-navy/50">{{ question.question_type }}</span>
+            </div>
+
+            <!-- Question Text -->
+            <label class="block mb-3">
+                <span class="text-base font-medium text-mise-navy">{{ question.question_text }}</span>
+
+                <!-- Context -->
+                <p class="mt-1 text-sm text-mise-navy/60 italic">{{ question.context }}</p>
+            </label>
+
+            <!-- Answer Input -->
+            <div class="mt-3">
+                {% if question.suggested_answer %}
+                <input
+                    type="text"
+                    name="answer_{{ question.question_id }}"
+                    id="answer_{{ question.question_id }}"
+                    value="{{ question.suggested_answer }}"
+                    class="w-full px-4 py-2 border border-mise-green/30 rounded-lg focus:outline-none focus:ring-2 focus:ring-mise-green"
+                    {% if question.priority == 'required' %}required{% endif %}
+                >
+                <p class="mt-1 text-xs text-mise-navy/50">
+                    Suggestion from: {{ question.suggestion_source }}
+                </p>
+                {% else %}
+                <input
+                    type="text"
+                    name="answer_{{ question.question_id }}"
+                    id="answer_{{ question.question_id }}"
+                    placeholder="Enter answer..."
+                    class="w-full px-4 py-2 border border-mise-green/30 rounded-lg focus:outline-none focus:ring-2 focus:ring-mise-green"
+                    {% if question.priority == 'required' %}required{% endif %}
+                >
+                {% endif %}
+            </div>
+
+            <!-- Optional Notes -->
+            <div class="mt-3">
+                <label for="notes_{{ question.question_id }}" class="block text-sm text-mise-navy/60 mb-1">
+                    Notes (optional)
+                </label>
+                <textarea
+                    name="notes_{{ question.question_id }}"
+                    id="notes_{{ question.question_id }}"
+                    rows="2"
+                    placeholder="Add any context or notes..."
+                    class="w-full px-4 py-2 border border-mise-green/30 rounded-lg focus:outline-none focus:ring-2 focus:ring-mise-green text-sm"
+                ></textarea>
+            </div>
+
+            <!-- Hidden fields for question metadata -->
+            <input type="hidden" name="question_id_{{ loop.index0 }}" value="{{ question.question_id }}">
+        </div>
+        {% endfor %}
+
+        <!-- Submit Button -->
+        <div class="flex gap-3">
+            <button
+                type="submit"
+                class="flex-1 bg-mise-green text-white py-3 px-6 rounded-lg font-semibold hover:bg-mise-green/90 transition-colors"
+            >
+                ✓ Submit Answers
+            </button>
+
+            <a
+                href="/payroll/period/{{ period_id }}"
+                class="px-6 py-3 border-2 border-mise-navy/20 text-mise-navy rounded-lg font-semibold hover:bg-mise-navy/5 transition-colors"
+            >
+                Cancel
+            </a>
+        </div>
+
+        <!-- Info Box -->
+        <div class="mt-6 bg-mise-cream/50 border border-mise-green/20 rounded-lg p-4">
+            <p class="text-sm text-mise-navy/70">
+                <strong>Why am I seeing this?</strong> Mise detected missing or ambiguous information in your recording.
+                Please provide the requested information so payroll can be processed accurately.
+            </p>
+        </div>
+    </form>
+</div>
+
+<!-- Auto-focus first input -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const firstInput = document.querySelector('input[type="text"]');
+    if (firstInput) {
+        firstInput.focus();
+    }
+});
+</script>
+{% endblock %}
