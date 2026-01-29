@@ -78,12 +78,18 @@ app = FastAPI(
     lifespan=lifespan,
 )
 
-# CORS middleware - configure for your frontend domain in production
+# CORS middleware - explicit origin whitelist for security
+# SECURITY: Never use "*" with credentials=True (credential leak vulnerability)
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=os.getenv("CORS_ORIGINS", "*").split(","),
+    allow_origins=[
+        "http://localhost:8000",  # Local mise_app testing
+        "http://localhost:8080",  # Local transrouter testing
+        "https://payroll-engine-rdxbrrdtsa-uc.a.run.app",  # Production Cloud Run
+        "https://app.getmise.io",  # Custom domain
+    ],
     allow_credentials=True,
-    allow_methods=["*"],
+    allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allow_headers=["*"],
 )
 
