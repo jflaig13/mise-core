@@ -11,20 +11,14 @@ import logging
 from typing import Any, Callable, Dict
 
 from .schemas import RouterResponse
-from .agents import handle_payroll_request
+from .agents import handle_payroll_request, handle_inventory_request
 
 log = logging.getLogger(__name__)
 
 
-def _inventory_agent(request: Dict[str, Any]) -> Dict[str, Any]:
-    """Inventory agent stub - not yet implemented."""
-    log.warning("Inventory agent not yet implemented")
-    return {"agent": "inventory", "status": "not_implemented", "request": request}
-
-
 DEFAULT_AGENT_REGISTRY: Dict[str, Callable[[Dict[str, Any]], Dict[str, Any]]] = {
     "payroll": handle_payroll_request,
-    "inventory": _inventory_agent,
+    "inventory": handle_inventory_request,
 }
 
 
