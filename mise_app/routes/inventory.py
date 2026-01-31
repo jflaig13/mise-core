@@ -133,33 +133,34 @@ async def record_shelfy(
 
     log.info(f"🗄️ Processing shelfy for {area} ({category}) from file {file.filename}")
 
-    # Call transrouter API for transcription only
+    # Call transrouter API to process inventory (transcript + parsing)
     try:
         response = requests.post(
-            f"{config.transrouter_url}/api/v1/audio/transcribe",
+            f"{config.transrouter_url}/api/v1/audio/process",
             headers={"X-API-Key": config.transrouter_api_key},
             files={"file": ("recording.wav", audio_bytes, "audio/wav")},
-            timeout=60,
+            timeout=120,
         )
         response.raise_for_status()
         result = response.json()
     except requests.RequestException as e:
         log.error(f"🗄️ Transrouter API error: {e}")
         return JSONResponse(
-            {"status": "error", "error": f"Transcription failed: {e}"},
+            {"status": "error", "error": f"Processing failed: {e}"},
             status_code=500
         )
 
     if result.get("status") != "success":
-        error = result.get("error", "Transcription failed")
-        log.error(f"🗄️ Transcription failed: {error}")
+        error = result.get("error", "Processing failed")
+        log.error(f"🗄️ Processing failed: {error}")
         return JSONResponse(
             {"status": "error", "error": error},
             status_code=400
         )
 
     transcript = result.get("transcript", "")
-    log.info(f"🗄️ Transcription complete: {len(transcript)} chars")
+    inventory_json = result.get("inventory_json", {})
+    log.info(f"🗄️ Processing complete: {len(transcript)} chars, {len(inventory_json.get('items', []))} items")
 
     # Normalize period_id (detect from transcript or use current month)
     if not period_id:
@@ -181,6 +182,7 @@ async def record_shelfy(
         category=category,
         transcript=transcript,
         audio_path=audio_path_str,
+        inventory_json=inventory_json,
     )
 
     log.info(f"🗄️ Created shelfy {shelfy_id} for {area} ({category})")
@@ -192,6 +194,7 @@ async def record_shelfy(
         "category": category,
         "period_id": period_id,
         "transcript": transcript,
+        "inventory_json": inventory_json,
         "audio_path": audio_path_str,
         "status": "pending_approval",
     })

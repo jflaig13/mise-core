@@ -151,6 +151,7 @@ class ShelfyStorage:
         category: str,
         transcript: str,
         audio_path: str,
+        inventory_json: Optional[Dict[str, Any]] = None,
     ) -> Dict[str, Any]:
         """Add a new shelfy record.
 
@@ -170,6 +171,10 @@ class ShelfyStorage:
             "recorded_at": now.isoformat() + "Z",
             "created_at": now.isoformat(),
         }
+
+        # Add inventory_json if provided
+        if inventory_json:
+            shelfy["inventory_json"] = inventory_json
 
         data.append(shelfy)
         self._save(period_id, data)
