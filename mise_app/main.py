@@ -100,7 +100,8 @@ class AuthMiddleware(BaseHTTPMiddleware):
             "/health",
             "/static",
             "/inventory/get_upload_url",
-            "/inventory/process_uploaded"
+            "/inventory/process_uploaded",
+            "/inventory/status"  # For async job status polling
         ]
         if any(request.url.path.startswith(p) for p in public_paths):
             return await call_next(request)
