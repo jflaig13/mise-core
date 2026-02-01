@@ -134,8 +134,16 @@
 
     {% endif %}
 
-    <!-- Record More Button -->
-    <div class="mt-6">
+    <!-- Export & Record Buttons -->
+    <div class="mt-6 space-y-3">
+        {% if shelfies %}
+        <a href="/inventory/export/{{ period_label.split()[-1] if period_label else 'current' }}"
+           class="block w-full p-4 bg-white border-2 border-mise-red/20 hover:border-mise-red rounded-xl
+                  text-center text-mise-navy font-medium transition-all duration-200">
+            📊 Export to Spreadsheet
+        </a>
+        {% endif %}
+
         <a href="/inventory"
            class="block w-full p-4 bg-mise-red hover:bg-mise-red-dark rounded-xl text-center text-white font-semibold
                   transition-all duration-200 active:scale-98 shadow-lg">

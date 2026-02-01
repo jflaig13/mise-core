@@ -604,6 +604,64 @@ async def inventory_totals_page(request: Request, period_id: str):
     return templates.TemplateResponse("inventory_totals.html", context)
 
 
+@router.get("/export/{period_id}")
+async def export_inventory_csv(request: Request, period_id: str, category: str = None):
+    """Export aggregated inventory as CSV.
+
+    Args:
+        period_id: Period to export
+        category: Optional filter (kitchen/bar), exports all if not specified
+    """
+    from fastapi.responses import StreamingResponse
+    import io
+    import csv
+
+    restaurant_id = require_restaurant(request)
+    storage = get_shelfy_storage()
+
+    # Get aggregated data
+    if category:
+        aggregated = storage.get_aggregated_totals(period_id, category=category)
+        filename = f"inventory_{category}_{period_id}.csv"
+    else:
+        # Get both categories
+        kitchen = storage.get_aggregated_totals(period_id, category="kitchen")
+        bar = storage.get_aggregated_totals(period_id, category="bar")
+
+        # Combine items
+        all_items = []
+        for item in kitchen.get("items", []):
+            item["category"] = "Kitchen"
+            all_items.append(item)
+        for item in bar.get("items", []):
+            item["category"] = "Bar"
+            all_items.append(item)
+
+        aggregated = {"items": all_items}
+        filename = f"inventory_all_{period_id}.csv"
+
+    # Create CSV in memory
+    output = io.StringIO()
+    writer = csv.DictWriter(output, fieldnames=["Category", "Product", "Quantity", "Unit"])
+    writer.writeheader()
+
+    for item in aggregated.get("items", []):
+        writer.writerow({
+            "Category": item.get("category", "").title(),
+            "Product": item.get("product_name", ""),
+            "Quantity": item.get("total_quantity", ""),
+            "Unit": item.get("unit", "")
+        })
+
+    # Return as downloadable file
+    output.seek(0)
+    return StreamingResponse(
+        iter([output.getvalue()]),
+        media_type="text/csv",
+        headers={"Content-Disposition": f"attachment; filename={filename}"}
+    )
+
+
 @router.get("/shelfy-page/{shelfy_id}", response_class=HTMLResponse)
 async def shelfy_detail_page(request: Request, shelfy_id: str):
     """Render individual shelfy detail page."""
