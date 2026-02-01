@@ -22,11 +22,11 @@
     </div>
 
     <!-- Parsed Items (if available) -->
-    {% if shelfy.inventory_json and shelfy.inventory_json.items %}
+    {% if shelfy.inventory_json and shelfy.inventory_json['items'] %}
     <div class="bg-white rounded-xl border border-green-500/20 p-4 mb-6 shadow-sm">
         <h2 class="text-sm font-semibold text-mise-navy/60 mb-3">📦 Parsed Inventory</h2>
         <div class="space-y-2">
-            {% for item in shelfy.inventory_json.items %}
+            {% for item in shelfy.inventory_json['items'] %}
             <div class="flex justify-between items-center p-3 bg-green-50 rounded-lg">
                 <div>
                     <div class="font-semibold text-mise-navy">{{ item.product_name }}</div>

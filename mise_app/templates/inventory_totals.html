@@ -40,14 +40,14 @@
         </h2>
 
         <!-- Aggregated Totals -->
-        {% if kitchen_aggregated and kitchen_aggregated.items %}
+        {% if kitchen_aggregated and kitchen_aggregated['items'] %}
         <div class="mb-4 p-4 bg-orange-50 border border-orange-200 rounded-lg">
             <h3 class="text-sm font-semibold text-mise-navy/70 mb-2">
                 📦 Aggregated Totals
                 <span class="text-xs font-normal text-mise-navy/50">({{ kitchen_aggregated.shelfies_count }} shelfies)</span>
             </h3>
             <div class="space-y-1 max-h-64 overflow-y-auto">
-                {% for item in kitchen_aggregated.items %}
+                {% for item in kitchen_aggregated['items'] %}
                 <div class="flex justify-between items-center py-1 px-2 bg-white/50 rounded text-sm">
                     <span class="text-mise-navy">{{ item.product_name }}</span>
                     <span class="font-semibold text-mise-navy">
@@ -93,14 +93,14 @@
         </h2>
 
         <!-- Aggregated Totals -->
-        {% if bar_aggregated and bar_aggregated.items %}
+        {% if bar_aggregated and bar_aggregated['items'] %}
         <div class="mb-4 p-4 bg-purple-50 border border-purple-200 rounded-lg">
             <h3 class="text-sm font-semibold text-mise-navy/70 mb-2">
                 📦 Aggregated Totals
                 <span class="text-xs font-normal text-mise-navy/50">({{ bar_aggregated.shelfies_count }} shelfies)</span>
             </h3>
             <div class="space-y-1 max-h-64 overflow-y-auto">
-                {% for item in bar_aggregated.items %}
+                {% for item in bar_aggregated['items'] %}
                 <div class="flex justify-between items-center py-1 px-2 bg-white/50 rounded text-sm">
                     <span class="text-mise-navy">{{ item.product_name }}</span>
                     <span class="font-semibold text-mise-navy">
