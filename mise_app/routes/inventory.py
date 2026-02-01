@@ -590,6 +590,9 @@ async def inventory_totals_page(request: Request, period_id: str):
     kitchen_aggregated = storage.get_aggregated_totals(period_id, category="kitchen")
     bar_aggregated = storage.get_aggregated_totals(period_id, category="bar")
 
+    log.info(f"📊 Totals page for period {period_id}: kitchen={len(kitchen_aggregated.get('items', []))} items, bar={len(bar_aggregated.get('items', []))} items")
+    log.info(f"📊 Bar aggregated: {bar_aggregated}")
+
     context = get_template_context(request)
     context.update({
         "period_id": period_id,
