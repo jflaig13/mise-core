@@ -15,7 +15,7 @@ from fastapi.responses import HTMLResponse, JSONResponse, RedirectResponse
 
 from mise_app.config import SHIFTY_DEFINITIONS, get_shifty_by_code, PayPeriod
 from mise_app.local_storage import get_approval_storage, get_totals_storage
-from mise_app.drive_storage import upload_recording_to_drive
+from mise_app.gcs_audio import upload_audio_to_gcs
 from mise_app.tenant import require_restaurant, get_template_context
 
 # NEW (Phase 1.3): Import for clarification support
@@ -81,15 +81,15 @@ def save_recording(audio_bytes: bytes, period_id: str, shifty_code: str = None, 
 
     log.info(f"📼 ARCHIVED (local): {filepath.relative_to(RECORDINGS_DIR.parent)} ({len(audio_bytes):,} bytes)")
 
-    # Also upload to Google Drive for permanent cloud storage
+    # Also upload to Google Cloud Storage for permanent cloud storage
     try:
-        drive_file_id = upload_recording_to_drive(
-            audio_bytes, period_id, shifty_code or "unknown", original_filename
+        gcs_path = upload_audio_to_gcs(
+            audio_bytes, period_id, filename
         )
-        if drive_file_id:
-            log.info(f"☁️ ARCHIVED (Drive): {filename} -> {drive_file_id}")
+        if not gcs_path:
+            log.warning(f"Failed to upload to GCS (continuing anyway)")
     except Exception as e:
-        log.warning(f"Failed to upload to Drive (continuing anyway): {e}")
+        log.warning(f"Failed to upload to GCS (continuing anyway): {e}")
 
     return filepath
 

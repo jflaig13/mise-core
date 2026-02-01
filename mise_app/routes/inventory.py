@@ -23,6 +23,7 @@ from mise_app.shelfy_storage import (
     generate_shelfy_id,
     get_audio_archive_path,
 )
+from mise_app.gcs_audio import upload_audio_to_gcs
 from mise_app.tenant import require_restaurant, get_template_context
 
 log = logging.getLogger(__name__)
@@ -75,7 +76,18 @@ def save_shelfy_recording(
     filepath = period_dir / filename
     filepath.write_bytes(audio_bytes)
 
-    log.info(f"🗄️ ARCHIVED: {filepath.relative_to(RECORDINGS_DIR.parent)} ({len(audio_bytes):,} bytes)")
+    log.info(f"🗄️ ARCHIVED (local): {filepath.relative_to(RECORDINGS_DIR.parent)} ({len(audio_bytes):,} bytes)")
+
+    # Also upload to Google Cloud Storage for permanent cloud storage
+    try:
+        gcs_path = upload_audio_to_gcs(
+            audio_bytes, period_id, filename
+        )
+        if not gcs_path:
+            log.warning(f"Failed to upload to GCS (continuing anyway)")
+    except Exception as e:
+        log.warning(f"Failed to upload to GCS (continuing anyway): {e}")
+
     return filepath
 
 
