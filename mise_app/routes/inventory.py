@@ -6,10 +6,12 @@ Voice recording for inventory counts, organized by area and category.
 
 from __future__ import annotations
 
+import asyncio
 import logging
 from datetime import datetime
 from pathlib import Path
-from typing import Optional
+from typing import Optional, Dict, Any
+from uuid import uuid4
 
 import requests
 from fastapi import APIRouter, File, Form, Request, UploadFile
@@ -27,6 +29,10 @@ from mise_app.gcs_audio import upload_audio_to_gcs
 from mise_app.tenant import require_restaurant, get_template_context
 
 log = logging.getLogger(__name__)
+
+# In-memory job tracker for async processing
+# Production: Replace with Redis/Firestore
+_processing_jobs: Dict[str, Dict[str, Any]] = {}
 
 router = APIRouter(prefix="/inventory", tags=["Inventory"])
 
@@ -241,11 +247,111 @@ async def get_upload_url(request: Request):
         )
 
 
+async def _process_inventory_background(
+    job_id: str,
+    gcs_path: str,
+    shelfy_id: str,
+    area: str,
+    category: str,
+    period_id: str,
+    transrouter_url: str,
+    transrouter_api_key: str,
+):
+    """Background task to process large inventory files.
+
+    Updates _processing_jobs dict with progress.
+    """
+    try:
+        # Update status: downloading
+        _processing_jobs[job_id]["status"] = "downloading"
+        _processing_jobs[job_id]["progress"] = "Downloading audio from GCS..."
+
+        # Download audio from GCS
+        from google.cloud import storage as gcs
+        client = gcs.Client()
+
+        if not gcs_path.startswith("gs://"):
+            raise ValueError("Invalid GCS path")
+
+        parts = gcs_path[5:].split("/", 1)
+        bucket_name = parts[0]
+        blob_path = parts[1]
+
+        bucket = client.bucket(bucket_name)
+        blob = bucket.blob(blob_path)
+        audio_bytes = blob.download_as_bytes()
+
+        log.info(f"[{job_id}] Downloaded {len(audio_bytes):,} bytes from {gcs_path}")
+
+        # Update status: transcribing
+        _processing_jobs[job_id]["status"] = "transcribing"
+        _processing_jobs[job_id]["progress"] = f"Transcribing {len(audio_bytes):,} bytes..."
+
+        # Process through transrouter (transcribe + parse)
+        # No timeout - let it run as long as needed
+        response = requests.post(
+            f"{transrouter_url}/api/v1/audio/process",
+            headers={"X-API-Key": transrouter_api_key},
+            files={"file": ("recording.wav", audio_bytes, "audio/wav")},
+            timeout=600,  # 10 minute timeout for large files
+        )
+        response.raise_for_status()
+        result = response.json()
+
+        if result.get("status") != "success":
+            error = result.get("error", "Processing failed")
+            log.error(f"[{job_id}] Processing failed: {error}")
+            _processing_jobs[job_id]["status"] = "error"
+            _processing_jobs[job_id]["error"] = error
+            return
+
+        transcript = result.get("transcript", "")
+        inventory_json = result.get("approval_json", {})
+
+        log.info(f"[{job_id}] Transcription complete: {len(transcript)} chars, {len(inventory_json.get('items', []))} items")
+
+        # Update status: storing
+        _processing_jobs[job_id]["status"] = "storing"
+        _processing_jobs[job_id]["progress"] = "Saving inventory data..."
+
+        # Store shelfy record
+        storage = get_shelfy_storage()
+        shelfy_record = storage.store_shelfy(
+            shelfy_id=shelfy_id,
+            area=area,
+            category=category,
+            period_id=period_id,
+            audio_path=gcs_path,
+            transcript=transcript,
+            inventory_json=inventory_json,
+            source="upload",
+        )
+
+        log.info(f"[{job_id}] ✅ Stored shelfy: {shelfy_id}")
+
+        # Mark complete
+        _processing_jobs[job_id]["status"] = "success"
+        _processing_jobs[job_id]["result"] = {
+            "shelfy_id": shelfy_id,
+            "inventory_json": inventory_json,
+            "item_count": len(inventory_json.get("items", [])),
+        }
+        _processing_jobs[job_id]["completed_at"] = datetime.utcnow().isoformat()
+
+    except Exception as e:
+        log.error(f"[{job_id}] Background processing failed: {e}")
+        _processing_jobs[job_id]["status"] = "error"
+        _processing_jobs[job_id]["error"] = str(e)
+
+
 @router.post("/process_uploaded")
 async def process_uploaded(request: Request):
-    """Process an audio file already uploaded to GCS.
+    """Process an audio file already uploaded to GCS (ASYNC).
 
     Use this after uploading via signed URL from /get_upload_url.
+
+    This endpoint returns immediately with a job_id.
+    Use /inventory/status/{job_id} to check progress.
 
     Request body (JSON):
         - gcs_path: GCS path to the uploaded file
@@ -255,7 +361,9 @@ async def process_uploaded(request: Request):
         - period_id: Inventory period
 
     Response:
-        - Same as /record_shelfy
+        - status: "processing"
+        - job_id: Job ID to check status
+        - check_status_url: URL to poll for status
     """
     try:
         body = await request.json()
@@ -278,88 +386,85 @@ async def process_uploaded(request: Request):
         )
 
     config = request.app.state.config
-    storage = get_shelfy_storage()
 
-    # Download audio from GCS
-    from google.cloud import storage as gcs
-    try:
-        client = gcs.Client()
-        # Parse GCS path: gs://bucket/path/to/file
-        if not gcs_path.startswith("gs://"):
-            raise ValueError("Invalid GCS path")
-
-        parts = gcs_path[5:].split("/", 1)
-        bucket_name = parts[0]
-        blob_path = parts[1]
-
-        bucket = client.bucket(bucket_name)
-        blob = bucket.blob(blob_path)
-        audio_bytes = blob.download_as_bytes()
-
-        log.info(f"📥 Downloaded {len(audio_bytes):,} bytes from {gcs_path}")
-    except Exception as e:
-        log.error(f"Failed to download from GCS: {e}")
-        return JSONResponse(
-            {"status": "error", "error": f"Failed to download audio from GCS: {str(e)}"},
-            status_code=500
-        )
-
-    # Process through transrouter (transcribe + parse)
-    try:
-        response = requests.post(
-            f"{config.transrouter_url}/api/v1/audio/process",
-            headers={"X-API-Key": config.transrouter_api_key},
-            files={"file": ("recording.wav", audio_bytes, "audio/wav")},
-            timeout=120,
-        )
-        response.raise_for_status()
-        result = response.json()
-    except requests.RequestException as e:
-        log.error(f"Transrouter API error: {e}")
-        return JSONResponse(
-            {"status": "error", "error": f"Processing failed: {e}"},
-            status_code=500
-        )
-
-    if result.get("status") != "success":
-        error = result.get("error", "Processing failed")
-        log.error(f"Processing failed: {error}")
-        return JSONResponse(
-            {"status": "error", "error": error},
-            status_code=400
-        )
-
-    transcript = result.get("transcript", "")
-    inventory_json = result.get("approval_json", {})
-
-    log.info(f"Processing complete: {len(transcript)} chars, {len(inventory_json.get('items', []))} items")
-
-    # Store shelfy record (audio already in GCS)
-    audio_path_str = gcs_path.replace("gs://mise-production-data/", "")
-
-    shelfy = storage.add_shelfy(
-        period_id=period_id,
-        shelfy_id=shelfy_id,
-        area=area,
-        category=category,
-        transcript=transcript,
-        audio_path=audio_path_str,
-        inventory_json=inventory_json,
-    )
-
-    log.info(f"Created shelfy {shelfy_id} for {area} ({category})")
-
-    return JSONResponse({
-        "status": "success",
+    # Create job
+    job_id = str(uuid4())
+    _processing_jobs[job_id] = {
+        "job_id": job_id,
+        "status": "queued",
         "shelfy_id": shelfy_id,
         "area": area,
         "category": category,
         "period_id": period_id,
-        "transcript": transcript,
-        "inventory_json": inventory_json,
-        "audio_path": audio_path_str,
-        "status": "pending_approval",
+        "gcs_path": gcs_path,
+        "created_at": datetime.utcnow().isoformat(),
+        "progress": "Queued for processing...",
+    }
+
+    log.info(f"🚀 Created job {job_id} for shelfy {shelfy_id}")
+
+    # Start background processing (fire and forget)
+    asyncio.create_task(
+        _process_inventory_background(
+            job_id=job_id,
+            gcs_path=gcs_path,
+            shelfy_id=shelfy_id,
+            area=area,
+            category=category,
+            period_id=period_id,
+            transrouter_url=config.transrouter_url,
+            transrouter_api_key=config.transrouter_api_key,
+        )
+    )
+
+    # Return immediately
+    return JSONResponse({
+        "status": "processing",
+        "job_id": job_id,
+        "shelfy_id": shelfy_id,
+        "check_status_url": f"/inventory/status/{job_id}",
+        "message": "Processing started. Check status at /inventory/status/{job_id}",
     })
+
+
+@router.get("/status/{job_id}")
+async def get_job_status(job_id: str):
+    """Check the status of a background processing job.
+
+    Response statuses:
+        - queued: Job created, not started
+        - downloading: Downloading audio from GCS
+        - transcribing: Transcribing audio
+        - storing: Saving inventory data
+        - success: Complete, result available
+        - error: Failed, error message available
+    """
+    job = _processing_jobs.get(job_id)
+
+    if not job:
+        return JSONResponse(
+            {"status": "error", "error": "Job not found"},
+            status_code=404
+        )
+
+    response = {
+        "job_id": job_id,
+        "status": job["status"],
+        "shelfy_id": job.get("shelfy_id"),
+        "created_at": job.get("created_at"),
+        "progress": job.get("progress", ""),
+    }
+
+    # Add result if success
+    if job["status"] == "success":
+        response["result"] = job.get("result", {})
+        response["completed_at"] = job.get("completed_at")
+
+    # Add error if failed
+    if job["status"] == "error":
+        response["error"] = job.get("error", "Unknown error")
+
+    return JSONResponse(response)
 
 
 @router.post("/record_shelfy")
