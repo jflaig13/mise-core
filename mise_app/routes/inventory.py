@@ -316,15 +316,14 @@ def _process_inventory_background(
 
         # Store shelfy record
         storage = get_shelfy_storage()
-        shelfy_record = storage.store_shelfy(
+        shelfy_record = storage.add_shelfy(
+            period_id=period_id,
             shelfy_id=shelfy_id,
             area=area,
             category=category,
-            period_id=period_id,
-            audio_path=gcs_path,
             transcript=transcript,
+            audio_path=gcs_path,
             inventory_json=inventory_json,
-            source="upload",
         )
 
         log.info(f"[{job_id}] ✅ Stored shelfy: {shelfy_id}")
