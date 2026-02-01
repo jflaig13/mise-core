@@ -141,17 +141,21 @@ async def get_upload_url(request: Request):
     if not period_id:
         period_id = normalize_period_id()
 
-    # Generate shelfy ID and GCS path
+    # Generate signed URL for upload (valid for 1 hour)
+    # Use IAM signBlob API directly since Cloud Run doesn't have service account keys
+    # CRITICAL: Use single timestamp for BOTH filename AND signature to avoid drift
+    from datetime import datetime as dt, timedelta
+
+    # Single timestamp source for everything
+    now = dt.utcnow()
+
+    # Generate shelfy ID and GCS path using the same timestamp
     shelfy_id = generate_shelfy_id(area)
-    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    timestamp = now.strftime("%Y%m%d_%H%M%S")
     category_cap = category.capitalize()
     area_clean = area.replace(" ", "").replace("/", "")
     filename = f"{category_cap}_{area_clean}_{timestamp}{file_extension}"
     gcs_path = f"gs://mise-production-data/recordings/{period_id}/{filename}"
-
-    # Generate signed URL for upload (valid for 1 hour)
-    # Use IAM signBlob API directly since Cloud Run doesn't have service account keys
-    from datetime import datetime as dt, timedelta
     import base64
     import hashlib
     import binascii
@@ -172,8 +176,7 @@ async def get_upload_url(request: Request):
         ).text.strip()
 
         # Build the string to sign (GCS v4 signing format)
-        # IMPORTANT: Use same timestamp for all date calculations to avoid drift
-        now = dt.utcnow()
+        # Note: 'now' was already set above when generating filename
         expiration_time = now + timedelta(hours=1)
         expiration_timestamp = int(expiration_time.timestamp())
 
