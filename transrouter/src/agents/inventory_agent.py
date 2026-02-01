@@ -320,13 +320,17 @@ class InventoryAgent:
         return None
 
     def _enrich_with_conversions(self, inventory_json: Dict[str, Any]) -> Dict[str, Any]:
-        """Add conversion_display fields to inventory items.
+        """Add conversion_display and converted_quantity fields to inventory items.
+
+        This method enriches items with:
+        - conversion_display: Human-readable conversion string (e.g., "6 × 4 = 24 cans")
+        - converted_quantity: Actual converted quantity for aggregation (e.g., 24)
 
         Args:
             inventory_json: The parsed inventory JSON with items.
 
         Returns:
-            Enriched inventory JSON with conversion_display fields added to items.
+            Enriched inventory JSON with conversion fields added to items.
         """
         items = inventory_json.get("items", [])
 
@@ -338,9 +342,35 @@ class InventoryAgent:
             unit = item.get("unit", "")
             product_name = item.get("product_name", "")
 
+            # Calculate conversion display
             conversion_display = _calculate_conversion_display(
                 quantity, unit, product_name, self.catalog
             )
+
+            # Calculate converted quantity and base unit for aggregation
+            pack_info = _extract_pack_multiplier(unit)
+            if pack_info and quantity is not None:
+                multiplier, _ = pack_info
+                converted_quantity = int(quantity * multiplier)
+                item["converted_quantity"] = converted_quantity
+
+                # Extract base unit from catalog
+                catalog_unit = _find_catalog_unit(product_name, self.catalog)
+                if catalog_unit:
+                    base_unit_match = re.search(r"(can|bottle|each|keg|gallon|pound|case)", catalog_unit.lower())
+                    if base_unit_match:
+                        base_unit = base_unit_match.group(1) + "s" if not base_unit_match.group(1).endswith("s") else base_unit_match.group(1)
+                    else:
+                        base_unit = "units"
+                else:
+                    base_unit = "units"
+
+                item["base_unit"] = base_unit
+                log.debug("Converted %s %s → %d %s", quantity, unit, converted_quantity, base_unit)
+            else:
+                # No conversion needed - use raw quantity and original unit
+                item["converted_quantity"] = quantity
+                item["base_unit"] = unit
 
             if conversion_display:
                 item["conversion_display"] = conversion_display

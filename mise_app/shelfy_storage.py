@@ -284,6 +284,12 @@ class ShelfyStorage:
                 quantity = item.get("quantity")
                 unit = item.get("unit", "")
 
+                # Use converted_quantity if available (e.g., 24 cans), otherwise fallback to raw quantity
+                converted_quantity = item.get("converted_quantity", quantity)
+
+                # Use base_unit if available (e.g., "cans"), otherwise use original unit
+                base_unit = item.get("base_unit", unit)
+
                 if not product_name:
                     continue
 
@@ -294,13 +300,14 @@ class ShelfyStorage:
                     product_totals[key] = {
                         "product_name": product_name,  # Keep original casing from first occurrence
                         "total_quantity": 0,
-                        "unit": unit,
+                        "unit": base_unit,  # Use base unit for final aggregated display
                         "category": shelfy_category,
                     }
 
-                # Sum quantity (skip if null)
-                if quantity is not None:
-                    product_totals[key]["total_quantity"] += quantity
+                # Sum converted quantity (skip if null)
+                # This ensures "6 4-packs" contributes 24 to the total, not 6
+                if converted_quantity is not None:
+                    product_totals[key]["total_quantity"] += converted_quantity
 
         # Sort by product name
         items = sorted(product_totals.values(), key=lambda x: x["product_name"])
