@@ -171,8 +171,12 @@ async def record_shelfy(
         )
 
     transcript = result.get("transcript", "")
-    inventory_json = result.get("inventory_json", {})
-    log.info(f"🗄️ Processing complete: {len(transcript)} chars, {len(inventory_json.get('items', []))} items")
+
+    # Extract inventory_json from payload (transrouter wraps it in payload object)
+    payload = result.get("payload", {})
+    inventory_json = payload.get("inventory_json", {})
+
+    log.info(f"🗄️ Processing complete: {len(transcript)} chars, {len(inventory_json.get('items', []))} items parsed")
 
     # Normalize period_id (detect from transcript or use current month)
     if not period_id:
@@ -590,8 +594,7 @@ async def inventory_totals_page(request: Request, period_id: str):
     kitchen_aggregated = storage.get_aggregated_totals(period_id, category="kitchen")
     bar_aggregated = storage.get_aggregated_totals(period_id, category="bar")
 
-    log.info(f"📊 Totals page for period {period_id}: kitchen={len(kitchen_aggregated.get('items', []))} items, bar={len(bar_aggregated.get('items', []))} items")
-    log.info(f"📊 Bar aggregated: {bar_aggregated}")
+    log.info(f"📊 Totals for {period_id}: kitchen={len(kitchen_aggregated.get('items', []))} items, bar={len(bar_aggregated.get('items', []))} items")
 
     context = get_template_context(request)
     context.update({
