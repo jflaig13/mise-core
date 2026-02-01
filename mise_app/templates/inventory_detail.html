@@ -39,6 +39,11 @@
                         {% if item.quantity %}{{ item.quantity }}{% else %}—{% endif %}
                         <span class="text-sm font-normal text-mise-navy/60">{{ item.unit }}</span>
                     </div>
+                    {% if item.conversion_display %}
+                    <div class="text-xs text-mise-navy/50 mt-1">
+                        ({{ item.conversion_display }})
+                    </div>
+                    {% endif %}
                 </div>
             </div>
             {% endfor %}

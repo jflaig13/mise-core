@@ -8,7 +8,10 @@ Pattern: Follows PayrollAgent structure (transrouter/src/agents/payroll_agent.py
 
 from __future__ import annotations
 
+import json
 import logging
+import re
+from pathlib import Path
 from typing import Any, Dict, Optional, List
 
 from ..claude_client import ClaudeClient, ClaudeConfig, ClaudeResponse
@@ -24,6 +27,129 @@ class InventoryAgentError(Exception):
     """Raised when inventory agent encounters an error."""
 
     pass
+
+
+def _load_catalog() -> Dict[str, Any]:
+    """Load the inventory catalog JSON."""
+    catalog_path = Path(__file__).parent.parent.parent.parent / "inventory_agent" / "inventory_catalog.json"
+
+    if not catalog_path.exists():
+        log.warning("Inventory catalog not found at %s", catalog_path)
+        return {}
+
+    try:
+        with open(catalog_path, "r") as f:
+            return json.load(f)
+    except Exception as e:
+        log.error("Failed to load inventory catalog: %s", e)
+        return {}
+
+
+def _extract_pack_multiplier(unit: str) -> Optional[tuple[int, str]]:
+    """Extract pack multiplier from unit string.
+
+    Examples:
+        "4-pack" -> (4, "pack")
+        "6-pack" -> (6, "pack")
+        "12-pack" -> (12, "pack")
+        "case" -> (24, "case")  # Standard case size
+        "bottles" -> None
+
+    Returns:
+        Tuple of (multiplier, base_unit) or None if no pack size detected.
+    """
+    unit_lower = unit.lower().strip()
+
+    # Match patterns like "4-pack", "6-packs", "12 pack"
+    pack_match = re.match(r"(\d+)[\s\-]?packs?", unit_lower)
+    if pack_match:
+        return (int(pack_match.group(1)), "pack")
+
+    # Case (standard 24 count for cans/bottles)
+    if "case" in unit_lower:
+        return (24, "case")
+
+    return None
+
+
+def _find_catalog_unit(product_name: str, catalog: Dict[str, Any]) -> Optional[str]:
+    """Find the catalog's report_by_unit for a product.
+
+    Args:
+        product_name: Product name to search for.
+        catalog: Full catalog dict.
+
+    Returns:
+        The report_by_unit string, or None if not found.
+    """
+    product_lower = product_name.lower()
+
+    # Search all categories
+    for category_name, category_items in catalog.items():
+        if category_name == "global_rules":
+            continue
+
+        if not isinstance(category_items, list):
+            continue
+
+        for item in category_items:
+            if not isinstance(item, dict):
+                continue
+
+            item_name = item.get("name", "").lower()
+
+            # Exact match or fuzzy match
+            if item_name == product_lower or product_lower in item_name or item_name in product_lower:
+                return item.get("report_by_unit")
+
+    return None
+
+
+def _calculate_conversion_display(
+    quantity: Optional[float],
+    unit: str,
+    product_name: str,
+    catalog: Dict[str, Any]
+) -> Optional[str]:
+    """Calculate conversion display string for an inventory item.
+
+    Args:
+        quantity: The quantity (e.g., 6)
+        unit: The unit string (e.g., "4-packs")
+        product_name: Product name to look up in catalog
+        catalog: Full catalog
+
+    Returns:
+        Conversion display string like "6 × 4 = 24 cans" or None if no conversion needed.
+    """
+    if quantity is None or quantity == 0:
+        return None
+
+    # Extract pack multiplier
+    pack_info = _extract_pack_multiplier(unit)
+    if not pack_info:
+        return None  # No pack size detected
+
+    multiplier, _ = pack_info
+
+    # Calculate total
+    total = int(quantity * multiplier)
+
+    # Try to find the catalog unit
+    catalog_unit = _find_catalog_unit(product_name, catalog)
+
+    if catalog_unit:
+        # Extract base unit from catalog (e.g., "Can (12 Fluid Ounces)" -> "cans")
+        base_unit_match = re.search(r"(can|bottle|each|keg|gallon|pound|case)", catalog_unit.lower())
+        if base_unit_match:
+            base_unit = base_unit_match.group(1) + "s" if not base_unit_match.group(1).endswith("s") else base_unit_match.group(1)
+        else:
+            base_unit = "units"
+    else:
+        # Default to generic unit
+        base_unit = "units"
+
+    return f"{int(quantity)} × {multiplier} = {total} {base_unit}"
 
 
 class InventoryAgent:
@@ -57,6 +183,14 @@ class InventoryAgent:
             self.claude_client = ClaudeClient(config=claude_config)
 
         self._system_prompt_cache: Dict[str, str] = {}
+        self._catalog: Optional[Dict[str, Any]] = None
+
+    @property
+    def catalog(self) -> Dict[str, Any]:
+        """Lazy-load and cache the inventory catalog."""
+        if self._catalog is None:
+            self._catalog = _load_catalog()
+        return self._catalog
 
     def system_prompt(self, category: str) -> str:
         """Get cached system prompt for category."""
@@ -129,16 +263,19 @@ class InventoryAgent:
                 "raw_response": response.content,
             }
 
+        # Enrich with conversion displays for subfinal counts
+        enriched_inventory = self._enrich_with_conversions(response.json_data)
+
         log.info(
             "Successfully parsed inventory transcript (items=%d, category=%s)",
-            len(response.json_data.get("items", [])),
+            len(enriched_inventory.get("items", [])),
             category,
         )
 
         return {
             "agent": "inventory",
             "status": "success",
-            "inventory_json": response.json_data,
+            "inventory_json": enriched_inventory,
             "raw_response": response.content,
             "usage": response.usage,
         }
@@ -181,6 +318,35 @@ class InventoryAgent:
                     return f"Item {idx} quantity must be a number or null"
 
         return None
+
+    def _enrich_with_conversions(self, inventory_json: Dict[str, Any]) -> Dict[str, Any]:
+        """Add conversion_display fields to inventory items.
+
+        Args:
+            inventory_json: The parsed inventory JSON with items.
+
+        Returns:
+            Enriched inventory JSON with conversion_display fields added to items.
+        """
+        items = inventory_json.get("items", [])
+
+        for item in items:
+            if not isinstance(item, dict):
+                continue
+
+            quantity = item.get("quantity")
+            unit = item.get("unit", "")
+            product_name = item.get("product_name", "")
+
+            conversion_display = _calculate_conversion_display(
+                quantity, unit, product_name, self.catalog
+            )
+
+            if conversion_display:
+                item["conversion_display"] = conversion_display
+                log.debug("Added conversion for %s: %s", product_name, conversion_display)
+
+        return inventory_json
 
 
 # Module-level instance for simple usage

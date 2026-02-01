@@ -4,6 +4,7 @@
 1. **Safety over speed.** No vibe coding. If unsure, stop and ask.
 2. **Repo is truth.** Search this repo for answers before asking me.
 3. **Log everything.** All changes must be documented.
+4. **AGI-level reasoning.** Always consider what AGI would conclude. Challenge assumptions, surface blind spots, think in systems.
 
 ## ⚠️ CRITICAL: Read This First
 
@@ -12,6 +13,12 @@
 This file contains the mandatory search protocol. Violating it wastes time, breaks trust, and risks production bugs.
 
 **Key rule:** Never write code without searching the codebase for existing implementations, policies, and specs.
+
+**Before making ANY significant decisions, read: `AGI_STANDARD.md`**
+
+This file contains the AGI-level reasoning framework. Every decision must pass the test: "What would AGI conclude?"
+
+**Key questions:** Are we solving the right problem? What are we NOT considering? What would break this? Is there a simpler solution? What does success look like?
 
 ## New Session Initialization
 
@@ -31,6 +38,7 @@ This ensures every new session is properly initialized with project context.
 ## Key Documentation (read when relevant, not every request)
 **Safety Protocols:**
 - `SEARCH_FIRST.md` — **MANDATORY:** Search protocol before ANY changes
+- `AGI_STANDARD.md` — **MANDATORY:** AGI-level reasoning for all decisions
 - `VALUES_CORE.md` — Primary Axiom, immutable constraints
 - `AGENT_POLICY.md` — Scope, boundaries, safety rules
 - `docs/brain/*.md` — System truth, memory rules, workflow primacy
@@ -45,6 +53,16 @@ This ensures every new session is properly initialized with project context.
 
 **Architecture:**
 Mise is a multi-agent restaurant ops system. Transrouter coordinates domain agents (Payroll, Inventory, Ordering, Scheduling, Forecasting, General Ops). Each agent has its own brain with Claude integration.
+
+## Inventory Terminology
+
+**Subfinal Count** = The total count from ONE shelfy for a given product
+Example: "6 4-packs of High Rise Blueberry" recorded in The Office shelfy
+
+**Final Count** = The total count from ALL shelfies combined for a given product
+Example: "48 cans total" aggregated from The Office (24 cans) + Walk-in (24 cans)
+
+**Important:** Conversion calculations (e.g., "6 × 4 = 24 cans") should be shown next to subfinal counts so users can verify the math before the count is added to the final aggregated total.
 
 ## Testing & Debugging
 
