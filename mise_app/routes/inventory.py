@@ -183,9 +183,10 @@ async def get_upload_url(request: Request):
         # Canonical request components
         method = "PUT"
         resource_path = f"/mise-production-data/recordings/{period_id}/{filename}"
-        canonical_query_params = f"X-Goog-Algorithm=GOOG4-RSA-SHA256&X-Goog-Credential={credential.replace('/', '%2F')}&X-Goog-Date={dt.utcnow().strftime('%Y%m%dT%H%M%SZ')}&X-Goog-Expires=3600&X-Goog-SignedHeaders=host"
-        canonical_headers = "host:storage.googleapis.com\n"
-        signed_headers = "host"
+        goog_date = dt.utcnow().strftime('%Y%m%dT%H%M%SZ')
+        canonical_query_params = f"X-Goog-Algorithm=GOOG4-RSA-SHA256&X-Goog-Credential={credential.replace('/', '%2F')}&X-Goog-Date={goog_date}&X-Goog-Expires=3600&X-Goog-SignedHeaders=content-type%3Bhost"
+        canonical_headers = "content-type:audio/wav\nhost:storage.googleapis.com\n"
+        signed_headers = "content-type;host"
         payload_hash = "UNSIGNED-PAYLOAD"
 
         # Canonical request
