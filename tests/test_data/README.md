@@ -1,15 +1,38 @@
-# Inventory Test Audio Data
+# Inventory Learning Bank & Test Audio Data
 
-This directory contains real production audio recordings used for automated end-to-end testing of the inventory voice processing pipeline.
+This directory contains real production audio recordings used for:
+1. **Automated Testing** - End-to-end regression testing
+2. **Machine Learning** - Training data for model improvement
+3. **Quality Assurance** - Reference examples and validation
+4. **Continuous Learning** - Pattern discovery and system enhancement
+
+See: `docs/INVENTORY_LEARNING_BANK.md` for full learning bank documentation.
 
 ## Files
 
-- **`inventory_audio_manifest.json`** - Test case definitions with expected results
+- **`inventory_audio_manifest.json`** - Curated test cases with expected results
+- **`learning_bank_catalog.json`** - Full catalog of all recordings with metadata (generated)
 - **`inventory_audio/`** - Downloaded audio files (not in git, downloaded on-demand)
 
 ## Usage
 
-### 1. Download Test Audio Files
+### 1. Build Learning Bank Catalog
+
+```bash
+# Build complete catalog from all GCS recordings
+python tests/build_learning_catalog.py
+
+# Build catalog for specific period
+python tests/build_learning_catalog.py --period 2026-01-31
+```
+
+This generates `learning_bank_catalog.json` with metadata for all recordings:
+- Automatic metadata (filename parsing, file size)
+- Placeholders for annotations (quality scores, difficulty, notes)
+- Usage tags (training data, test cases)
+- Summary statistics
+
+### 2. Download Test Audio Files
 
 ```bash
 # Download all test audio files from GCS
