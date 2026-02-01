@@ -150,36 +150,67 @@ async def get_upload_url(request: Request):
     gcs_path = f"gs://mise-production-data/recordings/{period_id}/{filename}"
 
     # Generate signed URL for upload (valid for 1 hour)
-    from google.cloud import storage as gcs
-    from datetime import timedelta
-    from google.auth import iam
-    from google.auth.transport import requests as google_requests
+    # Use IAM signBlob API directly since Cloud Run doesn't have service account keys
+    from datetime import datetime as dt, timedelta
+    import base64
+    import hashlib
+    import binascii
+    from google.cloud import iam_credentials_v1
     import google.auth
 
     try:
         # Get default credentials and project
         credentials, project = google.auth.default()
 
-        # Create signing credentials using IAM signBlob API
-        # This works on Cloud Run without needing a service account key
-        signing_credentials = iam.Signer(
-            google_requests.Request(),
-            credentials,
-            credentials.service_account_email
+        # Get service account email
+        import requests as http_requests
+        metadata_url = "http://metadata.google.internal/computeMetadata/v1/instance/service-accounts/default/email"
+        service_account_email = http_requests.get(
+            metadata_url,
+            headers={"Metadata-Flavor": "Google"},
+            timeout=5
+        ).text.strip()
+
+        # Build the string to sign (GCS v4 signing format)
+        expiration_time = dt.utcnow() + timedelta(hours=1)
+        expiration_timestamp = int(expiration_time.timestamp())
+
+        # Credential scope
+        datestamp = dt.utcnow().strftime('%Y%m%d')
+        credential_scope = f"{datestamp}/auto/storage/goog4_request"
+        credential = f"{service_account_email}/{credential_scope}"
+
+        # Canonical request components
+        method = "PUT"
+        resource_path = f"/mise-production-data/recordings/{period_id}/{filename}"
+        canonical_query_params = f"X-Goog-Algorithm=GOOG4-RSA-SHA256&X-Goog-Credential={credential.replace('/', '%2F')}&X-Goog-Date={dt.utcnow().strftime('%Y%m%dT%H%M%SZ')}&X-Goog-Expires=3600&X-Goog-SignedHeaders=host"
+        canonical_headers = "host:storage.googleapis.com\n"
+        signed_headers = "host"
+        payload_hash = "UNSIGNED-PAYLOAD"
+
+        # Canonical request
+        canonical_request = f"{method}\n{resource_path}\n{canonical_query_params}\n{canonical_headers}\n{signed_headers}\n{payload_hash}"
+
+        # String to sign
+        canonical_request_hash = hashlib.sha256(canonical_request.encode()).hexdigest()
+        string_to_sign = f"GOOG4-RSA-SHA256\n{dt.utcnow().strftime('%Y%m%dT%H%M%SZ')}\n{credential_scope}\n{canonical_request_hash}"
+
+        # Sign using IAM signBlob API
+        iam_client = iam_credentials_v1.IAMCredentialsClient(credentials=credentials)
+        service_account_name = f"projects/-/serviceAccounts/{service_account_email}"
+
+        sign_response = iam_client.sign_blob(
+            request={
+                "name": service_account_name,
+                "payload": string_to_sign.encode()
+            }
         )
 
-        client = gcs.Client(credentials=credentials, project=project)
-        bucket = client.bucket("mise-production-data")
-        blob = bucket.blob(f"recordings/{period_id}/{filename}")
+        # Convert signature to hex
+        signature = binascii.hexlify(sign_response.signed_blob).decode()
 
-        # Generate signed URL using IAM signBlob (works without private key)
-        upload_url = blob.generate_signed_url(
-            version="v4",
-            expiration=timedelta(hours=1),
-            method="PUT",
-            content_type="audio/*",
-            credentials=signing_credentials
-        )
+        # Build final signed URL
+        upload_url = f"https://storage.googleapis.com{resource_path}?{canonical_query_params}&X-Goog-Signature={signature}"
 
         return JSONResponse({
             "status": "success",
