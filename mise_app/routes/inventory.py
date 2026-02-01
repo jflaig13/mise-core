@@ -152,18 +152,33 @@ async def get_upload_url(request: Request):
     # Generate signed URL for upload (valid for 1 hour)
     from google.cloud import storage as gcs
     from datetime import timedelta
+    from google.auth import iam
+    from google.auth.transport import requests as google_requests
+    import google.auth
 
     try:
-        client = gcs.Client()
+        # Get default credentials and project
+        credentials, project = google.auth.default()
+
+        # Create signing credentials using IAM signBlob API
+        # This works on Cloud Run without needing a service account key
+        signing_credentials = iam.Signer(
+            google_requests.Request(),
+            credentials,
+            credentials.service_account_email
+        )
+
+        client = gcs.Client(credentials=credentials, project=project)
         bucket = client.bucket("mise-production-data")
         blob = bucket.blob(f"recordings/{period_id}/{filename}")
 
-        # Generate signed URL for PUT (upload)
+        # Generate signed URL using IAM signBlob (works without private key)
         upload_url = blob.generate_signed_url(
             version="v4",
             expiration=timedelta(hours=1),
             method="PUT",
-            content_type="audio/*"
+            content_type="audio/*",
+            credentials=signing_credentials
         )
 
         return JSONResponse({
