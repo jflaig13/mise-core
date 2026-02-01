@@ -189,7 +189,12 @@ async def get_upload_url(request: Request):
         method = "PUT"
         resource_path = f"/mise-production-data/recordings/{period_id}/{filename}"
         goog_date = now.strftime('%Y%m%dT%H%M%SZ')
-        canonical_query_params = f"X-Goog-Algorithm=GOOG4-RSA-SHA256&X-Goog-Credential={credential.replace('/', '%2F')}&X-Goog-Date={goog_date}&X-Goog-Expires=3600&X-Goog-SignedHeaders=content-type%3Bhost"
+
+        # Properly URL-encode the credential (encode @ and /)
+        from urllib.parse import quote
+        credential_encoded = quote(credential, safe='')
+
+        canonical_query_params = f"X-Goog-Algorithm=GOOG4-RSA-SHA256&X-Goog-Credential={credential_encoded}&X-Goog-Date={goog_date}&X-Goog-Expires=3600&X-Goog-SignedHeaders=content-type%3Bhost"
         canonical_headers = "content-type:audio/wav\nhost:storage.googleapis.com\n"
         signed_headers = "content-type;host"
         payload_hash = "UNSIGNED-PAYLOAD"
@@ -197,9 +202,9 @@ async def get_upload_url(request: Request):
         # Canonical request
         canonical_request = f"{method}\n{resource_path}\n{canonical_query_params}\n{canonical_headers}\n{signed_headers}\n{payload_hash}"
 
-        # String to sign
+        # String to sign (CRITICAL: use goog_date from 'now', not a new dt.utcnow() call!)
         canonical_request_hash = hashlib.sha256(canonical_request.encode()).hexdigest()
-        string_to_sign = f"GOOG4-RSA-SHA256\n{dt.utcnow().strftime('%Y%m%dT%H%M%SZ')}\n{credential_scope}\n{canonical_request_hash}"
+        string_to_sign = f"GOOG4-RSA-SHA256\n{goog_date}\n{credential_scope}\n{canonical_request_hash}"
 
         # Sign using IAM signBlob API
         iam_client = iam_credentials_v1.IAMCredentialsClient(credentials=credentials)

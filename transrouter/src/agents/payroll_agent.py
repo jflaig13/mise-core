@@ -546,6 +546,14 @@ class PayrollAgent:
             # For servers with tipouts, we need the AFTER tipout amount (after the = sign)
             # Pattern 1: "Name: $XX.XX - $YY.YY = $ZZ.ZZ" (with tipout calculation)
             # Pattern 2: "Name: $XX.XX" at end of line (simple, no tipout)
+
+            # Words that are NOT valid first names (from chain-of-thought reasoning)
+            invalid_first_names = {
+                "So", "And", "But", "Wait", "Actually", "Let", "Final", "Rounded",
+                "This", "The", "Therefore", "Thus", "Since", "Because", "If", "When",
+                "Total", "Full", "Utility", "Ryan's", "Austin's", "Server", "Support"
+            }
+
             for line in lines:
                 employee = None
                 amount = None
@@ -553,14 +561,21 @@ class PayrollAgent:
                 # First try: calculation line with tipout (e.g., "Austin Kelley: $155.13 - $16.50 = $138.63")
                 calc_match = re.search(r'^([A-Z][a-z]+ [A-Z][a-z]+): \$[\d.]+ - \$[\d.]+ = \$(\d+\.?\d*)', line)
                 if calc_match:
-                    employee = calc_match.group(1)
-                    amount = float(calc_match.group(2))  # AFTER tipout amount
-                else:
+                    candidate = calc_match.group(1)
+                    first_name = candidate.split()[0]
+                    if first_name not in invalid_first_names:
+                        employee = candidate
+                        amount = float(calc_match.group(2))  # AFTER tipout amount
+
+                if not employee:
                     # Fallback: simple amount line (e.g., "Kevin Worley: $99.98")
                     simple_match = re.search(r'^([A-Z][a-z]+ [A-Z][a-z]+): \$(\d+\.?\d*)\s*$', line)
                     if simple_match:
-                        employee = simple_match.group(1)
-                        amount = float(simple_match.group(2))
+                        candidate = simple_match.group(1)
+                        first_name = candidate.split()[0]
+                        if first_name not in invalid_first_names:
+                            employee = candidate
+                            amount = float(simple_match.group(2))
 
                 if employee and amount is not None:
 
@@ -625,6 +640,14 @@ class PayrollAgent:
 
             # Extract employee amounts from detail lines
             # For servers with tipouts, we need the AFTER tipout amount (after the = sign)
+
+            # Words that are NOT valid first names (from chain-of-thought reasoning)
+            invalid_first_names = {
+                "So", "And", "But", "Wait", "Actually", "Let", "Final", "Rounded",
+                "This", "The", "Therefore", "Thus", "Since", "Because", "If", "When",
+                "Total", "Full", "Utility", "Ryan's", "Austin's", "Server", "Support"
+            }
+
             for line in lines:
                 employee = None
                 amount = None
@@ -636,14 +659,21 @@ class PayrollAgent:
                 # First try: calculation line with tipout (e.g., "Austin Kelley: $155.13 - $16.50 = $138.63")
                 calc_match = re.search(r'^([A-Z][a-z]+ [A-Z][a-z]+): \$[\d.]+ - \$[\d.]+ = \$(\d+\.?\d*)', line)
                 if calc_match:
-                    employee = calc_match.group(1)
-                    amount = float(calc_match.group(2))  # AFTER tipout amount
-                else:
+                    candidate = calc_match.group(1)
+                    first_name = candidate.split()[0]
+                    if first_name not in invalid_first_names:
+                        employee = candidate
+                        amount = float(calc_match.group(2))  # AFTER tipout amount
+
+                if not employee:
                     # Fallback: simple amount line (e.g., "Kevin Worley: $99.98")
                     simple_match = re.search(r'^([A-Z][a-z]+ [A-Z][a-z]+): \$(\d+\.?\d*)\s*$', line)
                     if simple_match:
-                        employee = simple_match.group(1)
-                        amount = float(simple_match.group(2))
+                        candidate = simple_match.group(1)
+                        first_name = candidate.split()[0]
+                        if first_name not in invalid_first_names:
+                            employee = candidate
+                            amount = float(simple_match.group(2))
 
                 if employee and amount is not None:
                     if employee not in expected_values:

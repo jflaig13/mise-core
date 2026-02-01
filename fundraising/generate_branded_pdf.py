@@ -17,6 +17,7 @@ CREAM = "#F9F6F1"
 # Paths
 SCRIPT_DIR = Path(__file__).parent
 LOGO_PATH = Path.home() / "mise-core/Branding/Logo Files/Updated Mise Logo Pronunciation.png"
+ICON_PATH = Path.home() / "mise-core/Branding/Logo Files/Icon No Background.png"
 OUTPUT_DIR = Path.home() / "mise-core/fundraising"
 
 def get_logo_base64():
@@ -27,8 +28,41 @@ def get_logo_base64():
         return f"data:image/png;base64,{logo_data}"
     return None
 
-def get_css():
+def get_icon_base64():
+    """Read audiowave icon and convert to base64 for bullet points."""
+    if ICON_PATH.exists():
+        with open(ICON_PATH, "rb") as f:
+            icon_data = base64.b64encode(f.read()).decode("utf-8")
+        return f"data:image/png;base64,{icon_data}"
+    return None
+
+def get_css(icon_base64=None):
     """Return the CSS styling for the PDF."""
+    # Bullet point style - use audiowave icon if available
+    bullet_style = ""
+    if icon_base64:
+        bullet_style = f"""
+        ul {{
+            list-style: none;
+            padding-left: 28px;
+        }}
+        ul li {{
+            position: relative;
+            padding-left: 4px;
+        }}
+        ul li::before {{
+            content: '';
+            position: absolute;
+            left: -24px;
+            top: 2px;
+            width: 16px;
+            height: 16px;
+            background-image: url('{icon_base64}');
+            background-size: contain;
+            background-repeat: no-repeat;
+        }}
+        """
+
     return CSS(string=f"""
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
@@ -189,22 +223,229 @@ def get_css():
             text-align: center;
         }}
 
+        /* ========== CALLOUT BOXES ========== */
+        .callout {{
+            margin: 20px 0;
+            padding: 16px 20px;
+            border-radius: 6px;
+            border-left: 4px solid;
+            page-break-inside: avoid;
+        }}
+
+        .callout-title {{
+            font-weight: 600;
+            font-size: 11pt;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }}
+
+        .callout.note {{
+            background-color: #E8EBF0;
+            border-left-color: {NAVY};
+        }}
+        .callout.note .callout-title {{
+            color: {NAVY};
+        }}
+
+        .callout.tip {{
+            background-color: #E6F4EA;
+            border-left-color: #2E7D32;
+        }}
+        .callout.tip .callout-title {{
+            color: #2E7D32;
+        }}
+
+        .callout.warning {{
+            background-color: #FFF3E0;
+            border-left-color: #E65100;
+        }}
+        .callout.warning .callout-title {{
+            color: #E65100;
+        }}
+
+        .callout.important {{
+            background-color: #FDEAEA;
+            border-left-color: {RED};
+        }}
+        .callout.important .callout-title {{
+            color: {RED};
+        }}
+
+        /* ========== PULL QUOTES ========== */
+        .pull-quote {{
+            font-size: 18pt;
+            font-weight: 500;
+            font-style: italic;
+            color: {NAVY};
+            text-align: center;
+            margin: 32px 40px;
+            padding: 24px 0;
+            border-top: 3px solid {RED};
+            border-bottom: 3px solid {RED};
+            line-height: 1.4;
+            page-break-inside: avoid;
+        }}
+
+        .pull-quote .attribution {{
+            font-size: 11pt;
+            font-weight: 400;
+            font-style: normal;
+            color: {RED};
+            margin-top: 12px;
+        }}
+
+        /* ========== KEY STATS / METRICS ========== */
+        .stat-box {{
+            display: inline-block;
+            text-align: center;
+            padding: 20px 30px;
+            margin: 10px;
+            background-color: {CREAM};
+            border-radius: 8px;
+            page-break-inside: avoid;
+        }}
+
+        .stat-box .number {{
+            font-size: 32pt;
+            font-weight: 700;
+            color: {RED};
+            line-height: 1;
+        }}
+
+        .stat-box .label {{
+            font-size: 10pt;
+            font-weight: 500;
+            color: {NAVY};
+            margin-top: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }}
+
+        .stats-row {{
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin: 24px 0;
+        }}
+
+        /* ========== DIAGRAMS / FIGURES ========== */
+        figure {{
+            margin: 24px 0;
+            text-align: center;
+            page-break-inside: avoid;
+        }}
+
+        figure img {{
+            max-width: 100%;
+            height: auto;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }}
+
+        figcaption {{
+            font-size: 10pt;
+            font-style: italic;
+            color: #666;
+            margin-top: 8px;
+        }}
+
+        /* ASCII diagram styling */
+        .diagram {{
+            font-family: 'SF Mono', Menlo, Monaco, monospace;
+            font-size: 9pt;
+            background-color: {CREAM};
+            padding: 20px;
+            border-radius: 6px;
+            overflow-x: auto;
+            white-space: pre;
+            line-height: 1.3;
+            margin: 20px 0;
+            page-break-inside: avoid;
+        }}
+
+        /* ========== ICON HELPERS ========== */
+        .icon {{
+            display: inline-block;
+            width: 20px;
+            text-align: center;
+        }}
+
+        .check {{ color: #2E7D32; }}
+        .cross {{ color: {RED}; }}
+        .arrow {{ color: {NAVY}; }}
+        .star {{ color: #F9A825; }}
+
+        /* ========== COMPARISON TABLE ========== */
+        .comparison td:first-child {{
+            font-weight: 600;
+            background-color: {CREAM};
+        }}
+
+        .comparison .yes {{
+            color: #2E7D32;
+            font-weight: 600;
+        }}
+
+        .comparison .no {{
+            color: {RED};
+            font-weight: 600;
+        }}
+
+        /* ========== TIMELINE ========== */
+        .timeline {{
+            margin: 24px 0;
+            padding-left: 30px;
+            border-left: 3px solid {NAVY};
+        }}
+
+        .timeline-item {{
+            position: relative;
+            margin-bottom: 20px;
+            padding-left: 20px;
+        }}
+
+        .timeline-item::before {{
+            content: '';
+            position: absolute;
+            left: -36px;
+            top: 4px;
+            width: 12px;
+            height: 12px;
+            background-color: {RED};
+            border-radius: 50%;
+            border: 2px solid white;
+        }}
+
+        .timeline-item .date {{
+            font-weight: 600;
+            color: {RED};
+            font-size: 10pt;
+        }}
+
+        .timeline-item .event {{
+            color: {NAVY};
+        }}
+
         /* Page break hints */
         h2 {{
             page-break-after: avoid;
         }}
 
-        table, figure {{
+        table, figure, .callout, .pull-quote, .stat-box, .diagram {{
             page-break-inside: avoid;
         }}
+
+        {bullet_style}
     """)
 
 def markdown_to_html(md_content, title, include_logo=True):
     """Convert markdown to styled HTML."""
-    # Convert markdown to HTML
+    # Convert markdown to HTML (md_in_html allows HTML blocks with markdown inside)
     html_content = markdown.markdown(
         md_content,
-        extensions=['tables', 'fenced_code', 'toc']
+        extensions=['tables', 'fenced_code', 'toc', 'md_in_html']
     )
 
     # Build logo header
@@ -257,10 +498,13 @@ def generate_pdf(md_file, output_name, title):
     # Ensure output directory exists
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 
+    # Get audiowave icon for bullet points
+    icon_base64 = get_icon_base64()
+
     # Generate PDF
     HTML(string=html_content).write_pdf(
         output_path,
-        stylesheets=[get_css()]
+        stylesheets=[get_css(icon_base64)]
     )
 
     print(f"Saved to: {output_path}")
@@ -313,6 +557,15 @@ def main():
         "CoCounsel_Improvements_Guide.md",
         "CoCounsel_Improvements_Guide.pdf",
         "CoCounsel-Inspired Improvements to Mise"
+    )
+    print()
+
+    # Generate Trillion Dollar AI Buildout PDF
+    print("-" * 50)
+    generate_pdf(
+        "TRILLION_DOLLAR_AI_BUILDOUT.md",
+        "Trillion_Dollar_AI_Buildout.pdf",
+        "Inside the Trillion-Dollar AI Buildout"
     )
     print()
 

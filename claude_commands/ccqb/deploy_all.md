@@ -17,6 +17,20 @@
    - Example: "January 19, 2026 is a MONDAY. Use MPM for PM shift."
    - Claude can no longer guess dates wrong
 
+3. **`transrouter/src/prompts/payroll_prompt.py`** - Partial tipout calculation fix
+   - Added complete worked example for support staff taking a break on AM shift
+   - Clarified: Server only pays support staff's EARNED portion, NOT full tipout
+   - Example: Ryan takes 2hr break → works 69.2% → gets 69.2% of tipout
+   - Austin pays $6.65 (Ryan's earned portion), NOT $9.60 (full tipout)
+
+4. **`transrouter/src/agents/payroll_agent.py`** - Filter invalid employee names
+   - Added filter to reject names starting with "So", "And", "But", "Wait", "Actually", etc.
+   - Prevents chain-of-thought phrases like "So Austin" being parsed as employee names
+
+5. **`transrouter/src/prompts/payroll_prompt.py`** - No chain-of-thought in detail_blocks
+   - Added explicit instruction: detail_blocks must contain ONLY clean calculations
+   - NO "Wait, let me recalculate...", "Actually...", "Hmm...", etc.
+
 **Deploy command:**
 ```bash
 cd /Users/jonathanflaig/mise-core/transrouter
@@ -60,3 +74,8 @@ gcloud run deploy mise --image us-central1-docker.pkg.dev/automation-station-478
 2. Verify it detects as **TPM** (Tuesday PM), not some other day
 3. Verify tipout amounts show AFTER tipout (e.g., $138.63 not $155.13)
 4. Verify "Show Calculations" section appears on approval page
+5. Test partial tipout: "Thursday AM, utility was Ryan, he took a 2 hour break, Austin $44.95, food sales $192"
+   - Ryan should get $6.65 (69.2% of $9.60), NOT $3.84
+   - Austin should get $38.30 ($44.95 - $6.65), NOT $35.35
+   - Only 2 employees should appear (Austin + Ryan), NOT 3 (no "So Austin")
+6. Verify detail_blocks show clean calculations, NOT chain-of-thought reasoning

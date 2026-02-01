@@ -48,6 +48,11 @@ Every Mise doc produces **3 files**:
 - **Placement:** Top-left with vertical Navy accent line (3px wide)
 - **Max width:** 180px
 
+### Bullet Points
+- **Icon:** Mise audiowave (`~/mise-core/Branding/Logo Files/Icon No Background.png`)
+- **Size:** 16px
+- **Applied to:** All unordered lists (`<ul>`) automatically
+
 ### Page Setup
 - **Size:** Letter (8.5" x 11")
 - **Margins:** 0.75" all sides
@@ -123,6 +128,132 @@ tr:nth-child(even) {{ background-color: {CREAM}; }}
     <img src="[base64-encoded-logo]" alt="Mise Logo">
 </div>
 [markdown-converted-to-html]
+```
+
+---
+
+## Visual Aids
+
+Mise docs support rich visual elements. Use HTML blocks in markdown to access these styles.
+
+### Callout Boxes
+
+Four types available: `note`, `tip`, `warning`, `important`
+
+```html
+<div class="callout note" markdown="1">
+<div class="callout-title">📝 Note</div>
+This is additional context or background information.
+</div>
+
+<div class="callout tip" markdown="1">
+<div class="callout-title">💡 Tip</div>
+A helpful suggestion or best practice.
+</div>
+
+<div class="callout warning" markdown="1">
+<div class="callout-title">⚠️ Warning</div>
+Something to watch out for.
+</div>
+
+<div class="callout important" markdown="1">
+<div class="callout-title">🔴 Important</div>
+Critical information that must not be missed.
+</div>
+```
+
+### Pull Quotes
+
+Large, centered quotes for emphasis:
+
+```html
+<div class="pull-quote">
+"The quote text goes here — make it impactful."
+<div class="attribution">— Attribution</div>
+</div>
+```
+
+### Stat Boxes
+
+Display key metrics prominently:
+
+```html
+<div class="stats-row">
+<div class="stat-box">
+<div class="number">97%</div>
+<div class="label">Time Saved</div>
+</div>
+<div class="stat-box">
+<div class="number">$4.2M</div>
+<div class="label">Payroll Processed</div>
+</div>
+</div>
+```
+
+### Icons & Symbols
+
+Use Unicode symbols directly in text:
+
+| Icon | Code | Usage |
+|------|------|-------|
+| ✓ | `✓` | Success, included, yes |
+| ✗ | `✗` | Failure, excluded, no |
+| → | `→` | Flow, next step, leads to |
+| ★ | `★` | Highlight, important |
+| 📝 | `📝` | Note |
+| 💡 | `💡` | Tip, idea |
+| ⚠️ | `⚠️` | Warning |
+| 🔴 | `🔴` | Critical, important |
+| 📌 | `📌` | Pinned, key point |
+
+### Diagrams
+
+ASCII diagrams with monospace styling:
+
+```html
+<div class="diagram">
+┌──────────────┐     ┌──────────────┐     ┌──────────────┐
+│   MANAGER    │ ──→ │  TRANSROUTER │ ──→ │    AGENT     │
+│   (Voice)    │     │   (Parse)    │     │   (Execute)  │
+└──────────────┘     └──────────────┘     └──────────────┘
+</div>
+```
+
+For images/charts, use standard figure markup:
+
+```html
+<figure>
+<img src="path/to/image.png" alt="Description">
+<figcaption>Figure 1: Caption text here</figcaption>
+</figure>
+```
+
+### Timeline
+
+Show progression of events:
+
+```html
+<div class="timeline">
+<div class="timeline-item">
+<div class="date">Q3 2025</div>
+<div class="event">Launched at Papa Surf</div>
+</div>
+<div class="timeline-item">
+<div class="date">Q1 2026</div>
+<div class="event">Seed round closed</div>
+</div>
+</div>
+```
+
+### Comparison Tables
+
+For yes/no feature comparisons:
+
+```html
+<table class="comparison">
+<tr><th>Feature</th><th>Mise</th><th>Competitor</th></tr>
+<tr><td>Voice-first</td><td class="yes">✓ Yes</td><td class="no">✗ No</td></tr>
+</table>
 ```
 
 ---

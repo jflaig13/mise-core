@@ -2783,6 +2783,88 @@
      - All existing tests pass after refactor
 
      ---
+     📝 Phase 2.0: MANDATORY CODEBASE SEARCH (NEW)
+
+     **Before writing ANY code for Phase 2, execute SEARCH_FIRST protocol:**
+
+     Timeline: 30 minutes
+     Risk: CRITICAL (skip this and you'll contradict canonical policies)
+
+     Step-by-Step Search Protocol:
+
+     2.0.1 Search for Canonical Policies
+
+     # Search for existing skill/agent patterns
+     grep -r "BaseSkill\|SkillRegistry" transrouter/src/
+
+     # Search for existing agent implementations
+     ls transrouter/src/agents/
+
+     # Read PayrollAgent COMPLETELY (template for Skills)
+     cat transrouter/src/agents/payroll_agent.py
+
+     # Search brain files for architecture guidance
+     ls docs/brain/ | grep -i "agent\|skill\|architecture"
+
+     # Search workflow specs
+     grep -i "agent\|skill" workflow_specs/LPM/LPM_Workflow_Master.txt
+
+     2.0.2 Document Canonical Policies Found
+
+     Create a checklist of ALL canonical policies found:
+
+     □ BaseSkill Interface Requirements
+       - Source file: _______________
+       - Status: CANONICAL/OPTIONAL
+       - Required methods: _______________
+
+     □ Agent Registration Pattern
+       - Source file: _______________
+       - How agents are currently registered: _______________
+
+     □ Clarification Integration
+       - Source file: _______________
+       - How clarification is currently implemented: _______________
+
+     2.0.3 Read Existing Agent Code
+
+     # Read PayrollAgent implementation COMPLETELY
+     cat transrouter/src/agents/payroll_agent.py
+
+     # Note: PayrollAgent currently has these methods:
+     # - parse_transcript()
+     # - detect_missing_data()
+     # - _incorporate_clarifications()
+     # The BaseSkill interface MUST match this pattern
+
+     # Read domain router to understand wiring
+     cat transrouter/src/domain_router.py
+
+     # Note how agents are registered in DEFAULT_AGENT_REGISTRY
+
+     2.0.4 Verify Understanding
+
+     Before proceeding, answer these questions:
+
+     1. What methods does PayrollAgent currently implement?
+        Answer from search: _______________
+        Source: transrouter/src/agents/payroll_agent.py:___
+
+     2. How are agents currently registered in the domain router?
+        Answer from search: _______________
+        Source: transrouter/src/domain_router.py:___
+
+     3. What's the difference between canonical policies and historical patterns?
+        Answer: Canonical policies come from workflow specs/brain files and MUST be followed.
+        Historical patterns are observations from past data and should NEVER be assumed.
+
+     4. Does InventoryAgent exist as a full class or just a stub?
+        Answer from search: _______________
+        Source: _______________
+
+     **If you cannot answer all questions from the codebase, DO NOT PROCEED.**
+
+     ---
      📝 Phase 2.1: Define BaseSkill Interface
 
      Timeline: Day 1 (6 hours)
@@ -4306,204 +4388,541 @@
      git push origin feature/cocounsel-improvements
 
      ---
-     📝 Phase 2.4: Create Inventory Skill Stub
+     📝 Phase 2.4: Implement InventoryAgent (NEW - Expanded from Stub)
 
-     Timeline: Day 5 (4 hours)
-     Files: transrouter/src/skills/inventory_skill.py (NEW)
-     Dependencies: 2.1, 2.2 (BaseSkill and Registry)
-     Risk: LOW (creating new skill, not modifying existing)
+     Timeline: Day 5 (8 hours) ← Changed from 4 hours
+     Files: Multiple (NEW)
+     Dependencies: 2.1, 2.2 (BaseSkill and Registry must exist)
+     Risk: MEDIUM (building new agent from scratch)
+
+     Background:
+     Currently, InventoryAgent is only a 4-line stub function in domain_router.py.
+     There is a legacy standalone parser in inventory_agent/, but it's not integrated
+     with the transrouter agent system. We need to build a complete InventoryAgent
+     following the PayrollAgent pattern (762 lines)
 
      Step-by-Step Implementation
 
-     2.4.1 Create InventorySkill Stub
+     2.4.1 Create InventoryAgent Class
 
-     File: transrouter/src/skills/inventory_skill.py (NEW)
+     File: transrouter/src/agents/inventory_agent.py (NEW)
 
      """
-     Inventory Skill (Stub)
+     Inventory Agent
 
-     Processes inventory transcripts and generates counts.
+     Processes inventory voice transcripts and generates structured inventory counts.
 
-     NOTE: This is a STUB implementation for Phase 2.
-     Full implementation will come later.
+     Pattern: Follows PayrollAgent structure (transrouter/src/agents/payroll_agent.py)
      """
 
      from typing import Dict, Any, List, Optional
-     from transrouter.src.skills.base_skill import BaseSkill
-     from transrouter.src.schemas import (
-         ParseResult,
-         ClarificationQuestion,
-         ClarificationResponse
+     from transrouter.src.schemas import ParseResult
+     from transrouter.src.claude_client import get_claude_client
+
+
+     class InventoryAgent:
+         """
+         Inventory processing agent.
+
+         Converts voice transcripts → structured inventory counts.
+         """
+
+         def __init__(self, claude_client=None):
+             self.claude_client = claude_client or get_claude_client()
+             self._system_prompt_cache = None
+
+         def parse_transcript(self, transcript: str, category: str = "bar") -> dict:
+             """
+             Parse inventory transcript into structured counts.
+
+             Args:
+                 transcript: Raw transcript from Whisper ASR
+                 category: Inventory category (bar, food, supplies)
+
+             Returns:
+                 Dict with:
+                 - status: "success" | "error"
+                 - inventory_json: Structured counts if success
+                 - error: Error message if failed
+             """
+             # Build system prompt
+             system_prompt = self._build_system_prompt(category)
+
+             # Build user prompt
+             user_prompt = self._build_user_prompt(transcript, category)
+
+             # Call Claude API
+             try:
+                 response = self.claude_client.call(
+                     model="claude-sonnet-4",
+                     system=system_prompt,
+                     user_prompt=user_prompt,
+                     temperature=0.0
+                 )
+
+                 if not response.success:
+                     return {
+                         "status": "error",
+                         "error": f"Claude API error: {response.error}"
+                     }
+
+                 # Extract JSON from response
+                 inventory_json = self._extract_inventory_json(response.text)
+
+                 # Validate structure
+                 is_valid, error_msg = self._validate_inventory_json(inventory_json, category)
+                 if not is_valid:
+                     return {
+                         "status": "error",
+                         "error": f"Validation failed: {error_msg}"
+                     }
+
+                 return {
+                     "status": "success",
+                     "inventory_json": inventory_json
+                 }
+
+             except Exception as e:
+                 return {
+                     "status": "error",
+                     "error": str(e)
+                 }
+
+         def _build_system_prompt(self, category: str) -> str:
+             """Build system prompt for inventory parsing."""
+             # Load catalog
+             catalog = self._load_catalog(category)
+
+             prompt = f"""
+     You are an expert inventory parser for restaurant operations.
+
+     Your task: Convert a voice transcript of inventory counts into structured JSON.
+
+     CATEGORY: {category}
+
+     PRODUCT CATALOG (for normalization):
+     {self._format_catalog(catalog)}
+
+     OUTPUT FORMAT:
+     {{
+       "category": "{category}",
+       "items": [
+         {{
+           "product_name": "...",
+           "quantity": ...,
+           "unit": "...",
+           "notes": "..."
+         }}
+       ],
+       "counted_by": "...",
+       "timestamp": "..."
+     }}
+
+     RULES:
+     1. Normalize product names to catalog names
+     2. Handle Whisper ASR errors (e.g., "cab sauv" → "Cabernet Sauvignon")
+     3. Infer units if not stated (bottles for wine, cases for beer, etc.)
+     4. If quantity unclear, set to null and add note
+     5. DO NOT invent products not in transcript
+     6. DO NOT assume quantities not stated
+
+     Respond ONLY with the JSON, no other text.
+     """
+             return prompt
+
+         def _build_user_prompt(self, transcript: str, category: str) -> str:
+             """Build user prompt with transcript."""
+             return f"""
+     Parse this inventory transcript into JSON:
+
+     TRANSCRIPT:
+     {transcript}
+
+     CATEGORY: {category}
+
+     Output JSON only.
+     """
+
+         def _load_catalog(self, category: str) -> dict:
+             """Load product catalog for normalization."""
+             import json
+             from pathlib import Path
+
+             catalog_path = Path("inventory_agent/inventory_catalog.json")
+             if not catalog_path.exists():
+                 return {}
+
+             with open(catalog_path, "r") as f:
+                 full_catalog = json.load(f)
+
+             # Filter by category
+             return full_catalog.get(category, {})
+
+         def _format_catalog(self, catalog: dict) -> str:
+             """Format catalog for prompt."""
+             if not catalog:
+                 return "(No catalog available)"
+
+             lines = []
+             for product_id, product_data in catalog.items():
+                 name = product_data.get("name", product_id)
+                 variants = product_data.get("variants", [])
+                 lines.append(f"- {name} (variants: {', '.join(variants)})")
+
+             return "\n".join(lines[:50])  # Limit to 50 products to avoid token bloat
+
+         def _extract_inventory_json(self, response_text: str) -> dict:
+             """Extract JSON from Claude response."""
+             import json
+             import re
+
+             # Look for JSON in response
+             json_match = re.search(r'\{.*\}', response_text, re.DOTALL)
+             if not json_match:
+                 raise ValueError("No JSON found in response")
+
+             json_str = json_match.group(0)
+             return json.loads(json_str)
+
+         def _validate_inventory_json(self, inventory_json: dict, category: str) -> tuple[bool, Optional[str]]:
+             """Validate inventory JSON structure."""
+             # Check required fields
+             required_fields = ["category", "items"]
+             for field in required_fields:
+                 if field not in inventory_json:
+                     return False, f"Missing required field: {field}"
+
+             # Check category matches
+             if inventory_json.get("category") != category:
+                 return False, f"Category mismatch: expected {category}, got {inventory_json.get('category')}"
+
+             # Check items structure
+             items = inventory_json.get("items", [])
+             if not isinstance(items, list):
+                 return False, "items must be a list"
+
+             for idx, item in enumerate(items):
+                 if not isinstance(item, dict):
+                     return False, f"Item {idx} is not a dict"
+
+                 if "product_name" not in item:
+                     return False, f"Item {idx} missing product_name"
+
+             return True, None
+
+
+     def handle_inventory_request(request: Dict[str, Any]) -> Dict[str, Any]:
+         """
+         Handle inventory parsing request.
+
+         This is the entry point called by domain_router.py.
+
+         Args:
+             request: Dict with:
+             - transcript: str
+             - category: str (bar, food, supplies)
+             - period_id: str (optional)
+
+         Returns:
+             Dict with:
+             - agent: "inventory"
+             - status: "success" | "error"
+             - inventory_json: dict (if success)
+             - error: str (if error)
+         """
+         agent = InventoryAgent()
+
+         transcript = request.get("transcript", "")
+         category = request.get("category", "bar")
+
+         result = agent.parse_transcript(transcript, category)
+
+         return {
+             "agent": "inventory",
+             **result
+         }
+
+     2.4.2 Create Inventory Prompt Builder
+
+     File: transrouter/src/prompts/inventory_prompt.py (NEW)
+
+     """
+     Inventory prompt builder.
+
+     Constructs system and user prompts for inventory parsing.
+     """
+
+     from pathlib import Path
+     import json
+
+
+     def build_inventory_system_prompt(category: str = "bar") -> str:
+         """
+         Build system prompt for inventory parsing.
+
+         Args:
+             category: Inventory category (bar, food, supplies)
+
+         Returns:
+             System prompt string
+         """
+         # Load catalog
+         catalog_path = Path("inventory_agent/inventory_catalog.json")
+         catalog = {}
+
+         if catalog_path.exists():
+             with open(catalog_path, "r") as f:
+                 full_catalog = json.load(f)
+                 catalog = full_catalog.get(category, {})
+
+         # Format catalog
+         catalog_text = _format_catalog(catalog)
+
+         # Build prompt
+         prompt = f"""
+     You are an expert inventory parser for restaurant operations.
+
+     TASK: Convert voice transcript of inventory counts → structured JSON
+
+     CATEGORY: {category}
+
+     PRODUCT CATALOG (for name normalization):
+     {catalog_text}
+
+     OUTPUT SCHEMA:
+     {{
+       "category": "{category}",
+       "items": [
+         {{
+           "product_name": "normalized product name from catalog",
+           "quantity": number or null,
+           "unit": "bottles|cases|each|lbs|etc",
+           "notes": "optional notes if ambiguous"
+         }}
+       ],
+       "counted_by": "person who did inventory",
+       "timestamp": "ISO 8601 timestamp"
+     }}
+
+     PARSING RULES:
+     1. Normalize product names to catalog (handle Whisper ASR errors)
+     2. Infer units from context (wine = bottles, beer = cases, etc.)
+     3. If quantity unclear → set null + add note
+     4. DO NOT invent products not in transcript
+     5. DO NOT assume quantities not explicitly stated
+
+     WHISPER ASR ERROR PATTERNS:
+     - "cab sauv" → "Cabernet Sauvignon"
+     - "pinot g" → "Pinot Grigio"
+     - "blue moon" might be "bloom" or "balloon"
+     - Numbers: "tree" → "three", "to" → "two"
+
+     RESPOND WITH JSON ONLY (no markdown, no explanations)
+     """
+
+         return prompt
+
+
+     def build_inventory_user_prompt(transcript: str, category: str = "bar") -> str:
+         """
+         Build user prompt with transcript.
+
+         Args:
+             transcript: Raw transcript from ASR
+             category: Inventory category
+
+         Returns:
+             User prompt string
+         """
+         return f"""
+     Parse this inventory transcript into JSON:
+
+     TRANSCRIPT:
+     \"\"\"
+     {transcript}
+     \"\"\"
+
+     CATEGORY: {category}
+
+     Output JSON only.
+     """
+
+
+     def _format_catalog(catalog: dict) -> str:
+         """Format catalog for prompt (helper)."""
+         if not catalog:
+             return "(No catalog available - use best judgment)"
+
+         lines = []
+         for product_id, product_data in list(catalog.items())[:50]:  # Limit to 50
+             name = product_data.get("name", product_id)
+             variants = product_data.get("variants", [])
+             if variants:
+                 lines.append(f"- {name} (also: {', '.join(variants[:3])})")
+             else:
+                 lines.append(f"- {name}")
+
+         return "\n".join(lines)
+
+     2.4.3 Wire to Domain Router
+
+     File: transrouter/src/domain_router.py (MODIFY)
+
+     Replace the stub function with import:
+
+     # OLD (line 19-22):
+     def _inventory_agent(request: Dict[str, Any]) -> Dict[str, Any]:
+         """Inventory agent stub - not yet implemented."""
+         log.warning("Inventory agent not yet implemented")
+         return {"agent": "inventory", "status": "not_implemented", "request": request}
+
+     # NEW (line 14):
+     from transrouter.src.agents.inventory_agent import handle_inventory_request as handle_inventory
+
+     # Update registry (line 26):
+     DEFAULT_AGENT_REGISTRY: Dict[str, Callable[[Dict[str, Any]], Dict[str, Any]]] = {
+         "payroll": handle_payroll_request,
+         "inventory": handle_inventory,  # ← Changed from _inventory_agent
+     }
+
+     2.4.4 Export from Agents Module
+
+     File: transrouter/src/agents/__init__.py (MODIFY)
+
+     # OLD (line 5):
+     __all__ = ["handle_payroll_request"]
+
+     # NEW:
+     __all__ = ["handle_payroll_request", "handle_inventory_request"]
+
+     Add import:
+     from transrouter.src.agents.inventory_agent import handle_inventory_request
+
+     2.4.5 Write Tests
+
+     File: transrouter/tests/test_inventory_agent.py (NEW)
+
+     """Tests for InventoryAgent."""
+
+     import pytest
+     from unittest.mock import MagicMock, patch
+     from transrouter.src.agents.inventory_agent import (
+         InventoryAgent,
+         handle_inventory_request
      )
 
 
-     class InventorySkill(BaseSkill):
-         """
-         Inventory processing skill.
+     @pytest.fixture
+     def mock_claude_client():
+         """Mock Claude client with deterministic response."""
+         mock_client = MagicMock()
 
-         Converts voice transcripts → inventory counts.
-
-         STUB: Minimal implementation for Phase 2 testing.
-         """
-
-         def __init__(self, restaurant_id: str = "papasurf"):
-             super().__init__(restaurant_id=restaurant_id)
-
-         @property
-         def skill_name(self) -> str:
-             return "inventory"
-
-         @property
-         def skill_version(self) -> str:
-             return "0.1.0"  # Stub version
-
-         def get_required_inputs(self) -> List[str]:
-             return ["transcript"]
-
-         def get_optional_inputs(self) -> List[str]:
-             return ["inventory_date", "category"]
-
-         def execute(
-             self,
-             inputs: Dict[str, Any],
-             clarifications: Optional[List[ClarificationResponse]] = None,
-             conversation_id: Optional[str] = None
-         ) -> ParseResult:
-             """
-             Execute inventory processing (STUB).
-
-             Args:
-                 inputs: Must contain "transcript"
-                 clarifications: Previous clarifications
-                 conversation_id: Ongoing conversation
-
-             Returns:
-                 ParseResult (stub returns success with empty data)
-             """
-             transcript = inputs["transcript"]
-
-             # STUB: Return success with placeholder data
-             return ParseResult(
-                 status="success",
-                 conversation_id=conversation_id or "stub",
-                 approval_json={
-                     "inventory_counts": {},
-                     "note": "Inventory skill stub - not yet implemented"
-                 }
-             )
-
-         def detect_missing_data(
-             self,
-             intermediate_result: Dict[str, Any],
-             inputs: Dict[str, Any]
-         ) -> List[ClarificationQuestion]:
-             """Detect missing data (STUB - returns empty)."""
-             return []
-
-         def validate_result(
-             self,
-             result: Dict[str, Any]
-         ) -> tuple[bool, Optional[str]]:
-             """Validate result (STUB - always valid)."""
-             return True, None
-
-     2.4.2 Test Auto-Discovery
-
-     # Start Python shell
-     cd ~/mise-core
-     python3
-
-     # Test auto-discovery
-     >>> from transrouter.src.skills.registry import get_skill_registry
-     >>> registry = get_skill_registry()
-     Registered skill: payroll (PayrollSkill)
-     Registered skill: inventory (InventorySkill)
-
-     >>> registry.list_skills()
-     ['payroll', 'inventory']
-
-     >>> skill = registry.get_skill("inventory")
-     >>> skill.skill_name
-     'inventory'
-
-     >>> skill.skill_version
-     '0.1.0'
-
-     2.4.3 Write Unit Test
-
-     File: tests/unit/test_inventory_skill.py (NEW)
-
-     """Unit tests for InventorySkill stub."""
-
-     import pytest
-     from transrouter.src.skills.inventory_skill import InventorySkill
-     from transrouter.src.skills.base_skill import SkillExecutor
-
-
-     def test_inventory_skill_stub():
-         """Test that inventory skill stub works."""
-         skill = InventorySkill(restaurant_id="papasurf")
-
-         assert skill.skill_name == "inventory"
-         assert skill.skill_version == "0.1.0"
-
-
-     def test_inventory_skill_execute():
-         """Test executing inventory skill stub."""
-         skill = InventorySkill()
-         executor = SkillExecutor(skill)
-
-         inputs = {
-             "transcript": "Test inventory transcript"
+         # Default response: simple bar inventory
+         mock_client.call.return_value.success = True
+         mock_client.call.return_value.text = '''
+     {
+       "category": "bar",
+       "items": [
+         {
+           "product_name": "Cabernet Sauvignon",
+           "quantity": 12,
+           "unit": "bottles",
+           "notes": ""
+         },
+         {
+           "product_name": "Pinot Grigio",
+           "quantity": 8,
+           "unit": "bottles",
+           "notes": ""
          }
+       ],
+       "counted_by": "Mike",
+       "timestamp": "2026-01-27T14:30:00Z"
+     }
+     '''
 
-         result = executor.execute_with_clarification(inputs=inputs)
-
-         assert result.status == "success"
-         assert result.approval_json is not None
-
-
-     def test_inventory_skill_in_registry():
-         """Test that inventory skill is discoverable."""
-         from transrouter.src.skills.registry import get_skill_registry
-
-         registry = get_skill_registry()
-
-         assert "inventory" in registry.list_skills()
-
-         skill = registry.get_skill("inventory")
-         assert isinstance(skill, InventorySkill)
+         return mock_client
 
 
-     # Run with: pytest tests/unit/test_inventory_skill.py -v
+     def test_inventory_agent_basic(mock_claude_client):
+         """Test basic inventory parsing."""
+         agent = InventoryAgent(claude_client=mock_claude_client)
 
-     2.4.4 Validation Checklist
+         result = agent.parse_transcript(
+             transcript="Bar inventory. Cabernet Sauvignon 12 bottles. Pinot Grigio 8 bottles. Counted by Mike.",
+             category="bar"
+         )
 
-     □ InventorySkill stub created
-     □ Auto-discovered by registry
-     □ Accessible via registry.get_skill("inventory")
-     □ Executes successfully (returns stub data)
-     □ Unit tests pass
-     □ Demonstrates extensibility (easy to add new skill)
+         assert result["status"] == "success"
+         assert "inventory_json" in result
 
-     2.4.5 Commit
+         inventory = result["inventory_json"]
+         assert inventory["category"] == "bar"
+         assert len(inventory["items"]) == 2
 
-     git add transrouter/src/skills/inventory_skill.py \
-             tests/unit/test_inventory_skill.py
 
-     git commit -m "feat(skills): Add InventorySkill stub for testing
+     def test_handle_inventory_request(mock_claude_client):
+         """Test handle_inventory_request function."""
+         with patch("transrouter.src.agents.inventory_agent.get_claude_client", return_value=mock_claude_client):
+             result = handle_inventory_request({
+                 "transcript": "Bar inventory. Cab Sauv 12. Pinot G 8.",
+                 "category": "bar"
+             })
 
-     - Create InventorySkill (implements BaseSkill)
-     - Stub implementation (returns placeholder data)
-     - Auto-discovered by SkillRegistry
-     - Unit tests confirm auto-discovery works
-     - Demonstrates extensibility of skills architecture
+             assert result["agent"] == "inventory"
+             assert result["status"] == "success"
+
+
+     def test_inventory_agent_validation_error(mock_claude_client):
+         """Test validation catches malformed JSON."""
+         # Mock returns invalid JSON (missing category)
+         mock_claude_client.call.return_value.text = '{"items": []}'
+
+         agent = InventoryAgent(claude_client=mock_claude_client)
+         result = agent.parse_transcript("Test", "bar")
+
+         assert result["status"] == "error"
+         assert "validation failed" in result["error"].lower()
+
+
+     # Run with: pytest transrouter/tests/test_inventory_agent.py -v
+
+     2.4.6 Validation Checklist
+
+     □ InventoryAgent class created (following PayrollAgent pattern)
+     □ Inventory prompt builder created
+     □ handle_inventory_request() function exported
+     □ Domain router wired to call handle_inventory_request
+     □ Agents __init__.py exports new function
+     □ Unit tests pass (≥80% coverage)
+     □ Manual test: Parse bar inventory transcript
+     □ Manual test: Parse food inventory transcript
+     □ Integration: Domain router routes to inventory correctly
+     □ No breaking changes to existing payroll flow
+
+     2.4.7 Commit
+
+     git add transrouter/src/agents/inventory_agent.py \
+             transrouter/src/prompts/inventory_prompt.py \
+             transrouter/src/domain_router.py \
+             transrouter/src/agents/__init__.py \
+             transrouter/tests/test_inventory_agent.py
+
+     git commit -m "feat(inventory): Add InventoryAgent following PayrollAgent pattern
+
+     - Create InventoryAgent class (300+ lines)
+     - Add inventory_prompt.py builder
+     - Wire handle_inventory_request() to domain router
+     - Export from agents __init__.py
+     - Add unit tests (80% coverage)
+     - Follow PayrollAgent structure for consistency
+     - Use inventory_catalog.json for product normalization
+     - Validate JSON structure before return
 
      Part of Phase 2 (Skills Architecture)
-     Ref: CoCounsel improvements plan
+     Ref: Phase 2.4 - InventoryAgent implementation
 
-     NOTE: This is a stub for Phase 2 testing.
-     Full inventory implementation will come later."
+     CLOSES: Issue where InventoryAgent was only 4-line stub"
 
      git push origin feature/cocounsel-improvements
 
@@ -4676,12 +5095,19 @@
 
      Risk Level: LOW (adding validation, not changing core logic)
 
+     **⚠️ NOTE (Jan 28, 2026 Validation)**:
+     - Phase 1 ALREADY ADDED grounding logic to PayrollAgent.detect_missing_data()
+     - grounding_check field EXISTS in ParseResult schema
+     - Grounding rules exist in payroll_prompt.py (lines 133-182)
+     - This phase ADDS automated validation (GroundingValidator class)
+     - This phase does NOT replace Phase 1 grounding, it augments it with validation
+
      ---
      🎯 Phase 3 Goals
 
      Problem Statement:
      From CoCounsel doc (page 5): "QAnon Shaman" problem:
-     "The model knows about QAnon Shaman, but if he's not in the legal document, CoCounsel must refuse to 
+     "The model knows about QAnon Shaman, but if he's not in the legal document, CoCounsel must refuse to
      reference him."
 
      For Mise:
@@ -4692,8 +5118,9 @@
      Currently, grounding is enforced via:
      1. Prompt instructions (Phase 1.4)
      2. Manual review
+     3. Basic grounding checks in detect_missing_data() (Phase 1.2)
 
-     But there's no automated check to catch violations.
+     But there's no automated VALIDATION to catch violations AFTER parsing.
 
      Solution:
      Build a Grounding Validator that:
@@ -6085,6 +6512,85 @@
      - Can confidently swap models (test before/after)
 
      ---
+     📝 Phase 4.0: MANDATORY CODEBASE SEARCH (NEW)
+
+     **Before writing ANY code for Phase 4, execute SEARCH_FIRST protocol:**
+
+     Timeline: 30 minutes
+     Risk: CRITICAL (skip this and you'll contradict canonical policies)
+
+     Step-by-Step Search Protocol:
+
+     4.0.1 Search for Canonical Policies
+
+     # Search for existing test structure
+     ls tests/regression/
+
+     # Check what test categories exist
+     grep "def test_" tests/regression/*.py
+
+     # Check for pytest.skip markers
+     grep "pytest.skip" tests/regression/
+
+     # Search brain files for testing policies
+     ls docs/brain/ | grep -i "test\|regression"
+
+     # Check existing test fixtures
+     ls tests/ -R | grep conftest
+
+     4.0.2 Document Canonical Policies Found
+
+     Create a checklist of ALL canonical policies found:
+
+     □ Test Categories Defined
+       - Source file: tests/regression/
+       - Categories: _______________
+       - Status: CANONICAL/OPTIONAL
+
+     □ Test Structure Pattern
+       - Source file: _______________
+       - Pattern used: _______________
+
+     □ Mocking Strategy
+       - Source file: _______________
+       - How Claude API is mocked: _______________
+
+     4.0.3 Read Existing Test Code
+
+     # Read existing regression tests COMPLETELY
+     cat tests/regression/test_grounding_rules.py
+     cat tests/regression/test_multi_turn.py
+
+     # Note: These tests are currently pytest.skip() placeholders
+     # The structure is already defined (30 test functions)
+     # We need to implement them, not redesign them
+
+     # Check existing test patterns
+     grep -r "@pytest.fixture" tests/
+
+     4.0.4 Verify Understanding
+
+     Before proceeding, answer these questions:
+
+     1. What test categories already exist in tests/regression/?
+        Answer from search: _______________
+        Source: tests/regression/
+
+     2. Are the tests currently skipped or implemented?
+        Answer from search: _______________
+        Source: tests/regression/*.py
+
+     3. What's the difference between canonical policies and historical patterns?
+        Answer: Canonical policies come from workflow specs/brain files and MUST be followed.
+        Historical patterns are observations from past data and should NEVER be assumed.
+
+     4. What existing test fixtures are available?
+        Answer from search: _______________
+        Source: _______________
+
+     **If you cannot answer all questions from the codebase, DO NOT PROCEED.**
+
+     ---
      📝 Phase 4.1: Add Test Fixtures
 
      Timeline: Day 1 (6 hours)
@@ -6789,11 +7295,17 @@
 
      Risk Level: LOW (adding intelligence layer, backward compatible)
 
+     **⚠️ NOTE (Jan 28, 2026 Validation)**:
+     - Current model is "claude-sonnet-4-20250514" (NOT "claude-sonnet-4")
+     - Token tracking ALREADY EXISTS in claude_client.py (tracks input_tokens, output_tokens)
+     - Cost calculation does NOT exist yet (this phase adds it)
+     - When implementing, use exact model ID "claude-sonnet-4-20250514" for Sonnet references
+
      ---
      🎯 Phase 5 Goals
 
      Problem Statement:
-     Currently, Mise uses a single model (claude-sonnet-4) for all tasks. From CoCounsel doc (page 6):
+     Currently, Mise uses a single model (claude-sonnet-4-20250514) for all tasks. From CoCounsel doc (page 6):
      "Use smaller/faster models for verification, bigger models for complex reasoning."
 
      Inefficiencies:
@@ -6810,10 +7322,93 @@
      Success Criteria:
      - ModelRouter class implemented
      - Route based on task type
-     - Cost tracking per model
+     - Cost tracking per model (leverage existing token tracking)
      - 30-40% cost reduction (more Haiku, less Sonnet)
      - No quality degradation
      - Backward compatible (can disable routing)
+
+     ---
+     📝 Phase 5.0: MANDATORY CODEBASE SEARCH (NEW)
+
+     **Before writing ANY code for Phase 5, execute SEARCH_FIRST protocol:**
+
+     Timeline: 30 minutes
+     Risk: CRITICAL (skip this and you'll contradict canonical policies)
+
+     Step-by-Step Search Protocol:
+
+     5.0.1 Search for Canonical Policies
+
+     # Search for existing model usage
+     grep -r "claude-" transrouter/src/
+
+     # Check current model pricing (from Anthropic docs or config)
+     grep -r "cost\|price\|token" transrouter/src/
+
+     # Search for existing routing logic
+     grep -r "router\|route" transrouter/src/
+
+     # Search brain files for model selection policies
+     ls docs/brain/ | grep -i "model\|claude"
+
+     # Check Claude client implementation
+     cat transrouter/src/claude_client.py
+
+     5.0.2 Document Canonical Policies Found
+
+     Create a checklist of ALL canonical policies found:
+
+     □ Current Model Usage
+       - Source file: _______________
+       - Model(s) used: _______________
+       - Status: CANONICAL/OPTIONAL
+
+     □ Model Pricing (Jan 2026)
+       - Haiku cost per MTok: _______________
+       - Sonnet cost per MTok: _______________
+       - Opus cost per MTok: _______________
+       - Source: Anthropic docs / config file
+
+     □ Task Complexity Classification
+       - Source file: _______________
+       - Which tasks are simple vs complex: _______________
+
+     5.0.3 Read Existing Code
+
+     # Read Claude client COMPLETELY
+     cat transrouter/src/claude_client.py
+
+     # Note: Current implementation likely hardcodes one model
+     # The ModelRouter will wrap this client
+     # Must be backward compatible
+
+     # Check how models are currently specified
+     grep -r "model=" transrouter/src/agents/
+
+     5.0.4 Verify Understanding
+
+     Before proceeding, answer these questions:
+
+     1. What model(s) are currently used in the codebase?
+        Answer from search: _______________
+        Source: transrouter/src/
+
+     2. What are the current token costs per model (Jan 2026)?
+        Answer from search:
+        - Haiku: $_____ per MTok
+        - Sonnet: $_____ per MTok
+        - Opus: $_____ per MTok
+        Source: Anthropic docs
+
+     3. What's the difference between canonical policies and historical patterns?
+        Answer: Canonical policies come from workflow specs/brain files and MUST be followed.
+        Historical patterns are observations from past data and should NEVER be assumed.
+
+     4. Is there existing routing logic to preserve?
+        Answer from search: _______________
+        Source: _______________
+
+     **If you cannot answer all questions from the codebase, DO NOT PROCEED.**
 
      ---
      📝 Phase 5.1: Implement Model Router
@@ -7312,6 +7907,13 @@
 
      Risk Level: LOW
 
+     **⚠️ NOTE (Jan 28, 2026 Validation)**:
+     - QuestionType.CONFLICT ALREADY EXISTS in schemas.py (added Phase 1)
+     - Clarification framework CAN HANDLE conflicts (via CONFLICT question type)
+     - This phase ADDS automatic conflict detection (ConflictDetector class)
+     - This phase ADDS conflict resolution logic (ConflictResolver class)
+     - Conflicts can be flagged via clarification system (leverage existing infrastructure)
+
      ---
      🎯 Phase 6 Goals
 
@@ -7326,35 +7928,1117 @@
      Solution:
      Implement conflict resolution with priority rules:
      1. Transcript > Toast > Schedule > Historical
-     2. Flag conflicts for manager review
+     2. Flag conflicts for manager review (via CONFLICT clarification)
      3. Provide evidence for each source
 
      Success Criteria:
      - ConflictResolver class
      - Priority rules enforced
      - Conflicts logged for review
+     - Integration with existing clarification framework
 
      ---
-     📝 Implementation (Abbreviated)
+     📝 Phase 6.0: MANDATORY CODEBASE SEARCH (NEW)
 
-     File: transrouter/src/conflict_resolver.py (NEW)
+     **Before writing ANY code for Phase 6, execute SEARCH_FIRST protocol:**
 
-     """Conflict Resolver - resolves data conflicts across sources."""
+     Timeline: 30 minutes
+     Risk: CRITICAL (skip this and you'll contradict canonical policies)
 
-     class SourcePriority(Enum):
+     Step-by-Step Search Protocol:
+
+     6.0.1 Search for Canonical Policies
+
+     # Search for existing conflict handling
+     grep -r "conflict\|priority" transrouter/src/
+
+     # Search for Toast API integration
+     grep -r "Toast\|POS" transrouter/src/
+     grep -r "Toast" mise_app/
+
+     # Search for Schedule data access
+     grep -r "Schedule\|shift.*schedule" transrouter/src/
+
+     # Search workflow specs for priority rules
+     grep -i "priority\|conflict\|transcript.*toast" workflow_specs/LPM/LPM_Workflow_Master.txt
+
+     # Search brain files for data source policies
+     ls docs/brain/ | grep -i "source\|priority\|conflict"
+
+     6.0.2 Document Canonical Policies Found
+
+     Create a checklist of ALL canonical policies found:
+
+     □ Data Source Priority Rules
+       - Source file: _______________
+       - Priority order: _______________
+       - Status: CANONICAL/OPTIONAL
+
+     □ External Data Sources Available
+       - Toast POS: Available? _______________
+       - Schedule data: Available? _______________
+       - Historical data: Available? _______________
+
+     □ Conflict Resolution Strategy
+       - Source file: _______________
+       - When to flag for review: _______________
+
+     6.0.3 Read Existing Code
+
+     # Check for existing Toast integration
+     grep -r "toast" mise_app/ transrouter/
+
+     # Check for existing schedule access
+     grep -r "schedule" mise_app/ transrouter/
+
+     # Note: If external data sources don't exist yet,
+     # this phase may need to build integration first
+
+     # Read workflow spec for priority rules
+     cat workflow_specs/LPM/LPM_Workflow_Master.txt | grep -i "priority\|conflict" -A 5 -B 5
+
+     6.0.4 Verify Understanding
+
+     Before proceeding, answer these questions:
+
+     1. What external data sources exist and are accessible?
+        Answer from search: _______________
+        Source: _______________
+
+     2. What is the documented priority order for conflicting data?
+        Answer from search: _______________
+        Source: workflow_specs/LPM/LPM_Workflow_Master.txt
+
+     3. What's the difference between canonical policies and historical patterns?
+        Answer: Canonical policies come from workflow specs/brain files and MUST be followed.
+        Historical patterns are observations from past data and should NEVER be assumed.
+
+     4. Are there existing conflict resolution mechanisms to preserve?
+        Answer from search: _______________
+        Source: _______________
+
+     **If you cannot answer all questions from the codebase, DO NOT PROCEED.**
+
+     ---
+     📝 Phase 6.1: Define Conflict Detection
+
+     Timeline: Day 1 (2 hours)
+     Files: transrouter/src/conflict_detector.py (NEW)
+     Dependencies: Phase 6.0 (SEARCH_FIRST complete)
+     Risk: LOW (defining data structures)
+
+     Step-by-Step Implementation
+
+     6.1.1 Define Conflict Data Structures
+
+     File: transrouter/src/conflict_detector.py (NEW)
+
+     """
+     Conflict Detector
+
+     Detects conflicts across multiple data sources for payroll data.
+     """
+
+     from enum import Enum
+     from typing import Dict, Any, List, Optional
+     from dataclasses import dataclass
+     from datetime import datetime
+
+
+     class DataSource(str, Enum):
+         """Data source types."""
+         TRANSCRIPT = "transcript"      # Voice transcript (highest priority)
+         TOAST_POS = "toast_pos"        # Toast POS system (second priority)
+         SCHEDULE = "schedule"          # Employee schedule (third priority)
+         HISTORICAL = "historical"      # Historical patterns (lowest priority)
+
+
+     class SourcePriority(int, Enum):
+         """Priority order for conflict resolution."""
          TRANSCRIPT = 1      # Highest priority
          TOAST_POS = 2       # Second priority
          SCHEDULE = 3        # Third priority
          HISTORICAL = 4      # Lowest priority
 
-     class ConflictResolver:
-         """Resolve conflicts across data sources."""
 
-         def resolve(self, field, sources):
-             """Resolve conflict using priority rules."""
-             # Use highest priority source
-             # Flag conflict for review
-             pass
+     @dataclass
+     class SourceEvidence:
+         """Evidence from a single data source."""
+         source: DataSource
+         field: str                    # Field name (e.g., "austin_kelley_hours")
+         value: Any                    # The value from this source
+         timestamp: str                # When data was collected
+         confidence: float             # Confidence score (0.0-1.0)
+         trace: str                    # How we got this value
+         metadata: Dict[str, Any]      # Additional context
+
+
+     @dataclass
+     class ConflictField:
+         """A field with conflicting values across sources."""
+         field_name: str
+         field_type: str              # "hours", "amount", "role", "date"
+         sources: List[SourceEvidence]
+         recommended_value: Any       # Based on priority rules
+         recommended_source: DataSource
+         conflict_severity: str       # "low", "medium", "high"
+         needs_review: bool           # Should manager review?
+         review_reason: str           # Why flagged for review
+
+
+     class ConflictDetector:
+         """
+         Detect conflicts across multiple data sources.
+
+         Usage:
+             detector = ConflictDetector()
+             conflicts = detector.detect_conflicts(
+                 approval_json=payroll_result,
+                 external_sources={
+                     "toast": toast_data,
+                     "schedule": schedule_data
+                 }
+             )
+         """
+
+         def __init__(self, threshold: float = 0.1):
+             """
+             Initialize conflict detector.
+
+             Args:
+                 threshold: % difference to flag as conflict (default 10%)
+             """
+             self.threshold = threshold
+
+         def detect_conflicts(
+             self,
+             approval_json: Dict[str, Any],
+             external_sources: Dict[str, Any]
+         ) -> List[ConflictField]:
+             """
+             Detect conflicts between transcript and external sources.
+
+             Args:
+                 approval_json: Parsed payroll data from transcript
+                 external_sources: Dict with keys "toast", "schedule", "historical"
+
+             Returns:
+                 List of ConflictField objects
+             """
+             conflicts = []
+
+             # Extract employee data from approval_json
+             employees = self._extract_employees(approval_json)
+
+             # For each employee, check for conflicts
+             for employee_name, transcript_data in employees.items():
+                 # Check hours conflict
+                 hours_conflict = self._check_hours_conflict(
+                     employee_name,
+                     transcript_data,
+                     external_sources
+                 )
+                 if hours_conflict:
+                     conflicts.append(hours_conflict)
+
+                 # Check amount conflict
+                 amount_conflict = self._check_amount_conflict(
+                     employee_name,
+                     transcript_data,
+                     external_sources
+                 )
+                 if amount_conflict:
+                     conflicts.append(amount_conflict)
+
+                 # Check role conflict
+                 role_conflict = self._check_role_conflict(
+                     employee_name,
+                     transcript_data,
+                     external_sources
+                 )
+                 if role_conflict:
+                     conflicts.append(role_conflict)
+
+             return conflicts
+
+         def _extract_employees(self, approval_json: Dict[str, Any]) -> Dict[str, Dict]:
+             """Extract employee data from approval JSON."""
+             employees = {}
+
+             per_shift = approval_json.get("per_shift", {})
+             for employee_name, shifts in per_shift.items():
+                 employees[employee_name] = {
+                     "shifts": shifts,
+                     "total": approval_json.get("weekly_totals", {}).get(employee_name, 0)
+                 }
+
+             return employees
+
+         def _check_hours_conflict(
+             self,
+             employee_name: str,
+             transcript_data: Dict[str, Any],
+             external_sources: Dict[str, Any]
+         ) -> Optional[ConflictField]:
+             """Check if hours conflict across sources."""
+             # Extract hours from transcript (assume in metadata)
+             transcript_hours = transcript_data.get("hours")
+             if transcript_hours is None:
+                 return None
+
+             sources = [
+                 SourceEvidence(
+                     source=DataSource.TRANSCRIPT,
+                     field=f"{employee_name}_hours",
+                     value=transcript_hours,
+                     timestamp=datetime.now().isoformat(),
+                     confidence=1.0,
+                     trace="Extracted from voice transcript",
+                     metadata={}
+                 )
+             ]
+
+             # Check schedule
+             schedule_data = external_sources.get("schedule", {})
+             schedule_hours = schedule_data.get(employee_name, {}).get("hours")
+             if schedule_hours is not None:
+                 sources.append(
+                     SourceEvidence(
+                         source=DataSource.SCHEDULE,
+                         field=f"{employee_name}_hours",
+                         value=schedule_hours,
+                         timestamp=datetime.now().isoformat(),
+                         confidence=0.8,
+                         trace="From employee schedule",
+                         metadata={"schedule_id": schedule_data.get("id")}
+                     )
+                 )
+
+             # Check if conflict
+             if len(sources) > 1:
+                 diff_pct = abs(sources[0].value - sources[1].value) / sources[0].value
+                 if diff_pct > self.threshold:
+                     return ConflictField(
+                         field_name=f"{employee_name}_hours",
+                         field_type="hours",
+                         sources=sources,
+                         recommended_value=sources[0].value,  # Transcript wins
+                         recommended_source=DataSource.TRANSCRIPT,
+                         conflict_severity="medium" if diff_pct < 0.25 else "high",
+                         needs_review=True,
+                         review_reason=f"Hours differ by {diff_pct*100:.1f}%"
+                     )
+
+             return None
+
+         def _check_amount_conflict(
+             self,
+             employee_name: str,
+             transcript_data: Dict[str, Any],
+             external_sources: Dict[str, Any]
+         ) -> Optional[ConflictField]:
+             """Check if tip amounts conflict across sources."""
+             transcript_amount = transcript_data.get("total")
+             if transcript_amount is None:
+                 return None
+
+             sources = [
+                 SourceEvidence(
+                     source=DataSource.TRANSCRIPT,
+                     field=f"{employee_name}_amount",
+                     value=transcript_amount,
+                     timestamp=datetime.now().isoformat(),
+                     confidence=1.0,
+                     trace="Manager stated amount in transcript",
+                     metadata={}
+                 )
+             ]
+
+             # Check Toast POS
+             toast_data = external_sources.get("toast", {})
+             toast_amount = toast_data.get(employee_name, {}).get("tips")
+             if toast_amount is not None:
+                 sources.append(
+                     SourceEvidence(
+                         source=DataSource.TOAST_POS,
+                         field=f"{employee_name}_amount",
+                         value=toast_amount,
+                         timestamp=datetime.now().isoformat(),
+                         confidence=0.9,
+                         trace="From Toast POS actual sales",
+                         metadata={"toast_shift_id": toast_data.get("shift_id")}
+                     )
+                 )
+
+             # Check if conflict
+             if len(sources) > 1:
+                 diff_pct = abs(sources[0].value - sources[1].value) / sources[0].value
+                 if diff_pct > self.threshold:
+                     return ConflictField(
+                         field_name=f"{employee_name}_amount",
+                         field_type="amount",
+                         sources=sources,
+                         recommended_value=sources[0].value,  # Transcript wins
+                         recommended_source=DataSource.TRANSCRIPT,
+                         conflict_severity="high",  # Money conflicts are always high
+                         needs_review=True,
+                         review_reason=f"Amounts differ by ${abs(sources[0].value - sources[1].value):.2f}"
+                     )
+
+             return None
+
+         def _check_role_conflict(
+             self,
+             employee_name: str,
+             transcript_data: Dict[str, Any],
+             external_sources: Dict[str, Any]
+         ) -> Optional[ConflictField]:
+             """Check if employee role conflicts across sources."""
+             # Implementation similar to hours/amount
+             # Check if transcript says "utility" but schedule says "server"
+             # Return ConflictField if mismatch
+             return None
+
+         def load_external_data(self, period_id: str) -> Dict[str, Any]:
+             """
+             Load external data sources for a given period.
+
+             Args:
+                 period_id: Payroll period ID (e.g., "010626_011226")
+
+             Returns:
+                 Dict with keys: "toast", "schedule", "historical"
+             """
+             external_data = {}
+
+             # Load Toast data (if available)
+             toast_data = self._load_toast_data(period_id)
+             if toast_data:
+                 external_data["toast"] = toast_data
+
+             # Load Schedule data (if available)
+             schedule_data = self._load_schedule_data(period_id)
+             if schedule_data:
+                 external_data["schedule"] = schedule_data
+
+             # Load Historical data
+             historical_data = self._load_historical_data(period_id)
+             if historical_data:
+                 external_data["historical"] = historical_data
+
+             return external_data
+
+         def _load_toast_data(self, period_id: str) -> Optional[Dict[str, Any]]:
+             """Load Toast POS data."""
+             # TODO: Implement Toast API integration
+             return None
+
+         def _load_schedule_data(self, period_id: str) -> Optional[Dict[str, Any]]:
+             """Load employee schedule data."""
+             # TODO: Implement schedule data access
+             return None
+
+         def _load_historical_data(self, period_id: str) -> Optional[Dict[str, Any]]:
+             """Load historical patterns."""
+             # TODO: Implement historical data query
+             return None
+
+     ---
+     📝 Phase 6.2: Implement ConflictResolver
+
+     Timeline: Day 1-2 (6 hours)
+     Files: transrouter/src/conflict_resolver.py (NEW)
+     Dependencies: 6.1 (ConflictDetector)
+     Risk: MEDIUM (business logic)
+
+     Step-by-Step Implementation
+
+     6.2.1 Create ConflictResolver Class
+
+     File: transrouter/src/conflict_resolver.py (NEW)
+
+     """
+     Conflict Resolver
+
+     Resolves conflicts using priority rules and flags for manager review.
+     """
+
+     from typing import Dict, Any, List, Optional
+     from transrouter.src.conflict_detector import (
+         ConflictField,
+         SourceEvidence,
+         DataSource,
+         SourcePriority
+     )
+
+
+     class Resolution:
+         """Result of conflict resolution."""
+         def __init__(
+             self,
+             field_name: str,
+             resolved_value: Any,
+             chosen_source: DataSource,
+             confidence: float,
+             needs_manager_review: bool,
+             evidence_report: str
+         ):
+             self.field_name = field_name
+             self.resolved_value = resolved_value
+             self.chosen_source = chosen_source
+             self.confidence = confidence
+             self.needs_manager_review = needs_manager_review
+             self.evidence_report = evidence_report
+
+
+     class ConflictResolver:
+         """
+         Resolve conflicts using priority rules.
+
+         Priority order:
+         1. TRANSCRIPT (highest)
+         2. TOAST_POS
+         3. SCHEDULE
+         4. HISTORICAL (lowest)
+
+         Flags for review if:
+         - High conflict severity (amount differs by >25%)
+         - Multiple high-priority sources disagree
+         - Low confidence in winner
+         """
+
+         def __init__(self, auto_resolve_threshold: float = 0.9):
+             """
+             Initialize resolver.
+
+             Args:
+                 auto_resolve_threshold: Confidence threshold for auto-resolution
+             """
+             self.auto_resolve_threshold = auto_resolve_threshold
+
+         def resolve(self, conflict: ConflictField) -> Resolution:
+             """
+             Resolve a conflict using priority rules.
+
+             Args:
+                 conflict: ConflictField to resolve
+
+             Returns:
+                 Resolution with chosen value and evidence
+             """
+             # Sort sources by priority
+             sources_by_priority = sorted(
+                 conflict.sources,
+                 key=lambda s: SourcePriority[s.source.name].value
+             )
+
+             # Winner is highest priority source
+             winner = sources_by_priority[0]
+
+             # Generate evidence report
+             evidence_report = self.generate_evidence_report(conflict)
+
+             # Determine if needs manager review
+             needs_review = self.should_flag_for_review(conflict, winner)
+
+             return Resolution(
+                 field_name=conflict.field_name,
+                 resolved_value=winner.value,
+                 chosen_source=winner.source,
+                 confidence=winner.confidence,
+                 needs_manager_review=needs_review,
+                 evidence_report=evidence_report
+             )
+
+         def should_flag_for_review(
+             self,
+             conflict: ConflictField,
+             winner: SourceEvidence
+         ) -> bool:
+             """
+             Determine if conflict needs manager review.
+
+             Flags for review if:
+             1. Conflict severity is "high"
+             2. Winner confidence < threshold
+             3. Amount conflicts (always review money)
+             4. Multiple sources very close in priority disagree
+             """
+             # Always review money conflicts
+             if conflict.field_type == "amount":
+                 return True
+
+             # Review if high severity
+             if conflict.conflict_severity == "high":
+                 return True
+
+             # Review if low confidence
+             if winner.confidence < self.auto_resolve_threshold:
+                 return True
+
+             # Review if transcript vs Toast disagree (both high priority)
+             if len(conflict.sources) >= 2:
+                 top_two = conflict.sources[:2]
+                 if (DataSource.TRANSCRIPT in [s.source for s in top_two] and
+                     DataSource.TOAST_POS in [s.source for s in top_two]):
+                     return True
+
+             return False
+
+         def generate_evidence_report(self, conflict: ConflictField) -> str:
+             """
+             Generate human-readable evidence report.
+
+             Format:
+                 Field: austin_kelley_hours
+                 Conflict: Hours values differ
+
+                 Evidence:
+                 1. TRANSCRIPT: 6.0 hours (confidence: 100%)
+                    Source: Voice transcript
+                 2. SCHEDULE: 6.5 hours (confidence: 80%)
+                    Source: Employee schedule
+
+                 Recommendation: Use 6.0 hours from TRANSCRIPT
+                 Reason: Transcript has highest priority
+             """
+             lines = []
+             lines.append(f"Field: {conflict.field_name}")
+             lines.append(f"Conflict: {conflict.field_type.title()} values differ\n")
+
+             lines.append("Evidence:")
+             for idx, source in enumerate(conflict.sources, 1):
+                 lines.append(f"{idx}. {source.source.name}: {source.value} ({source.confidence*100:.0f}% confidence)")
+                 lines.append(f"   Source: {source.trace}")
+
+             lines.append(f"\nRecommendation: Use {conflict.recommended_value} from {conflict.recommended_source.name}")
+             lines.append(f"Reason: {conflict.review_reason}")
+
+             return "\n".join(lines)
+
+         def resolve_all(self, conflicts: List[ConflictField]) -> List[Resolution]:
+             """Resolve all conflicts."""
+             return [self.resolve(c) for c in conflicts]
+
+         def apply_resolutions(
+             self,
+             approval_json: Dict[str, Any],
+             resolutions: List[Resolution]
+         ) -> Dict[str, Any]:
+             """
+             Apply resolved values to approval JSON.
+
+             Args:
+                 approval_json: Original payroll data
+                 resolutions: Resolved conflicts
+
+             Returns:
+                 Updated approval JSON with conflicts resolved
+             """
+             updated_json = approval_json.copy()
+
+             for resolution in resolutions:
+                 # Parse field name (e.g., "austin_kelley_hours")
+                 parts = resolution.field_name.rsplit("_", 1)
+                 if len(parts) == 2:
+                     employee_name = parts[0].replace("_", " ").title()
+                     field_type = parts[1]
+
+                     # Update the value
+                     if field_type == "hours":
+                         # Update hours in metadata
+                         pass
+                     elif field_type == "amount":
+                         # Update amount in per_shift or weekly_totals
+                         pass
+
+             return updated_json
+
+     ---
+     📝 Phase 6.3: Integrate with PayrollSkill
+
+     Timeline: Day 2 (4 hours)
+     Files: transrouter/src/agents/payroll_agent.py (MODIFY)
+     Dependencies: 6.1, 6.2
+     Risk: MEDIUM (modifying existing code)
+
+     Step-by-Step Implementation
+
+     6.3.1 Add Conflict Detection Step to PayrollAgent
+
+     File: transrouter/src/agents/payroll_agent.py (MODIFY)
+
+     Add after line 250 (after initial parse):
+
+     from transrouter.src.conflict_detector import ConflictDetector
+     from transrouter.src.conflict_resolver import ConflictResolver
+
+     class PayrollAgent:
+         # ... existing code ...
+
+         def parse_transcript(self, transcript: str, period_id: str) -> dict:
+             # ... existing parse logic ...
+
+             # NEW: Step 3.5 - Detect and resolve conflicts
+             conflicts = self._detect_conflicts(approval_json, period_id)
+             if conflicts:
+                 resolutions = self._resolve_conflicts(conflicts)
+                 approval_json = self._apply_resolutions(approval_json, resolutions)
+
+                 # Flag for clarification if needs review
+                 needs_review = [r for r in resolutions if r.needs_manager_review]
+                 if needs_review:
+                     return {
+                         "status": "needs_clarification",
+                         "conflicts": needs_review,
+                         "approval_json": approval_json
+                     }
+
+             return {
+                 "status": "success",
+                 "approval_json": approval_json
+             }
+
+         def _detect_conflicts(
+             self,
+             approval_json: Dict[str, Any],
+             period_id: str
+         ) -> List[ConflictField]:
+             """Detect conflicts with external data sources."""
+             detector = ConflictDetector(threshold=0.1)
+
+             # Load external data
+             external_sources = detector.load_external_data(period_id)
+
+             # Detect conflicts
+             conflicts = detector.detect_conflicts(approval_json, external_sources)
+
+             return conflicts
+
+         def _resolve_conflicts(
+             self,
+             conflicts: List[ConflictField]
+         ) -> List[Resolution]:
+             """Resolve conflicts using priority rules."""
+             resolver = ConflictResolver(auto_resolve_threshold=0.9)
+             return resolver.resolve_all(conflicts)
+
+         def _apply_resolutions(
+             self,
+             approval_json: Dict[str, Any],
+             resolutions: List[Resolution]
+         ) -> Dict[str, Any]:
+             """Apply resolutions to approval JSON."""
+             resolver = ConflictResolver()
+             return resolver.apply_resolutions(approval_json, resolutions)
+
+     ---
+     📝 Phase 6.4: Database Schema
+
+     Timeline: Day 2 (1 hour)
+     Files: mise_app/models/conflict.py (NEW)
+     Dependencies: 6.1, 6.2
+     Risk: LOW (just schema)
+
+     Step-by-Step Implementation
+
+     6.4.1 Create Conflict Models
+
+     File: mise_app/models/conflict.py (NEW)
+
+     """Database models for conflict resolution."""
+
+     from sqlalchemy import Column, Integer, String, Float, Boolean, Text, DateTime, JSON
+     from mise_app.database import Base
+     from datetime import datetime
+
+
+     class ConflictRecord(Base):
+         """Record of detected conflict."""
+         __tablename__ = "conflicts"
+
+         id = Column(Integer, primary_key=True)
+         period_id = Column(String(50), nullable=False, index=True)
+         field_name = Column(String(100), nullable=False)
+         field_type = Column(String(20))  # hours, amount, role
+         conflict_severity = Column(String(10))  # low, medium, high
+
+         # Sources
+         transcript_value = Column(String(100))
+         toast_value = Column(String(100))
+         schedule_value = Column(String(100))
+
+         # Resolution
+         resolved_value = Column(String(100))
+         resolved_by_source = Column(String(20))  # transcript, toast, schedule
+         resolved_automatically = Column(Boolean, default=False)
+         reviewed_by_manager = Column(Boolean, default=False)
+         manager_override_value = Column(String(100), nullable=True)
+
+         # Evidence
+         evidence_report = Column(Text)
+         confidence = Column(Float)
+
+         # Audit
+         detected_at = Column(DateTime, default=datetime.utcnow)
+         resolved_at = Column(DateTime, nullable=True)
+         manager_reviewed_at = Column(DateTime, nullable=True)
+
+         # Metadata
+         metadata = Column(JSON)
+
+     ---
+     📝 Phase 6.5: API Endpoint
+
+     Timeline: Day 3 (3 hours)
+     Files: mise_app/routes/conflicts.py (NEW)
+     Dependencies: 6.4
+     Risk: LOW
+
+     Step-by-Step Implementation
+
+     6.5.1 Create Conflict Review Endpoint
+
+     File: mise_app/routes/conflicts.py (NEW)
+
+     """API endpoints for conflict review."""
+
+     from fastapi import APIRouter, Depends, HTTPException
+     from typing import List
+     from mise_app.models.conflict import ConflictRecord
+     from mise_app.database import get_db
+     from sqlalchemy.orm import Session
+
+
+     router = APIRouter(prefix="/api/conflicts", tags=["conflicts"])
+
+
+     @router.get("/period/{period_id}")
+     def get_conflicts_for_period(
+         period_id: str,
+         db: Session = Depends(get_db)
+     ) -> List[dict]:
+         """Get all unresolved conflicts for a period."""
+         conflicts = db.query(ConflictRecord).filter(
+             ConflictRecord.period_id == period_id,
+             ConflictRecord.reviewed_by_manager == False
+         ).all()
+
+         return [
+             {
+                 "id": c.id,
+                 "field_name": c.field_name,
+                 "transcript_value": c.transcript_value,
+                 "toast_value": c.toast_value,
+                 "schedule_value": c.schedule_value,
+                 "recommended_value": c.resolved_value,
+                 "evidence_report": c.evidence_report,
+                 "conflict_severity": c.conflict_severity
+             }
+             for c in conflicts
+         ]
+
+
+     @router.post("/resolve/{conflict_id}")
+     def resolve_conflict(
+         conflict_id: int,
+         resolution: dict,
+         db: Session = Depends(get_db)
+     ):
+         """Manager resolves a conflict."""
+         conflict = db.query(ConflictRecord).filter(
+             ConflictRecord.id == conflict_id
+         ).first()
+
+         if not conflict:
+             raise HTTPException(status_code=404, detail="Conflict not found")
+
+         # Apply manager resolution
+         conflict.manager_override_value = resolution["value"]
+         conflict.reviewed_by_manager = True
+         conflict.manager_reviewed_at = datetime.utcnow()
+
+         db.commit()
+
+         return {"status": "resolved"}
+
+     ---
+     📝 Phase 6.6: Tests
+
+     Timeline: Day 3 (8 hours)
+     Files: tests/unit/test_conflict_resolver.py (NEW)
+     Dependencies: 6.1, 6.2
+     Risk: LOW
+
+     Step-by-Step Implementation
+
+     6.6.1 Write Unit Tests
+
+     File: tests/unit/test_conflict_resolver.py (NEW)
+
+     """Unit tests for ConflictResolver."""
+
+     import pytest
+     from transrouter.src.conflict_detector import (
+         ConflictDetector,
+         ConflictField,
+         SourceEvidence,
+         DataSource
+     )
+     from transrouter.src.conflict_resolver import ConflictResolver
+
+
+     def test_simple_conflict_transcript_wins():
+         """Test that transcript wins over schedule."""
+         conflict = ConflictField(
+             field_name="austin_hours",
+             field_type="hours",
+             sources=[
+                 SourceEvidence(
+                     source=DataSource.TRANSCRIPT,
+                     field="austin_hours",
+                     value=6.0,
+                     timestamp="2026-01-27T10:00:00",
+                     confidence=1.0,
+                     trace="Voice transcript",
+                     metadata={}
+                 ),
+                 SourceEvidence(
+                     source=DataSource.SCHEDULE,
+                     field="austin_hours",
+                     value=6.5,
+                     timestamp="2026-01-27T10:00:00",
+                     confidence=0.8,
+                     trace="Employee schedule",
+                     metadata={}
+                 )
+             ],
+             recommended_value=6.0,
+             recommended_source=DataSource.TRANSCRIPT,
+             conflict_severity="medium",
+             needs_review=True,
+             review_reason="Hours differ by 8.3%"
+         )
+
+         resolver = ConflictResolver()
+         resolution = resolver.resolve(conflict)
+
+         assert resolution.resolved_value == 6.0
+         assert resolution.chosen_source == DataSource.TRANSCRIPT
+
+
+     def test_amount_conflict_always_flagged():
+         """Test that amount conflicts are always flagged for review."""
+         conflict = ConflictField(
+             field_name="austin_amount",
+             field_type="amount",
+             sources=[
+                 SourceEvidence(
+                     source=DataSource.TRANSCRIPT,
+                     field="austin_amount",
+                     value=150.0,
+                     timestamp="2026-01-27T10:00:00",
+                     confidence=1.0,
+                     trace="Manager stated",
+                     metadata={}
+                 ),
+                 SourceEvidence(
+                     source=DataSource.TOAST_POS,
+                     field="austin_amount",
+                     value=155.0,
+                     timestamp="2026-01-27T10:00:00",
+                     confidence=0.9,
+                     trace="Toast POS",
+                     metadata={}
+                 )
+             ],
+             recommended_value=150.0,
+             recommended_source=DataSource.TRANSCRIPT,
+             conflict_severity="high",
+             needs_review=True,
+             review_reason="Amounts differ by $5.00"
+         )
+
+         resolver = ConflictResolver()
+         resolution = resolver.resolve(conflict)
+
+         assert resolution.needs_manager_review == True
+         assert resolution.resolved_value == 150.0
+
+
+     def test_no_conflict_all_agree():
+         """Test when all sources agree (no conflict)."""
+         # No conflict case - detector should not flag this
+         # This test would be in test_conflict_detector.py
+         pass
+
+
+     # Run with: pytest tests/unit/test_conflict_resolver.py -v
+
+     ---
+     📝 Phase 6.7: CLI Tool
+
+     Timeline: Day 3 (2 hours)
+     Files: scripts/review_conflicts.py (NEW)
+     Dependencies: 6.1, 6.2, 6.4
+     Risk: LOW
+
+     Step-by-Step Implementation
+
+     6.7.1 Create CLI for Conflict Review
+
+     File: scripts/review_conflicts.py (NEW)
+
+     """
+     CLI tool for reviewing conflicts.
+
+     Usage:
+         python scripts/review_conflicts.py --period 010626_011226
+     """
+
+     import argparse
+     from mise_app.database import SessionLocal
+     from mise_app.models.conflict import ConflictRecord
+     from tabulate import tabulate
+
+
+     def review_conflicts(period_id: str):
+         """Display unresolved conflicts for a period."""
+         db = SessionLocal()
+
+         conflicts = db.query(ConflictRecord).filter(
+             ConflictRecord.period_id == period_id,
+             ConflictRecord.reviewed_by_manager == False
+         ).all()
+
+         if not conflicts:
+             print(f"No unresolved conflicts for period {period_id}")
+             return
+
+         # Display as table
+         table = []
+         for c in conflicts:
+             table.append([
+                 c.id,
+                 c.field_name,
+                 c.field_type,
+                 c.transcript_value,
+                 c.toast_value or "-",
+                 c.schedule_value or "-",
+                 c.resolved_value,
+                 c.conflict_severity
+             ])
+
+         headers = ["ID", "Field", "Type", "Transcript", "Toast", "Schedule", "Recommended", "Severity"]
+         print(tabulate(table, headers=headers, tablefmt="grid"))
+
+         print(f"\nTotal unresolved conflicts: {len(conflicts)}")
+         print("\nTo resolve: Use /api/conflicts/resolve/{conflict_id} endpoint")
+
+
+     if __name__ == "__main__":
+         parser = argparse.ArgumentParser(description="Review payroll conflicts")
+         parser.add_argument("--period", required=True, help="Payroll period ID")
+         args = parser.parse_args()
+
+         review_conflicts(args.period)
+
+     ---
+     📝 Phase 6.8: Validation & Deployment
+
+     Timeline: Day 3 (6 hours)
+     Files: N/A (testing and validation)
+     Dependencies: 6.1-6.7
+     Risk: MEDIUM
+
+     Step-by-Step Validation
+
+     6.8.1 Validation Checklist
+
+     □ ConflictDetector finds conflicts correctly
+     □ Priority rules enforced (Transcript > Toast > Schedule > Historical)
+     □ Amount conflicts always flagged for review
+     □ Evidence reports are clear and actionable
+     □ Database stores conflict records
+     □ API endpoints work (GET conflicts, POST resolution)
+     □ CLI tool displays conflicts in readable format
+     □ Integration: PayrollAgent calls conflict detection
+     □ Manager review UI accessible
+     □ All unit tests pass (≥85% coverage)
+
+     6.8.2 Manual Test Scenario
+
+     # Create test data with conflicts
+     transcript = "Austin 6 hours $150. Brooke 5 hours $140."
+     toast_data = {"Austin Kelley": {"tips": 155.0}, "Brooke Neal": {"tips": 140.0}}
+     schedule_data = {"Austin Kelley": {"hours": 6.5}, "Brooke Neal": {"hours": 5.0}}
+
+     # Run detection
+     detector = ConflictDetector()
+     conflicts = detector.detect_conflicts(approval_json, {"toast": toast_data, "schedule": schedule_data})
+
+     # Should detect 2 conflicts:
+     # 1. Austin hours: 6.0 (transcript) vs 6.5 (schedule)
+     # 2. Austin amount: $150 (transcript) vs $155 (toast)
+
+     assert len(conflicts) == 2
+
+     # Resolve conflicts
+     resolver = ConflictResolver()
+     resolutions = resolver.resolve_all(conflicts)
+
+     # Both should use transcript value
+     assert resolutions[0].resolved_value == 6.0
+     assert resolutions[1].resolved_value == 150.0
+
+     # Both should be flagged for review
+     assert all(r.needs_manager_review for r in resolutions)
+
+     6.8.3 Integration Test
+
+     # Test full flow: Transcript → Parse → Detect Conflicts → Resolve → Flag for Review
+     agent = PayrollAgent()
+     result = agent.parse_transcript(transcript, period_id="010626_011226")
+
+     if result["status"] == "needs_clarification":
+         # Display conflicts to manager
+         for conflict in result["conflicts"]:
+             print(conflict.evidence_report)
+
+     ---
+     📝 Phase 6.9: Commit
+
+     git add transrouter/src/conflict_detector.py \
+             transrouter/src/conflict_resolver.py \
+             transrouter/src/agents/payroll_agent.py \
+             mise_app/models/conflict.py \
+             mise_app/routes/conflicts.py \
+             scripts/review_conflicts.py \
+             tests/unit/test_conflict_resolver.py
+
+     git commit -m "feat(conflicts): Add source-of-truth conflict resolution
+
+     - Implement ConflictDetector to detect conflicts across data sources
+     - Implement ConflictResolver with priority rules (Transcript > Toast > Schedule)
+     - Integrate conflict detection into PayrollAgent workflow
+     - Add database schema for conflict tracking
+     - Add API endpoints for manager conflict review
+     - Add CLI tool for viewing conflicts
+     - Add comprehensive unit tests
+
+     Priority Rules:
+     1. Transcript (highest priority)
+     2. Toast POS (second priority)
+     3. Schedule (third priority)
+     4. Historical (lowest priority)
+
+     Amount conflicts always flagged for manager review.
+     Evidence reports provided for all conflicts.
+
+     Part of Phase 6 (Conflict Resolution)
+     Ref: CoCounsel improvements plan"
+
+     git push origin feature/cocounsel-improvements
 
      ---
      📋 PHASE 7: Instrumentation & Feedback
@@ -7364,6 +9048,15 @@
      Timeline: Week 4 (2 days)
 
      Risk Level: LOW
+
+     **Prerequisites**: Phase 2 complete (BaseSkill must exist for lifecycle hooks)
+
+     **⚠️ NOTE (Jan 28, 2026 Validation)**:
+     - BaseSkill does NOT exist yet (created in Phase 2)
+     - Existing logging infrastructure EXISTS (logging_utils.py with JSONFormatter, TranscriptFormatter)
+     - logs/ directory exists with transrouter.json.log, transcripts.log
+     - This phase ADDS instrumentation to BaseSkill hooks (on_start, on_complete, on_error)
+     - This phase does NOT replace existing logging, it augments it
 
      ---
      🎯 Phase 7 Goals
@@ -7387,19 +9080,1625 @@
      - Feedback capture mechanism
 
      ---
-     📝 Implementation (Abbreviated)
+     📝 Phase 7.0: MANDATORY CODEBASE SEARCH (NEW)
+
+     **Before writing ANY code for Phase 7, execute SEARCH_FIRST protocol:**
+
+     Timeline: 30 minutes
+     Risk: CRITICAL (skip this and you'll contradict canonical policies)
+
+     Step-by-Step Search Protocol:
+
+     7.0.1 Search for Canonical Policies
+
+     # Search for existing logging
+     grep -r "log\|logger" transrouter/src/
+
+     # Search for existing metrics collection
+     grep -r "metric\|instrumentation" transrouter/src/
+
+     # Check BaseSkill lifecycle hooks
+     grep -r "on_start\|on_complete\|on_error" transrouter/src/skills/
+
+     # Search brain files for instrumentation policies
+     ls docs/brain/ | grep -i "log\|metric\|instrument"
+
+     # Check existing logging patterns
+     ls logs/
+
+     7.0.2 Document Canonical Policies Found
+
+     Create a checklist of ALL canonical policies found:
+
+     □ Existing Logging Infrastructure
+       - Source file: _______________
+       - Log format: _______________
+       - Log location: _______________
+
+     □ BaseSkill Lifecycle Hooks
+       - Source file: transrouter/src/skills/base_skill.py
+       - Available hooks: _______________
+       - When they're called: _______________
+
+     □ Metrics to Track
+       - Source file: _______________
+       - Required metrics: _______________
+       - Optional metrics: _______________
+
+     7.0.3 Read Existing Code
+
+     # Read BaseSkill to understand hooks
+     cat transrouter/src/skills/base_skill.py
+
+     # Note: Instrumentation should integrate with:
+     # - on_start() hook (log start time, inputs)
+     # - on_complete() hook (log result, duration)
+     # - on_error() hook (log error details)
+
+     # Check existing logging setup
+     grep -r "logging.getLogger\|import logging" transrouter/src/
+
+     # Check model tracking from Phase 5
+     cat transrouter/src/model_router.py | grep -i "cost\|track"
+
+     7.0.4 Verify Understanding
+
+     Before proceeding, answer these questions:
+
+     1. Where should instrumentation hook into the skill execution flow?
+        Answer from search: _______________
+        Source: transrouter/src/skills/base_skill.py
+
+     2. What existing logging infrastructure can be reused?
+        Answer from search: _______________
+        Source: _______________
+
+     3. What's the difference between canonical policies and historical patterns?
+        Answer: Canonical policies come from workflow specs/brain files and MUST be followed.
+        Historical patterns are observations from past data and should NEVER be assumed.
+
+     4. Does model cost tracking already exist (from Phase 5)?
+        Answer from search: _______________
+        Source: transrouter/src/model_router.py
+
+     **If you cannot answer all questions from the codebase, DO NOT PROCEED.**
+
+     ---
+     📝 Phase 7.1: Define Instrumentation Schemas
+
+     Timeline: Day 1 (3 hours)
+     Files: transrouter/src/instrumentation/schemas.py (NEW)
+     Dependencies: Phase 7.0 (SEARCH_FIRST complete)
+     Risk: LOW (defining data structures)
+
+     Step-by-Step Implementation
+
+     7.1.1 Define Instrumentation Data Models
+
+     File: transrouter/src/instrumentation/schemas.py (NEW)
+
+     """
+     Instrumentation Schemas
+
+     Defines data structures for logging execution traces, metrics, errors, and feedback.
+     """
+
+     from dataclasses import dataclass
+     from typing import Dict, Any, Optional, List
+     from datetime import datetime
+     from enum import Enum
+
+
+     class ExecutionStatus(str, Enum):
+         """Status of skill execution."""
+         SUCCESS = "success"
+         NEEDS_CLARIFICATION = "needs_clarification"
+         ERROR = "error"
+         TIMEOUT = "timeout"
+
+
+     @dataclass
+     class ExecutionTrace:
+         """
+         Complete trace of a skill execution.
+
+         Logged for every skill execution for debugging and analysis.
+         """
+         # Identifiers
+         execution_id: str                      # Unique execution ID
+         skill_name: str                        # Which skill was executed
+         conversation_id: Optional[str]         # Conversation ID (for multi-turn)
+         user_id: str                           # Who triggered execution
+         restaurant_id: str                     # Which restaurant
+
+         # Inputs
+         inputs_hash: str                       # Hash of inputs (for dedup)
+         inputs_summary: str                    # Human-readable summary
+
+         # Execution
+         status: ExecutionStatus                # success, error, needs_clarification
+         duration_ms: int                       # Total execution time
+         started_at: datetime
+         completed_at: datetime
+
+         # Model usage
+         model_used: str                        # claude-sonnet-4, etc.
+         tokens_used: int                       # Total tokens
+         cost_usd: float                        # Cost in USD
+
+         # Results
+         result_hash: str                       # Hash of result (for dedup)
+         result_summary: str                    # Human-readable summary
+
+         # Clarifications
+         clarifications_needed: int             # Number of clarification rounds
+         clarification_questions: List[str]     # Questions asked
+
+         # Errors
+         error_type: Optional[str]              # Error class if failed
+         error_message: Optional[str]           # Error message if failed
+         stack_trace: Optional[str]             # Stack trace if failed
+
+         # User feedback
+         user_feedback: Optional[str]           # User feedback if provided
+         user_rating: Optional[int]             # 1-5 rating if provided
+
+         # Metadata
+         metadata: Dict[str, Any]               # Additional context
+
+
+     @dataclass
+     class MetricPoint:
+         """
+         Single metric data point.
+
+         For time-series metrics (e.g., success rate over time).
+         """
+         metric_name: str                       # "clarification_rate", "success_rate"
+         value: float                           # Metric value
+         timestamp: datetime
+         tags: Dict[str, str]                   # {"skill": "payroll", "model": "sonnet"}
+         unit: str                              # "percentage", "count", "ms"
+
+
+     @dataclass
+     class PerformanceMetrics:
+         """
+         Aggregated performance metrics for a skill or period.
+         """
+         skill_name: str
+         period_start: datetime
+         period_end: datetime
+
+         # Execution stats
+         total_executions: int
+         successful_executions: int
+         failed_executions: int
+         timeout_executions: int
+
+         # Timing percentiles
+         avg_duration_ms: float
+         p50_duration_ms: float
+         p95_duration_ms: float
+         p99_duration_ms: float
+
+         # Success rates
+         success_rate: float                    # % successful
+         clarification_rate: float              # % needing clarification
+         error_rate: float                      # % errors
+
+         # Model usage
+         total_tokens: int
+         total_cost_usd: float
+         avg_tokens_per_execution: int
+         avg_cost_per_execution: float
+
+         # Model breakdown
+         model_usage: Dict[str, int]            # {"haiku": 100, "sonnet": 50}
+         model_costs: Dict[str, float]          # {"haiku": 0.25, "sonnet": 2.50}
+
+
+     @dataclass
+     class ErrorRecord:
+         """
+         Detailed error information.
+
+         Logged separately from ExecutionTrace for error analysis.
+         """
+         error_id: str
+         execution_id: str
+         skill_name: str
+         error_type: str                        # ValueError, APIError, etc.
+         error_message: str
+         stack_trace: str
+         timestamp: datetime
+         user_id: str
+         inputs_summary: str
+         context: Dict[str, Any]                # Additional error context
+
+
+     @dataclass
+     class FeedbackRecord:
+         """
+         User feedback on a specific execution.
+
+         Captures corrections, comments, and ratings.
+         """
+         feedback_id: str
+         execution_id: str
+         user_id: str
+         feedback_type: str                     # "correction", "comment", "rating"
+
+         # Correction feedback
+         field: Optional[str]                   # Which field was wrong
+         expected_value: Optional[Any]          # What it should have been
+         actual_value: Optional[Any]            # What system produced
+         reason: Optional[str]                  # Why it was wrong
+
+         # Comment feedback
+         comment: Optional[str]                 # Free-form comment
+
+         # Rating feedback
+         rating: Optional[int]                  # 1-5 stars
+
+         # Metadata
+         timestamp: datetime
+         metadata: Dict[str, Any]
+
+     ---
+     📝 Phase 7.2: Implement ExecutionLogger
+
+     Timeline: Day 1-2 (6 hours)
+     Files: transrouter/src/instrumentation/logger.py (NEW)
+     Dependencies: 7.1
+     Risk: LOW (just logging infrastructure)
+
+     Step-by-Step Implementation
+
+     7.2.1 Create ExecutionLogger Class
 
      File: transrouter/src/instrumentation/logger.py (NEW)
 
-     """Execution trace logger."""
+     """
+     Execution Logger
+
+     Logs all skill executions to JSONL files for debugging and analysis.
+     """
+
+     import json
+     import hashlib
+     from pathlib import Path
+     from datetime import datetime, date
+     from typing import Dict, Any, Optional, List
+     from abc import ABC, abstractmethod
+
+     from transrouter.src.instrumentation.schemas import (
+         ExecutionTrace,
+         ExecutionStatus,
+         ErrorRecord,
+         FeedbackRecord
+     )
+
+
+     class LogStore(ABC):
+         """Abstract base class for log storage."""
+
+         @abstractmethod
+         def write(self, entry: dict) -> None:
+             """Write log entry."""
+             pass
+
+         @abstractmethod
+         def query(self, filters: Dict[str, Any]) -> List[dict]:
+             """Query log entries."""
+             pass
+
+
+     class JSONLLogStore(LogStore):
+         """
+         JSONL file-based log storage.
+
+         Logs are written to daily files: logs/executions/YYYY-MM-DD.jsonl
+         """
+
+         def __init__(self, log_dir: str = "logs/executions"):
+             self.log_dir = Path(log_dir)
+             self.log_dir.mkdir(parents=True, exist_ok=True)
+
+         def write(self, entry: dict) -> None:
+             """Write log entry to today's file."""
+             today = date.today().isoformat()
+             log_file = self.log_dir / f"{today}.jsonl"
+
+             with open(log_file, "a") as f:
+                 f.write(json.dumps(entry) + "\n")
+
+         def query(self, filters: Dict[str, Any]) -> List[dict]:
+             """Query log entries (simple implementation)."""
+             results = []
+
+             # Get date range
+             start_date = filters.get("start_date", date.today())
+             end_date = filters.get("end_date", date.today())
+
+             # Iterate through log files
+             current_date = start_date
+             while current_date <= end_date:
+                 log_file = self.log_dir / f"{current_date.isoformat()}.jsonl"
+                 if log_file.exists():
+                     with open(log_file, "r") as f:
+                         for line in f:
+                             entry = json.loads(line)
+                             # Apply filters
+                             if self._matches_filters(entry, filters):
+                                 results.append(entry)
+
+                 current_date = current_date + timedelta(days=1)
+
+             return results
+
+         def _matches_filters(self, entry: dict, filters: Dict[str, Any]) -> bool:
+             """Check if entry matches filters."""
+             for key, value in filters.items():
+                 if key in ["start_date", "end_date"]:
+                     continue
+                 if entry.get(key) != value:
+                     return False
+             return True
+
+
+     class FirestoreLogStore(LogStore):
+         """
+         Cloud Firestore log storage (optional).
+
+         For production environments needing scalable storage.
+         """
+
+         def __init__(self, collection_name: str = "execution_logs"):
+             # TODO: Initialize Firestore client
+             self.collection_name = collection_name
+
+         def write(self, entry: dict) -> None:
+             """Write log entry to Firestore."""
+             # TODO: Implement Firestore write
+             pass
+
+         def query(self, filters: Dict[str, Any]) -> List[dict]:
+             """Query log entries from Firestore."""
+             # TODO: Implement Firestore query
+             pass
+
 
      class ExecutionLogger:
-         """Log all skill executions for debugging/monitoring."""
+         """
+         Logs all skill executions.
 
-         def log_execution(self, skill_name, inputs, result, duration_ms):
-             """Log execution."""
-             # Write to logs/executions/YYYY-MM-DD.jsonl
-             pass
+         Usage:
+             logger = ExecutionLogger()
+             logger.log_execution(trace)
+             logger.log_error(error)
+             logger.log_feedback(feedback)
+         """
+
+         def __init__(
+             self,
+             log_store: Optional[LogStore] = None,
+             log_dir: str = "logs/executions"
+         ):
+             """
+             Initialize logger.
+
+             Args:
+                 log_store: Custom log store (default: JSONLLogStore)
+                 log_dir: Directory for JSONL logs
+             """
+             self.log_store = log_store or JSONLLogStore(log_dir)
+
+         def log_execution(self, trace: ExecutionTrace) -> None:
+             """
+             Log execution trace.
+
+             Args:
+                 trace: ExecutionTrace object
+             """
+             entry = {
+                 "type": "execution",
+                 "execution_id": trace.execution_id,
+                 "skill_name": trace.skill_name,
+                 "conversation_id": trace.conversation_id,
+                 "user_id": trace.user_id,
+                 "restaurant_id": trace.restaurant_id,
+                 "inputs_hash": trace.inputs_hash,
+                 "inputs_summary": trace.inputs_summary,
+                 "status": trace.status.value,
+                 "duration_ms": trace.duration_ms,
+                 "started_at": trace.started_at.isoformat(),
+                 "completed_at": trace.completed_at.isoformat(),
+                 "model_used": trace.model_used,
+                 "tokens_used": trace.tokens_used,
+                 "cost_usd": trace.cost_usd,
+                 "result_hash": trace.result_hash,
+                 "result_summary": trace.result_summary,
+                 "clarifications_needed": trace.clarifications_needed,
+                 "clarification_questions": trace.clarification_questions,
+                 "error_type": trace.error_type,
+                 "error_message": trace.error_message,
+                 "stack_trace": trace.stack_trace,
+                 "user_feedback": trace.user_feedback,
+                 "user_rating": trace.user_rating,
+                 "metadata": trace.metadata
+             }
+
+             self.log_store.write(entry)
+
+         def log_error(self, error: ErrorRecord) -> None:
+             """
+             Log error separately from execution trace.
+
+             Args:
+                 error: ErrorRecord object
+             """
+             entry = {
+                 "type": "error",
+                 "error_id": error.error_id,
+                 "execution_id": error.execution_id,
+                 "skill_name": error.skill_name,
+                 "error_type": error.error_type,
+                 "error_message": error.error_message,
+                 "stack_trace": error.stack_trace,
+                 "timestamp": error.timestamp.isoformat(),
+                 "user_id": error.user_id,
+                 "inputs_summary": error.inputs_summary,
+                 "context": error.context
+             }
+
+             self.log_store.write(entry)
+
+         def log_feedback(self, feedback: FeedbackRecord) -> None:
+             """
+             Log user feedback.
+
+             Args:
+                 feedback: FeedbackRecord object
+             """
+             entry = {
+                 "type": "feedback",
+                 "feedback_id": feedback.feedback_id,
+                 "execution_id": feedback.execution_id,
+                 "user_id": feedback.user_id,
+                 "feedback_type": feedback.feedback_type,
+                 "field": feedback.field,
+                 "expected_value": feedback.expected_value,
+                 "actual_value": feedback.actual_value,
+                 "reason": feedback.reason,
+                 "comment": feedback.comment,
+                 "rating": feedback.rating,
+                 "timestamp": feedback.timestamp.isoformat(),
+                 "metadata": feedback.metadata
+             }
+
+             self.log_store.write(entry)
+
+         def rotate_logs(self, keep_days: int = 30) -> None:
+             """
+             Rotate old logs (delete files older than keep_days).
+
+             Args:
+                 keep_days: Number of days to keep logs
+             """
+             if not isinstance(self.log_store, JSONLLogStore):
+                 return  # Only applies to JSONL storage
+
+             cutoff_date = date.today() - timedelta(days=keep_days)
+
+             for log_file in self.log_store.log_dir.glob("*.jsonl"):
+                 # Parse date from filename (YYYY-MM-DD.jsonl)
+                 try:
+                     file_date = date.fromisoformat(log_file.stem)
+                     if file_date < cutoff_date:
+                         log_file.unlink()
+                 except (ValueError, OSError):
+                     pass  # Skip invalid files
+
+         def get_summary(self, period_days: int = 7) -> Dict[str, Any]:
+             """
+             Get quick stats for recent period.
+
+             Args:
+                 period_days: Number of days to analyze
+
+             Returns:
+                 Dict with summary stats
+             """
+             start_date = date.today() - timedelta(days=period_days)
+             end_date = date.today()
+
+             logs = self.log_store.query({"start_date": start_date, "end_date": end_date})
+
+             # Calculate stats
+             total = len([l for l in logs if l["type"] == "execution"])
+             success = len([l for l in logs if l["type"] == "execution" and l["status"] == "success"])
+             errors = len([l for l in logs if l["type"] == "error"])
+             feedback = len([l for l in logs if l["type"] == "feedback"])
+
+             return {
+                 "period_days": period_days,
+                 "total_executions": total,
+                 "successful": success,
+                 "errors": errors,
+                 "feedback_count": feedback,
+                 "success_rate": success / total if total > 0 else 0
+             }
+
+
+     # Global logger instance
+     _global_logger: Optional[ExecutionLogger] = None
+
+
+     def get_execution_logger() -> ExecutionLogger:
+         """Get global execution logger (singleton)."""
+         global _global_logger
+         if _global_logger is None:
+             _global_logger = ExecutionLogger()
+         return _global_logger
+
+     ---
+     📝 Phase 7.3: Integrate with BaseSkill
+
+     Timeline: Day 2 (4 hours)
+     Files: transrouter/src/skills/base_skill.py (MODIFY)
+     Dependencies: 7.1, 7.2
+     Risk: MEDIUM (modifying core infrastructure)
+
+     Step-by-Step Implementation
+
+     7.3.1 Add Instrumentation Hooks to BaseSkill
+
+     File: transrouter/src/skills/base_skill.py (MODIFY)
+
+     Add instrumentation to lifecycle hooks:
+
+     from transrouter.src.instrumentation.logger import get_execution_logger
+     from transrouter.src.instrumentation.schemas import ExecutionTrace, ExecutionStatus, ErrorRecord
+     import uuid
+     import hashlib
+     from datetime import datetime
+
+
+     class BaseSkill(ABC):
+         # ... existing code ...
+
+         def on_start(self, inputs: Dict[str, Any]) -> None:
+             """
+             Called before skill execution.
+
+             INSTRUMENTATION: Log start of execution.
+             """
+             self._execution_start_time = datetime.now()
+             self._execution_id = str(uuid.uuid4())
+             self._inputs = inputs
+
+         def on_complete(self, result: ParseResult) -> None:
+             """
+             Called after successful execution.
+
+             INSTRUMENTATION: Log execution trace.
+             """
+             duration_ms = int((datetime.now() - self._execution_start_time).total_seconds() * 1000)
+
+             trace = ExecutionTrace(
+                 execution_id=self._execution_id,
+                 skill_name=self.skill_name,
+                 conversation_id=result.conversation_id,
+                 user_id=self._inputs.get("user_id", "unknown"),
+                 restaurant_id=self.restaurant_id,
+                 inputs_hash=self._hash_inputs(self._inputs),
+                 inputs_summary=self._summarize_inputs(self._inputs),
+                 status=ExecutionStatus(result.status),
+                 duration_ms=duration_ms,
+                 started_at=self._execution_start_time,
+                 completed_at=datetime.now(),
+                 model_used=self._get_model_used(),
+                 tokens_used=self._get_tokens_used(),
+                 cost_usd=self._get_cost_usd(),
+                 result_hash=self._hash_result(result),
+                 result_summary=self._summarize_result(result),
+                 clarifications_needed=len(result.clarification_questions) if result.clarification_questions else 0,
+                 clarification_questions=[q.question for q in (result.clarification_questions or [])],
+                 error_type=None,
+                 error_message=None,
+                 stack_trace=None,
+                 user_feedback=None,
+                 user_rating=None,
+                 metadata={}
+             )
+
+             logger = get_execution_logger()
+             logger.log_execution(trace)
+
+         def on_error(self, error: Exception) -> None:
+             """
+             Called when error occurs.
+
+             INSTRUMENTATION: Log error details.
+             """
+             import traceback
+
+             error_record = ErrorRecord(
+                 error_id=str(uuid.uuid4()),
+                 execution_id=self._execution_id,
+                 skill_name=self.skill_name,
+                 error_type=type(error).__name__,
+                 error_message=str(error),
+                 stack_trace=traceback.format_exc(),
+                 timestamp=datetime.now(),
+                 user_id=self._inputs.get("user_id", "unknown"),
+                 inputs_summary=self._summarize_inputs(self._inputs),
+                 context={}
+             )
+
+             logger = get_execution_logger()
+             logger.log_error(error_record)
+
+         def _hash_inputs(self, inputs: Dict[str, Any]) -> str:
+             """Hash inputs for deduplication."""
+             inputs_str = json.dumps(inputs, sort_keys=True)
+             return hashlib.md5(inputs_str.encode()).hexdigest()
+
+         def _summarize_inputs(self, inputs: Dict[str, Any]) -> str:
+             """Create human-readable summary of inputs."""
+             # Truncate transcript if too long
+             summary = {}
+             for key, value in inputs.items():
+                 if key == "transcript" and len(value) > 100:
+                     summary[key] = value[:100] + "..."
+                 else:
+                     summary[key] = value
+             return json.dumps(summary)
+
+         def _hash_result(self, result: ParseResult) -> str:
+             """Hash result for deduplication."""
+             result_str = json.dumps(result.approval_json, sort_keys=True) if result.approval_json else ""
+             return hashlib.md5(result_str.encode()).hexdigest()
+
+         def _summarize_result(self, result: ParseResult) -> str:
+             """Create human-readable summary of result."""
+             if result.status == "success":
+                 return f"Success: {len(result.approval_json.get('per_shift', {}))} employees processed"
+             elif result.status == "needs_clarification":
+                 return f"Needs clarification: {len(result.clarification_questions)} questions"
+             else:
+                 return f"Error: {result.status}"
+
+         def _get_model_used(self) -> str:
+             """Get model used for execution."""
+             # TODO: Integrate with ModelRouter from Phase 5
+             return "claude-sonnet-4"
+
+         def _get_tokens_used(self) -> int:
+             """Get total tokens used."""
+             # TODO: Integrate with ModelRouter from Phase 5
+             return 0
+
+         def _get_cost_usd(self) -> float:
+             """Get cost in USD."""
+             # TODO: Integrate with ModelRouter from Phase 5
+             return 0.0
+
+     ---
+     📝 Phase 7.4: Database Schema
+
+     Timeline: Day 3 (2 hours)
+     Files: mise_app/models/execution_log.py (NEW)
+     Dependencies: 7.1, 7.2
+     Risk: LOW
+
+     Step-by-Step Implementation
+
+     7.4.1 Create Execution Log Models
+
+     File: mise_app/models/execution_log.py (NEW)
+
+     """Database models for execution logs."""
+
+     from sqlalchemy import Column, Integer, String, Float, Boolean, Text, DateTime, JSON
+     from mise_app.database import Base
+     from datetime import datetime
+
+
+     class ExecutionLog(Base):
+         """Execution trace (summary for quick queries)."""
+         __tablename__ = "execution_logs"
+
+         id = Column(Integer, primary_key=True)
+         execution_id = Column(String(50), unique=True, index=True)
+         skill_name = Column(String(50), index=True)
+         user_id = Column(String(50), index=True)
+         restaurant_id = Column(String(50), index=True)
+
+         status = Column(String(20), index=True)  # success, error, needs_clarification
+         duration_ms = Column(Integer)
+         model_used = Column(String(50))
+         tokens_used = Column(Integer)
+         cost_usd = Column(Float)
+
+         started_at = Column(DateTime, index=True)
+         completed_at = Column(DateTime)
+
+         clarifications_needed = Column(Integer, default=0)
+
+         # Full trace stored in JSONL, this is just metadata for queries
+         metadata = Column(JSON)
+
+
+     class ErrorLog(Base):
+         """Error records for quick error analysis."""
+         __tablename__ = "error_logs"
+
+         id = Column(Integer, primary_key=True)
+         error_id = Column(String(50), unique=True, index=True)
+         execution_id = Column(String(50), index=True)
+         skill_name = Column(String(50), index=True)
+         error_type = Column(String(100), index=True)
+         error_message = Column(Text)
+
+         timestamp = Column(DateTime, index=True, default=datetime.utcnow)
+
+         # Full error details in JSONL
+         metadata = Column(JSON)
+
+
+     class FeedbackLog(Base):
+         """User feedback records."""
+         __tablename__ = "feedback_logs"
+
+         id = Column(Integer, primary_key=True)
+         feedback_id = Column(String(50), unique=True, index=True)
+         execution_id = Column(String(50), index=True)
+         user_id = Column(String(50), index=True)
+
+         feedback_type = Column(String(20))  # correction, comment, rating
+         rating = Column(Integer, nullable=True)
+
+         timestamp = Column(DateTime, index=True, default=datetime.utcnow)
+
+         # Full feedback in JSONL
+         metadata = Column(JSON)
+
+     ---
+     📝 Phase 7.5: Metrics Dashboard
+
+     Timeline: Day 3-4 (8 hours)
+     Files: transrouter/src/instrumentation/metrics.py (NEW)
+     Dependencies: 7.1, 7.2, 7.4
+     Risk: MEDIUM
+
+     Step-by-Step Implementation
+
+     7.5.1 Create MetricsDashboard Class
+
+     File: transrouter/src/instrumentation/metrics.py (NEW)
+
+     """
+     Metrics Dashboard
+
+     Aggregates execution logs into actionable metrics.
+     """
+
+     from typing import Dict, Any, List, Tuple
+     from datetime import datetime, timedelta, date
+     from collections import defaultdict
+     import statistics
+
+     from transrouter.src.instrumentation.logger import get_execution_logger
+     from transrouter.src.instrumentation.schemas import PerformanceMetrics
+
+
+     class MetricsDashboard:
+         """
+         Compute performance metrics from execution logs.
+
+         Usage:
+             dashboard = MetricsDashboard()
+             metrics = dashboard.get_skill_summary("payroll", period_days=7)
+         """
+
+         def __init__(self, logger=None):
+             self.logger = logger or get_execution_logger()
+
+         def get_skill_summary(
+             self,
+             skill_name: str,
+             period_days: int = 7
+         ) -> PerformanceMetrics:
+             """
+             Get performance summary for a skill.
+
+             Args:
+                 skill_name: Name of skill (e.g., "payroll")
+                 period_days: Number of days to analyze
+
+             Returns:
+                 PerformanceMetrics object
+             """
+             start_date = date.today() - timedelta(days=period_days)
+             end_date = date.today()
+
+             # Query logs
+             logs = self.logger.log_store.query({
+                 "start_date": start_date,
+                 "end_date": end_date,
+                 "skill_name": skill_name,
+                 "type": "execution"
+             })
+
+             if not logs:
+                 return self._empty_metrics(skill_name, start_date, end_date)
+
+             # Calculate metrics
+             total = len(logs)
+             successful = len([l for l in logs if l["status"] == "success"])
+             failed = len([l for l in logs if l["status"] == "error"])
+             timeout = len([l for l in logs if l["status"] == "timeout"])
+
+             durations = [l["duration_ms"] for l in logs if "duration_ms" in l]
+             tokens = [l["tokens_used"] for l in logs if "tokens_used" in l]
+             costs = [l["cost_usd"] for l in logs if "cost_usd" in l]
+
+             # Model usage breakdown
+             model_usage = defaultdict(int)
+             model_costs = defaultdict(float)
+             for log in logs:
+                 model = log.get("model_used", "unknown")
+                 model_usage[model] += 1
+                 model_costs[model] += log.get("cost_usd", 0)
+
+             return PerformanceMetrics(
+                 skill_name=skill_name,
+                 period_start=datetime.combine(start_date, datetime.min.time()),
+                 period_end=datetime.combine(end_date, datetime.max.time()),
+                 total_executions=total,
+                 successful_executions=successful,
+                 failed_executions=failed,
+                 timeout_executions=timeout,
+                 avg_duration_ms=statistics.mean(durations) if durations else 0,
+                 p50_duration_ms=statistics.median(durations) if durations else 0,
+                 p95_duration_ms=self._percentile(durations, 0.95) if durations else 0,
+                 p99_duration_ms=self._percentile(durations, 0.99) if durations else 0,
+                 success_rate=successful / total if total > 0 else 0,
+                 clarification_rate=len([l for l in logs if l.get("clarifications_needed", 0) > 0]) / total if total > 0 else 0,
+                 error_rate=failed / total if total > 0 else 0,
+                 total_tokens=sum(tokens),
+                 total_cost_usd=sum(costs),
+                 avg_tokens_per_execution=statistics.mean(tokens) if tokens else 0,
+                 avg_cost_per_execution=statistics.mean(costs) if costs else 0,
+                 model_usage=dict(model_usage),
+                 model_costs=dict(model_costs)
+             )
+
+         def get_model_usage(self, period_days: int = 7) -> Dict[str, Any]:
+             """
+             Get model usage breakdown across all skills.
+
+             Returns:
+                 Dict with model usage stats
+             """
+             start_date = date.today() - timedelta(days=period_days)
+             end_date = date.today()
+
+             logs = self.logger.log_store.query({
+                 "start_date": start_date,
+                 "end_date": end_date,
+                 "type": "execution"
+             })
+
+             model_stats = defaultdict(lambda: {"count": 0, "tokens": 0, "cost": 0})
+
+             for log in logs:
+                 model = log.get("model_used", "unknown")
+                 model_stats[model]["count"] += 1
+                 model_stats[model]["tokens"] += log.get("tokens_used", 0)
+                 model_stats[model]["cost"] += log.get("cost_usd", 0)
+
+             return dict(model_stats)
+
+         def get_clarification_rate(self, skill_name: str, period_days: int = 7) -> float:
+             """
+             Get % of executions needing clarification.
+
+             Args:
+                 skill_name: Name of skill
+                 period_days: Number of days to analyze
+
+             Returns:
+                 Clarification rate (0.0-1.0)
+             """
+             metrics = self.get_skill_summary(skill_name, period_days)
+             return metrics.clarification_rate
+
+         def get_error_trends(self, period_days: int = 7) -> List[Tuple[str, int]]:
+             """
+             Get error counts over time.
+
+             Returns:
+                 List of (date, error_count) tuples
+             """
+             start_date = date.today() - timedelta(days=period_days)
+             end_date = date.today()
+
+             logs = self.logger.log_store.query({
+                 "start_date": start_date,
+                 "end_date": end_date,
+                 "type": "error"
+             })
+
+             # Group by date
+             error_counts = defaultdict(int)
+             for log in logs:
+                 log_date = datetime.fromisoformat(log["timestamp"]).date()
+                 error_counts[log_date] += 1
+
+             # Return sorted by date
+             return sorted(error_counts.items())
+
+         def get_user_feedback_summary(self) -> Dict[str, Any]:
+             """
+             Get aggregated user feedback.
+
+             Returns:
+                 Dict with feedback stats
+             """
+             logs = self.logger.log_store.query({"type": "feedback"})
+
+             total = len(logs)
+             corrections = len([l for l in logs if l["feedback_type"] == "correction"])
+             comments = len([l for l in logs if l["feedback_type"] == "comment"])
+             ratings = [l["rating"] for l in logs if l.get("rating") is not None]
+
+             return {
+                 "total_feedback": total,
+                 "corrections": corrections,
+                 "comments": comments,
+                 "avg_rating": statistics.mean(ratings) if ratings else 0,
+                 "rating_distribution": self._rating_distribution(ratings)
+             }
+
+         def compute_cost_per_execution(self, skill_name: str, period_days: int = 7) -> float:
+             """Average cost per execution in USD."""
+             metrics = self.get_skill_summary(skill_name, period_days)
+             return metrics.avg_cost_per_execution
+
+         def _percentile(self, data: List[float], percentile: float) -> float:
+             """Calculate percentile."""
+             sorted_data = sorted(data)
+             index = int(len(sorted_data) * percentile)
+             return sorted_data[index] if index < len(sorted_data) else sorted_data[-1]
+
+         def _empty_metrics(self, skill_name: str, start: date, end: date) -> PerformanceMetrics:
+             """Return empty metrics when no data."""
+             return PerformanceMetrics(
+                 skill_name=skill_name,
+                 period_start=datetime.combine(start, datetime.min.time()),
+                 period_end=datetime.combine(end, datetime.max.time()),
+                 total_executions=0,
+                 successful_executions=0,
+                 failed_executions=0,
+                 timeout_executions=0,
+                 avg_duration_ms=0,
+                 p50_duration_ms=0,
+                 p95_duration_ms=0,
+                 p99_duration_ms=0,
+                 success_rate=0,
+                 clarification_rate=0,
+                 error_rate=0,
+                 total_tokens=0,
+                 total_cost_usd=0,
+                 avg_tokens_per_execution=0,
+                 avg_cost_per_execution=0,
+                 model_usage={},
+                 model_costs={}
+             )
+
+         def _rating_distribution(self, ratings: List[int]) -> Dict[int, int]:
+             """Count ratings by star."""
+             dist = {1: 0, 2: 0, 3: 0, 4: 0, 5: 0}
+             for rating in ratings:
+                 if 1 <= rating <= 5:
+                     dist[rating] += 1
+             return dist
+
+     ---
+     📝 Phase 7.6: Web Dashboard UI
+
+     Timeline: Day 4 (6 hours)
+     Files: mise_app/routes/metrics.py (NEW), mise_app/templates/metrics.html (NEW)
+     Dependencies: 7.5
+     Risk: LOW
+
+     Step-by-Step Implementation
+
+     7.6.1 Create Metrics API Endpoint
+
+     File: mise_app/routes/metrics.py (NEW)
+
+     """API endpoints for metrics dashboard."""
+
+     from fastapi import APIRouter, Query
+     from typing import Optional
+     from transrouter.src.instrumentation.metrics import MetricsDashboard
+
+
+     router = APIRouter(prefix="/admin/metrics", tags=["metrics"])
+     dashboard = MetricsDashboard()
+
+
+     @router.get("/")
+     def get_dashboard(period: str = Query(default="week")):
+         """
+         Get metrics dashboard.
+
+         Args:
+             period: "day", "week", "month"
+         """
+         period_days = {"day": 1, "week": 7, "month": 30}.get(period, 7)
+
+         payroll_metrics = dashboard.get_skill_summary("payroll", period_days)
+         model_usage = dashboard.get_model_usage(period_days)
+         error_trends = dashboard.get_error_trends(period_days)
+         feedback_summary = dashboard.get_user_feedback_summary()
+
+         return {
+             "period": period,
+             "payroll_metrics": payroll_metrics,
+             "model_usage": model_usage,
+             "error_trends": error_trends,
+             "feedback": feedback_summary
+         }
+
+
+     @router.get("/skill/{skill_name}")
+     def get_skill_metrics(skill_name: str, period_days: int = 7):
+         """Get metrics for specific skill."""
+         return dashboard.get_skill_summary(skill_name, period_days)
+
+     7.6.2 Create Dashboard HTML Template
+
+     File: mise_app/templates/metrics.html (NEW)
+
+     <!DOCTYPE html>
+     <html>
+     <head>
+         <title>Mise Metrics Dashboard</title>
+         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+         <style>
+             body { font-family: Arial; padding: 20px; }
+             .metric-card { border: 1px solid #ddd; padding: 15px; margin: 10px 0; }
+             .metric-value { font-size: 2em; font-weight: bold; }
+             canvas { max-height: 300px; }
+         </style>
+     </head>
+     <body>
+         <h1>Mise Metrics Dashboard</h1>
+
+         <div class="metric-card">
+             <h3>Success Rate</h3>
+             <div class="metric-value" id="success-rate">--</div>
+         </div>
+
+         <div class="metric-card">
+             <h3>Clarification Rate</h3>
+             <div class="metric-value" id="clarification-rate">--</div>
+         </div>
+
+         <div class="metric-card">
+             <h3>Total Cost (7 days)</h3>
+             <div class="metric-value" id="total-cost">--</div>
+         </div>
+
+         <div class="metric-card">
+             <h3>Model Usage</h3>
+             <canvas id="model-usage-chart"></canvas>
+         </div>
+
+         <div class="metric-card">
+             <h3>Error Trends</h3>
+             <canvas id="error-trends-chart"></canvas>
+         </div>
+
+         <script>
+             // Fetch metrics and render charts
+             fetch('/admin/metrics/?period=week')
+                 .then(res => res.json())
+                 .then(data => {
+                     // Update metric cards
+                     document.getElementById('success-rate').textContent =
+                         (data.payroll_metrics.success_rate * 100).toFixed(1) + '%';
+                     document.getElementById('clarification-rate').textContent =
+                         (data.payroll_metrics.clarification_rate * 100).toFixed(1) + '%';
+                     document.getElementById('total-cost').textContent =
+                         '$' + data.payroll_metrics.total_cost_usd.toFixed(2);
+
+                     // Render model usage chart
+                     const modelCtx = document.getElementById('model-usage-chart').getContext('2d');
+                     new Chart(modelCtx, {
+                         type: 'bar',
+                         data: {
+                             labels: Object.keys(data.model_usage),
+                             datasets: [{
+                                 label: 'Executions',
+                                 data: Object.values(data.model_usage).map(m => m.count),
+                                 backgroundColor: 'rgba(54, 162, 235, 0.5)'
+                             }]
+                         }
+                     });
+
+                     // Render error trends chart
+                     const errorCtx = document.getElementById('error-trends-chart').getContext('2d');
+                     new Chart(errorCtx, {
+                         type: 'line',
+                         data: {
+                             labels: data.error_trends.map(t => t[0]),
+                             datasets: [{
+                                 label: 'Errors',
+                                 data: data.error_trends.map(t => t[1]),
+                                 borderColor: 'rgba(255, 99, 132, 1)',
+                                 fill: false
+                             }]
+                         }
+                     });
+                 });
+         </script>
+     </body>
+     </html>
+
+     ---
+     📝 Phase 7.7: Feedback Capture Mechanism
+
+     Timeline: Day 5 (4 hours)
+     Files: mise_app/routes/feedback.py (NEW)
+     Dependencies: 7.2
+     Risk: LOW
+
+     Step-by-Step Implementation
+
+     7.7.1 Create Feedback API
+
+     File: mise_app/routes/feedback.py (NEW)
+
+     """API endpoints for user feedback."""
+
+     from fastapi import APIRouter, Depends
+     from pydantic import BaseModel
+     from typing import Optional
+     from transrouter.src.instrumentation.logger import get_execution_logger
+     from transrouter.src.instrumentation.schemas import FeedbackRecord
+     from datetime import datetime
+     import uuid
+
+
+     router = APIRouter(prefix="/api/feedback", tags=["feedback"])
+     logger = get_execution_logger()
+
+
+     class FeedbackRequest(BaseModel):
+         execution_id: str
+         feedback_type: str  # correction, comment, rating
+         field: Optional[str] = None
+         expected_value: Optional[str] = None
+         actual_value: Optional[str] = None
+         reason: Optional[str] = None
+         comment: Optional[str] = None
+         rating: Optional[int] = None
+
+
+     @router.post("/{execution_id}")
+     def submit_feedback(execution_id: str, feedback: FeedbackRequest):
+         """Submit feedback on an execution."""
+         feedback_record = FeedbackRecord(
+             feedback_id=str(uuid.uuid4()),
+             execution_id=execution_id,
+             user_id="current_user",  # TODO: Get from auth
+             feedback_type=feedback.feedback_type,
+             field=feedback.field,
+             expected_value=feedback.expected_value,
+             actual_value=feedback.actual_value,
+             reason=feedback.reason,
+             comment=feedback.comment,
+             rating=feedback.rating,
+             timestamp=datetime.now(),
+             metadata={}
+         )
+
+         logger.log_feedback(feedback_record)
+
+         return {"status": "success", "feedback_id": feedback_record.feedback_id}
+
+     ---
+     📝 Phase 7.8: CLI Tools
+
+     Timeline: Day 5 (4 hours)
+     Files: scripts/metrics_report.py (NEW), scripts/error_analysis.py (NEW)
+     Dependencies: 7.5
+     Risk: LOW
+
+     Step-by-Step Implementation
+
+     7.8.1 Create Metrics Report CLI
+
+     File: scripts/metrics_report.py (NEW)
+
+     """
+     CLI tool for generating metrics reports.
+
+     Usage:
+         python scripts/metrics_report.py --period week --skill payroll
+     """
+
+     import argparse
+     from transrouter.src.instrumentation.metrics import MetricsDashboard
+     from tabulate import tabulate
+
+
+     def generate_report(skill_name: str, period: str):
+         """Generate metrics report."""
+         period_days = {"day": 1, "week": 7, "month": 30}.get(period, 7)
+         dashboard = MetricsDashboard()
+         metrics = dashboard.get_skill_summary(skill_name, period_days)
+
+         print(f"\n{'='*60}")
+         print(f"Metrics Report: {skill_name} ({period})")
+         print(f"{'='*60}\n")
+
+         # Summary table
+         summary = [
+             ["Total Executions", metrics.total_executions],
+             ["Successful", f"{metrics.successful_executions} ({metrics.success_rate*100:.1f}%)"],
+             ["Failed", f"{metrics.failed_executions} ({metrics.error_rate*100:.1f}%)"],
+             ["Clarifications Needed", f"{metrics.clarification_rate*100:.1f}%"],
+             ["Avg Duration", f"{metrics.avg_duration_ms:.0f}ms"],
+             ["P95 Duration", f"{metrics.p95_duration_ms:.0f}ms"],
+             ["Total Cost", f"${metrics.total_cost_usd:.2f}"],
+             ["Avg Cost/Execution", f"${metrics.avg_cost_per_execution:.4f}"]
+         ]
+
+         print(tabulate(summary, headers=["Metric", "Value"], tablefmt="grid"))
+
+         # Model breakdown
+         print(f"\n{'='*60}")
+         print("Model Usage Breakdown")
+         print(f"{'='*60}\n")
+
+         model_table = [
+             [model, count, f"${cost:.2f}"]
+             for model, count in metrics.model_usage.items()
+             for cost in [metrics.model_costs.get(model, 0)]
+         ]
+
+         print(tabulate(model_table, headers=["Model", "Count", "Cost"], tablefmt="grid"))
+
+
+     if __name__ == "__main__":
+         parser = argparse.ArgumentParser(description="Generate metrics report")
+         parser.add_argument("--skill", required=True, help="Skill name")
+         parser.add_argument("--period", default="week", choices=["day", "week", "month"], help="Time period")
+         args = parser.parse_args()
+
+         generate_report(args.skill, args.period)
+
+     ---
+     📝 Phase 7.9: Tests
+
+     Timeline: Day 6 (10 hours)
+     Files: tests/unit/test_instrumentation.py (NEW)
+     Dependencies: 7.1-7.8
+     Risk: LOW
+
+     Step-by-Step Implementation
+
+     7.9.1 Write Comprehensive Unit Tests
+
+     File: tests/unit/test_instrumentation.py (NEW)
+
+     """Unit tests for instrumentation."""
+
+     import pytest
+     from datetime import datetime
+     from transrouter.src.instrumentation.logger import ExecutionLogger, JSONLLogStore
+     from transrouter.src.instrumentation.schemas import ExecutionTrace, ExecutionStatus
+     from transrouter.src.instrumentation.metrics import MetricsDashboard
+
+
+     def test_execution_logger_basic(tmp_path):
+         """Test basic execution logging."""
+         store = JSONLLogStore(log_dir=str(tmp_path))
+         logger = ExecutionLogger(log_store=store)
+
+         trace = ExecutionTrace(
+             execution_id="test-1",
+             skill_name="payroll",
+             conversation_id=None,
+             user_id="user-1",
+             restaurant_id="papasurf",
+             inputs_hash="abc123",
+             inputs_summary="Test inputs",
+             status=ExecutionStatus.SUCCESS,
+             duration_ms=1000,
+             started_at=datetime.now(),
+             completed_at=datetime.now(),
+             model_used="claude-sonnet-4",
+             tokens_used=1000,
+             cost_usd=0.01,
+             result_hash="def456",
+             result_summary="Success",
+             clarifications_needed=0,
+             clarification_questions=[],
+             error_type=None,
+             error_message=None,
+             stack_trace=None,
+             user_feedback=None,
+             user_rating=None,
+             metadata={}
+         )
+
+         logger.log_execution(trace)
+
+         # Verify log file created
+         log_files = list(tmp_path.glob("*.jsonl"))
+         assert len(log_files) == 1
+
+
+     def test_metrics_dashboard_summary():
+         """Test metrics dashboard summary calculation."""
+         # TODO: Mock execution logs
+         # TODO: Test summary calculations
+         pass
+
+
+     # Run with: pytest tests/unit/test_instrumentation.py -v
+
+     ---
+     📝 Phase 7.10: Data Retention & Privacy
+
+     Timeline: Day 6 (2 hours)
+     Files: scripts/cleanup_logs.py (NEW)
+     Dependencies: 7.2
+     Risk: LOW
+
+     Step-by-Step Implementation
+
+     7.10.1 Create Log Cleanup Script
+
+     File: scripts/cleanup_logs.py (NEW)
+
+     """
+     Log cleanup and retention script.
+
+     Usage:
+         python scripts/cleanup_logs.py --keep-days 30
+     """
+
+     import argparse
+     from transrouter.src.instrumentation.logger import get_execution_logger
+
+
+     def cleanup_logs(keep_days: int):
+         """Delete logs older than keep_days."""
+         logger = get_execution_logger()
+         logger.rotate_logs(keep_days=keep_days)
+         print(f"Cleaned up logs older than {keep_days} days")
+
+
+     if __name__ == "__main__":
+         parser = argparse.ArgumentParser(description="Cleanup old logs")
+         parser.add_argument("--keep-days", type=int, default=30, help="Days to keep logs")
+         args = parser.parse_args()
+
+         cleanup_logs(args.keep_days)
+
+     ---
+     📝 Phase 7.11: Alerting
+
+     Timeline: Day 7 (3 hours)
+     Files: transrouter/src/instrumentation/alerting.py (NEW)
+     Dependencies: 7.5
+     Risk: LOW
+
+     Step-by-Step Implementation
+
+     7.11.1 Create Alert Manager
+
+     File: transrouter/src/instrumentation/alerting.py (NEW)
+
+     """
+     Alert Manager
+
+     Checks metrics and triggers alerts when thresholds exceeded.
+     """
+
+     from typing import List, Dict, Any
+     from dataclasses import dataclass
+     from transrouter.src.instrumentation.metrics import MetricsDashboard
+
+
+     @dataclass
+     class AlertRule:
+         """Alert rule definition."""
+         rule_id: str
+         condition: str                         # "error_rate > 10%"
+         severity: str                          # critical, warning, info
+         action: str                            # page_oncall, slack, email
+         threshold: float
+         metric_name: str
+
+
+     @dataclass
+     class Alert:
+         """Triggered alert."""
+         alert_id: str
+         rule_id: str
+         severity: str
+         message: str
+         current_value: float
+         threshold: float
+         timestamp: datetime
+
+
+     class AlertManager:
+         """
+         Monitor metrics and trigger alerts.
+
+         Usage:
+             manager = AlertManager()
+             alerts = manager.check_metrics()
+         """
+
+         def __init__(self):
+             self.dashboard = MetricsDashboard()
+             self.rules = self._load_rules()
+
+         def _load_rules(self) -> List[AlertRule]:
+             """Load alert rules."""
+             return [
+                 AlertRule(
+                     rule_id="error-rate-high",
+                     condition="error_rate > 10%",
+                     severity="critical",
+                     action="page_oncall",
+                     threshold=0.10,
+                     metric_name="error_rate"
+                 ),
+                 AlertRule(
+                     rule_id="clarification-rate-high",
+                     condition="clarification_rate > 30%",
+                     severity="warning",
+                     action="slack",
+                     threshold=0.30,
+                     metric_name="clarification_rate"
+                 ),
+                 AlertRule(
+                     rule_id="cost-spike",
+                     condition="cost_increase > 20%",
+                     severity="warning",
+                     action="email",
+                     threshold=0.20,
+                     metric_name="cost_increase"
+                 )
+             ]
+
+         def check_metrics(self, skill_name: str = "payroll") -> List[Alert]:
+             """
+             Check metrics against alert rules.
+
+             Returns:
+                 List of triggered alerts
+             """
+             alerts = []
+             metrics = self.dashboard.get_skill_summary(skill_name, period_days=1)
+
+             for rule in self.rules:
+                 if self._rule_triggered(rule, metrics):
+                     alert = Alert(
+                         alert_id=str(uuid.uuid4()),
+                         rule_id=rule.rule_id,
+                         severity=rule.severity,
+                         message=f"{rule.condition} triggered",
+                         current_value=getattr(metrics, rule.metric_name),
+                         threshold=rule.threshold,
+                         timestamp=datetime.now()
+                     )
+                     alerts.append(alert)
+
+             return alerts
+
+         def _rule_triggered(self, rule: AlertRule, metrics: PerformanceMetrics) -> bool:
+             """Check if rule is triggered."""
+             current_value = getattr(metrics, rule.metric_name, 0)
+             return current_value > rule.threshold
+
+     ---
+     📝 Phase 7.12: Validation & Deployment
+
+     Timeline: Day 7 (6 hours)
+     Files: N/A (testing)
+     Dependencies: 7.1-7.11
+     Risk: MEDIUM
+
+     Step-by-Step Validation
+
+     7.12.1 Validation Checklist
+
+     □ ExecutionLogger writes to JSONL correctly
+     □ BaseSkill hooks call logger automatically
+     □ Execution traces include all required fields
+     □ Error records captured with stack traces
+     □ Feedback records stored correctly
+     □ Metrics dashboard calculates stats accurately
+     □ Web dashboard displays metrics
+     □ Feedback API works
+     □ CLI tools generate reports
+     □ Log rotation works (deletes old files)
+     □ Alerts trigger when thresholds exceeded
+     □ Database stores summary records
+     □ All unit tests pass (≥85% coverage)
+
+     7.12.2 Manual Test Scenario
+
+     # Execute a skill and verify logging
+     agent = PayrollAgent()
+     result = agent.parse_transcript(transcript, period_id="test")
+
+     # Check that execution was logged
+     logger = get_execution_logger()
+     summary = logger.get_summary(period_days=1)
+     assert summary["total_executions"] > 0
+
+     # Check metrics dashboard
+     dashboard = MetricsDashboard()
+     metrics = dashboard.get_skill_summary("payroll", period_days=1)
+     assert metrics.total_executions > 0
+
+     # Verify log file exists
+     from datetime import date
+     log_file = Path(f"logs/executions/{date.today().isoformat()}.jsonl")
+     assert log_file.exists()
+
+     ---
+     📝 Phase 7.13: Commit
+
+     git add transrouter/src/instrumentation/ \
+             mise_app/models/execution_log.py \
+             mise_app/routes/metrics.py \
+             mise_app/routes/feedback.py \
+             mise_app/templates/metrics.html \
+             scripts/metrics_report.py \
+             scripts/error_analysis.py \
+             scripts/cleanup_logs.py \
+             tests/unit/test_instrumentation.py
+
+     git commit -m "feat(instrumentation): Add comprehensive execution logging and metrics
+
+     - Implement ExecutionLogger with JSONL storage
+     - Add execution traces, error logs, feedback logs
+     - Integrate instrumentation with BaseSkill lifecycle hooks
+     - Add database schema for execution logs
+     - Implement MetricsDashboard for performance analysis
+     - Add web dashboard UI with charts (Chart.js)
+     - Add feedback capture API
+     - Add CLI tools for metrics reports and error analysis
+     - Add alert manager for threshold monitoring
+     - Add log rotation and retention policy
+     - Add comprehensive unit tests
+
+     Tracks:
+     - Success rate, clarification rate, error rate
+     - Execution duration (avg, p50, p95, p99)
+     - Model usage and costs
+     - User feedback and ratings
+
+     Part of Phase 7 (Instrumentation & Feedback)
+     Ref: CoCounsel improvements plan"
+
+     git push origin feature/cocounsel-improvements
 
      ---
      🎯 FINAL SUMMARY
@@ -7536,12 +10835,228 @@
      - SOC2/compliance audit logs
 
      ---
+     📝 Phase 8.0: MANDATORY CODEBASE SEARCH (NEW)
+
+     **Before writing ANY code for Phase 8, execute SEARCH_FIRST protocol:**
+
+     Timeline: 30 minutes
+     Risk: CRITICAL (skip this and you'll contradict canonical policies)
+
+     Step-by-Step Search Protocol:
+
+     8.0.1 Search for Canonical Policies
+
+     # Search for existing security measures
+     grep -r "secret\|encrypt\|auth\|security" mise_app/
+
+     # Check for existing rate limiting
+     grep -r "rate.*limit\|throttle" mise_app/
+
+     # Search for existing backup procedures
+     grep -r "backup\|restore" scripts/
+
+     # Search brain files for security policies
+     ls docs/brain/ | grep -i "security\|auth\|encrypt"
+
+     # Check existing middleware
+     ls mise_app/middleware/ 2>/dev/null || echo "No middleware directory"
+
+     8.0.2 Document Canonical Policies Found
+
+     Create a checklist of ALL canonical policies found:
+
+     □ Existing Security Measures
+       - Source file: _______________
+       - What's protected: _______________
+       - What's missing: _______________
+
+     □ Authentication/Authorization
+       - Source file: _______________
+       - Current mechanism: _______________
+       - Needs improvement: _______________
+
+     □ Secrets Management
+       - Source file: _______________
+       - How secrets are stored: _______________
+       - Secure or insecure: _______________
+
+     8.0.3 Read Existing Code
+
+     # Check current security setup
+     grep -r "password\|key\|token\|secret" mise_app/ --include="*.py"
+
+     # Note: Any hardcoded secrets MUST be moved to Secret Manager
+     # Any unencrypted sensitive data MUST be encrypted
+
+     # Check existing middleware stack
+     ls mise_app/middleware/ 2>/dev/null && cat mise_app/middleware/*.py
+
+     # Check FastAPI app configuration
+     grep -r "app = FastAPI" mise_app/
+
+     8.0.4 Verify Understanding
+
+     Before proceeding, answer these questions:
+
+     1. What security measures are already in place?
+        Answer from search: _______________
+        Source: mise_app/
+
+     2. Are there any hardcoded secrets that need migration?
+        Answer from search: _______________
+        Source: _______________
+
+     3. What's the difference between canonical policies and historical patterns?
+        Answer: Canonical policies come from workflow specs/brain files and MUST be followed.
+        Historical patterns are observations from past data and should NEVER be assumed.
+
+     4. What existing infrastructure can be reused for security?
+        Answer from search: _______________
+        Source: _______________
+
+     **If you cannot answer all questions from the codebase, DO NOT PROCEED.**
+
+     ---
      📝 Phase 8.1: Security Hardening
 
-     Timeline: Day 1 (6 hours)
-     Risk: LOW (adding security layers)
+     Timeline: Day 1 (8 hours) ← Updated from 6 hours
+     Risk: MEDIUM (contains P0 critical CORS fix)
+
+     **⚠️ CRITICAL: CORS Security Vulnerability Found (Jan 28, 2026)**
+
+     During validation, discovered both mise_app and transrouter use:
+     - `allow_origins=["*"]`
+     - `allow_credentials=True`
+
+     This combination enables CSRF attacks. Fix IMMEDIATELY before any other Phase 8 work.
 
      Step-by-Step Implementation
+
+     8.1.0 Fix CORS Misconfiguration (P0 - CRITICAL - DO THIS FIRST)
+
+     **Severity**: P0 Critical
+     **Timeline**: 2 hours (before any other Phase 8 work)
+     **Files**: mise_app/main.py, transrouter/api/main.py
+
+     Current Vulnerable Configuration:
+
+     # mise_app/main.py (INSECURE - DO NOT USE)
+     app.add_middleware(
+         CORSMiddleware,
+         allow_origins=["*"],               # ❌ Wildcard
+         allow_credentials=True,            # ❌ Credentials enabled
+         allow_methods=["*"],
+         allow_headers=["*"],
+     )
+
+     # transrouter/api/main.py (INSECURE - DO NOT USE)
+     app.add_middleware(
+         CORSMiddleware,
+         allow_origins=["*"],               # ❌ Wildcard
+         allow_credentials=True,            # ❌ Credentials enabled
+         allow_methods=["*"],
+         allow_headers=["*"],
+     )
+
+     Why This Is Critical:
+
+     When `allow_origins=["*"]` is combined with `allow_credentials=True`:
+     1. Any website can make authenticated requests to Mise
+     2. Browser sends cookies/session data with cross-origin requests
+     3. Attacker can steal session, submit fake payroll, access data
+     4. OWASP Top 10 security vulnerability
+
+     Correct Configuration:
+
+     File: mise_app/main.py (FIX)
+
+     # Get allowed origins from environment
+     ALLOWED_ORIGINS = os.getenv(
+         "ALLOWED_ORIGINS",
+         "http://localhost:3000,http://localhost:8000"
+     ).split(",")
+
+     app.add_middleware(
+         CORSMiddleware,
+         allow_origins=ALLOWED_ORIGINS,     # ✅ Explicit list
+         allow_credentials=True,            # ✅ Safe with explicit origins
+         allow_methods=["GET", "POST", "PUT", "DELETE"],  # ✅ Specific methods
+         allow_headers=["Content-Type", "Authorization"],  # ✅ Specific headers
+     )
+
+     File: transrouter/api/main.py (FIX)
+
+     # Get allowed origins from environment
+     ALLOWED_ORIGINS = os.getenv(
+         "ALLOWED_ORIGINS",
+         "http://localhost:3000,http://localhost:8000"
+     ).split(",")
+
+     app.add_middleware(
+         CORSMiddleware,
+         allow_origins=ALLOWED_ORIGINS,     # ✅ Explicit list
+         allow_credentials=True,            # ✅ Safe with explicit origins
+         allow_methods=["GET", "POST"],     # ✅ Specific methods
+         allow_headers=["Content-Type"],    # ✅ Specific headers
+     )
+
+     Environment Variables:
+
+     Add to .env:
+
+     # Production
+     ALLOWED_ORIGINS=https://mise.yourdomain.com,https://app.yourdomain.com
+
+     # Development
+     ALLOWED_ORIGINS=http://localhost:3000,http://localhost:8000,http://127.0.0.1:8000
+
+     Validation:
+
+     After fixing, verify CORS is secure:
+
+     # Test 1: Legitimate origin should work
+     curl -X POST http://localhost:8000/api/payroll/parse \
+       -H "Origin: http://localhost:3000" \
+       -H "Content-Type: application/json" \
+       --cookie "session=test" \
+       -d '{"transcript": "test"}'
+
+     # Expected: 200 OK with Access-Control-Allow-Origin: http://localhost:3000
+
+     # Test 2: Unknown origin should be blocked
+     curl -X POST http://localhost:8000/api/payroll/parse \
+       -H "Origin: https://evil.com" \
+       -H "Content-Type: application/json" \
+       --cookie "session=test" \
+       -d '{"transcript": "test"}'
+
+     # Expected: No Access-Control-Allow-Origin header (browser blocks)
+
+     Commit:
+
+     git add mise_app/main.py transrouter/api/main.py
+
+     git commit -m "fix(security): Fix CORS misconfiguration (P0 CRITICAL)
+
+     SECURITY ISSUE: allow_origins=['*'] with allow_credentials=True
+     enables CSRF attacks.
+
+     Changes:
+     - Replace wildcard origins with explicit ALLOWED_ORIGINS list
+     - Restrict methods and headers to minimum required
+     - Add environment variable for origin configuration
+     - Add validation tests
+
+     Discovered during CoCounsel Phase 8 validation (Jan 28, 2026)
+
+     CLOSES: Critical security vulnerability
+     PRIORITY: P0 - Deploy immediately"
+
+     git push origin main  # Push directly to main (security fix)
+
+     **Do not proceed with 8.1.1 until CORS fix is deployed and verified.**
+
+     ---
 
      8.1.1 Add Rate Limiting
 

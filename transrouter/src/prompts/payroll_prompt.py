@@ -416,16 +416,53 @@ Step 4: Final amounts
 - Percentage: 5.5 ÷ 6.5 = 84.6%
 - Ryan gets: 84.6% of calculated tipout
 
-**Example 3: Break on PM shift**
-"John took a 2 hour break" on Thursday PM (Standard time = 3.5 hours)
-- John worked: 3.5 - 2.0 = 1.5 hours
-- Percentage: 1.5 ÷ 3.5 = 42.9%
-- John gets: 42.9% of calculated tipout
+**Example 3: Support staff took a break on AM shift (COMPLETE WORKED EXAMPLE)**
+Transcript: "Thursday AM. Utility was Ryan. He took a 2 hour break. Austin $44.95, food sales $192."
+
+Step 1: Calculate full tipout
+- Utility tipout: $192 × 5% = $9.60
+
+Step 2: Calculate Ryan's hours worked
+- Standard AM shift: 6.5 hours (10AM-4:30PM)
+- Ryan took 2 hour break
+- Ryan worked: 6.5 - 2.0 = 4.5 hours
+- Ryan's percentage: 4.5 ÷ 6.5 = **69.2%**
+
+Step 3: Calculate Ryan's partial tipout
+- Ryan gets: $9.60 × 69.2% = **$6.65**
+- Unearned tipout: $9.60 - $6.65 = $2.95 (stays with Austin)
+
+Step 4: Calculate Austin's final amount
+- **CRITICAL: Austin only pays Ryan's EARNED portion ($6.65), NOT the full tipout ($9.60)**
+- Austin: $44.95 - $6.65 = **$38.30**
+
+Result:
+- Austin Kelley: $38.30
+- Ryan Alexander (utility): $6.65
+
+**per_shift output:**
+```json
+{{"Austin Kelley": {{"ThAM": 38.30}}, "Ryan Alexander": {{"ThAM": 6.65}}}}
+```
+
+**WRONG (common mistake - DO NOT DO THIS):**
+```
+Subtracting full tipout from Austin: $44.95 - $9.60 = $35.35 ← WRONG!
+Then giving Ryan some random amount like $3.84 ← WRONG!
+```
+
+The server ONLY pays what support staff ACTUALLY EARNS. The unearned portion stays with the server automatically.
 
 ### What happens to the unearned tipout?
 When support staff gets partial tipout, the remainder stays with the servers:
-- For single server: They keep the unearned portion
+- For single server: They keep the unearned portion (server pays ONLY the earned amount)
 - For tip pool: Add unearned portion back to pool before splitting
+
+**KEY RULE: Server's final = Server's tips - (support staff's EARNED tipout only)**
+
+NOT: Server's final = Server's tips - (full tipout) + (unearned portion back)
+
+Both formulas give the same result, but the first is simpler and less error-prone.
 
 ### Transcript Format
 The transcript follows this pattern:
@@ -503,6 +540,21 @@ You must return valid JSON matching this exact schema:
 7. **detail_blocks**: Array of [label, [lines]] showing human-readable math for each shift
 
 ### Detail Block Format
+
+**CRITICAL: detail_blocks must contain ONLY clean calculation steps. NO chain-of-thought reasoning.**
+
+DO NOT include:
+- "Wait, let me recalculate..."
+- "Actually, let me double-check..."
+- "Hmm, this doesn't feel right..."
+- "Let me verify this..."
+- "So Austin gets..." (phrases starting with "So", "And", "But", etc.)
+- Any self-doubt, verification, or reasoning about your calculations
+
+DO include:
+- Clean calculation steps with numbers
+- Final amounts for each employee
+- The mathematical operations (add, subtract, multiply, divide)
 
 Each detail block should show the calculation:
 - For tip pools: Show pool total, tipouts, distribution
