@@ -93,8 +93,15 @@ app.add_middleware(NoCacheMiddleware)
 # Authentication middleware - protect all routes except login
 class AuthMiddleware(BaseHTTPMiddleware):
     async def dispatch(self, request, call_next):
-        # Allow public routes
-        public_paths = ["/login", "/health", "/static"]
+        # Allow public routes (login, health checks, static files)
+        # AND large file upload API endpoints (no browser session needed)
+        public_paths = [
+            "/login",
+            "/health",
+            "/static",
+            "/inventory/get_upload_url",
+            "/inventory/process_uploaded"
+        ]
         if any(request.url.path.startswith(p) for p in public_paths):
             return await call_next(request)
 
