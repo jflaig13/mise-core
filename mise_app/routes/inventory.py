@@ -6,8 +6,8 @@ Voice recording for inventory counts, organized by area and category.
 
 from __future__ import annotations
 
-import asyncio
 import logging
+import threading
 from datetime import datetime
 from pathlib import Path
 from typing import Optional, Dict, Any
@@ -247,7 +247,7 @@ async def get_upload_url(request: Request):
         )
 
 
-async def _process_inventory_background(
+def _process_inventory_background(
     job_id: str,
     gcs_path: str,
     shelfy_id: str,
@@ -257,7 +257,7 @@ async def _process_inventory_background(
     transrouter_url: str,
     transrouter_api_key: str,
 ):
-    """Background task to process large inventory files.
+    """Background task to process large inventory files (runs in thread).
 
     Updates _processing_jobs dict with progress.
     """
@@ -403,19 +403,22 @@ async def process_uploaded(request: Request):
 
     log.info(f"🚀 Created job {job_id} for shelfy {shelfy_id}")
 
-    # Start background processing (fire and forget)
-    asyncio.create_task(
-        _process_inventory_background(
-            job_id=job_id,
-            gcs_path=gcs_path,
-            shelfy_id=shelfy_id,
-            area=area,
-            category=category,
-            period_id=period_id,
-            transrouter_url=config.transrouter_url,
-            transrouter_api_key=config.transrouter_api_key,
-        )
+    # Start background processing in daemon thread (survives request lifecycle)
+    thread = threading.Thread(
+        target=_process_inventory_background,
+        kwargs={
+            "job_id": job_id,
+            "gcs_path": gcs_path,
+            "shelfy_id": shelfy_id,
+            "area": area,
+            "category": category,
+            "period_id": period_id,
+            "transrouter_url": config.transrouter_url,
+            "transrouter_api_key": config.transrouter_api_key,
+        },
+        daemon=True,  # Thread survives beyond request
     )
+    thread.start()
 
     # Return immediately
     return JSONResponse({
