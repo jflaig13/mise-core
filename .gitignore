@@ -27,6 +27,7 @@ recordings/
 !Mise_PitchDeck.pdf
 *.wav
 *.m4a
+*.webm
 *.docx
 ~$*
 # allow tracked payroll roster template

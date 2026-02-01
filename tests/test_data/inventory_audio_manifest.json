@@ -1,0 +1,59 @@
+{
+  "test_cases": [
+    {
+      "id": "bar_office_blueberry_4packs",
+      "description": "Bar inventory with High Rise Blueberry 4-packs - tests pack conversion",
+      "gcs_path": "gs://mise-production-data/recordings/2026-02-28/Bar_TheOffice_20260201_033646.webm",
+      "category": "bar",
+      "area": "The Office",
+      "expected_items": [
+        {
+          "product_name": "High Rise Blueberry",
+          "quantity": 6,
+          "unit": "4-packs",
+          "conversion_display": "6 × 4 = 24 cans"
+        }
+      ]
+    },
+    {
+      "id": "bar_walkin_kegs",
+      "description": "Bar inventory with kegs - tests beer unit keywords",
+      "gcs_path": "gs://mise-production-data/recordings/2026-02-28/Bar_Walk-in_20260201_033741.webm",
+      "category": "bar",
+      "area": "Walk-in",
+      "expected_domain": "inventory"
+    },
+    {
+      "id": "bar_office_wine_mix",
+      "description": "Bar inventory with wine bottles and bar mixes",
+      "gcs_path": "gs://mise-production-data/recordings/2026-02-28/Bar_TheOffice_20260201_023115.webm",
+      "category": "bar",
+      "area": "The Office",
+      "expected_items": [
+        {
+          "product_name": "Squealing Pig Sauvignon Blanc",
+          "quantity": 6,
+          "unit": "bottles"
+        },
+        {
+          "product_name": "Scarpetta Pinot Grigio",
+          "quantity": 13,
+          "unit": "bottles"
+        }
+      ]
+    },
+    {
+      "id": "kitchen_dry_goods",
+      "description": "Kitchen dry goods inventory",
+      "gcs_path": "gs://mise-production-data/recordings/2026-02-28/Kitchen_DryGoods_20260201_015942.webm",
+      "category": "kitchen",
+      "area": "Dry Goods",
+      "expected_domain": "inventory"
+    }
+  ],
+  "metadata": {
+    "created": "2026-01-31",
+    "total_test_cases": 4,
+    "notes": "Real production audio from Jan 31 full inventory. Used for end-to-end testing of inventory voice processing."
+  }
+}
