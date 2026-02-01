@@ -172,18 +172,20 @@ async def get_upload_url(request: Request):
         ).text.strip()
 
         # Build the string to sign (GCS v4 signing format)
-        expiration_time = dt.utcnow() + timedelta(hours=1)
+        # IMPORTANT: Use same timestamp for all date calculations to avoid drift
+        now = dt.utcnow()
+        expiration_time = now + timedelta(hours=1)
         expiration_timestamp = int(expiration_time.timestamp())
 
         # Credential scope
-        datestamp = dt.utcnow().strftime('%Y%m%d')
+        datestamp = now.strftime('%Y%m%d')
         credential_scope = f"{datestamp}/auto/storage/goog4_request"
         credential = f"{service_account_email}/{credential_scope}"
 
         # Canonical request components
         method = "PUT"
         resource_path = f"/mise-production-data/recordings/{period_id}/{filename}"
-        goog_date = dt.utcnow().strftime('%Y%m%dT%H%M%SZ')
+        goog_date = now.strftime('%Y%m%dT%H%M%SZ')
         canonical_query_params = f"X-Goog-Algorithm=GOOG4-RSA-SHA256&X-Goog-Credential={credential.replace('/', '%2F')}&X-Goog-Date={goog_date}&X-Goog-Expires=3600&X-Goog-SignedHeaders=content-type%3Bhost"
         canonical_headers = "content-type:audio/wav\nhost:storage.googleapis.com\n"
         signed_headers = "content-type;host"
