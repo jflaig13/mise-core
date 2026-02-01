@@ -172,11 +172,10 @@ async def record_shelfy(
 
     transcript = result.get("transcript", "")
 
-    # Extract inventory_json from payload (transrouter wraps it in payload object)
-    payload = result.get("payload", {})
-    inventory_json = payload.get("inventory_json", {})
+    # Extract inventory_json from response (transrouter API returns it as approval_json)
+    inventory_json = result.get("approval_json", {})
 
-    log.info(f"🗄️ Processing complete: {len(transcript)} chars, {len(inventory_json.get('items', []))} items parsed")
+    log.info(f"🗄️ Processing complete: {len(transcript)} chars, {len(inventory_json.get('items', []) if inventory_json else [])} items parsed")
 
     # Normalize period_id (detect from transcript or use current month)
     if not period_id:

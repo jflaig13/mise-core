@@ -204,7 +204,7 @@ async def process_audio(
         domain=response.domain,
         transcript=response.transcript,
         agent=payload.get("agent"),
-        approval_json=payload.get("approval_json"),
+        approval_json=payload.get("approval_json") or payload.get("inventory_json"),  # Support both
         error=payload.get("error"),
         usage=payload.get("usage"),
         corrections=payload.get("corrections"),
