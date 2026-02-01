@@ -199,6 +199,21 @@
       ]
     },
     {
+      "name": "High Rise Blueberry",
+      "category": "Beer Cost",
+      "sku": "high-rise-blueberry",
+      "report_by_unit": "Can (12 Fluid Ounces)",
+      "latest_price": "$3.06",
+      "accounting_code": "",
+      "tax_exempt": "No",
+      "source_file": "products_beer.csv",
+      "keywords": [
+        "high",
+        "rise",
+        "blueberry"
+      ]
+    },
+    {
       "name": "Idyll Hands Joe Coffee Keg (1/6BBL)",
       "category": "Beer Cost",
       "sku": "idyll-hands-joe-coffee-keg-1-6bbl",
