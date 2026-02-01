@@ -287,26 +287,49 @@ def _process_inventory_background(
         _processing_jobs[job_id]["status"] = "transcribing"
         _processing_jobs[job_id]["progress"] = f"Transcribing {len(audio_bytes):,} bytes..."
 
-        # Process through transrouter (transcribe + parse)
-        # No timeout - let it run as long as needed
-        response = requests.post(
-            f"{transrouter_url}/api/v1/audio/process",
-            headers={"X-API-Key": transrouter_api_key},
-            files={"file": ("recording.wav", audio_bytes, "audio/wav")},
-            timeout=600,  # 10 minute timeout for large files
-        )
-        response.raise_for_status()
-        result = response.json()
+        # Check file size: use direct processing for files >32MB
+        FILE_SIZE_LIMIT = 32 * 1024 * 1024  # 32MB
 
-        if result.get("status") != "success":
-            error = result.get("error", "Processing failed")
-            log.error(f"[{job_id}] Processing failed: {error}")
-            _processing_jobs[job_id]["status"] = "error"
-            _processing_jobs[job_id]["error"] = error
-            return
+        if len(audio_bytes) > FILE_SIZE_LIMIT:
+            log.info(f"[{job_id}] Large file ({len(audio_bytes):,} bytes), using direct processing")
 
-        transcript = result.get("transcript", "")
-        inventory_json = result.get("approval_json", {})
+            # Use direct Google Speech-to-Text + Claude API
+            from mise_app.direct_transcription import process_large_inventory_file
+
+            result = process_large_inventory_file(gcs_path, category)
+
+            if result.get("status") != "success":
+                error = result.get("error", "Processing failed")
+                log.error(f"[{job_id}] Direct processing failed: {error}")
+                _processing_jobs[job_id]["status"] = "error"
+                _processing_jobs[job_id]["error"] = error
+                return
+
+            transcript = result.get("transcript", "")
+            inventory_json = result.get("approval_json", {})
+
+        else:
+            log.info(f"[{job_id}] Small file ({len(audio_bytes):,} bytes), using transrouter")
+
+            # Process through transrouter (transcribe + parse)
+            response = requests.post(
+                f"{transrouter_url}/api/v1/audio/process",
+                headers={"X-API-Key": transrouter_api_key},
+                files={"file": ("recording.wav", audio_bytes, "audio/wav")},
+                timeout=600,  # 10 minute timeout for large files
+            )
+            response.raise_for_status()
+            result = response.json()
+
+            if result.get("status") != "success":
+                error = result.get("error", "Processing failed")
+                log.error(f"[{job_id}] Processing failed: {error}")
+                _processing_jobs[job_id]["status"] = "error"
+                _processing_jobs[job_id]["error"] = error
+                return
+
+            transcript = result.get("transcript", "")
+            inventory_json = result.get("approval_json", {})
 
         log.info(f"[{job_id}] Transcription complete: {len(transcript)} chars, {len(inventory_json.get('items', []))} items")
 
