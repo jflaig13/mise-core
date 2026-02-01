@@ -586,6 +586,10 @@ async def inventory_totals_page(request: Request, period_id: str):
     kitchen_shelfies = [s for s in shelfies if s.get("category") == "kitchen"]
     bar_shelfies = [s for s in shelfies if s.get("category") == "bar"]
 
+    # Get aggregated totals
+    kitchen_aggregated = storage.get_aggregated_totals(period_id, category="kitchen")
+    bar_aggregated = storage.get_aggregated_totals(period_id, category="bar")
+
     context = get_template_context(request)
     context.update({
         "period_id": period_id,
@@ -593,6 +597,8 @@ async def inventory_totals_page(request: Request, period_id: str):
         "shelfies": shelfies,
         "kitchen_shelfies": kitchen_shelfies,
         "bar_shelfies": bar_shelfies,
+        "kitchen_aggregated": kitchen_aggregated,
+        "bar_aggregated": bar_aggregated,
         "active_tab": "totals",
     })
     return templates.TemplateResponse("inventory_totals.html", context)

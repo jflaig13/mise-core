@@ -11,6 +11,9 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copy transrouter code
 COPY transrouter/ ./transrouter/
 
+# Copy inventory catalog (for product normalization)
+COPY inventory_agent/inventory_catalog.json ./data/inventory_catalog.json
+
 ENV PYTHONUNBUFFERED=1
 ENV PORT=8080
 

@@ -242,6 +242,75 @@ class ShelfyStorage:
             "pending_count": pending_count,
         }
 
+    def get_aggregated_totals(self, period_id: str, category: Optional[str] = None) -> Dict[str, Any]:
+        """Get aggregated inventory totals for a period.
+
+        Combines all approved shelfies and sums quantities by product name.
+
+        Args:
+            period_id: Period to aggregate
+            category: Optional filter by category (kitchen/bar)
+
+        Returns:
+            Dict with:
+            - items: List of aggregated items (product_name, total_quantity, unit, category)
+            - shelfies_count: Number of shelfies aggregated
+            - areas_covered: List of unique areas
+        """
+        data = self._load(period_id)
+
+        # Filter to approved shelfies with inventory_json
+        approved = [
+            s for s in data
+            if s.get("status") == "approved"
+            and s.get("inventory_json")
+            and s["inventory_json"].get("items")
+        ]
+
+        # Filter by category if specified
+        if category:
+            approved = [s for s in approved if s.get("category") == category]
+
+        # Aggregate items by product name
+        product_totals = {}
+        areas_covered = set()
+
+        for shelfy in approved:
+            areas_covered.add(shelfy.get("area", "Unknown"))
+            shelfy_category = shelfy.get("category", "unknown")
+
+            for item in shelfy["inventory_json"]["items"]:
+                product_name = item.get("product_name", "").strip()
+                quantity = item.get("quantity")
+                unit = item.get("unit", "")
+
+                if not product_name:
+                    continue
+
+                # Normalize product name (case-insensitive key)
+                key = product_name.lower()
+
+                if key not in product_totals:
+                    product_totals[key] = {
+                        "product_name": product_name,  # Keep original casing from first occurrence
+                        "total_quantity": 0,
+                        "unit": unit,
+                        "category": shelfy_category,
+                    }
+
+                # Sum quantity (skip if null)
+                if quantity is not None:
+                    product_totals[key]["total_quantity"] += quantity
+
+        # Sort by product name
+        items = sorted(product_totals.values(), key=lambda x: x["product_name"])
+
+        return {
+            "items": items,
+            "shelfies_count": len(approved),
+            "areas_covered": sorted(areas_covered),
+        }
+
 
 # Singleton
 _shelfy_storage: Optional[ShelfyStorage] = None
