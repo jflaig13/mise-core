@@ -91,6 +91,220 @@ def save_shelfy_recording(
     return filepath
 
 
+@router.post("/get_upload_url")
+async def get_upload_url(request: Request):
+    """Get a signed GCS URL for direct audio upload (for files >32MB).
+
+    This endpoint returns a signed URL that allows direct upload to GCS,
+    bypassing Cloud Run's 32MB request limit.
+
+    Request body (JSON):
+        - area: Area name
+        - category: "kitchen" or "bar"
+        - file_extension: ".wav", ".m4a", ".webm", etc.
+        - period_id: Optional inventory period
+
+    Response:
+        - upload_url: Signed GCS URL for PUT upload
+        - gcs_path: GCS path where file will be stored
+        - shelfy_id: Pre-generated shelfy ID for processing
+        - expires_in: Seconds until URL expires (3600)
+    """
+    try:
+        body = await request.json()
+    except Exception:
+        return JSONResponse(
+            {"status": "error", "error": "Invalid JSON body"},
+            status_code=400
+        )
+
+    area = body.get("area")
+    category = body.get("category")
+    file_extension = body.get("file_extension", ".webm")
+    period_id = body.get("period_id")
+
+    if not area or not category:
+        return JSONResponse(
+            {"status": "error", "error": "Missing required fields: area, category"},
+            status_code=400
+        )
+
+    # Validate category
+    category = category.lower()
+    if category not in ("kitchen", "bar"):
+        return JSONResponse(
+            {"status": "error", "error": f"Invalid category: {category}"},
+            status_code=400
+        )
+
+    # Normalize period_id if not provided
+    if not period_id:
+        period_id = normalize_period_id()
+
+    # Generate shelfy ID and GCS path
+    shelfy_id = generate_shelfy_id(area)
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    category_cap = category.capitalize()
+    area_clean = area.replace(" ", "").replace("/", "")
+    filename = f"{category_cap}_{area_clean}_{timestamp}{file_extension}"
+    gcs_path = f"gs://mise-production-data/recordings/{period_id}/{filename}"
+
+    # Generate signed URL for upload (valid for 1 hour)
+    from google.cloud import storage as gcs
+    from datetime import timedelta
+
+    try:
+        client = gcs.Client()
+        bucket = client.bucket("mise-production-data")
+        blob = bucket.blob(f"recordings/{period_id}/{filename}")
+
+        # Generate signed URL for PUT (upload)
+        upload_url = blob.generate_signed_url(
+            version="v4",
+            expiration=timedelta(hours=1),
+            method="PUT",
+            content_type="audio/*"
+        )
+
+        return JSONResponse({
+            "status": "success",
+            "upload_url": upload_url,
+            "gcs_path": gcs_path,
+            "shelfy_id": shelfy_id,
+            "area": area,
+            "category": category,
+            "period_id": period_id,
+            "expires_in": 3600
+        })
+    except Exception as e:
+        log.error(f"Failed to generate upload URL: {e}")
+        return JSONResponse(
+            {"status": "error", "error": f"Failed to generate upload URL: {str(e)}"},
+            status_code=500
+        )
+
+
+@router.post("/process_uploaded")
+async def process_uploaded(request: Request):
+    """Process an audio file already uploaded to GCS.
+
+    Use this after uploading via signed URL from /get_upload_url.
+
+    Request body (JSON):
+        - gcs_path: GCS path to the uploaded file
+        - shelfy_id: Shelfy ID from get_upload_url
+        - area: Area name
+        - category: "kitchen" or "bar"
+        - period_id: Inventory period
+
+    Response:
+        - Same as /record_shelfy
+    """
+    try:
+        body = await request.json()
+    except Exception:
+        return JSONResponse(
+            {"status": "error", "error": "Invalid JSON body"},
+            status_code=400
+        )
+
+    gcs_path = body.get("gcs_path")
+    shelfy_id = body.get("shelfy_id")
+    area = body.get("area")
+    category = body.get("category")
+    period_id = body.get("period_id")
+
+    if not all([gcs_path, shelfy_id, area, category, period_id]):
+        return JSONResponse(
+            {"status": "error", "error": "Missing required fields"},
+            status_code=400
+        )
+
+    config = request.app.state.config
+    storage = get_shelfy_storage()
+
+    # Download audio from GCS
+    from google.cloud import storage as gcs
+    try:
+        client = gcs.Client()
+        # Parse GCS path: gs://bucket/path/to/file
+        if not gcs_path.startswith("gs://"):
+            raise ValueError("Invalid GCS path")
+
+        parts = gcs_path[5:].split("/", 1)
+        bucket_name = parts[0]
+        blob_path = parts[1]
+
+        bucket = client.bucket(bucket_name)
+        blob = bucket.blob(blob_path)
+        audio_bytes = blob.download_as_bytes()
+
+        log.info(f"📥 Downloaded {len(audio_bytes):,} bytes from {gcs_path}")
+    except Exception as e:
+        log.error(f"Failed to download from GCS: {e}")
+        return JSONResponse(
+            {"status": "error", "error": f"Failed to download audio from GCS: {str(e)}"},
+            status_code=500
+        )
+
+    # Process through transrouter (transcribe + parse)
+    try:
+        response = requests.post(
+            f"{config.transrouter_url}/api/v1/audio/process",
+            headers={"X-API-Key": config.transrouter_api_key},
+            files={"file": ("recording.wav", audio_bytes, "audio/wav")},
+            timeout=120,
+        )
+        response.raise_for_status()
+        result = response.json()
+    except requests.RequestException as e:
+        log.error(f"Transrouter API error: {e}")
+        return JSONResponse(
+            {"status": "error", "error": f"Processing failed: {e}"},
+            status_code=500
+        )
+
+    if result.get("status") != "success":
+        error = result.get("error", "Processing failed")
+        log.error(f"Processing failed: {error}")
+        return JSONResponse(
+            {"status": "error", "error": error},
+            status_code=400
+        )
+
+    transcript = result.get("transcript", "")
+    inventory_json = result.get("approval_json", {})
+
+    log.info(f"Processing complete: {len(transcript)} chars, {len(inventory_json.get('items', []))} items")
+
+    # Store shelfy record (audio already in GCS)
+    audio_path_str = gcs_path.replace("gs://mise-production-data/", "")
+
+    shelfy = storage.add_shelfy(
+        period_id=period_id,
+        shelfy_id=shelfy_id,
+        area=area,
+        category=category,
+        transcript=transcript,
+        audio_path=audio_path_str,
+        inventory_json=inventory_json,
+    )
+
+    log.info(f"Created shelfy {shelfy_id} for {area} ({category})")
+
+    return JSONResponse({
+        "status": "success",
+        "shelfy_id": shelfy_id,
+        "area": area,
+        "category": category,
+        "period_id": period_id,
+        "transcript": transcript,
+        "inventory_json": inventory_json,
+        "audio_path": audio_path_str,
+        "status": "pending_approval",
+    })
+
+
 @router.post("/record_shelfy")
 async def record_shelfy(
     request: Request,
@@ -101,8 +315,14 @@ async def record_shelfy(
 ):
     """Upload shelfy audio and get transcription.
 
+    NOTE: This endpoint has a 32MB file size limit due to Cloud Run.
+    For larger files (>32MB), use the two-step process:
+    1. POST /inventory/get_upload_url to get a signed GCS URL
+    2. PUT audio file directly to that URL
+    3. POST /inventory/process_uploaded to process the file
+
     Request:
-        - file: Audio file (webm, wav, m4a, mp3)
+        - file: Audio file (webm, wav, m4a, mp3) - MAX 32MB
         - area: Area being counted (e.g., "Walk-in", "Back Bar")
         - category: "kitchen" or "bar"
         - period_id: Optional, will be inferred from transcript if not provided
