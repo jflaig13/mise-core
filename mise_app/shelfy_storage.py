@@ -1,4 +1,7 @@
-"""Local JSON storage for Shelfy (inventory) feature."""
+"""GCS-based JSON storage for Shelfy (inventory) feature.
+
+Uses Google Cloud Storage for persistent inventory data across container restarts.
+"""
 
 from __future__ import annotations
 
@@ -8,10 +11,16 @@ from datetime import datetime, date
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 import calendar
+import os
+from google.cloud import storage
 
 log = logging.getLogger(__name__)
 
-# Storage directory - same as local_storage.py
+# GCS bucket for inventory data
+PROJECT_ID = os.environ.get("PROJECT_ID", "automation-station-478103")
+INVENTORY_BUCKET = f"{PROJECT_ID}_inventory"
+
+# Storage directory - kept for backwards compatibility, but not used for GCS
 STORAGE_DIR = Path(__file__).parent / "data"
 
 # Valid areas by category
@@ -115,33 +124,80 @@ def get_audio_archive_path(period_id: str, category: str, area: str, ext: str = 
 
 
 class ShelfyStorage:
-    """Local JSON storage for shelfies, isolated by inventory period."""
+    """GCS-based JSON storage for shelfies, isolated by inventory period.
 
-    def __init__(self, storage_dir: Path = STORAGE_DIR):
-        self.storage_dir = storage_dir
+    Data is stored in GCS at: gs://{PROJECT_ID}_inventory/periods/{period_id}/shelfies.json
+    """
 
-    def _get_shelfy_file(self, period_id: str) -> Path:
-        """Get the shelfies JSON file for a period."""
-        period_dir = self.storage_dir / "inventory" / period_id
-        period_dir.mkdir(parents=True, exist_ok=True)
-        return period_dir / "shelfies.json"
+    def __init__(self, bucket_name: str = INVENTORY_BUCKET):
+        self.bucket_name = bucket_name
+        self._gcs_client = None
+        self._bucket = None
+
+    @property
+    def gcs_client(self):
+        """Lazy-load GCS client."""
+        if self._gcs_client is None:
+            self._gcs_client = storage.Client(project=PROJECT_ID)
+        return self._gcs_client
+
+    @property
+    def bucket(self):
+        """Lazy-load GCS bucket (creates if doesn't exist)."""
+        if self._bucket is None:
+            try:
+                self._bucket = self.gcs_client.bucket(self.bucket_name)
+                # Check if bucket exists, create if not
+                if not self._bucket.exists():
+                    log.info(f"📦 Creating GCS bucket: {self.bucket_name}")
+                    self._bucket = self.gcs_client.create_bucket(
+                        self.bucket_name,
+                        location="us-central1"
+                    )
+                else:
+                    # Bucket exists, just get reference
+                    self._bucket = self.gcs_client.get_bucket(self.bucket_name)
+            except Exception as e:
+                log.error(f"Failed to access/create bucket {self.bucket_name}: {e}")
+                raise
+        return self._bucket
+
+    def _get_shelfy_blob_path(self, period_id: str) -> str:
+        """Get the GCS blob path for a period's shelfies.
+
+        Format: periods/{period_id}/shelfies.json
+        """
+        return f"periods/{period_id}/shelfies.json"
 
     def _load(self, period_id: str) -> List[Dict[str, Any]]:
-        """Load all shelfies for a period."""
-        shelfy_file = self._get_shelfy_file(period_id)
-        if not shelfy_file.exists():
+        """Load all shelfies for a period from GCS."""
+        blob_path = self._get_shelfy_blob_path(period_id)
+        blob = self.bucket.blob(blob_path)
+
+        if not blob.exists():
+            log.debug(f"📭 No shelfies found for period {period_id} (blob doesn't exist)")
             return []
+
         try:
-            with open(shelfy_file) as f:
-                return json.load(f)
-        except (json.JSONDecodeError, FileNotFoundError):
+            content = blob.download_as_text()
+            data = json.loads(content)
+            log.debug(f"📥 Loaded {len(data)} shelfies from GCS for period {period_id}")
+            return data
+        except (json.JSONDecodeError, Exception) as e:
+            log.error(f"Failed to load shelfies from GCS: {e}")
             return []
 
     def _save(self, period_id: str, data: List[Dict[str, Any]]):
-        """Save shelfies for a period."""
-        shelfy_file = self._get_shelfy_file(period_id)
-        with open(shelfy_file, 'w') as f:
-            json.dump(data, f, indent=2)
+        """Save shelfies for a period to GCS."""
+        blob_path = self._get_shelfy_blob_path(period_id)
+        blob = self.bucket.blob(blob_path)
+
+        content = json.dumps(data, indent=2)
+        blob.upload_from_string(
+            content,
+            content_type="application/json"
+        )
+        log.debug(f"💾 Saved {len(data)} shelfies to GCS for period {period_id}")
 
     def add_shelfy(
         self,
@@ -224,6 +280,23 @@ class ShelfyStorage:
             return True
         return False
 
+    def update_shelfy_inventory(self, period_id: str, shelfy_id: str, inventory_json: Dict[str, Any]) -> bool:
+        """Update the inventory_json for a shelfy.
+
+        Used when user accepts/edits product matches.
+
+        Returns True if found and updated, False otherwise.
+        """
+        data = self._load(period_id)
+        for shelfy in data:
+            if shelfy.get("shelfy_id") == shelfy_id:
+                shelfy["inventory_json"] = inventory_json
+                shelfy["updated_at"] = datetime.now().isoformat()
+                self._save(period_id, data)
+                log.info(f"🗄️ Updated inventory_json for shelfy {shelfy_id}")
+                return True
+        return False
+
     def get_period_summary(self, period_id: str) -> Dict[str, Any]:
         """Get summary stats for a period."""
         data = self._load(period_id)
@@ -246,6 +319,7 @@ class ShelfyStorage:
         """Get aggregated inventory totals for a period.
 
         Combines all approved shelfies and sums quantities by product name.
+        Also tracks breakdown by shelfy/area for each product.
 
         Args:
             period_id: Period to aggregate
@@ -253,7 +327,7 @@ class ShelfyStorage:
 
         Returns:
             Dict with:
-            - items: List of aggregated items (product_name, total_quantity, unit, category)
+            - items: List of aggregated items (product_name, total_quantity, unit, category, breakdown)
             - shelfies_count: Number of shelfies aggregated
             - areas_covered: List of unique areas
         """
@@ -276,8 +350,10 @@ class ShelfyStorage:
         areas_covered = set()
 
         for shelfy in approved:
-            areas_covered.add(shelfy.get("area", "Unknown"))
+            area = shelfy.get("area", "Unknown")
+            areas_covered.add(area)
             shelfy_category = shelfy.get("category", "unknown")
+            shelfy_id = shelfy.get("shelfy_id", "")
 
             for item in shelfy["inventory_json"]["items"]:
                 product_name = item.get("product_name", "").strip()
@@ -302,12 +378,19 @@ class ShelfyStorage:
                         "total_quantity": 0,
                         "unit": base_unit,  # Use base unit for final aggregated display
                         "category": shelfy_category,
+                        "breakdown": [],  # Track contributions by shelfy/area
                     }
 
                 # Sum converted quantity (skip if null)
                 # This ensures "6 4-packs" contributes 24 to the total, not 6
                 if converted_quantity is not None:
                     product_totals[key]["total_quantity"] += converted_quantity
+                    # Track breakdown: which area contributed how much
+                    product_totals[key]["breakdown"].append({
+                        "area": area,
+                        "quantity": converted_quantity,
+                        "shelfy_id": shelfy_id,
+                    })
 
         # Sort by product name
         items = sorted(product_totals.values(), key=lambda x: x["product_name"])

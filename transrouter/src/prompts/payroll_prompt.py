@@ -130,6 +130,17 @@ Parse the provided payroll transcript and:
 3. Calculate all totals
 4. Return a valid approval JSON
 
+## 🚨 CRITICAL: ACTUAL SHIFT HOURS 🚨
+
+**If the transcript states "end of close was [TIME]" → YOU MUST use that time to calculate shift duration.**
+
+Example: "end of close was 9:30PM" on Friday PM
+- Start: 4:30PM (standard PM start)
+- End: 9:30PM (from transcript, NOT the standard 9:00PM)
+- **ACTUAL duration = 5.0 hours** ← USE THIS for all calculations
+
+Do NOT use standard shift durations when an actual closing time is stated.
+
 ## CRITICAL GROUNDING RULES (Phase 1 - CoCounsel Inspired)
 
 **THE GOLDEN RULE: Use canonical policies from the workflow specs, but NEVER invent transaction data from historical patterns.**
@@ -159,9 +170,9 @@ This is the "QAnon Shaman" problem: if you "know" something about THIS specific 
 2. **Use ONLY explicit transaction data from THIS transcript**: Employee names, tip amounts, food sales, support staff mentions.
 
 3. **When transcript is silent, apply the documented default**:
-   - Hours not mentioned? Use standard shift duration for that day/DST period
+   - Hours not mentioned AND no "end of close" stated? Use standard shift duration for that day/DST period
+   - **CRITICAL: If transcript says "end of close was X" → USE THAT TIME to calculate actual shift duration**
    - Tip pool not mentioned? Apply default rule (multiple servers = pool)
-   - Close time not mentioned? Use standard close time for that day/DST period
 
 4. **When transaction data conflicts with patterns, trust the transcript**: If Ryan (normally utility) is listed with a $150 server amount, treat him as a server for THIS shift.
 

@@ -32,6 +32,8 @@ recordings/
 ~$*
 # allow tracked payroll roster template
 !transcripts/PayrollExportTemplate.csv
+# allow tracked active employees roster (for Employee IDs in payroll export)
+!mise_app/data/active_employees.csv
 
 # Docker artifacts
 *.dockerignore

@@ -18,25 +18,68 @@
     {% if shelfy.inventory_json and shelfy.inventory_json['items'] %}
     <div class="bg-white rounded-xl border border-green-500/20 p-4 mb-6 shadow-sm">
         <h2 class="text-sm font-semibold text-mise-navy/60 mb-3">📦 Parsed Inventory</h2>
-        <div class="space-y-2 max-h-64 overflow-y-auto">
+        <div class="space-y-2 max-h-96 overflow-y-auto">
             {% for item in shelfy.inventory_json['items'] %}
-            <div class="flex justify-between items-center p-3 bg-green-50 rounded-lg">
-                <div class="flex-1">
-                    <div class="font-semibold text-mise-navy">{{ item.product_name }}</div>
-                    {% if item.notes %}
-                    <div class="text-xs text-mise-navy/50 italic mt-1">{{ item.notes }}</div>
-                    {% endif %}
-                </div>
-                <div class="text-right ml-4">
-                    <div class="font-bold text-mise-navy">
-                        {% if item.quantity %}{{ item.quantity }}{% else %}—{% endif %}
-                        <span class="text-sm font-normal text-mise-navy/60">{{ item.unit }}</span>
+            {# Flag for review if: explicitly marked, OR confidence < 0.8, OR legacy item (no confidence field) #}
+            {% set show_review = item.needs_review == true or (item.confidence is defined and item.confidence < 0.8) or (item.confidence is not defined and item.user_confirmed != true) %}
+            <div class="p-3 rounded-lg {% if show_review %}bg-yellow-50 border border-yellow-300{% else %}bg-green-50{% endif %}"
+                 id="item-{{ loop.index0 }}">
+                <div class="flex justify-between items-start">
+                    <div class="flex-1">
+                        <div class="flex items-center">
+                            {% if show_review %}
+                            <span class="text-yellow-600 mr-2" title="Needs review">❓</span>
+                            {% endif %}
+                            <span class="font-semibold text-mise-navy item-product-name">{{ item.product_name }}</span>
+                        </div>
+                        {% if item.notes %}
+                        <div class="text-xs text-mise-navy/50 italic mt-1">{{ item.notes }}</div>
+                        {% endif %}
+
+                        <!-- Review UI for uncertain matches -->
+                        {% if show_review %}
+                        <div class="mt-2 p-2 bg-yellow-100 rounded border border-yellow-200 review-panel">
+                            {% if item.spoken_name %}
+                            <div class="text-xs text-yellow-800 mb-1">
+                                <span class="font-semibold">Heard:</span> "{{ item.spoken_name }}"
+                            </div>
+                            {% endif %}
+                            {% if item.confidence is defined %}
+                            <div class="text-xs text-yellow-800 mb-2">
+                                <span class="font-semibold">Confidence:</span>
+                                <span class="{% if item.confidence >= 0.7 %}text-green-700{% elif item.confidence >= 0.5 %}text-yellow-700{% else %}text-red-700{% endif %}">
+                                    {{ (item.confidence * 100)|int }}%
+                                </span>
+                            </div>
+                            {% else %}
+                            <div class="text-xs text-yellow-800 mb-2">
+                                <span class="font-semibold">Status:</span> <span class="text-yellow-700">Unverified</span>
+                            </div>
+                            {% endif %}
+                            <button type="button"
+                                    onclick="acceptMatch({{ loop.index0 }}, '{{ shelfy.shelfy_id }}', '{{ item.product_name|e }}')"
+                                    class="text-xs px-3 py-1 bg-green-600 hover:bg-green-700 text-white rounded font-medium transition-colors">
+                                ✓ Confirm Match
+                            </button>
+                        </div>
+                        {% endif %}
                     </div>
-                    {% if item.conversion_display %}
-                    <div class="text-xs text-mise-navy/50 mt-1">
-                        ({{ item.conversion_display }})
+                    <div class="text-right ml-4">
+                        <div class="font-bold text-mise-navy">
+                            {% if item.quantity %}{{ item.quantity }}{% else %}—{% endif %}
+                            <span class="text-sm font-normal text-mise-navy/60">{{ item.unit }}</span>
+                        </div>
+                        {% if item.conversion_display %}
+                        <div class="text-xs text-mise-navy/50 mt-1">
+                            ({{ item.conversion_display }})
+                        </div>
+                        {% endif %}
+                        {% if item.confidence is defined and not show_review %}
+                        <div class="text-xs text-green-600 mt-1">
+                            {{ (item.confidence * 100)|int }}% match
+                        </div>
+                        {% endif %}
                     </div>
-                    {% endif %}
                 </div>
             </div>
             {% endfor %}
@@ -83,4 +126,55 @@
         </a>
     </div>
 </div>
+
+<script>
+async function acceptMatch(itemIndex, shelfyId, productName) {
+    const itemEl = document.getElementById('item-' + itemIndex);
+    const reviewPanel = itemEl.querySelector('.review-panel');
+    const questionMark = itemEl.querySelector('.text-yellow-600');
+
+    try {
+        // Call API to accept the match
+        const response = await fetch('/inventory/accept_match', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                shelfy_id: shelfyId,
+                item_index: itemIndex,
+                accepted_name: productName
+            })
+        });
+
+        if (response.ok) {
+            // Hide the review panel
+            if (reviewPanel) {
+                reviewPanel.style.display = 'none';
+            }
+            // Remove the question mark
+            if (questionMark) {
+                questionMark.remove();
+            }
+            // Change background to green
+            itemEl.classList.remove('bg-yellow-50', 'border', 'border-yellow-300');
+            itemEl.classList.add('bg-green-50');
+
+            // Add a checkmark indicator
+            const productNameEl = itemEl.querySelector('.item-product-name');
+            if (productNameEl && !productNameEl.querySelector('.matched-check')) {
+                const check = document.createElement('span');
+                check.className = 'text-green-600 ml-2 matched-check';
+                check.textContent = '✓';
+                productNameEl.appendChild(check);
+            }
+        } else {
+            alert('Failed to save match. Please try again.');
+        }
+    } catch (error) {
+        console.error('Error accepting match:', error);
+        alert('Error saving match. Please try again.');
+    }
+}
+</script>
 {% endblock %}

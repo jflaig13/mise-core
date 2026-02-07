@@ -1,0 +1,1227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Mise — New Client Onboarding</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy: #1B2A4E;
+  --red: #B5402F;
+  --cream: #F9F6F1;
+  --light-gray: #E8E8E8;
+  --mid-gray: #888888;
+  --white: #FFFFFF;
+  --input-bg: #FAFAFA;
+  --green-bg: #E6F4EA;
+  --green-border: #2E7D32;
+  --note-bg: #E8EBF0;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  background: var(--cream);
+  color: var(--navy);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── Progress bar ── */
+.progress-bar {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  height: 4px; background: var(--light-gray);
+}
+.progress-fill {
+  height: 100%; background: var(--red);
+  width: 0%; transition: width 0.3s ease;
+}
+
+/* ── Logo bar ── */
+.logo-bar {
+  background: var(--cream);
+  padding: 28px 20px 24px;
+  text-align: center;
+}
+.logo-bar img { height: 360px; }
+
+/* ── Hero ── */
+.hero {
+  background: var(--navy);
+  padding: 28px 20px 24px;
+  text-align: center;
+  border-bottom: 3px solid var(--red);
+}
+.hero h1 {
+  color: var(--white);
+  font-size: 22px; font-weight: 700;
+  margin-bottom: 6px;
+}
+.hero p {
+  color: #B8C4D8;
+  font-size: 14px; font-weight: 400;
+}
+
+/* ── Container ── */
+.container { max-width: 640px; margin: 0 auto; padding: 0 16px 80px; }
+
+/* ── Callout ── */
+.callout {
+  border-radius: 8px; padding: 14px 16px;
+  margin: 20px 0; border-left: 4px solid;
+}
+.callout-tip { background: var(--green-bg); border-color: var(--green-border); }
+.callout-note { background: var(--note-bg); border-color: var(--navy); }
+.callout-title { font-weight: 600; font-size: 14px; margin-bottom: 4px; }
+.callout-body { font-size: 13px; line-height: 1.6; }
+
+/* ── Sections ── */
+.section {
+  background: var(--white);
+  border-radius: 12px;
+  padding: 24px 20px;
+  margin-top: 20px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+}
+.section-header {
+  display: flex; align-items: center; gap: 8px;
+  margin-bottom: 20px; padding-bottom: 12px;
+  border-bottom: 1px solid var(--light-gray);
+}
+.section-header img { width: 18px; height: 18px; }
+.section-header h2 {
+  font-size: 17px; font-weight: 700; color: var(--red);
+}
+
+.subsection { margin-top: 24px; }
+.subsection-title {
+  font-size: 15px; font-weight: 600; color: var(--navy);
+  margin-bottom: 12px; padding-bottom: 8px;
+  border-bottom: 2px solid var(--cream);
+  display: flex; align-items: center; gap: 6px;
+}
+.subsection-title::before {
+  content: ''; display: inline-block;
+  width: 12px; height: 2px; background: var(--navy);
+}
+
+/* ── Form fields ── */
+.field { margin-bottom: 16px; }
+.field-label {
+  display: block; font-size: 13px; font-weight: 600;
+  color: var(--navy); margin-bottom: 4px;
+}
+.field-hint {
+  display: block; font-size: 11px; color: var(--mid-gray);
+  font-style: italic; margin-bottom: 4px;
+}
+input[type="text"], input[type="email"], input[type="tel"], textarea, select {
+  width: 100%; padding: 12px 14px;
+  border: 1px solid var(--light-gray);
+  border-radius: 8px; background: var(--input-bg);
+  font-family: 'Inter', sans-serif; font-size: 16px;
+  color: var(--navy); outline: none;
+  -webkit-appearance: none;
+  transition: border-color 0.2s;
+}
+input:focus, textarea:focus, select:focus {
+  border-color: var(--navy); background: var(--white);
+}
+textarea { resize: vertical; min-height: 80px; }
+
+/* ── Inline fields (side by side) ── */
+.field-row {
+  display: flex; gap: 12px;
+}
+.field-row .field { flex: 1; }
+
+/* ── Pay period card ── */
+.pay-period-card {
+  background: var(--cream); border-radius: 8px;
+  padding: 16px; margin-top: 20px;
+  border-left: 3px solid var(--red);
+}
+.pay-period-title {
+  display: flex; align-items: center; gap: 6px;
+  font-size: 14px; font-weight: 600; color: var(--navy);
+  margin-bottom: 12px;
+}
+.pay-period-title img { width: 14px; height: 14px; }
+
+/* ── Dynamic table rows ── */
+.team-entry {
+  background: var(--input-bg);
+  border: 1px solid var(--light-gray);
+  border-radius: 8px; padding: 12px;
+  margin-bottom: 8px;
+}
+.team-entry .entry-number {
+  font-size: 11px; font-weight: 600; color: var(--mid-gray);
+  text-transform: uppercase; letter-spacing: 0.5px;
+  margin-bottom: 8px;
+}
+.team-entry .field { margin-bottom: 10px; }
+.team-entry .field:last-child { margin-bottom: 0; }
+.team-entry .field-label { font-size: 12px; }
+.team-entry input { padding: 10px 12px; font-size: 15px; }
+
+.add-btn {
+  display: flex; align-items: center; justify-content: center; gap: 6px;
+  width: 100%; padding: 12px;
+  background: var(--cream); border: 2px dashed var(--light-gray);
+  border-radius: 8px; cursor: pointer;
+  font-family: 'Inter', sans-serif; font-size: 14px;
+  font-weight: 500; color: var(--navy);
+  transition: border-color 0.2s, background 0.2s;
+}
+.add-btn:hover { border-color: var(--navy); background: var(--white); }
+.add-btn .plus { font-size: 18px; font-weight: 700; color: var(--red); }
+
+/* ── Radio groups ── */
+.radio-group { margin-top: 8px; }
+.radio-option {
+  display: flex; align-items: flex-start; gap: 10px;
+  padding: 12px 14px; margin-bottom: 6px;
+  background: var(--input-bg);
+  border: 1px solid var(--light-gray);
+  border-radius: 8px; cursor: pointer;
+  transition: border-color 0.2s, background 0.2s;
+}
+.radio-option:has(input:checked) {
+  border-color: var(--navy); background: var(--note-bg);
+}
+.radio-option input[type="radio"] {
+  width: 20px; height: 20px; min-width: 20px;
+  margin-top: 1px; accent-color: var(--navy);
+}
+.radio-option .radio-label {
+  font-size: 14px; font-weight: 500;
+}
+.radio-option .radio-desc {
+  font-size: 12px; color: var(--mid-gray); margin-top: 2px;
+}
+.radio-other-field {
+  margin-top: 8px; display: none;
+}
+.radio-other-field.visible { display: block; }
+
+/* ── Conditional sections ── */
+.conditional { display: none; margin-top: 12px; }
+.conditional.visible { display: block; }
+
+/* ── Submit ── */
+.submit-section {
+  background: var(--navy); border-radius: 12px;
+  padding: 28px 20px; margin-top: 24px;
+  text-align: center;
+}
+.submit-section h3 {
+  color: var(--white); font-size: 18px; margin-bottom: 8px;
+}
+.submit-section p {
+  color: #B8C4D8; font-size: 13px; margin-bottom: 20px; line-height: 1.6;
+}
+.submit-btn {
+  display: inline-block; padding: 16px 48px;
+  background: var(--red); color: var(--white);
+  border: none; border-radius: 8px;
+  font-family: 'Inter', sans-serif;
+  font-size: 16px; font-weight: 700;
+  cursor: pointer; transition: opacity 0.2s;
+  -webkit-appearance: none;
+}
+.submit-btn:hover { opacity: 0.9; }
+.submit-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+.submit-note {
+  color: #7A8AA0; font-size: 11px; margin-top: 12px;
+}
+
+/* ── Toast notification ── */
+.toast {
+  position: fixed; bottom: 20px; left: 50%;
+  transform: translateX(-50%) translateY(80px);
+  background: var(--navy); color: var(--white);
+  padding: 10px 20px; border-radius: 8px;
+  font-size: 13px; font-weight: 500;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  transition: transform 0.3s ease; z-index: 200;
+  pointer-events: none;
+}
+.toast.show { transform: translateX(-50%) translateY(0); }
+
+/* ── Success screen ── */
+.success-screen {
+  display: none; text-align: center; padding: 80px 24px;
+  min-height: 80vh;
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.success-screen.visible { display: flex; }
+.success-screen .success-logo {
+  height: 100px; margin-bottom: 40px;
+}
+.success-screen h2 {
+  font-size: 32px; color: var(--navy); margin-bottom: 16px; font-weight: 700;
+}
+.success-screen .tagline {
+  font-size: 18px; color: var(--mid-gray); line-height: 1.6;
+  max-width: 320px; margin: 0 auto 48px;
+}
+.success-screen .next-step {
+  background: var(--navy); color: var(--white);
+  padding: 20px 32px; border-radius: 12px;
+  max-width: 360px; margin: 0 auto 32px;
+}
+.success-screen .next-step-label {
+  font-size: 11px; text-transform: uppercase; letter-spacing: 1px;
+  color: var(--red); margin-bottom: 8px; font-weight: 600;
+}
+.success-screen .next-step-text {
+  font-size: 16px; line-height: 1.5;
+}
+.success-screen .closer {
+  font-size: 20px; font-weight: 600; color: var(--red);
+  margin-top: 24px;
+}
+
+/* ── Footer ── */
+.footer {
+  text-align: center; padding: 24px 16px;
+  font-size: 11px; color: var(--mid-gray);
+}
+.footer a { color: var(--navy); }
+
+/* ── Responsive ── */
+@media (max-width: 480px) {
+  .hero h1 { font-size: 19px; }
+  .section { padding: 20px 16px; }
+  .field-row { flex-direction: column; gap: 0; }
+}
+</style>
+</head>
+<body>
+
+<!-- Progress bar -->
+<div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+
+<!-- Hero -->
+<div class="logo-bar">
+  <img src="/static/logo.png" alt="Mise">
+</div>
+<div class="hero">
+  <h1>New Client Onboarding Form</h1>
+  <p>Everything Mise needs to get you running.</p>
+</div>
+
+<div class="container" id="formContainer">
+
+  <!-- Callout -->
+  <div class="callout callout-tip">
+    <div class="callout-title">This should take about 10 minutes.</div>
+    <div class="callout-body">Fill out what you can. If you're unsure about anything, leave it blank and we'll figure it out together during setup. Your progress saves automatically.</div>
+  </div>
+
+  <!-- ═══════ SECTION 1 ═══════ -->
+  <div class="section">
+    <div class="section-header">
+      <img src="/static/icon.png" alt="">
+      <h2>Section 1: About Your Business</h2>
+    </div>
+
+    <div class="field">
+      <label class="field-label" for="restaurant_name">Business Name</label>
+      <input type="text" id="restaurant_name" name="restaurant_name" data-save>
+    </div>
+    <div class="field">
+      <label class="field-label" for="location">Address</label>
+      <input type="text" id="location" name="location" data-save>
+    </div>
+    <div class="field">
+      <label class="field-label" for="days_open">Days Open</label>
+      <span class="field-hint">e.g., Mon–Sun, Tue–Sat</span>
+      <input type="text" id="days_open" name="days_open" data-save>
+    </div>
+    <div class="field">
+      <label class="field-label" for="contact_name">Contact Full Name</label>
+      <input type="text" id="contact_name" name="contact_name" data-save>
+    </div>
+    <div class="field">
+      <label class="field-label" for="contact_phone">Contact Phone</label>
+      <input type="tel" id="contact_phone" name="contact_phone" data-save>
+    </div>
+    <div class="field">
+      <label class="field-label" for="contact_email">Contact Email</label>
+      <input type="email" id="contact_email" name="contact_email" data-save>
+    </div>
+
+    <!-- Pay Period card -->
+    <div class="pay-period-card">
+      <div class="pay-period-title">
+        <img src="/static/icon.png" alt="">
+        Pay Period
+      </div>
+      <div class="field-row">
+        <div class="field">
+          <label class="field-label" for="pay_start">Starts</label>
+          <span class="field-hint">e.g. Monday</span>
+          <input type="text" id="pay_start" name="pay_start" data-save>
+        </div>
+        <div class="field">
+          <label class="field-label" for="pay_end">Ends</label>
+          <span class="field-hint">e.g. Sunday</span>
+          <input type="text" id="pay_end" name="pay_end" data-save>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════ SECTION 2 ═══════ -->
+  <div class="section">
+    <div class="section-header">
+      <img src="/static/icon.png" alt="">
+      <h2>Section 2: Your Team</h2>
+    </div>
+    <p style="font-size:13px;margin-bottom:12px;">Mise uses voice recordings to process payroll. We need your team's names so we can accurately recognize them from audio. Include everyone who works tipped shifts.</p>
+
+    <div class="callout callout-note">
+      <div class="callout-title">Easiest option</div>
+      <div class="callout-body">Export your Employee List from Toast and email it to <strong>jon@getmise.io</strong>. That gives us names and IDs instantly. Then just add nicknames below.</div>
+    </div>
+
+    <!-- Servers -->
+    <div class="subsection">
+      <div class="subsection-title">Servers</div>
+      <div id="serversContainer"></div>
+      <button class="add-btn" id="addServer" type="button">
+        <span class="plus">+</span> Add another server
+      </button>
+    </div>
+
+    <!-- Tipout Calculation -->
+    <div class="subsection">
+      <div class="subsection-title">How Do You Calculate Tipouts?</div>
+      <p style="font-size:13px;margin-bottom:8px;">What metric do you use to calculate tipouts for support staff?</p>
+      <div class="radio-group">
+        <label class="radio-option">
+          <input type="radio" name="tipout_method" value="total_sales" data-save>
+          <div><div class="radio-label">% of total sales</div></div>
+        </label>
+        <label class="radio-option">
+          <input type="radio" name="tipout_method" value="food_sales" data-save>
+          <div><div class="radio-label">% of food sales</div></div>
+        </label>
+        <label class="radio-option">
+          <input type="radio" name="tipout_method" value="other_metric" data-save>
+          <div>
+            <div class="radio-label">% of other metric</div>
+            <div class="radio-desc">Specify the metric below</div>
+          </div>
+        </label>
+        <div class="radio-other-field" id="tipoutMetricOtherField">
+          <input type="text" name="tipout_other_metric_desc" placeholder="What metric?" data-save>
+        </div>
+        <label class="radio-option">
+          <input type="radio" name="tipout_method" value="other" data-save>
+          <div>
+            <div class="radio-label">Other</div>
+            <div class="radio-desc">Explain below</div>
+          </div>
+        </label>
+        <div class="radio-other-field" id="tipoutMethodOtherField">
+          <input type="text" name="tipout_method_other_desc" placeholder="Explain how you calculate tipouts" data-save>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tipout Flow -->
+    <div class="subsection">
+      <div class="subsection-title">Who Tips Out Whom?</div>
+      <p style="font-size:13px;margin-bottom:8px;">Help us understand how tips flow from servers to support staff.</p>
+      <div class="radio-group">
+        <label class="radio-option">
+          <input type="radio" name="tipout_flow" value="servers_to_support" data-save>
+          <div>
+            <div class="radio-label">Servers tip out support</div>
+            <div class="radio-desc">Servers pay support staff directly from their tips</div>
+          </div>
+        </label>
+        <label class="radio-option">
+          <input type="radio" name="tipout_flow" value="pool_to_support" data-save>
+          <div>
+            <div class="radio-label">Tip pool tips out support</div>
+            <div class="radio-desc">Tipout comes from the pooled total before server splits</div>
+          </div>
+        </label>
+        <label class="radio-option">
+          <input type="radio" name="tipout_flow" value="house_handles" data-save>
+          <div>
+            <div class="radio-label">House handles all tipouts</div>
+            <div class="radio-desc">Management calculates and distributes all tipouts</div>
+          </div>
+        </label>
+        <label class="radio-option">
+          <input type="radio" name="tipout_flow" value="other" data-save>
+          <div>
+            <div class="radio-label">Other</div>
+            <div class="radio-desc">Explain below</div>
+          </div>
+        </label>
+        <div class="radio-other-field" id="tipoutFlowOtherField">
+          <input type="text" name="tipout_flow_other_desc" placeholder="Explain how tipouts flow" data-save>
+        </div>
+      </div>
+    </div>
+
+    <!-- Support Roles -->
+    <div class="subsection">
+      <div class="subsection-title">Support Roles &amp; Tipout %</div>
+      <p style="font-size:13px;margin-bottom:4px;">What do you call your support roles?</p>
+      <span class="field-hint" style="display:block;margin-bottom:12px;">e.g., Busser, Expo, Runner, Barback, Utility, Food Runner, etc.</span>
+      <div id="rolesContainer"></div>
+      <button class="add-btn" id="addRole" type="button">
+        <span class="plus">+</span> Add another role
+      </button>
+    </div>
+
+    <!-- Support Staff -->
+    <div class="subsection">
+      <div class="subsection-title">Support Staff</div>
+      <div id="supportContainer"></div>
+      <button class="add-btn" id="addSupport" type="button">
+        <span class="plus">+</span> Add another support staff
+      </button>
+    </div>
+
+    <!-- Kitchen Staff -->
+    <div class="subsection">
+      <div class="subsection-title">Kitchen Staff Who Receive Tips</div>
+      <span class="field-hint" style="display:block;margin-bottom:12px;">If any kitchen staff receive a share of tips, list them here.</span>
+      <div id="kitchenContainer"></div>
+      <button class="add-btn" id="addKitchen" type="button">
+        <span class="plus">+</span> Add kitchen staff
+      </button>
+    </div>
+
+    <!-- Recorders -->
+    <div class="subsection">
+      <div class="subsection-title">Who Will Record Payroll?</div>
+      <div id="recordersContainer"></div>
+      <button class="add-btn" id="addRecorder" type="button">
+        <span class="plus">+</span> Add another recorder
+      </button>
+    </div>
+  </div>
+
+  <!-- ═══════ SECTION 3 ═══════ -->
+  <div class="section">
+    <div class="section-header">
+      <img src="/static/icon.png" alt="">
+      <h2>Section 3: Your Shifts</h2>
+    </div>
+
+    <div class="field-row">
+      <div class="field">
+        <label class="field-label">AM Start</label>
+        <input type="text" name="shift_am_start" placeholder="e.g. 10:00 AM" data-save data-time>
+      </div>
+      <div class="field">
+        <label class="field-label">AM End</label>
+        <input type="text" name="shift_am_end" placeholder="e.g. 3:00 PM" data-save data-time>
+      </div>
+    </div>
+    <div class="field-row">
+      <div class="field">
+        <label class="field-label">PM Start</label>
+        <input type="text" name="shift_pm_start" placeholder="e.g. 4:00 PM" data-save data-time>
+      </div>
+      <div class="field">
+        <label class="field-label">PM End</label>
+        <input type="text" name="shift_pm_end" placeholder="e.g. 10:00 PM" data-save data-time>
+      </div>
+    </div>
+
+    <div class="subsection">
+      <div class="subsection-title">Variable Closing Times</div>
+      <p style="font-size:13px;margin-bottom:8px;">Does your PM closing time change by day of the week?</p>
+      <div class="radio-group">
+        <label class="radio-option">
+          <input type="radio" name="close_varies" value="no" data-save>
+          <div><div class="radio-label">No, same every day</div></div>
+        </label>
+        <label class="radio-option">
+          <input type="radio" name="close_varies" value="yes" data-save>
+          <div><div class="radio-label">Yes — varies by day</div></div>
+        </label>
+      </div>
+      <div class="conditional" id="closeTimesSection">
+        <div class="field" style="margin-top:12px;">
+          <label class="field-label">Sunday close</label>
+          <input type="text" name="close_sun" placeholder="e.g. 9:00 PM" data-save data-time>
+        </div>
+        <div class="field">
+          <label class="field-label">Monday close</label>
+          <input type="text" name="close_mon" placeholder="e.g. 9:00 PM" data-save data-time>
+        </div>
+        <div class="field">
+          <label class="field-label">Tuesday close</label>
+          <input type="text" name="close_tue" placeholder="e.g. 9:00 PM" data-save data-time>
+        </div>
+        <div class="field">
+          <label class="field-label">Wednesday close</label>
+          <input type="text" name="close_wed" placeholder="e.g. 9:00 PM" data-save data-time>
+        </div>
+        <div class="field">
+          <label class="field-label">Thursday close</label>
+          <input type="text" name="close_thu" placeholder="e.g. 9:00 PM" data-save data-time>
+        </div>
+        <div class="field">
+          <label class="field-label">Friday close</label>
+          <input type="text" name="close_fri" placeholder="e.g. 10:00 PM" data-save data-time>
+        </div>
+        <div class="field">
+          <label class="field-label">Saturday close</label>
+          <input type="text" name="close_sat" placeholder="e.g. 10:00 PM" data-save data-time>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════ SECTION 4 ═══════ -->
+  <div class="section">
+    <div class="section-header">
+      <img src="/static/icon.png" alt="">
+      <h2>Section 4: Tip Rules</h2>
+    </div>
+
+    <!-- Tip Pooling -->
+    <div class="subsection">
+      <div class="subsection-title">Tip Pooling</div>
+      <p style="font-size:13px;margin-bottom:8px;">When 2 or more servers work the same shift, what happens to their tips?</p>
+      <div class="radio-group">
+        <label class="radio-option">
+          <input type="radio" name="tip_pooling" value="pool" data-save>
+          <div>
+            <div class="radio-label">Pool</div>
+            <div class="radio-desc">Tips are combined and split evenly between servers</div>
+          </div>
+        </label>
+        <label class="radio-option">
+          <input type="radio" name="tip_pooling" value="individual" data-save>
+          <div>
+            <div class="radio-label">Individual</div>
+            <div class="radio-desc">Each server keeps their own tips</div>
+          </div>
+        </label>
+        <label class="radio-option">
+          <input type="radio" name="tip_pooling" value="other" data-save>
+          <div>
+            <div class="radio-label">Other</div>
+            <div class="radio-desc">Explain below</div>
+          </div>
+        </label>
+        <div class="radio-other-field" id="tipPoolOtherField">
+          <input type="text" name="tip_other_desc" placeholder="Explain how you handle tips" data-save>
+        </div>
+      </div>
+    </div>
+
+    <!-- Unequal Hours — Servers -->
+    <div class="subsection">
+      <div class="subsection-title">Unequal Hours in Tip Pool</div>
+      <p style="font-size:13px;margin-bottom:8px;">If a server gets cut early or works fewer hours, how do you handle their share of the pool?</p>
+      <div class="radio-group">
+        <label class="radio-option">
+          <input type="radio" name="pool_unequal_hours" value="equal_split" data-save>
+          <div><div class="radio-label">Even split regardless of hours worked</div></div>
+        </label>
+        <label class="radio-option">
+          <input type="radio" name="pool_unequal_hours" value="pro_rate" data-save>
+          <div><div class="radio-label">Pro-rate by hours worked</div></div>
+        </label>
+        <label class="radio-option">
+          <input type="radio" name="pool_unequal_hours" value="other" data-save>
+          <div><div class="radio-label">Other</div><div class="radio-desc">Explain below</div></div>
+        </label>
+        <div class="radio-other-field" id="poolHoursOtherField">
+          <input type="text" name="pool_hours_other_desc" placeholder="Explain" data-save>
+        </div>
+      </div>
+    </div>
+
+    <!-- Unequal Hours — Support -->
+    <div class="subsection">
+      <div class="subsection-title">Support Staff Tipout — Unequal Hours</div>
+      <p style="font-size:13px;margin-bottom:8px;">If a support staff member gets cut early, how do you adjust their tipout?</p>
+      <div class="radio-group">
+        <label class="radio-option">
+          <input type="radio" name="support_tipout_unequal_hours" value="full_tipout" data-save>
+          <div><div class="radio-label">Full tipout regardless of hours worked</div></div>
+        </label>
+        <label class="radio-option">
+          <input type="radio" name="support_tipout_unequal_hours" value="pro_rate" data-save>
+          <div><div class="radio-label">Pro-rate by hours worked</div></div>
+        </label>
+        <label class="radio-option">
+          <input type="radio" name="support_tipout_unequal_hours" value="other" data-save>
+          <div><div class="radio-label">Other</div><div class="radio-desc">Explain below</div></div>
+        </label>
+        <div class="radio-other-field" id="supportHoursOtherField">
+          <input type="text" name="support_tipout_hours_other_desc" placeholder="Explain" data-save>
+        </div>
+      </div>
+    </div>
+
+    <!-- Anything else -->
+    <div class="subsection">
+      <div class="subsection-title">Anything Else About Tips?</div>
+      <span class="field-hint" style="display:block;margin-bottom:8px;">Describe any special rules, exceptions, or "the way we've always done it" here.</span>
+      <textarea name="tip_notes" rows="4" placeholder="Nothing is too small — if it affects how someone gets paid, we need to know." data-save></textarea>
+    </div>
+  </div>
+
+  <!-- ═══════ SECTION 5 ═══════ -->
+  <div class="section">
+    <div class="section-header">
+      <img src="/static/icon.png" alt="">
+      <h2>Section 5: Seasonality</h2>
+    </div>
+
+    <div class="subsection">
+      <div class="subsection-title">Is This a Seasonal Market?</div>
+      <p style="font-size:13px;margin-bottom:8px;">Does your expected level of business fluctuate significantly throughout the year?</p>
+      <div class="radio-group">
+        <label class="radio-option">
+          <input type="radio" name="is_seasonal" value="no" data-save>
+          <div>
+            <div class="radio-label">No</div>
+            <div class="radio-desc">Business is pretty consistent year-round</div>
+          </div>
+        </label>
+        <label class="radio-option">
+          <input type="radio" name="is_seasonal" value="yes" data-save>
+          <div>
+            <div class="radio-label">Yes</div>
+            <div class="radio-desc">We have clear busy seasons and slow seasons</div>
+          </div>
+        </label>
+      </div>
+    </div>
+
+    <div class="conditional" id="seasonalityDetails">
+      <div class="subsection">
+        <div class="subsection-title">When Are You Busy vs. Slow?</div>
+        <div class="field">
+          <label class="field-label">Busy months</label>
+          <input type="text" name="busy_months" placeholder="e.g., March - October" data-save>
+        </div>
+        <div class="field">
+          <label class="field-label">Slow months</label>
+          <input type="text" name="slow_months" placeholder="e.g., November - February" data-save>
+        </div>
+      </div>
+
+      <div class="subsection">
+        <div class="subsection-title">How Much Does It Affect Your Business?</div>
+        <div class="radio-group">
+          <label class="radio-option">
+            <input type="radio" name="seasonal_impact" value="moderate" data-save>
+            <div>
+              <div class="radio-label">Moderate</div>
+              <div class="radio-desc">Noticeable difference but we stay busy</div>
+            </div>
+          </label>
+          <label class="radio-option">
+            <input type="radio" name="seasonal_impact" value="significant" data-save>
+            <div>
+              <div class="radio-label">Significant</div>
+              <div class="radio-desc">Major swing — slow season is really slow</div>
+            </div>
+          </label>
+          <label class="radio-option">
+            <input type="radio" name="seasonal_impact" value="extreme" data-save>
+            <div>
+              <div class="radio-label">Extreme</div>
+              <div class="radio-desc">We close or operate skeleton crew in off-season</div>
+            </div>
+          </label>
+        </div>
+      </div>
+
+      <div class="subsection">
+        <div class="subsection-title">Do Your Hours Change by Season?</div>
+        <div class="radio-group">
+          <label class="radio-option">
+            <input type="radio" name="seasonal_hours" value="no" data-save>
+            <div><div class="radio-label">No, hours stay consistent all year</div></div>
+          </label>
+          <label class="radio-option">
+            <input type="radio" name="seasonal_hours" value="yes" data-save>
+            <div><div class="radio-label">Yes, we adjust hours seasonally</div></div>
+          </label>
+        </div>
+        <div class="radio-other-field" id="seasonalHoursField">
+          <textarea name="seasonal_hours_details" rows="2" placeholder="How do your hours change? (e.g., 'Close Mondays in off-season, shorter hours')" data-save></textarea>
+        </div>
+      </div>
+
+      <div class="subsection">
+        <div class="subsection-title">Do You Staff Differently by Season?</div>
+        <div class="radio-group">
+          <label class="radio-option">
+            <input type="radio" name="seasonal_staffing" value="no" data-save>
+            <div><div class="radio-label">No, staffing stays about the same</div></div>
+          </label>
+          <label class="radio-option">
+            <input type="radio" name="seasonal_staffing" value="yes" data-save>
+            <div><div class="radio-label">Yes, we adjust staffing seasonally</div></div>
+          </label>
+        </div>
+        <div class="radio-other-field" id="seasonalStaffingField">
+          <textarea name="seasonal_staffing_details" rows="3" placeholder="What changes? When do these changes typically take effect? (e.g., 'Cut 2 servers and a busser after Labor Day')" data-save></textarea>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════ SUBMIT ═══════ -->
+  <div class="submit-section">
+    <h3>Ready to submit?</h3>
+    <p>We'll configure Mise for your business and reach out to schedule your in-person setup session.</p>
+    <button class="submit-btn" id="submitBtn" type="button">Submit Onboarding Form</button>
+    <div class="submit-note">Your progress is saved automatically. You can close this page and come back anytime.</div>
+  </div>
+
+  <!-- Success screen (hidden) -->
+  <div class="success-screen" id="successScreen">
+    <img src="/static/logo.png" alt="Mise" class="success-logo">
+    <h2>You're all set.</h2>
+    <p class="tagline">We'll be in touch within 24 hours to schedule your in-person setup.</p>
+    <div class="next-step">
+      <div class="next-step-label">What happens next</div>
+      <div class="next-step-text">We come to you. You record one real payroll with us right there. Then you're live.</div>
+    </div>
+    <div class="closer">You just talk. We handle the rest.</div>
+  </div>
+
+</div>
+
+<!-- Footer -->
+<div class="footer">
+  <p><em>Mise: Everything in its place.</em></p>
+  <p style="margin-top:8px;"><a href="#" id="clearProgress">Clear saved progress</a></p>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast">Progress saved</div>
+
+<script>
+(function() {
+  const STORAGE_KEY = 'mise_onboarding';
+  const SAVE_DELAY = 800;
+  const TOAST_INTERVAL = 30000; // Only show toast every 30 seconds
+  let saveTimer = null;
+  let lastToastTime = 0;
+
+  // ── Dynamic row configs ──
+  const configs = {
+    servers:   { max: 10, init: 3, container: 'serversContainer', btn: 'addServer', fields: [
+      { name: 'full_name', label: 'Full Name', type: 'text' },
+      { name: 'nickname', label: 'Nickname', type: 'text' },
+      { name: 'toast_employee_id', label: 'Toast Employee ID', type: 'text' },
+    ]},
+    roles:     { max: 5, init: 2, container: 'rolesContainer', btn: 'addRole', fields: [
+      { name: 'name', label: 'Role Name', type: 'text' },
+      { name: 'tipout_pct', label: 'Tipout %', type: 'text' },
+    ]},
+    support:   { max: 8, init: 3, container: 'supportContainer', btn: 'addSupport', fields: [
+      { name: 'full_name', label: 'Full Name', type: 'text' },
+      { name: 'nickname', label: 'Nickname', type: 'text' },
+      { name: 'toast_employee_id', label: 'Toast Employee ID', type: 'text' },
+      { name: 'typical_role', label: 'Typical Role(s)', type: 'text' },
+    ]},
+    kitchen:   { max: 5, init: 2, container: 'kitchenContainer', btn: 'addKitchen', fields: [
+      { name: 'full_name', label: 'Full Name', type: 'text' },
+      { name: 'nickname', label: 'Nickname', type: 'text' },
+      { name: 'toast_employee_id', label: 'Toast Employee ID', type: 'text' },
+    ]},
+    recorders: { max: 3, init: 1, container: 'recordersContainer', btn: 'addRecorder', fields: [
+      { name: 'name', label: 'Full Name', type: 'text' },
+      { name: 'role', label: 'Role (owner, GM, manager)', type: 'text' },
+      { name: 'phone', label: 'Phone', type: 'tel' },
+      { name: 'email', label: 'Email', type: 'email' },
+    ]},
+  };
+
+  const counts = {};
+
+  function addEntry(groupKey) {
+    const cfg = configs[groupKey];
+    if (counts[groupKey] >= cfg.max) return;
+    counts[groupKey]++;
+    const n = counts[groupKey];
+    const container = document.getElementById(cfg.container);
+    const div = document.createElement('div');
+    div.className = 'team-entry';
+    div.dataset.group = groupKey;
+    div.dataset.index = n;
+    let html = `<div class="entry-number">${getEntryLabel(groupKey)} ${n}</div>`;
+    // Use side-by-side for roles (name + pct)
+    if (groupKey === 'roles') {
+      html += '<div class="field-row">';
+      for (const f of cfg.fields) {
+        html += `<div class="field"><label class="field-label">${f.label}</label>` +
+          `<input type="${f.type}" name="${groupKey}_${n}_${f.name}" data-save></div>`;
+      }
+      html += '</div>';
+    } else {
+      for (const f of cfg.fields) {
+        html += `<div class="field"><label class="field-label">${f.label}</label>` +
+          `<input type="${f.type}" name="${groupKey}_${n}_${f.name}" data-save></div>`;
+      }
+    }
+    div.innerHTML = html;
+    container.appendChild(div);
+    if (counts[groupKey] >= cfg.max) {
+      document.getElementById(cfg.btn).style.display = 'none';
+    }
+  }
+
+  function getEntryLabel(key) {
+    return { servers: 'Server', roles: 'Role', support: 'Support Staff', kitchen: 'Kitchen Staff', recorders: 'Recorder' }[key] || key;
+  }
+
+  // Init dynamic rows
+  for (const [key, cfg] of Object.entries(configs)) {
+    counts[key] = 0;
+    for (let i = 0; i < cfg.init; i++) addEntry(key);
+    document.getElementById(cfg.btn).addEventListener('click', () => addEntry(key));
+  }
+
+  // ── Conditional sections ──
+  function setupConditional(radioName, valueToShow, targetId) {
+    document.querySelectorAll(`input[name="${radioName}"]`).forEach(r => {
+      r.addEventListener('change', () => {
+        const el = document.getElementById(targetId);
+        if (el) el.classList.toggle('visible', r.value === valueToShow && r.checked);
+      });
+    });
+  }
+  setupConditional('close_varies', 'yes', 'closeTimesSection');
+  setupConditional('is_seasonal', 'yes', 'seasonalityDetails');
+
+  // Radio "Other" reveal
+  function setupRadioOther(radioName, otherValue, fieldId) {
+    document.querySelectorAll(`input[name="${radioName}"]`).forEach(r => {
+      r.addEventListener('change', () => {
+        const el = document.getElementById(fieldId);
+        if (el) el.classList.toggle('visible', r.value === otherValue && r.checked);
+      });
+    });
+  }
+  setupRadioOther('tipout_flow', 'other', 'tipoutFlowOtherField');
+  setupRadioOther('tipout_method', 'other_metric', 'tipoutMetricOtherField');
+  setupRadioOther('tipout_method', 'other', 'tipoutMethodOtherField');
+  setupRadioOther('tip_pooling', 'other', 'tipPoolOtherField');
+  setupRadioOther('pool_unequal_hours', 'other', 'poolHoursOtherField');
+  setupRadioOther('support_tipout_unequal_hours', 'other', 'supportHoursOtherField');
+  setupRadioOther('seasonal_hours', 'yes', 'seasonalHoursField');
+  setupRadioOther('seasonal_staffing', 'yes', 'seasonalStaffingField');
+
+  // ── Auto-save ──
+  function saveToStorage() {
+    const data = { _counts: { ...counts }, fields: {} };
+    document.querySelectorAll('[data-save]').forEach(el => {
+      const key = el.name;
+      if (!key) return;
+      if (el.type === 'radio') {
+        if (el.checked) data.fields[key] = el.value;
+      } else {
+        data.fields[key] = el.value;
+      }
+    });
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+    // Only show toast every 30 seconds
+    const now = Date.now();
+    if (now - lastToastTime >= TOAST_INTERVAL) {
+      showToast('Progress saved');
+      lastToastTime = now;
+    }
+  }
+
+  function loadFromStorage() {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return;
+    try {
+      const data = JSON.parse(raw);
+      // Restore dynamic row counts
+      if (data._counts) {
+        for (const [key, count] of Object.entries(data._counts)) {
+          while (counts[key] < count) addEntry(key);
+        }
+      }
+      // Restore field values
+      if (data.fields) {
+        for (const [name, value] of Object.entries(data.fields)) {
+          const els = document.querySelectorAll(`[name="${name}"]`);
+          els.forEach(el => {
+            if (el.type === 'radio') {
+              el.checked = (el.value === value);
+              if (el.checked) el.dispatchEvent(new Event('change'));
+            } else {
+              el.value = value;
+            }
+          });
+        }
+      }
+    } catch(e) { console.warn('Failed to restore saved data', e); }
+  }
+
+  function scheduleSave() {
+    clearTimeout(saveTimer);
+    saveTimer = setTimeout(saveToStorage, SAVE_DELAY);
+  }
+
+  document.addEventListener('input', e => { if (e.target.dataset.save !== undefined) scheduleSave(); });
+  document.addEventListener('change', e => { if (e.target.dataset.save !== undefined) scheduleSave(); });
+
+  // ── Progress bar ──
+  function updateProgress() {
+    let filled = 0, total = 0;
+    document.querySelectorAll('[data-save]').forEach(el => {
+      if (el.type === 'radio') return; // count radio groups separately
+      total++;
+      if (el.value.trim()) filled++;
+    });
+    // Count radio groups
+    const radioGroups = new Set();
+    document.querySelectorAll('input[type="radio"][data-save]').forEach(r => radioGroups.add(r.name));
+    total += radioGroups.size;
+    radioGroups.forEach(name => {
+      if (document.querySelector(`input[name="${name}"]:checked`)) filled++;
+    });
+    const pct = total > 0 ? Math.round((filled / total) * 100) : 0;
+    document.getElementById('progressFill').style.width = pct + '%';
+  }
+  document.addEventListener('input', updateProgress);
+  document.addEventListener('change', updateProgress);
+
+  // ── Toast ──
+  let toastTimer;
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => t.classList.remove('show'), 2000);
+  }
+
+  // ── Submit ──
+  document.getElementById('submitBtn').addEventListener('click', async () => {
+    const biz = document.getElementById('restaurant_name').value.trim();
+    const email = document.getElementById('contact_email').value.trim();
+    if (!biz) { alert('Please enter your business name.'); return; }
+    if (!email) { alert('Please enter a contact email.'); return; }
+
+    const btn = document.getElementById('submitBtn');
+    btn.disabled = true;
+    btn.textContent = 'Submitting...';
+
+    const payload = buildPayload();
+    try {
+      const res = await fetch('/submit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+      if (res.ok) {
+        localStorage.removeItem(STORAGE_KEY);
+        document.getElementById('formContainer').style.display = 'none';
+        document.getElementById('successScreen').style.display = 'block';
+        document.getElementById('successScreen').classList.add('visible');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else {
+        throw new Error('Server error');
+      }
+    } catch (e) {
+      alert('Something went wrong. Your data is saved — please try again.');
+      btn.disabled = false;
+      btn.textContent = 'Submit Onboarding Form';
+    }
+  });
+
+  function val(name) {
+    const el = document.querySelector(`[name="${name}"]`);
+    return el ? el.value.trim() : '';
+  }
+  function radioVal(name) {
+    const el = document.querySelector(`input[name="${name}"]:checked`);
+    return el ? el.value : '';
+  }
+  function collectGroup(groupKey) {
+    const cfg = configs[groupKey];
+    const items = [];
+    for (let i = 1; i <= counts[groupKey]; i++) {
+      const obj = {};
+      let hasData = false;
+      for (const f of cfg.fields) {
+        const v = val(`${groupKey}_${i}_${f.name}`);
+        obj[f.name] = v;
+        if (v) hasData = true;
+      }
+      if (hasData) items.push(obj);
+    }
+    return items;
+  }
+
+  function buildPayload() {
+    return {
+      restaurant: {
+        restaurant_name: val('restaurant_name'),
+        location: val('location'),
+        days_open: val('days_open'),
+        contact: {
+          name: val('contact_name'),
+          phone: val('contact_phone'),
+          email: val('contact_email'),
+        },
+      },
+      team: {
+        servers: collectGroup('servers'),
+        support_roles: collectGroup('roles'),
+        support_staff: collectGroup('support'),
+        kitchen_staff: collectGroup('kitchen'),
+        recorders: collectGroup('recorders'),
+      },
+      shifts: {
+        am: { start: val('shift_am_start'), end: val('shift_am_end') },
+        pm: { start: val('shift_pm_start'), end: val('shift_pm_end') },
+        close_varies_by_day: radioVal('close_varies') === 'yes',
+        close_times: {
+          sun: val('close_sun'), mon: val('close_mon'), tue: val('close_tue'),
+          wed: val('close_wed'), thu: val('close_thu'), fri: val('close_fri'),
+          sat: val('close_sat'),
+        },
+      },
+      tip_rules: {
+        tip_pooling: radioVal('tip_pooling') || 'unknown',
+        tip_other_description: val('tip_other_desc'),
+        pool_unequal_hours: radioVal('pool_unequal_hours') || 'unknown',
+        pool_unequal_hours_other: val('pool_hours_other_desc'),
+        support_tipout_unequal_hours: radioVal('support_tipout_unequal_hours') || 'unknown',
+        support_tipout_unequal_hours_other: val('support_tipout_hours_other_desc'),
+        tipout_method: radioVal('tipout_method') || 'unknown',
+        tipout_other_metric_description: val('tipout_other_metric_desc'),
+        tipout_method_other_description: val('tipout_method_other_desc'),
+        tipout_flow: radioVal('tipout_flow') || 'unknown',
+        tipout_flow_other_description: val('tipout_flow_other_desc'),
+        notes: val('tip_notes'),
+      },
+      pay_period: {
+        starts_on: val('pay_start'),
+        ends_on: val('pay_end'),
+      },
+      seasonality: {
+        is_seasonal: radioVal('is_seasonal') === 'yes',
+        busy_months: val('busy_months'),
+        slow_months: val('slow_months'),
+        seasonal_impact: radioVal('seasonal_impact') || '',
+        hours_change_seasonally: radioVal('seasonal_hours') === 'yes',
+        hours_change_details: val('seasonal_hours_details'),
+        staffing_changes_seasonally: radioVal('seasonal_staffing') === 'yes',
+        staffing_change_details: val('seasonal_staffing_details'),
+      },
+    };
+  }
+
+  // ── Clear progress ──
+  document.getElementById('clearProgress').addEventListener('click', e => {
+    e.preventDefault();
+    if (confirm('Clear all saved progress? This cannot be undone.')) {
+      localStorage.removeItem(STORAGE_KEY);
+      location.reload();
+    }
+  });
+
+  // ── Time normalization ──
+  // Converts user input like "9", "8:30pm", "10am" into "H:MM AM/PM" format
+  function normalizeTime(input) {
+    if (!input || !input.trim()) return '';
+    let val = input.trim().toLowerCase();
+
+    // Handle "N/A", "n/a", "closed", etc.
+    if (['n/a', 'na', 'closed', '-', ''].includes(val)) return input.trim();
+
+    // Extract AM/PM if present
+    let period = null;
+    if (val.includes('am')) {
+      period = 'AM';
+      val = val.replace(/\s*am\s*/gi, '').trim();
+    } else if (val.includes('pm')) {
+      period = 'PM';
+      val = val.replace(/\s*pm\s*/gi, '').trim();
+    }
+
+    // Parse the time portion
+    let hours, minutes;
+    if (val.includes(':')) {
+      const parts = val.split(':');
+      hours = parseInt(parts[0], 10);
+      minutes = parseInt(parts[1], 10) || 0;
+    } else {
+      // Just a number like "9" or "10"
+      hours = parseInt(val, 10);
+      minutes = 0;
+    }
+
+    // Validate hours
+    if (isNaN(hours) || hours < 0 || hours > 23) return input.trim();
+    if (isNaN(minutes) || minutes < 0 || minutes > 59) minutes = 0;
+
+    // If no AM/PM specified, infer based on context (close times are PM, early times are AM)
+    if (!period) {
+      // For restaurant close times, assume PM for hours 1-11, PM for 12
+      // For hours like 1-6, almost certainly PM
+      // For hours like 9-11, could be AM or PM - assume PM for close times
+      if (hours >= 1 && hours <= 11) {
+        period = 'PM';
+      } else if (hours === 12) {
+        period = 'PM';
+      } else if (hours === 0) {
+        // Midnight
+        hours = 12;
+        period = 'AM';
+      } else if (hours > 12 && hours <= 23) {
+        // 24-hour format like 21 = 9 PM
+        period = 'PM';
+        hours = hours - 12;
+      }
+    }
+
+    // Format as H:MM AM/PM
+    const minuteStr = minutes.toString().padStart(2, '0');
+    return `${hours}:${minuteStr} ${period}`;
+  }
+
+  // Add blur listener to all time fields
+  document.addEventListener('blur', e => {
+    if (e.target.dataset.time !== undefined) {
+      const normalized = normalizeTime(e.target.value);
+      if (normalized && normalized !== e.target.value) {
+        e.target.value = normalized;
+        scheduleSave();
+      }
+    }
+  }, true);
+
+  // ── Init ──
+  loadFromStorage();
+  updateProgress();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,33 @@
+Location,GUID,"Last Name","First Name",Email,"Phone Number","Employee ID","Job GUIDs","Job Descriptions",Wages
+"Papa Surf Burger Bar",65b75a00-907c-4cab-a368-2d0d2aef7405,Accounting,Mpire,accounting@mpirecg.com,3343522612,'',5d23f38b-6b40-4a23-b1c9-abcc7b5f1419,Cashier,0.00
+"Papa Surf Burger Bar",4b2deb52-68d2-49a2-b231-9ef5994a515b,Alexander,Ryan,wr_alexander@hotmail.com,,4653,4b7ada4a-eb9f-4b73-803e-41d57752580d,Expediter,15.00
+"Papa Surf Burger Bar",04489534-19a6-11ee-8840-120f4f86e32f,Baki,Janel,janelbaki@gmail.com,,10,"71455c98-fea1-4ea7-8247-c8fd01d38d7a; 0c97c7dc-141e-46a0-8207-4adefd850b23","Bartender; Shift Manager / Assistant Manager","13.00; 13.00"
+"Papa Surf Burger Bar",06189fe9-9db3-4e23-a405-9baa7e1db966,Buryanek,Mark,buryanekmark@gmail.com,8504680345,1034,71455c98-fea1-4ea7-8247-c8fd01d38d7a,Bartender,10.98
+"Papa Surf Burger Bar",842c0a59-be9d-4c2e-9e84-a9943d559665,Dodson,Fiona,fmdodson27@gmail.com,8504605897,1012,61b2d80d-148a-4214-885e-2c6c4e9b44d0,Host,17.00
+"Papa Surf Burger Bar",2f077a89-5c45-4025-a327-1777a4853ba3,Driver,TDS,cf24438d-d859-4a9b-932a-0547f9e28135@toasttab.com,,,42178c72-2b8a-44eb-b4c3-8bb83957cfa2,"Delivery Service Driver",0.00
+"Papa Surf Burger Bar",bf1c9acc-776b-11ee-8840-120f4f86e32f,Flaig,Jonathan,jonathan.flaig@gmail.com,7708453307,53,2d17c6a8-2c2b-4306-9af1-31f28bd2954f,"General Manager",0.00
+"Papa Surf Burger Bar",df3d6c7f-4aa2-11ee-8840-120f4f86e32f,Fortunato,Taylor,taylorfortunato@gmail.com,,43,88d566f8-9c67-40d8-94f0-3f97167fbb2e,Server,11.00
+"Papa Surf Burger Bar",046679fa-6ea3-42ac-986b-f57f53b3451a,Geissler,Emily,emilyelisegeissler@gmail.com,8502278865,19,"88d566f8-9c67-40d8-94f0-3f97167fbb2e; 0c97c7dc-141e-46a0-8207-4adefd850b23","Server; Shift Manager / Assistant Manager","12.00; 0.00"
+"Papa Surf Burger Bar",08dbd40f-1852-4566-a81a-6dc3055655b3,Glavine,Chris,chris@lefty.us,7708454414,'',9e4fe221-41da-41b0-a925-e52ab1062b9d,Owner,0.00
+"Papa Surf Burger Bar",8cc44f31-6ecd-4afd-893a-8e0a2d56edfd,Jetsetter,Local,connect@localjetsetter.com,8504272640,'',2bcb3822-04c0-432d-aea7-e2928af5b4a2,"Email Marketing",0.00
+"Papa Surf Burger Bar",f58b32a3-ff38-11ee-9677-120f4f86e32f,Kelley,Austin,austin.ke22@gmail.com,3343434495,90,"88d566f8-9c67-40d8-94f0-3f97167fbb2e; 0c97c7dc-141e-46a0-8207-4adefd850b23","Server; Shift Manager / Assistant Manager","15.00; 16.00"
+"Papa Surf Burger Bar",24e3694a-3e0e-445d-8d49-75eec1c25255,Kelley,Brittney,bcole429@gmail.com,,'',9e4fe221-41da-41b0-a925-e52ab1062b9d,Owner,0.00
+"Papa Surf Burger Bar",f8c1055b-9327-431d-8798-502c3cec718a,Krupicka,Bonnie,bonnie@gussyup30a.com,3039686837,1988,"71455c98-fea1-4ea7-8247-c8fd01d38d7a; 61b2d80d-148a-4214-885e-2c6c4e9b44d0; 06915597-1a20-4652-97d0-4f1b7bc16e17","Bartender; Host; Server/Bartender Trainee","10.98; 14.00; 13.00"
+"Papa Surf Burger Bar",15400d94-cb72-11ee-8840-120f4f86e32f,Lewis,Warren,warren.lewis211@gmail.com,2072425548,61,f135fa13-6240-4bd0-b9a0-577bcc75a1bc,Cook,21.00
+"Papa Surf Burger Bar",149e5880-58f3-4a93-ba25-04ef1d3760b1,Martin,Heather,muscleminds_1@icloud.com,3183727846,1040,"71455c98-fea1-4ea7-8247-c8fd01d38d7a; 06915597-1a20-4652-97d0-4f1b7bc16e17","Bartender; Server/Bartender Trainee","10.98; 12.00"
+"Papa Surf Burger Bar",ea5c8db5-e301-4c7d-ba45-c8e97948693f,McIlwain,Amber,amcilwain@mpirecg.com,3343522445,1035,2d17c6a8-2c2b-4306-9af1-31f28bd2954f,"General Manager",0.00
+"Papa Surf Burger Bar",12a3e44d-6c4d-490c-a880-0b37f83e9bd8,Mullin,george,georgemullin1@icloud.com,6517569830,1990,f135fa13-6240-4bd0-b9a0-577bcc75a1bc,Cook,17.00
+"Papa Surf Burger Bar",608f9679-c524-4110-a7b9-aaffc9118d06,Neal,Brooke,brjones5694@gmail.com,9014719252,1451,"71455c98-fea1-4ea7-8247-c8fd01d38d7a; 06915597-1a20-4652-97d0-4f1b7bc16e17","Bartender; Server/Bartender Trainee","10.98; 13.00"
+"Papa Surf Burger Bar",1a258f56-9f56-43bd-b047-18e158fc552e,Neal,John,nealj316@gmail.com,9016129841,1450,"dca4a135-2a58-4994-b83b-ab9489f19b71; 5e766a6d-239c-4f06-ab62-07c6cf11e168; 88d566f8-9c67-40d8-94f0-3f97167fbb2e","Runner; Runner Trainee; Server","10.98; 13.00; 10.98"
+"Papa Surf Burger Bar",c6f9c9e0-3148-4444-a463-e2ebc6f4999e,"Online Ordering",Default,cd69ff0f-127d-4eaf-9032-4fabb8b80845@toasttab.com,,,'','',''
+"Papa Surf Burger Bar",0e1a3cb8-f87c-445d-8429-c855d1294f2a,Ordering,Online,469001c2-8749-4449-aeb7-356d827c5e57@example.com,,'',62d10c04-ed7d-45f1-b013-043dc6c2a651,"Online Ordering Dummy",0.00
+"Papa Surf Burger Bar",983440f4-03b2-4ab4-9e52-fcf69a38cbc9,Owens,Marlee,marlee.owens01@gmail.com,8504268075,1991,61b2d80d-148a-4214-885e-2c6c4e9b44d0,Host,14.00
+"Papa Surf Burger Bar",9c1a70b7-e236-11ee-8840-120f4f86e32f,Sause,Tucker,tuckersause@gmail.com,4484487280,73,1145cbff-bc66-43a3-921c-a746610ef4a0,"Kitchen Manager","60,000.00"
+"Papa Surf Burger Bar",362dedb8-44a0-41a7-8993-561078397350,Shared,Expo,info@papasurf.com,,'',4b7ada4a-eb9f-4b73-803e-41d57752580d,Expediter,15.00
+"Papa Surf Burger Bar",abdc83cc-9b1a-4b93-8707-02f4382c05a5,Taylor,Willie,willietaylorofficial@gmail.com,8504815101,1011,f135fa13-6240-4bd0-b9a0-577bcc75a1bc,Cook,18.00
+"Papa Surf Burger Bar",ad9ce2b0-bc1e-49cd-a45b-500b79497637,Usseglio,Atticus,atticus.usseglio@gmail.com,8508302946,1004,"4b7ada4a-eb9f-4b73-803e-41d57752580d; dca4a135-2a58-4994-b83b-ab9489f19b71","Expediter; Runner","15.00; 9.98"
+"Papa Surf Burger Bar",269e7bc9-3fb6-485b-9b48-e4f2e337ae5a,Walden,Christine,christinewalden1@gmail.com,7188665320,1992,"71455c98-fea1-4ea7-8247-c8fd01d38d7a; 06915597-1a20-4652-97d0-4f1b7bc16e17","Bartender; Server/Bartender Trainee","10.98; 13.00"
+"Papa Surf Burger Bar",0b1476a2-1bb3-4eb5-894c-5ae64d32342e,Walker,Slayde,slaydewalker@gmail.com,8503875941,1025,f135fa13-6240-4bd0-b9a0-577bcc75a1bc,Cook,22.00
+"Papa Surf Burger Bar",8a041856-460b-4ecd-aa83-24c64a37d813,Walton,Mike,mikewalton325@gmail.com,8506305922,1010,"f135fa13-6240-4bd0-b9a0-577bcc75a1bc; 4b7ada4a-eb9f-4b73-803e-41d57752580d; dca4a135-2a58-4994-b83b-ab9489f19b71; 88d566f8-9c67-40d8-94f0-3f97167fbb2e","Cook; Expediter; Runner; Server","24.00; 17.00; 9.98; 9.98"
+"Papa Surf Burger Bar",e7d1bfff-565d-11ee-8840-120f4f86e32f,Wells,Tori,toriwells9011@gmail.com,8506355381,49,f135fa13-6240-4bd0-b9a0-577bcc75a1bc,Cook,24.00
+"Papa Surf Burger Bar",62ce5dd5-3ec7-4029-a73d-3ebc2967581f,Worley,Kevin,kevinworley500@gmail.com,9046524152,1032,71455c98-fea1-4ea7-8247-c8fd01d38d7a,Bartender,15.00

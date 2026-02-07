@@ -1,0 +1,130 @@
+{
+  "restaurant": {
+    "restaurant_name": "Down Island",
+    "location": "2780 US-98, Santa Rosa Beach, FL 32459",
+    "days_open": "Tuesday - Sunday",
+    "contact": {
+      "name": "Stefani Pall",
+      "phone": "8504281027",
+      "email": "stefanipall@gmail.com"
+    }
+  },
+  "team": {
+    "servers": [
+      {
+        "full_name": "Natalie Portman",
+        "nickname": "Nat",
+        "toast_employee_id": "1111"
+      },
+      {
+        "full_name": "Paul Hippy",
+        "nickname": "Hippy Paul",
+        "toast_employee_id": "2222"
+      },
+      {
+        "full_name": "Jennifer Forin",
+        "nickname": "Jen",
+        "toast_employee_id": "3333"
+      },
+      {
+        "full_name": "Hunter Church",
+        "nickname": "",
+        "toast_employee_id": "4444"
+      }
+    ],
+    "support_roles": [
+      {
+        "name": "Backwaiter",
+        "tipout_pct": "3%"
+      },
+      {
+        "name": "Host",
+        "tipout_pct": "1%"
+      },
+      {
+        "name": "Expediter",
+        "tipout_pct": "2"
+      }
+    ],
+    "support_staff": [
+      {
+        "full_name": "Garrett Dupey",
+        "nickname": "Gary",
+        "toast_id": "5555",
+        "typical_role": "Expo"
+      },
+      {
+        "full_name": "Darryl Johnson",
+        "nickname": "Big D",
+        "toast_id": "6666",
+        "typical_role": "Backwaiter, expo"
+      },
+      {
+        "full_name": "Ashley Holt",
+        "nickname": "Ash",
+        "toast_id": "666",
+        "typical_role": "Host"
+      },
+      {
+        "full_name": "Carlton Fish",
+        "nickname": "Carl",
+        "toast_id": "7777",
+        "typical_role": "Busser"
+      }
+    ],
+    "kitchen_staff": [
+      {
+        "full_name": "Tori Waters",
+        "nickname": "T",
+        "toast_id": "8888"
+      },
+      {
+        "full_name": "Warren Sheel",
+        "nickname": "",
+        "toast_id": "9999"
+      }
+    ],
+    "recorders": [
+      {
+        "name": "Lindsey Hedglin",
+        "role": "GM"
+      }
+    ]
+  },
+  "shifts": {
+    "am": {
+      "start": "10am",
+      "end": "4:30pm"
+    },
+    "pm": {
+      "start": "4:30pm",
+      "end": "10pm"
+    },
+    "close_varies_by_day": true,
+    "close_times": {
+      "sun": "9",
+      "mon": "N/a",
+      "tue": "9",
+      "wed": "9",
+      "thu": "9",
+      "fri": "10",
+      "sat": "10"
+    }
+  },
+  "tip_rules": {
+    "tip_pooling": "pool",
+    "tip_other_description": "",
+    "pool_unequal_hours": "pro_rate",
+    "pool_unequal_hours_other": "",
+    "support_tipout_unequal_hours": "full_tipout",
+    "support_tipout_unequal_hours_other": "",
+    "tipout_method": "total_sales",
+    "tipout_other_metric_description": "",
+    "tipout_method_other_description": "",
+    "notes": "Yeah, we have a valet guy that only gets tipped out half the time, but still clocks in as \u201cbackwaiter\u201d"
+  },
+  "pay_period": {
+    "starts_on": "Tuesday",
+    "ends_on": "Sunday"
+  }
+}

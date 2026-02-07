@@ -1,0 +1,1345 @@
+{
+  "date": "2026-01-31",
+  "count_type": "full_bar_inventory",
+  "locations": [
+    "TheOffice",
+    "InsideBar",
+    "BackBar",
+    "WalkIn",
+    "Storage"
+  ],
+  "items": [
+    {
+      "product": "30A Beach Blonde Ale",
+      "quantity": 1.5,
+      "unit": "Keg",
+      "breakdown": [
+        "WalkIn: 0.5",
+        "WalkIn: 1.0"
+      ]
+    },
+    {
+      "product": "30A Chardonnay",
+      "quantity": 39.0,
+      "unit": "Bottle",
+      "breakdown": [
+        "BackBar: 1.0",
+        "Storage: 38.0"
+      ]
+    },
+    {
+      "product": "30A IPA Cans",
+      "quantity": 5,
+      "unit": "Can",
+      "breakdown": [
+        "BackBar: 5"
+      ]
+    },
+    {
+      "product": "30A Pinot Noir",
+      "quantity": 26.0,
+      "unit": "Bottle",
+      "breakdown": [
+        "Storage: 26.0"
+      ]
+    },
+    {
+      "product": "30A Rose",
+      "quantity": 11.0,
+      "unit": "Bottle",
+      "breakdown": [
+        "InsideBar: 2.0",
+        "BackBar: 2.0",
+        "Storage: 7.0"
+      ]
+    },
+    {
+      "product": "30A Ros\u00e9 Gose Cans",
+      "quantity": 13,
+      "unit": "Can",
+      "breakdown": [
+        "BackBar: 13"
+      ]
+    },
+    {
+      "product": "30A Sauvignon Blanc",
+      "quantity": 34.0,
+      "unit": "Bottle",
+      "breakdown": [
+        "Storage: 34.0"
+      ]
+    },
+    {
+      "product": "Aperol",
+      "quantity": 4.25,
+      "unit": "Bottle",
+      "breakdown": [
+        "TheOffice: 3",
+        "InsideBar: 0.75",
+        "BackBar: 0.5"
+      ]
+    },
+    {
+      "product": "Aradura",
+      "quantity": 0.5,
+      "unit": "Bottle",
+      "breakdown": [
+        "InsideBar: 0.5"
+      ]
+    },
+    {
+      "product": "athletic",
+      "quantity": 60,
+      "unit": "Can",
+      "breakdown": [
+        "TheOffice: 60"
+      ]
+    },
+    {
+      "product": "athletic non-alcoholic beers",
+      "quantity": 14,
+      "unit": "Can",
+      "breakdown": [
+        "InsideBar: 14"
+      ]
+    },
+    {
+      "product": "Athletic Non-Alcoholic Brews",
+      "quantity": 13,
+      "unit": "Can",
+      "breakdown": [
+        "BackBar: 13"
+      ]
+    },
+    {
+      "product": "Blanton's",
+      "quantity": 1.0,
+      "unit": "Bottle",
+      "breakdown": [
+        "BackBar: 1.0"
+      ]
+    },
+    {
+      "product": "Blue Agave Syrup",
+      "quantity": 2.0,
+      "unit": "Bottle",
+      "breakdown": [
+        "BackBar: 2.0"
+      ]
+    },
+    {
+      "product": "Blueberry High Rises",
+      "quantity": 2,
+      "unit": "Can",
+      "breakdown": [
+        "BackBar: 2"
+      ]
+    },
+    {
+      "product": "Boll's Elderflower Liqueur",
+      "quantity": 0.4,
+      "unit": "Bottle",
+      "breakdown": [
+        "BackBar: 0.4"
+      ]
+    },
+    {
+      "product": "bottle",
+      "quantity": 1,
+      "unit": "Bottle",
+      "breakdown": [
+        "InsideBar: 1"
+      ]
+    },
+    {
+      "product": "bottles",
+      "quantity": 44,
+      "unit": "Bottle",
+      "breakdown": [
+        "TheOffice: 14",
+        "Storage: 30"
+      ]
+    },
+    {
+      "product": "bottles 30a chardonnay",
+      "quantity": 12,
+      "unit": "Bottle",
+      "breakdown": [
+        "TheOffice: 12"
+      ]
+    },
+    {
+      "product": "bottles canoe ridge merlot",
+      "quantity": 14,
+      "unit": "Bottle",
+      "breakdown": [
+        "TheOffice: 14"
+      ]
+    },
+    {
+      "product": "bottles charles",
+      "quantity": 12,
+      "unit": "Bottle",
+      "breakdown": [
+        "TheOffice: 12"
+      ]
+    },
+    {
+      "product": "bottles marque de caseres cava brut",
+      "quantity": 11,
+      "unit": "Bottle",
+      "breakdown": [
+        "TheOffice: 11"
+      ]
+    },
+    {
+      "product": "Bowls Elderflower Liqueur",
+      "quantity": 12.0,
+      "unit": "Bottle",
+      "breakdown": [
+        "TheOffice: 11",
+        "BackBar: 1.0"
+      ]
+    },
+    {
+      "product": "Bowls elderflower liqueur 750 milliliters",
+      "quantity": 3,
+      "unit": "Bottle",
+      "breakdown": [
+        "TheOffice: 3"
+      ]
+    },
+    {
+      "product": "Campari",
+      "quantity": 3.4000000000000004,
+      "unit": "Bottle",
+      "breakdown": [
+        "TheOffice: 2.6",
+        "TheOffice: 0.8"
+      ]
+    },
+    {
+      "product": "Campesino",
+      "quantity": 1,
+      "unit": "Bottle",
+      "breakdown": [
+        "TheOffice: 1"
+      ]
+    },
+    {
+      "product": "Campesino Aged Rum",
+      "quantity": 0.5,
+      "unit": "Bottle",
+      "breakdown": [
+        "BackBar: 0.5"
+      ]
+    },
+    {
+      "product": "Campesino Silver Rum",
+      "quantity": 1.9,
+      "unit": "Bottle",
+      "breakdown": [
+        "TheOffice: 0.9",
+        "BackBar: 1.0"
+      ]
+    },
+    {
+      "product": "Canoe Ridge Merlot",
+      "quantity": 2.75,
+      "unit": "Bottle",
+      "breakdown": [
+        "InsideBar: 1.0",
+        "BackBar: 1.0",
+        "BackBar: 0.75"
+      ]
+    },
+    {
+      "product": "Caravella Limoncello",
+      "quantity": 2.0,
+      "unit": "Bottle",
+      "breakdown": [
+        "BackBar: 2.0"
+      ]
+    },
+    {
+      "product": "Caravella Limoncillo",
+      "quantity": 0.05,
+      "unit": "Bottle",
+      "breakdown": [
+        "InsideBar: 0.05"
+      ]
+    },
+    {
+      "product": "Carter's Lot Rose",
+      "quantity": 3.5,
+      "unit": "Bottle",
+      "breakdown": [
+        "BackBar: 3.5"
+      ]
+    },
+    {
+      "product": "Casamigos Blanco",
+      "quantity": 0.85,
+      "unit": "Bottle",
+      "breakdown": [
+        "InsideBar: 0.35",
+        "BackBar: 0.5"
+      ]
+    },
+    {
+      "product": "Chambord",
+      "quantity": 1.0,
+      "unit": "Bottle",
+      "breakdown": [
+        "BackBar: 1.0"
+      ]
+    },
+    {
+      "product": "Charles de Fair Brute",
+      "quantity": 1.0,
+      "unit": "Bottle",
+      "breakdown": [
+        "InsideBar: 1.0"
+      ]
+    },
+    {
+      "product": "Charles de Fer Brut",
+      "quantity": 5.0,
+      "unit": "Bottle",
+      "breakdown": [
+        "BackBar: 5.0"
+      ]
+    },
+    {
+      "product": "Colonel E.H. Taylor",
+      "quantity": 0.5,
+      "unit": "Bottle",
+      "breakdown": [
+        "InsideBar: 0.5"
+      ]
+    },
+    {
+      "product": "Coors",
+      "quantity": 12,
+      "unit": "Can",
+      "breakdown": [
+        "TheOffice: 12"
+      ]
+    },
+    {
+      "product": "Coors Light",
+      "quantity": 24.0,
+      "unit": "Can",
+      "breakdown": [
+        "BackBar: 24.0"
+      ]
+    },
+    {
+      "product": "Coors Lights",
+      "quantity": 45,
+      "unit": "Can",
+      "breakdown": [
+        "InsideBar: 26",
+        "BackBar: 7",
+        "BackBar: 12"
+      ]
+    },
+    {
+      "product": "Cream of Coconut",
+      "quantity": 5.0,
+      "unit": "Bottle",
+      "breakdown": [
+        "BackBar: 1.0",
+        "BackBar: 4.0"
+      ]
+    },
+    {
+      "product": "Crop Organic Cucumber Vodka",
+      "quantity": 3.25,
+      "unit": "Bottle",
+      "breakdown": [
+        "TheOffice: 0.25",
+        "TheOffice: 1",
+        "BackBar: 1.0",
+        "BackBar: 1.0"
+      ]
+    },
+    {
+      "product": "crop organic Meyer lemon flavored vodka",
+      "quantity": 5,
+      "unit": "Bottle",
+      "breakdown": [
+        "TheOffice: 5"
+      ]
+    },
+    {
+      "product": "Crown Royal",
+      "quantity": 6.550000000000001,
+      "unit": "Bottle",
+      "breakdown": [
+        "TheOffice: 5",
+        "InsideBar: 0.15",
+        "BackBar: 0.4",
+        "BackBar: 1.0"
+      ]
+    },
+    {
+      "product": "Eagle Rare",
+      "quantity": 1.0,
+      "unit": "Bottle",
+      "breakdown": [
+        "BackBar: 0.1",
+        "BackBar: 0.9"
+      ]
+    },
+    {
+      "product": "Farmer's Gin",
+      "quantity": 5.7,
+      "unit": "Bottle",
+      "breakdown": [
+        "TheOffice: 5",
+        "InsideBar: 0.7"
+      ]
+    },
+    {
+      "product": "Fireball",
+      "quantity": 10.0,
+      "unit": "Bottle",
+      "breakdown": [
+        "TheOffice: 8",
+        "BackBar: 2.0"
+      ]
+    },
+    {
+      "product": "Gearbox",
+      "quantity": 2.0,
+      "unit": "Bottle",
+      "breakdown": [
+        "BackBar: 2.0"
+      ]
+    },
+    {
+      "product": "Gearbox Pinot",
+      "quantity": 1.0,
+      "unit": "Bottle",
+      "breakdown": [
+        "InsideBar: 1.0"
+      ]
+    },
+    {
+      "product": "Gearbox Pinot Noir",
+      "quantity": 0.75,
+      "unit": "Bottle",
+      "breakdown": [
+        "InsideBar: 0.75"
+      ]
+    },
+    {
+      "product": "Ginger Beer",
+      "quantity": 1,
+      "unit": "Bottle",
+      "breakdown": [
+        "BackBar: 1"
+      ]
+    },
+    {
+      "product": "Grand Gala Orange Liqueur",
+      "quantity": 8.0,
+      "unit": "Bottle",
+      "breakdown": [
+        "TheOffice: 7",
+        "BackBar: 1.0"
+      ]
+    },
+    {
+      "product": "Grenadine",
+      "quantity": 0.5,
+      "unit": "Bottle",
+      "breakdown": [
+        "BackBar: 0.5"
+      ]
+    },
+    {
+      "product": "Grey Goose",
+      "quantity": 2.4,
+      "unit": "Bottle",
+      "breakdown": [
+        "TheOffice: 2",
+        "InsideBar: 0.4"
+      ]
+    },
+    {
+      "product": "Grey Goose 1 Liter",
+      "quantity": 2.0,
+      "unit": "Bottle",
+      "breakdown": [
+        "BackBar: 2.0"
+      ]
+    },
+    {
+      "product": "Hendrick's gin",
+      "quantity": 9,
+      "unit": "Bottle",
+      "breakdown": [
+        "TheOffice: 9"
+      ]
+    },
+    {
+      "product": "High Noon Pineapple",
+      "quantity": 3,
+      "unit": "Can",
+      "breakdown": [
+        "BackBar: 3"
+      ]
+    },
+    {
+      "product": "High Noon Pineapples",
+      "quantity": 4,
+      "unit": "Can",
+      "breakdown": [
+        "InsideBar: 4"
+      ]
+    },
+    {
+      "product": "High Noon Watermelon",
+      "quantity": 11,
+      "unit": "Can",
+      "breakdown": [
+        "BackBar: 11"
+      ]
+    },
+    {
+      "product": "High Noon Watermelons",
+      "quantity": 4,
+      "unit": "Can",
+      "breakdown": [
+        "InsideBar: 4"
+      ]
+    },
+    {
+      "product": "High Rise Blueberry",
+      "quantity": 2.0,
+      "unit": "Can",
+      "breakdown": [
+        "BackBar: 2.0"
+      ]
+    },
+    {
+      "product": "High Rise Pineapple",
+      "quantity": 6.0,
+      "unit": "Can",
+      "breakdown": [
+        "BackBar: 4.0",
+        "BackBar: 2.0"
+      ]
+    },
+    {
+      "product": "High-Rise Blue Bear",
+      "quantity": 1,
+      "unit": "Can",
+      "breakdown": [
+        "InsideBar: 1"
+      ]
+    },
+    {
+      "product": "Jack Daniel's",
+      "quantity": 16.0,
+      "unit": "Bottle",
+      "breakdown": [
+        "TheOffice: 16.0"
+      ]
+    },
+    {
+      "product": "Jack Daniels",
+      "quantity": 1.0,
+      "unit": "Bottle",
+      "breakdown": [
+        "InsideBar: 1.0"
+      ]
+    },
+    {
+      "product": "Jim Beam",
+      "quantity": 5.0,
+      "unit": "Bottle",
+      "breakdown": [
+        "TheOffice: 0.9",
+        "TheOffice: 1",
+        "InsideBar: 0.5",
+        "BackBar: 0.6",
+        "BackBar: 2.0"
+      ]
+    },
+    {
+      "product": "J\u00e4germeister",
+      "quantity": 10.5,
+      "unit": "Bottle",
+      "breakdown": [
+        "TheOffice: 10",
+        "InsideBar: 0.5"
+      ]
+    },
+    {
+      "product": "kegs",
+      "quantity": 3,
+      "unit": "Keg",
+      "breakdown": [
+        "WalkIn: 3"
+      ]
+    },
+    {
+      "product": "Kona Big Wave",
+      "quantity": 5.5,
+      "unit": "Keg",
+      "breakdown": [
+        "WalkIn: 5.0",
+        "WalkIn: 0.5"
+      ]
+    },
+    {
+      "product": "liter",
+      "quantity": 1,
+      "unit": "Can",
+      "breakdown": [
+        "InsideBar: 1"
+      ]
+    },
+    {
+      "product": "liter bottle",
+      "quantity": 3,
+      "unit": "Bottle",
+      "breakdown": [
+        "InsideBar: 1",
+        "BackBar: 1",
+        "BackBar: 1"
+      ]
+    },
+    {
+      "product": "liter bottle of Michter's",
+      "quantity": 1,
+      "unit": "Bottle",
+      "breakdown": [
+        "BackBar: 1"
+      ]
+    },
+    {
+      "product": "Maker's Mark",
+      "quantity": 2.1,
+      "unit": "Bottle",
+      "breakdown": [
+        "TheOffice: 2",
+        "InsideBar: 0.1"
+      ]
+    },
+    {
+      "product": "Marca de Caceres Cava Brute",
+      "quantity": 2.0,
+      "unit": "Bottle",
+      "breakdown": [
+        "InsideBar: 2.0"
+      ]
+    },
+    {
+      "product": "Margarita",
+      "quantity": 1.5,
+      "unit": "Bottle",
+      "breakdown": [
+        "BackBar: 1.5"
+      ]
+    },
+    {
+      "product": "Margarita Mix",
+      "quantity": 1.0,
+      "unit": "Bottle",
+      "breakdown": [
+        "InsideBar: 1.0"
+      ]
+    },
+    {
+      "product": "Meyer's Dark Rum",
+      "quantity": 2.0,
+      "unit": "Bottle",
+      "breakdown": [
+        "BackBar: 2.0"
+      ]
+    },
+    {
+      "product": "Meyer's Original",
+      "quantity": 0.5,
+      "unit": "Bottle",
+      "breakdown": [
+        "InsideBar: 0.5"
+      ]
+    },
+    {
+      "product": "Meyer's original dark rum",
+      "quantity": 8,
+      "unit": "Bottle",
+      "breakdown": [
+        "TheOffice: 8"
+      ]
+    },
+    {
+      "product": "Michelob Ultra",
+      "quantity": 24.0,
+      "unit": "Can",
+      "breakdown": [
+        "BackBar: 24.0"
+      ]
+    },
+    {
+      "product": "Michelob Ultras",
+      "quantity": 45,
+      "unit": "Can",
+      "breakdown": [
+        "InsideBar: 33",
+        "BackBar: 12"
+      ]
+    },
+    {
+      "product": "Michter's",
+      "quantity": 0.95,
+      "unit": "Bottle",
+      "breakdown": [
+        "InsideBar: 0.95"
+      ]
+    },
+    {
+      "product": "Milagro Reposado",
+      "quantity": 0.7,
+      "unit": "Bottle",
+      "breakdown": [
+        "BackBar: 0.7"
+      ]
+    },
+    {
+      "product": "Milagro Silver",
+      "quantity": 0.3,
+      "unit": "Bottle",
+      "breakdown": [
+        "InsideBar: 0.3"
+      ]
+    },
+    {
+      "product": "Milagros Silver",
+      "quantity": 0.6,
+      "unit": "Bottle",
+      "breakdown": [
+        "BackBar: 0.6"
+      ]
+    },
+    {
+      "product": "Miller Light",
+      "quantity": 12.0,
+      "unit": "Can",
+      "breakdown": [
+        "BackBar: 12.0"
+      ]
+    },
+    {
+      "product": "Miller Lights",
+      "quantity": 35,
+      "unit": "Can",
+      "breakdown": [
+        "InsideBar: 18",
+        "BackBar: 17"
+      ]
+    },
+    {
+      "product": "Miller Lite",
+      "quantity": 24,
+      "unit": "Can",
+      "breakdown": [
+        "TheOffice: 24"
+      ]
+    },
+    {
+      "product": "milliliters",
+      "quantity": 1450,
+      "unit": "Can",
+      "breakdown": [
+        "TheOffice: 750",
+        "TheOffice: 700"
+      ]
+    },
+    {
+      "product": "Mojito",
+      "quantity": 4.5,
+      "unit": "Bottle",
+      "breakdown": [
+        "BackBar: 4.5"
+      ]
+    },
+    {
+      "product": "Mom Waters",
+      "quantity": 23.0,
+      "unit": "Can",
+      "breakdown": [
+        "BackBar: 16.0",
+        "BackBar: 7"
+      ]
+    },
+    {
+      "product": "more 4-pack of Mom Waters",
+      "quantity": 1,
+      "unit": "Can",
+      "breakdown": [
+        "BackBar: 1"
+      ]
+    },
+    {
+      "product": "more bottle of",
+      "quantity": 1,
+      "unit": "Bottle",
+      "breakdown": [
+        "InsideBar: 1"
+      ]
+    },
+    {
+      "product": "more bottle of Charles de Fer",
+      "quantity": 1,
+      "unit": "Bottle",
+      "breakdown": [
+        "BackBar: 1"
+      ]
+    },
+    {
+      "product": "more bottle of Squealing Pig",
+      "quantity": 1,
+      "unit": "Bottle",
+      "breakdown": [
+        "InsideBar: 1"
+      ]
+    },
+    {
+      "product": "more bottle of Windstorm Chardonnay",
+      "quantity": 2,
+      "unit": "Bottle",
+      "breakdown": [
+        "InsideBar: 1",
+        "InsideBar: 1"
+      ]
+    },
+    {
+      "product": "more bottles of Scarpetta",
+      "quantity": 2,
+      "unit": "Bottle",
+      "breakdown": [
+        "InsideBar: 2"
+      ]
+    },
+    {
+      "product": "more High Noon Watermelons",
+      "quantity": 5,
+      "unit": "Can",
+      "breakdown": [
+        "InsideBar: 5"
+      ]
+    },
+    {
+      "product": "Mr",
+      "quantity": 1.0,
+      "unit": "Bottle",
+      "breakdown": [
+        "BackBar: 1.0"
+      ]
+    },
+    {
+      "product": "Mr. Boston Blue Curacao",
+      "quantity": 0.1,
+      "unit": "Bottle",
+      "breakdown": [
+        "BackBar: 0.1"
+      ]
+    },
+    {
+      "product": "Mr. Boston Blue Cura\u00e7ao",
+      "quantity": 1.0,
+      "unit": "Bottle",
+      "breakdown": [
+        "BackBar: 1.0"
+      ]
+    },
+    {
+      "product": "Mr. Boston peach schnapps",
+      "quantity": 21.0,
+      "unit": "Bottle",
+      "breakdown": [
+        "TheOffice: 21.0"
+      ]
+    },
+    {
+      "product": "Mr. Boston's Blue Curacao",
+      "quantity": 0.5,
+      "unit": "Bottle",
+      "breakdown": [
+        "InsideBar: 0.5"
+      ]
+    },
+    {
+      "product": "Nocello",
+      "quantity": 1.0,
+      "unit": "Bottle",
+      "breakdown": [
+        "BackBar: 1.0"
+      ]
+    },
+    {
+      "product": "Pacifico",
+      "quantity": 48.0,
+      "unit": "Can",
+      "breakdown": [
+        "TheOffice: 24",
+        "BackBar: 24.0"
+      ]
+    },
+    {
+      "product": "Pacificos",
+      "quantity": 27,
+      "unit": "Can",
+      "breakdown": [
+        "InsideBar: 21",
+        "BackBar: 6"
+      ]
+    },
+    {
+      "product": "Papa's Pilar",
+      "quantity": 0.1,
+      "unit": "Bottle",
+      "breakdown": [
+        "InsideBar: 0.1"
+      ]
+    },
+    {
+      "product": "Paradise Park",
+      "quantity": 1.5,
+      "unit": "Keg",
+      "breakdown": [
+        "WalkIn: 1.0",
+        "WalkIn: 0.5"
+      ]
+    },
+    {
+      "product": "Parrot Bay Coconut",
+      "quantity": 0.7,
+      "unit": "Bottle",
+      "breakdown": [
+        "InsideBar: 0.7"
+      ]
+    },
+    {
+      "product": "Parrot Bay Coconut Rum",
+      "quantity": 2.3,
+      "unit": "Bottle",
+      "breakdown": [
+        "TheOffice: 0.9",
+        "BackBar: 0.4",
+        "BackBar: 1.0"
+      ]
+    },
+    {
+      "product": "Parrot Bay White Rum",
+      "quantity": 2.45,
+      "unit": "Bottle",
+      "breakdown": [
+        "TheOffice: 0.1",
+        "InsideBar: 0.85",
+        "BackBar: 0.5",
+        "BackBar: 1.0"
+      ]
+    },
+    {
+      "product": "Peach",
+      "quantity": 0.6,
+      "unit": "Bottle",
+      "breakdown": [
+        "InsideBar: 0.6"
+      ]
+    },
+    {
+      "product": "Peach Schnapps",
+      "quantity": 0.1,
+      "unit": "Bottle",
+      "breakdown": [
+        "BackBar: 0.1"
+      ]
+    },
+    {
+      "product": "pineapple high noon",
+      "quantity": 48,
+      "unit": "Can",
+      "breakdown": [
+        "TheOffice: 48"
+      ]
+    },
+    {
+      "product": "Pineapple High Rises",
+      "quantity": 9,
+      "unit": "Can",
+      "breakdown": [
+        "BackBar: 9"
+      ]
+    },
+    {
+      "product": "Pueblo Viejo",
+      "quantity": 4.1,
+      "unit": "Bottle",
+      "breakdown": [
+        "BackBar: 1.0",
+        "BackBar: 0.1",
+        "BackBar: 1.0",
+        "BackBar: 2.0"
+      ]
+    },
+    {
+      "product": "Pueblo Viejo Tequila",
+      "quantity": 0.5,
+      "unit": "Bottle",
+      "breakdown": [
+        "InsideBar: 0.5"
+      ]
+    },
+    {
+      "product": "Red Bull regular",
+      "quantity": 24,
+      "unit": "Can",
+      "breakdown": [
+        "TheOffice: 24"
+      ]
+    },
+    {
+      "product": "Red Bull Sugar Free",
+      "quantity": 1.0,
+      "unit": "Can",
+      "breakdown": [
+        "BackBar: 1.0"
+      ]
+    },
+    {
+      "product": "Red Bull sugar-free",
+      "quantity": 24,
+      "unit": "Can",
+      "breakdown": [
+        "TheOffice: 24"
+      ]
+    },
+    {
+      "product": "Red Bulls",
+      "quantity": 35,
+      "unit": "Can",
+      "breakdown": [
+        "BackBar: 8",
+        "BackBar: 6",
+        "BackBar: 6",
+        "BackBar: 7",
+        "BackBar: 8"
+      ]
+    },
+    {
+      "product": "Redwood Empire",
+      "quantity": 0.9,
+      "unit": "Bottle",
+      "breakdown": [
+        "InsideBar: 0.9"
+      ]
+    },
+    {
+      "product": "Romana Amaro",
+      "quantity": 0.8,
+      "unit": "Bottle",
+      "breakdown": [
+        "TheOffice: 0.8"
+      ]
+    },
+    {
+      "product": "Rumple Mints",
+      "quantity": 9.1,
+      "unit": "Bottle",
+      "breakdown": [
+        "TheOffice: 9",
+        "BackBar: 0.1"
+      ]
+    },
+    {
+      "product": "Scarpetta",
+      "quantity": 1.0,
+      "unit": "Bottle",
+      "breakdown": [
+        "InsideBar: 1.0"
+      ]
+    },
+    {
+      "product": "Scarpetta Pinot Grigio",
+      "quantity": 6.5,
+      "unit": "Bottle",
+      "breakdown": [
+        "InsideBar: 2.0",
+        "BackBar: 4.5"
+      ]
+    },
+    {
+      "product": "Shaker Red Blend",
+      "quantity": 1.0,
+      "unit": "Bottle",
+      "breakdown": [
+        "BackBar: 1.0"
+      ]
+    },
+    {
+      "product": "Siete Mestadios mezcal",
+      "quantity": 0.75,
+      "unit": "Bottle",
+      "breakdown": [
+        "TheOffice: 0.75"
+      ]
+    },
+    {
+      "product": "Siete Mysterios",
+      "quantity": 1.0,
+      "unit": "Bottle",
+      "breakdown": [
+        "BackBar: 1.0"
+      ]
+    },
+    {
+      "product": "Siete Mysterios Mezcal",
+      "quantity": 0.25,
+      "unit": "Bottle",
+      "breakdown": [
+        "InsideBar: 0.25"
+      ]
+    },
+    {
+      "product": "Squealing",
+      "quantity": 1.0,
+      "unit": "Bottle",
+      "breakdown": [
+        "InsideBar: 1.0"
+      ]
+    },
+    {
+      "product": "Squealing Pig",
+      "quantity": 8.0,
+      "unit": "Bottle",
+      "breakdown": [
+        "InsideBar: 1.0",
+        "BackBar: 7.0"
+      ]
+    },
+    {
+      "product": "Stella Artois",
+      "quantity": 3.75,
+      "unit": "Keg",
+      "breakdown": [
+        "WalkIn: 0.25",
+        "WalkIn: 3.0",
+        "WalkIn: 0.5"
+      ]
+    },
+    {
+      "product": "Strawberry Puree",
+      "quantity": 1.0,
+      "unit": "Bottle",
+      "breakdown": [
+        "BackBar: 1.0"
+      ]
+    },
+    {
+      "product": "Tahin",
+      "quantity": 0.25,
+      "unit": "Bottle",
+      "breakdown": [
+        "InsideBar: 0.25"
+      ]
+    },
+    {
+      "product": "Tankeray",
+      "quantity": 0.6,
+      "unit": "Bottle",
+      "breakdown": [
+        "BackBar: 0.6"
+      ]
+    },
+    {
+      "product": "Tankeray London dry gin",
+      "quantity": 5,
+      "unit": "Bottle",
+      "breakdown": [
+        "TheOffice: 5"
+      ]
+    },
+    {
+      "product": "Tia Maria Cold Brew Coffee Liqueur",
+      "quantity": 1.6,
+      "unit": "Bottle",
+      "breakdown": [
+        "TheOffice: 1",
+        "BackBar: 0.6"
+      ]
+    },
+    {
+      "product": "Tito's",
+      "quantity": 4.5,
+      "unit": "Bottle",
+      "breakdown": [
+        "TheOffice: 4",
+        "BackBar: 0.5"
+      ]
+    },
+    {
+      "product": "Tullamore Dew",
+      "quantity": 0.1,
+      "unit": "Bottle",
+      "breakdown": [
+        "InsideBar: 0.1"
+      ]
+    },
+    {
+      "product": "Urban South Holy Roller",
+      "quantity": 2.5,
+      "unit": "Keg",
+      "breakdown": [
+        "WalkIn: 0.5",
+        "WalkIn: 2.0"
+      ]
+    },
+    {
+      "product": "watermelon",
+      "quantity": 2.0,
+      "unit": "Bottle",
+      "breakdown": [
+        "InsideBar: 2.0"
+      ]
+    },
+    {
+      "product": "Watermelon High Noons",
+      "quantity": 16,
+      "unit": "Can",
+      "breakdown": [
+        "BackBar: 16"
+      ]
+    },
+    {
+      "product": "Watermelon Mixer",
+      "quantity": 4.5,
+      "unit": "Bottle",
+      "breakdown": [
+        "BackBar: 4.5"
+      ]
+    },
+    {
+      "product": "Wheatley's",
+      "quantity": 0.7,
+      "unit": "Bottle",
+      "breakdown": [
+        "TheOffice: 0.6",
+        "InsideBar: 0.1"
+      ]
+    },
+    {
+      "product": "Wheatley's Vodka",
+      "quantity": 10.0,
+      "unit": "Bottle",
+      "breakdown": [
+        "TheOffice: 8",
+        "InsideBar: 1.0",
+        "BackBar: 1.0"
+      ]
+    },
+    {
+      "product": "Wheatleys",
+      "quantity": 2.0,
+      "unit": "Bottle",
+      "breakdown": [
+        "BackBar: 2.0"
+      ]
+    },
+    {
+      "product": "Windstorm Cabernet Sauvignon",
+      "quantity": 0.75,
+      "unit": "Bottle",
+      "breakdown": [
+        "BackBar: 0.75"
+      ]
+    },
+    {
+      "product": "Windstorm Chardonnay",
+      "quantity": 6.0,
+      "unit": "Bottle",
+      "breakdown": [
+        "InsideBar: 1.0",
+        "InsideBar: 1.0",
+        "BackBar: 4.0"
+      ]
+    },
+    {
+      "product": "Woodford",
+      "quantity": 3.4,
+      "unit": "Bottle",
+      "breakdown": [
+        "InsideBar: 0.4",
+        "BackBar: 1.0",
+        "BackBar: 1.0",
+        "BackBar: 1.0"
+      ]
+    },
+    {
+      "product": "Woodford Reserve",
+      "quantity": 4,
+      "unit": "Bottle",
+      "breakdown": [
+        "TheOffice: 4"
+      ]
+    },
+    {
+      "product": "Yahweh Coconut",
+      "quantity": 0.1,
+      "unit": "Bottle",
+      "breakdown": [
+        "InsideBar: 0.1"
+      ]
+    },
+    {
+      "product": "Yahweh Jalapeno tequila",
+      "quantity": 0.8,
+      "unit": "Bottle",
+      "breakdown": [
+        "InsideBar: 0.8"
+      ]
+    },
+    {
+      "product": "Yave",
+      "quantity": 1.0,
+      "unit": "Bottle",
+      "breakdown": [
+        "BackBar: 1.0"
+      ]
+    },
+    {
+      "product": "Yave Coconut Tequila",
+      "quantity": 1.0,
+      "unit": "Bottle",
+      "breakdown": [
+        "BackBar: 1.0"
+      ]
+    },
+    {
+      "product": "Yingling",
+      "quantity": 96.0,
+      "unit": "Can",
+      "breakdown": [
+        "TheOffice: 72",
+        "BackBar: 24.0"
+      ]
+    },
+    {
+      "product": "Yinglings",
+      "quantity": 30,
+      "unit": "Can",
+      "breakdown": [
+        "InsideBar: 8",
+        "BackBar: 16",
+        "BackBar: 6"
+      ]
+    }
+  ]
+}

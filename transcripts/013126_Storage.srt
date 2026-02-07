@@ -1,0 +1,8 @@
+1
+00:00:00,000 --> 00:00:21,800
+7 bottles of 30A Rose, 38 bottles of 30A Chardonnay, 34 bottles of 30A Sauvignon Blanc, 30 bottles
+
+2
+00:00:21,800 --> 00:00:30,960
+of 30A Cabernet Sauvignon, 26 bottles of 30A Pinot Noir.
+

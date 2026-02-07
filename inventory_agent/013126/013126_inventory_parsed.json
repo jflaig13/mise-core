@@ -1,0 +1,1532 @@
+{
+  "beer_cost": [
+    {
+      "Item": "Athletic Upside Dawn Golden 12oz Can",
+      "Count": 326.15000000000003
+    },
+    {
+      "Item": "Coors Light 12oz Can",
+      "Count": 37.0
+    },
+    {
+      "Item": "D9 High Rise Blood Orange 12oz Can",
+      "Count": 77.0
+    },
+    {
+      "Item": "Fairhope I Drink Therefore I Amber Keg (1/6BBL)",
+      "Count": 12.25
+    },
+    {
+      "Item": "Goose Island IPA Keg (1/6BBL)",
+      "Count": 4.0
+    },
+    {
+      "Item": "Grayton 30A Beach Blonde Ale Keg (1/6BBL)",
+      "Count": 82.6
+    },
+    {
+      "Item": "Grayton Beach 30A Rose 12oz Can",
+      "Count": 5.0
+    },
+    {
+      "Item": "Idyll Hands Joe Coffee Keg (1/6BBL)",
+      "Count": 2.4
+    },
+    {
+      "Item": "Keg Deposit - At Purchase $50",
+      "Count": 6.449999999999999
+    },
+    {
+      "Item": "Michelob Ultra 12oz Can",
+      "Count": 45.0
+    },
+    {
+      "Item": "Miller High Life 12oz Can",
+      "Count": 2.0
+    },
+    {
+      "Item": "Miller Lite 12oz Can",
+      "Count": 3.2
+    },
+    {
+      "Item": "Mom Water Assorted 12oz Can",
+      "Count": 31.0
+    },
+    {
+      "Item": "Oyster City Mangrove Pale Ale Keg (1/4BBL)",
+      "Count": 12.0
+    },
+    {
+      "Item": "Pacifico 12oz Can",
+      "Count": 8.0
+    },
+    {
+      "Item": "White Claw Black Cherry 12oz Can",
+      "Count": 1.6
+    }
+  ],
+  "wine_cost": [
+    {
+      "Item": "30A Cabernet Sauvignon",
+      "Count": 2.75
+    },
+    {
+      "Item": "30A Pinot Noir",
+      "Count": 8.75
+    },
+    {
+      "Item": "30A Sauvignon Blanc",
+      "Count": 4.7
+    },
+    {
+      "Item": "Caymus Suisun The Walking Fool Red Blend",
+      "Count": 42.9
+    },
+    {
+      "Item": "Charles De Fere Jean-Louis Cuvee Blanc De Blancs Brut",
+      "Count": 208.1
+    },
+    {
+      "Item": "Domaine St Michelle Brut",
+      "Count": 35.2
+    },
+    {
+      "Item": "Gearbox California Pinot Noir",
+      "Count": 8.0
+    },
+    {
+      "Item": "Oyster Bay Sauvignon Blanc",
+      "Count": 3.0
+    },
+    {
+      "Item": "Pol Remy Sparkling Crown",
+      "Count": 6.800000000000001
+    },
+    {
+      "Item": "Scarpetta Pinot Grigio",
+      "Count": 1.0
+    },
+    {
+      "Item": "Squealing Pig Sauvignon Blanc",
+      "Count": 16.0
+    }
+  ],
+  "liquor_cost": [
+    {
+      "Item": "Aperol Aperitivo",
+      "Count": 3.0
+    },
+    {
+      "Item": "Bar Mix, Cosmopolitan",
+      "Count": 1.75
+    },
+    {
+      "Item": "Bar Mix, Margarita",
+      "Count": 13.0
+    },
+    {
+      "Item": "Bar Mix, Mojito",
+      "Count": 9.0
+    },
+    {
+      "Item": "Blue Curacao",
+      "Count": 3.0
+    },
+    {
+      "Item": "Bottle Deposit - Liquor (.05)",
+      "Count": 223.45
+    },
+    {
+      "Item": "Farmers Organic Gin",
+      "Count": 1.0
+    }
+  ],
+  "n_a_beverage_cost": [],
+  "grocery_and_dry_goods": [
+    {
+      "Item": "10\" Sediment Filter 10 Micron 2.5\"",
+      "Count": 0.25
+    },
+    {
+      "Item": "15mm/.006\" Nickel Brass Anti-Drip Body SS Disc 10/24 Thread, Cleanable",
+      "Count": 6.0
+    },
+    {
+      "Item": "Chicken, Wings",
+      "Count": 14.0
+    },
+    {
+      "Item": "One Time Maintenance for non-member-Advantage HPE",
+      "Count": 1.0
+    },
+    {
+      "Item": "Papa Sun-Pope Hat",
+      "Count": 0.5
+    },
+    {
+      "Item": "Shrimp, 16/20",
+      "Count": 16.0
+    }
+  ],
+  "breakdown": {
+    "beer_cost": {
+      "Keg Deposit - At Purchase $50": [
+        {
+          "line": "one bottle erradura anejo, tequila, 750 milliliters",
+          "qty": 1.0,
+          "location": "unknown"
+        },
+        {
+          "line": "three bottles of Bowls elderflower liqueur 750 milliliters",
+          "qty": 3.0,
+          "location": "unknown"
+        },
+        {
+          "line": "Rum, 85% of a bottle of Parrot Bay White Rum, 50% of a bottle of Jim Beam, 75% of a bottle",
+          "qty": 0.85,
+          "location": "unknown"
+        },
+        {
+          "line": "Coconut Tequila, 60% of a bottle of Jim Beam, 50% of a bottle of Tito's, 90% of a bottle",
+          "qty": 0.6,
+          "location": "unknown"
+        },
+        {
+          "line": "50% of a bottle of Casamigos Blanco",
+          "qty": 0.5,
+          "location": "unknown"
+        },
+        {
+          "line": "50% of a bottle of Aperol",
+          "qty": 0.5,
+          "location": "unknown"
+        }
+      ],
+      "Athletic Upside Dawn Golden 12oz Can": [
+        {
+          "line": "12 bottles 30a chardonnay",
+          "qty": 12.0,
+          "location": "unknown"
+        },
+        {
+          "line": "14 bottles canoe ridge merlot",
+          "qty": 14.0,
+          "location": "unknown"
+        },
+        {
+          "line": "five 12-packs athletic",
+          "qty": 5.0,
+          "location": "unknown"
+        },
+        {
+          "line": "three bottles blue agave natural sweetener",
+          "qty": 3.0,
+          "location": "unknown"
+        },
+        {
+          "line": "eight cans of ginger beer",
+          "qty": 8.0,
+          "location": "unknown"
+        },
+        {
+          "line": "seven bottles Romana Amaro",
+          "qty": 7.0,
+          "location": "unknown"
+        },
+        {
+          "line": "eight bottles of Meyer's original dark rum",
+          "qty": 8.0,
+          "location": "unknown"
+        },
+        {
+          "line": "21 bottles of Mr. Boston peach schnapps",
+          "qty": 21.0,
+          "location": "unknown"
+        },
+        {
+          "line": "2",
+          "qty": 2.0,
+          "location": "unknown"
+        },
+        {
+          "line": "8 bottles of Romana Amaro, 90% of a bottle of Campesino silver rum",
+          "qty": 0.9,
+          "location": "unknown"
+        },
+        {
+          "line": "one bottle Eridura Blanco original tequila, it comes in its own box,",
+          "qty": 1.0,
+          "location": "unknown"
+        },
+        {
+          "line": "1 bottle of Canoe Ridge Merlot",
+          "qty": 1.0,
+          "location": "unknown"
+        },
+        {
+          "line": "Knops, 40% of a bottle of Grey Goose, 1 liter bottle, half of a bottle of Meyer's Original",
+          "qty": 0.4,
+          "location": "unknown"
+        },
+        {
+          "line": "14 athletic non-alcoholic beers",
+          "qty": 14.0,
+          "location": "unknown"
+        },
+        {
+          "line": "1 bottle of Windstorm Chardonnay",
+          "qty": 1.0,
+          "location": "unknown"
+        },
+        {
+          "line": "1 more bottle of Windstorm Chardonnay",
+          "qty": 1.0,
+          "location": "unknown"
+        },
+        {
+          "line": "1 bottle of Windstorm Chardonnay, 1 more bottle of",
+          "qty": 1.0,
+          "location": "unknown"
+        },
+        {
+          "line": "30A Chardonnay",
+          "qty": 30.0,
+          "location": "unknown"
+        },
+        {
+          "line": "half of a bottle of Grenadine",
+          "qty": 0.5,
+          "location": "unknown"
+        },
+        {
+          "line": "13 Athletic Non-Alcoholic Brews",
+          "qty": 13.0,
+          "location": "unknown"
+        },
+        {
+          "line": "1",
+          "qty": 1.0,
+          "location": "unknown"
+        },
+        {
+          "line": "1 bottle of 30A Chardonnay",
+          "qty": 1.0,
+          "location": "unknown"
+        },
+        {
+          "line": "4 bottles of Windstorm Chardonnay",
+          "qty": 4.0,
+          "location": "unknown"
+        },
+        {
+          "line": "24 cans of Coors Light",
+          "qty": 24.0,
+          "location": "unknown"
+        },
+        {
+          "line": "12 cans of Miller Light",
+          "qty": 12.0,
+          "location": "unknown"
+        },
+        {
+          "line": "24 cans of Pacifico",
+          "qty": 24.0,
+          "location": "unknown"
+        },
+        {
+          "line": "24 cans of Michelob Ultra",
+          "qty": 24.0,
+          "location": "unknown"
+        },
+        {
+          "line": "24 cans of Yingling",
+          "qty": 24.0,
+          "location": "unknown"
+        },
+        {
+          "line": "2 bottles of Pueblo Viejo, 10% of a bottle of Peach Schnapps",
+          "qty": 0.1,
+          "location": "unknown"
+        },
+        {
+          "line": "5 30A IPA Cans,",
+          "qty": 5.0,
+          "location": "unknown"
+        },
+        {
+          "line": "13 30A Ros\u00e9 Gose Cans,",
+          "qty": 13.0,
+          "location": "unknown"
+        },
+        {
+          "line": "2 cans of High Rise Blueberry",
+          "qty": 2.0,
+          "location": "unknown"
+        },
+        {
+          "line": "2 cans of High Rise Pineapple",
+          "qty": 2.0,
+          "location": "unknown"
+        },
+        {
+          "line": "1 can of Red Bull Sugar Free,",
+          "qty": 1.0,
+          "location": "unknown"
+        },
+        {
+          "line": "1 bottle of Canoe Ridge Merlot,",
+          "qty": 1.0,
+          "location": "unknown"
+        },
+        {
+          "line": "75% of a bottle of Canoe Ridge Merlot,",
+          "qty": 0.75,
+          "location": "unknown"
+        },
+        {
+          "line": "5 kegs of Kona Big Wave",
+          "qty": 5.0,
+          "location": "unknown"
+        },
+        {
+          "line": "50% of a keg of Kona Big Wave",
+          "qty": 0.5,
+          "location": "unknown"
+        },
+        {
+          "line": "38 bottles of 30A Chardonnay",
+          "qty": 38.0,
+          "location": "unknown"
+        }
+      ],
+      "Grayton 30A Beach Blonde Ale Keg (1/6BBL)": [
+        {
+          "line": "eight bottles 30a rose, two",
+          "qty": 8.0,
+          "location": "unknown"
+        },
+        {
+          "line": "0",
+          "qty": 0.0,
+          "location": "unknown"
+        },
+        {
+          "line": "30%",
+          "qty": 0.3,
+          "location": "unknown"
+        },
+        {
+          "line": "2 bottles of 30A Rose",
+          "qty": 2.0,
+          "location": "unknown"
+        },
+        {
+          "line": "30% of",
+          "qty": 0.3,
+          "location": "unknown"
+        },
+        {
+          "line": "2 bottles of 30A Rose",
+          "qty": 2.0,
+          "location": "unknown"
+        },
+        {
+          "line": "3",
+          "qty": 3.0,
+          "location": "unknown"
+        },
+        {
+          "line": "7 bottles of 30A Rose",
+          "qty": 7.0,
+          "location": "unknown"
+        },
+        {
+          "line": "34 bottles of 30A Sauvignon Blanc",
+          "qty": 34.0,
+          "location": "unknown"
+        },
+        {
+          "line": "26 bottles of 30A Pinot Noir.",
+          "qty": 26.0,
+          "location": "unknown"
+        }
+      ],
+      "Mom Water Assorted 12oz Can": [
+        {
+          "line": "ten bottles watermelon mix, three",
+          "qty": 10.0,
+          "location": "unknown"
+        },
+        {
+          "line": "two six-packs of watermelon mix",
+          "qty": 2.0,
+          "location": "unknown"
+        },
+        {
+          "line": "2 bottles of watermelon",
+          "qty": 2.0,
+          "location": "unknown"
+        },
+        {
+          "line": "5 bottles of Watermelon Mixer",
+          "qty": 5.0,
+          "location": "unknown"
+        },
+        {
+          "line": "4 4-packs of Mom Waters,",
+          "qty": 4.0,
+          "location": "unknown"
+        },
+        {
+          "line": "1 more 4-pack of Mom Waters,",
+          "qty": 1.0,
+          "location": "unknown"
+        },
+        {
+          "line": "7 Mom Waters,",
+          "qty": 7.0,
+          "location": "unknown"
+        }
+      ],
+      "D9 High Rise Blood Orange 12oz Can": [
+        {
+          "line": "seven four-packs high-rise",
+          "qty": 7.0,
+          "location": "unknown"
+        },
+        {
+          "line": "two 24-packs of pineapple high noon",
+          "qty": 2.0,
+          "location": "unknown"
+        },
+        {
+          "line": "four four-packs of pineapple high noon",
+          "qty": 4.0,
+          "location": "unknown"
+        },
+        {
+          "line": "seven bottles of Grand Gala orange liqueur",
+          "qty": 7.0,
+          "location": "unknown"
+        },
+        {
+          "line": "1 High-Rise Blue Bear",
+          "qty": 1.0,
+          "location": "unknown"
+        },
+        {
+          "line": "4 High Noon Watermelons",
+          "qty": 4.0,
+          "location": "unknown"
+        },
+        {
+          "line": "4 High Noon Pineapples",
+          "qty": 4.0,
+          "location": "unknown"
+        },
+        {
+          "line": "5 more High Noon Watermelons",
+          "qty": 5.0,
+          "location": "unknown"
+        },
+        {
+          "line": "1 bottle of Grand Gala Orange Liqueur",
+          "qty": 1.0,
+          "location": "unknown"
+        },
+        {
+          "line": "1 4-pack of High Rise Pineapple,",
+          "qty": 1.0,
+          "location": "unknown"
+        },
+        {
+          "line": "16 Watermelon High Noons,",
+          "qty": 16.0,
+          "location": "unknown"
+        },
+        {
+          "line": "9 Pineapple High Rises,",
+          "qty": 9.0,
+          "location": "unknown"
+        },
+        {
+          "line": "2 Blueberry High Rises,",
+          "qty": 2.0,
+          "location": "unknown"
+        },
+        {
+          "line": "11 High Noon Watermelon,",
+          "qty": 11.0,
+          "location": "unknown"
+        },
+        {
+          "line": "3 High Noon Pineapple,",
+          "qty": 3.0,
+          "location": "unknown"
+        }
+      ],
+      "Coors Light 12oz Can": [
+        {
+          "line": "one 12-pack Coors",
+          "qty": 1.0,
+          "location": "unknown"
+        },
+        {
+          "line": "7 Coors Lights",
+          "qty": 7.0,
+          "location": "unknown"
+        },
+        {
+          "line": "17 Miller Lights",
+          "qty": 17.0,
+          "location": "unknown"
+        },
+        {
+          "line": "12 Coors Lights",
+          "qty": 12.0,
+          "location": "unknown"
+        }
+      ],
+      "Pacifico 12oz Can": [
+        {
+          "line": "two 12-packs Pacifico",
+          "qty": 2.0,
+          "location": "unknown"
+        },
+        {
+          "line": "6 Pacificos",
+          "qty": 6.0,
+          "location": "unknown"
+        }
+      ],
+      "Miller High Life 12oz Can": [
+        {
+          "line": "two 12-packs Miller Lite",
+          "qty": 2.0,
+          "location": "unknown"
+        }
+      ],
+      "White Claw Black Cherry 12oz Can": [
+        {
+          "line": "10% of a bottle of Parrot Bay white rum",
+          "qty": 0.1,
+          "location": "unknown"
+        },
+        {
+          "line": "of Wheatley's, half of a bottle of Parrot Bay White Rum, 1 bottle of Siete Mysterios",
+          "qty": 0.5,
+          "location": "unknown"
+        },
+        {
+          "line": "1 bottle of Parrot Bay White Rum",
+          "qty": 1.0,
+          "location": "unknown"
+        }
+      ],
+      "Idyll Hands Joe Coffee Keg (1/6BBL)": [
+        {
+          "line": "aged rum, 80% of a bottle of Campari, one bottle of Tia Maria cold brew coffee liqueur,",
+          "qty": 0.8,
+          "location": "unknown"
+        },
+        {
+          "line": "one more bottle of Tia Maria cold brew coffee liqueur",
+          "qty": 1.0,
+          "location": "unknown"
+        },
+        {
+          "line": "60% of a bottle of Tia Maria Cold Brew Coffee Liqueur",
+          "qty": 0.6,
+          "location": "unknown"
+        }
+      ],
+      "Goose Island IPA Keg (1/6BBL)": [
+        {
+          "line": "two bottles of Grey Goose, one liter",
+          "qty": 2.0,
+          "location": "unknown"
+        },
+        {
+          "line": "2 bottles of Grey Goose 1 Liter",
+          "qty": 2.0,
+          "location": "unknown"
+        }
+      ],
+      "Miller Lite 12oz Can": [
+        {
+          "line": "Silver tequila, 1 liter, half of a bottle of Colonel E.H. Taylor, 80% of a bottle of",
+          "qty": 0.8,
+          "location": "unknown"
+        },
+        {
+          "line": "Boston Triple Sec, 40% of a bottle of Boll's Elderflower Liqueur, 1 liter bottle, 90% of",
+          "qty": 0.4,
+          "location": "unknown"
+        },
+        {
+          "line": "1 bottle of Bowls Elderflower Liqueur, 1 liter bottle",
+          "qty": 1.0,
+          "location": "unknown"
+        },
+        {
+          "line": "1 liter bottle of Michter's,",
+          "qty": 1.0,
+          "location": "unknown"
+        }
+      ],
+      "Michelob Ultra 12oz Can": [
+        {
+          "line": "33 Michelob Ultras",
+          "qty": 33.0,
+          "location": "unknown"
+        },
+        {
+          "line": "12 Michelob Ultras",
+          "qty": 12.0,
+          "location": "unknown"
+        }
+      ],
+      "Grayton Beach 30A Rose 12oz Can": [
+        {
+          "line": "5 bottles of Carter's Lot Rose, 1 more bottle of Charles de Fer",
+          "qty": 5.0,
+          "location": "unknown"
+        }
+      ],
+      "Oyster City Mangrove Pale Ale Keg (1/4BBL)": [
+        {
+          "line": "4",
+          "qty": 4.0,
+          "location": "unknown"
+        },
+        {
+          "line": "4",
+          "qty": 4.0,
+          "location": "unknown"
+        },
+        {
+          "line": "4",
+          "qty": 4.0,
+          "location": "unknown"
+        }
+      ],
+      "Fairhope I Drink Therefore I Amber Keg (1/6BBL)": [
+        {
+          "line": "Half of a keg of 30A Beach Blonde Ale",
+          "qty": 0.5,
+          "location": "unknown"
+        },
+        {
+          "line": "half of a keg of Urban South Holy Roller",
+          "qty": 0.5,
+          "location": "unknown"
+        },
+        {
+          "line": "25% of a keg of Stella Artois",
+          "qty": 0.25,
+          "location": "unknown"
+        },
+        {
+          "line": "1 keg of 30A Beach Blonde Ale",
+          "qty": 1.0,
+          "location": "unknown"
+        },
+        {
+          "line": "3 kegs of Stella Artois",
+          "qty": 3.0,
+          "location": "unknown"
+        },
+        {
+          "line": "3 kegs",
+          "qty": 3.0,
+          "location": "unknown"
+        },
+        {
+          "line": "2 kegs of Urban South Holy Roller",
+          "qty": 2.0,
+          "location": "unknown"
+        },
+        {
+          "line": "1 keg of Paradise Park",
+          "qty": 1.0,
+          "location": "unknown"
+        },
+        {
+          "line": "50% of a keg of Paradise Park",
+          "qty": 0.5,
+          "location": "unknown"
+        },
+        {
+          "line": "50% of a keg of Stella Artois",
+          "qty": 0.5,
+          "location": "unknown"
+        }
+      ]
+    },
+    "wine_cost": {
+      "Domaine St Michelle Brut": [
+        {
+          "line": "one bottle el himador, 100% agave azul, cristalino",
+          "qty": 1.0,
+          "location": "unknown"
+        },
+        {
+          "line": "six bottles Siete Mestadios mezcal",
+          "qty": 6.0,
+          "location": "unknown"
+        },
+        {
+          "line": "nine bottles Mr. Boston triple sec",
+          "qty": 9.0,
+          "location": "unknown"
+        },
+        {
+          "line": "four bottles Mr. Boston blue curacao",
+          "qty": 4.0,
+          "location": "unknown"
+        },
+        {
+          "line": "one more bottle of Mr. Boston triple sec",
+          "qty": 1.0,
+          "location": "unknown"
+        },
+        {
+          "line": "75% of a bottle of Siete Mestadios mezcal",
+          "qty": 0.75,
+          "location": "unknown"
+        },
+        {
+          "line": "ten bottles of J\u00e4germeister,",
+          "qty": 10.0,
+          "location": "unknown"
+        },
+        {
+          "line": "half of a bottle of Mr. Boston's Blue Curacao",
+          "qty": 0.5,
+          "location": "unknown"
+        },
+        {
+          "line": "Dark Rum, 25% of a bottle of Siete Mysterios Mezcal, 10% of a bottle of Yahweh Coconut",
+          "qty": 0.25,
+          "location": "unknown"
+        },
+        {
+          "line": "half of a bottle of J\u00e4germeister",
+          "qty": 0.5,
+          "location": "unknown"
+        },
+        {
+          "line": "10% of a bottle of Mr. Boston Blue Curacao",
+          "qty": 0.1,
+          "location": "unknown"
+        },
+        {
+          "line": "1 bottle of Strawberry Puree",
+          "qty": 1.0,
+          "location": "unknown"
+        },
+        {
+          "line": "1 bottle of Mr. Boston Blue Cura\u00e7ao",
+          "qty": 1.0,
+          "location": "unknown"
+        },
+        {
+          "line": "Michter's Straight Rye, 10% of a bottle of Rumple Mints, 2 bottles of Wheatleys,",
+          "qty": 0.1,
+          "location": "unknown"
+        }
+      ],
+      "Gearbox California Pinot Noir": [
+        {
+          "line": "six bottles gearbox",
+          "qty": 6.0,
+          "location": "unknown"
+        },
+        {
+          "line": "2 bottles of Gearbox,",
+          "qty": 2.0,
+          "location": "unknown"
+        }
+      ],
+      "30A Cabernet Sauvignon": [
+        {
+          "line": "two bottles windstorm cabernet",
+          "qty": 2.0,
+          "location": "unknown"
+        },
+        {
+          "line": "75% of a bottle of Windstorm Cabernet Sauvignon,",
+          "qty": 0.75,
+          "location": "unknown"
+        }
+      ],
+      "Squealing Pig Sauvignon Blanc": [
+        {
+          "line": "six bottles squealing pig, 13",
+          "qty": 6.0,
+          "location": "unknown"
+        },
+        {
+          "line": "1 bottle of Squealing",
+          "qty": 1.0,
+          "location": "unknown"
+        },
+        {
+          "line": "1 more bottle of Squealing Pig",
+          "qty": 1.0,
+          "location": "unknown"
+        },
+        {
+          "line": "1 bottle of Squealing Pig",
+          "qty": 1.0,
+          "location": "unknown"
+        },
+        {
+          "line": "7 bottles of Squealing Pig",
+          "qty": 7.0,
+          "location": "unknown"
+        }
+      ],
+      "Charles De Fere Jean-Louis Cuvee Blanc De Blancs Brut": [
+        {
+          "line": "11 bottles marque de caseres cava brut",
+          "qty": 132.0,
+          "location": "unknown"
+        },
+        {
+          "line": "four bottles marque de caseres cava brut",
+          "qty": 48.0,
+          "location": "unknown"
+        },
+        {
+          "line": "12 bottles charles",
+          "qty": 12.0,
+          "location": "unknown"
+        },
+        {
+          "line": "eight bottles of Tullamore Dew",
+          "qty": 8.0,
+          "location": "unknown"
+        },
+        {
+          "line": "10% of a bottle of Tullamore Dew",
+          "qty": 0.1,
+          "location": "unknown"
+        },
+        {
+          "line": "2 bottles of Marca de Caceres Cava Brute",
+          "qty": 2.0,
+          "location": "unknown"
+        },
+        {
+          "line": "1 bottle of Charles de Fair Brute",
+          "qty": 1.0,
+          "location": "unknown"
+        },
+        {
+          "line": "5 bottles of Charles de Fer Brut",
+          "qty": 5.0,
+          "location": "unknown"
+        }
+      ],
+      "Caymus Suisun The Walking Fool Red Blend": [
+        {
+          "line": "one 24-pack Red Bull sugar-free",
+          "qty": 1.0,
+          "location": "unknown"
+        },
+        {
+          "line": "five bottles of crop organic Meyer lemon flavored vodka",
+          "qty": 5.0,
+          "location": "unknown"
+        },
+        {
+          "line": "straight rye whiskey, 90% of a bottle of Redwood Empire, half of a bottle of Aradura",
+          "qty": 0.9,
+          "location": "unknown"
+        },
+        {
+          "line": "8 Red Bulls,",
+          "qty": 8.0,
+          "location": "unknown"
+        },
+        {
+          "line": "6 Red Bulls,",
+          "qty": 6.0,
+          "location": "unknown"
+        },
+        {
+          "line": "6 Red Bulls,",
+          "qty": 6.0,
+          "location": "unknown"
+        },
+        {
+          "line": "7 Red Bulls,",
+          "qty": 7.0,
+          "location": "unknown"
+        },
+        {
+          "line": "8 Red Bulls,",
+          "qty": 8.0,
+          "location": "unknown"
+        },
+        {
+          "line": "1 bottle of Shaker Red Blend,",
+          "qty": 1.0,
+          "location": "unknown"
+        }
+      ],
+      "30A Sauvignon Blanc": [
+        {
+          "line": "four bottles Casamigos Blanco",
+          "qty": 4.0,
+          "location": "unknown"
+        },
+        {
+          "line": "of Hendrick's Gin, 70% of a bottle of Farmer's Gin, 35% of a bottle of Casamigos Blanco,",
+          "qty": 0.7,
+          "location": "unknown"
+        }
+      ],
+      "Oyster Bay Sauvignon Blanc": [
+        {
+          "line": "90% of a bottle of Parrot Bay coconut rum",
+          "qty": 0.9,
+          "location": "unknown"
+        },
+        {
+          "line": "Tequila, half of a bottle of Pueblo Viejo Tequila, 70% of a bottle of Parrot Bay Coconut",
+          "qty": 0.7,
+          "location": "unknown"
+        },
+        {
+          "line": "40% of a bottle of Parrot Bay Coconut Rum",
+          "qty": 0.4,
+          "location": "unknown"
+        },
+        {
+          "line": "1 bottle of Parrot Bay Coconut Rum",
+          "qty": 1.0,
+          "location": "unknown"
+        }
+      ],
+      "Pol Remy Sparkling Crown": [
+        {
+          "line": "five bottles of Crown Royal",
+          "qty": 5.0,
+          "location": "unknown"
+        },
+        {
+          "line": "of Tankeray, 40% of a bottle of Woodford, 15% of a bottle of Crown Royal, 1 bottle",
+          "qty": 0.4,
+          "location": "unknown"
+        },
+        {
+          "line": "of Blanton's, 40% of a bottle of Crown Royal, 60% of a bottle of Tankeray, 10% of a bottle",
+          "qty": 0.4,
+          "location": "unknown"
+        },
+        {
+          "line": "1 bottle of Crown Royal",
+          "qty": 1.0,
+          "location": "unknown"
+        }
+      ],
+      "30A Pinot Noir": [
+        {
+          "line": "1 bottle of Gearbox Pinot",
+          "qty": 1.0,
+          "location": "unknown"
+        },
+        {
+          "line": "Noir, 75% of a bottle of Gearbox Pinot Noir, 75% of a bottle of Aperol, 60% of a bottle",
+          "qty": 0.75,
+          "location": "unknown"
+        },
+        {
+          "line": "2 bottles of Scarpetta Pinot Grigio",
+          "qty": 2.0,
+          "location": "unknown"
+        },
+        {
+          "line": "5 bottles of Scarpetta Pinot Grigio",
+          "qty": 5.0,
+          "location": "unknown"
+        }
+      ],
+      "Scarpetta Pinot Grigio": [
+        {
+          "line": "1 bottle of Scarpetta",
+          "qty": 1.0,
+          "location": "unknown"
+        }
+      ]
+    },
+    "liquor_cost": {
+      "Bottle Deposit - Liquor (.05)": [
+        {
+          "line": "one bottle erradura, repasado, tequila, one",
+          "qty": 1.0,
+          "location": "unknown"
+        },
+        {
+          "line": "three bottles",
+          "qty": 3.0,
+          "location": "unknown"
+        },
+        {
+          "line": "14 bottles",
+          "qty": 14.0,
+          "location": "unknown"
+        },
+        {
+          "line": "two bottles cream of coconut",
+          "qty": 2.0,
+          "location": "unknown"
+        },
+        {
+          "line": "eight bottles",
+          "qty": 8.0,
+          "location": "unknown"
+        },
+        {
+          "line": "nine bottles tahine, twenty-",
+          "qty": 9.0,
+          "location": "unknown"
+        },
+        {
+          "line": "five bottles",
+          "qty": 5.0,
+          "location": "unknown"
+        },
+        {
+          "line": "nine bottles Pueblo Viejo tequila",
+          "qty": 9.0,
+          "location": "unknown"
+        },
+        {
+          "line": "ten bottles Yave coconut tequila",
+          "qty": 10.0,
+          "location": "unknown"
+        },
+        {
+          "line": "six bottles Milagros",
+          "qty": 6.0,
+          "location": "unknown"
+        },
+        {
+          "line": "two bottles",
+          "qty": 2.0,
+          "location": "unknown"
+        },
+        {
+          "line": "one bottle Campesino silver rum",
+          "qty": 1.0,
+          "location": "unknown"
+        },
+        {
+          "line": "six bottles Caravella limoncello, four more bottles of Campesino",
+          "qty": 6.0,
+          "location": "unknown"
+        },
+        {
+          "line": "nine bottles of rumple mints",
+          "qty": 9.0,
+          "location": "unknown"
+        },
+        {
+          "line": "two bottles crop organic cucumber vodka",
+          "qty": 2.0,
+          "location": "unknown"
+        },
+        {
+          "line": "a quarter of a bottle of Yave coconut tequila",
+          "qty": 0.25,
+          "location": "unknown"
+        },
+        {
+          "line": "60% of a bottle of Wheatley's",
+          "qty": 0.6,
+          "location": "unknown"
+        },
+        {
+          "line": "25% of a bottle of crop organic cucumber vodka",
+          "qty": 0.25,
+          "location": "unknown"
+        },
+        {
+          "line": "90% of a bottle of Jim Beam",
+          "qty": 0.9,
+          "location": "unknown"
+        },
+        {
+          "line": "two bottles of Maker's Mark",
+          "qty": 2.0,
+          "location": "unknown"
+        },
+        {
+          "line": "one bottle of Jim Beam",
+          "qty": 1.0,
+          "location": "unknown"
+        },
+        {
+          "line": "eight bottles of Fireball",
+          "qty": 8.0,
+          "location": "unknown"
+        },
+        {
+          "line": "16 bottles of Jack Daniel's",
+          "qty": 16.0,
+          "location": "unknown"
+        },
+        {
+          "line": "6 bottles of Campari",
+          "qty": 6.0,
+          "location": "unknown"
+        },
+        {
+          "line": "one bottle of Campesino",
+          "qty": 1.0,
+          "location": "unknown"
+        },
+        {
+          "line": "eight bottles of Wheatley's vodka",
+          "qty": 8.0,
+          "location": "unknown"
+        },
+        {
+          "line": "one bottle of crop organic cucumber vodka",
+          "qty": 1.0,
+          "location": "unknown"
+        },
+        {
+          "line": "four bottles of Tito's",
+          "qty": 4.0,
+          "location": "unknown"
+        },
+        {
+          "line": "five bottles of Farmer's gin",
+          "qty": 5.0,
+          "location": "unknown"
+        },
+        {
+          "line": "nine bottles of Hendrick's gin",
+          "qty": 9.0,
+          "location": "unknown"
+        },
+        {
+          "line": "four bottles of Woodford Reserve",
+          "qty": 4.0,
+          "location": "unknown"
+        },
+        {
+          "line": "five bottles of Tankeray London dry gin",
+          "qty": 5.0,
+          "location": "unknown"
+        },
+        {
+          "line": "25% of a bottle of Tahin",
+          "qty": 0.25,
+          "location": "unknown"
+        },
+        {
+          "line": "10% of a bottle of Papa's Pilar",
+          "qty": 0.1,
+          "location": "unknown"
+        },
+        {
+          "line": "95% of a bottle of Michter's",
+          "qty": 0.95,
+          "location": "unknown"
+        },
+        {
+          "line": "of Fireball, 1 bottle of Jack Daniels, 10% of a bottle of Maker's Mark, 80% of a bottle",
+          "qty": 0.1,
+          "location": "unknown"
+        },
+        {
+          "line": "80% of a bottle of Yahweh Jalapeno tequila",
+          "qty": 0.8,
+          "location": "unknown"
+        },
+        {
+          "line": "30% of a bottle of Milagro Silver",
+          "qty": 0.3,
+          "location": "unknown"
+        },
+        {
+          "line": "5% of a bottle of Caravella Limoncillo",
+          "qty": 0.05,
+          "location": "unknown"
+        },
+        {
+          "line": "1 bottle of Wheatley's Vodka",
+          "qty": 1.0,
+          "location": "unknown"
+        },
+        {
+          "line": "60% of a bottle of Peach",
+          "qty": 0.6,
+          "location": "unknown"
+        },
+        {
+          "line": "of Tito's, 10% of a bottle of Wheatley's.",
+          "qty": 0.1,
+          "location": "unknown"
+        },
+        {
+          "line": "70% of a bottle of Milagro Reposado",
+          "qty": 0.7,
+          "location": "unknown"
+        },
+        {
+          "line": "25% of a bottle of",
+          "qty": 0.25,
+          "location": "unknown"
+        },
+        {
+          "line": "2 bottles of Caravella Limoncello",
+          "qty": 2.0,
+          "location": "unknown"
+        },
+        {
+          "line": "1 bottle of Pueblo Viejo",
+          "qty": 1.0,
+          "location": "unknown"
+        },
+        {
+          "line": "1 bottle of Yave",
+          "qty": 1.0,
+          "location": "unknown"
+        },
+        {
+          "line": "Mezcal, 10% of a bottle of Pueblo Viejo, 10% of a bottle of Eagle Rare, 40% of a bottle",
+          "qty": 0.1,
+          "location": "unknown"
+        },
+        {
+          "line": "of Jack Daniel's, 90% of a bottle of Eagle Rare, 60% of a bottle of Milagros Silver,",
+          "qty": 0.9,
+          "location": "unknown"
+        },
+        {
+          "line": "1 bottle of Pueblo Viejo",
+          "qty": 1.0,
+          "location": "unknown"
+        },
+        {
+          "line": "1 bottle of Wheatley's Vodka",
+          "qty": 1.0,
+          "location": "unknown"
+        },
+        {
+          "line": "1 bottle of Cream of Coconut",
+          "qty": 1.0,
+          "location": "unknown"
+        },
+        {
+          "line": "4 bottles of Cream of Coconut",
+          "qty": 4.0,
+          "location": "unknown"
+        },
+        {
+          "line": "2 bottles of Jim Beam",
+          "qty": 2.0,
+          "location": "unknown"
+        },
+        {
+          "line": "2 bottles of Meyer's Dark Rum",
+          "qty": 2.0,
+          "location": "unknown"
+        },
+        {
+          "line": "75% of a bottle of",
+          "qty": 0.75,
+          "location": "unknown"
+        },
+        {
+          "line": "2 bottles of Fireball",
+          "qty": 2.0,
+          "location": "unknown"
+        },
+        {
+          "line": "1 bottle of Yave Coconut Tequila",
+          "qty": 1.0,
+          "location": "unknown"
+        },
+        {
+          "line": "1 bottle of Crop Organic Cucumber Vodka",
+          "qty": 1.0,
+          "location": "unknown"
+        },
+        {
+          "line": "1 bottle of Campesino Silver Rum",
+          "qty": 1.0,
+          "location": "unknown"
+        },
+        {
+          "line": "1 bottle of Nocello",
+          "qty": 1.0,
+          "location": "unknown"
+        },
+        {
+          "line": "1 bottle of Woodford",
+          "qty": 1.0,
+          "location": "unknown"
+        },
+        {
+          "line": "1 bottle of Chambord",
+          "qty": 1.0,
+          "location": "unknown"
+        },
+        {
+          "line": "1 bottle of Crop Organic Cucumber Vodka",
+          "qty": 1.0,
+          "location": "unknown"
+        },
+        {
+          "line": "1 bottle of Woodford",
+          "qty": 1.0,
+          "location": "unknown"
+        },
+        {
+          "line": "half of a bottle of Campesino Aged Rum,",
+          "qty": 0.5,
+          "location": "unknown"
+        },
+        {
+          "line": "1 bottle of Woodford",
+          "qty": 1.0,
+          "location": "unknown"
+        },
+        {
+          "line": "1 bottle of Blanton's,",
+          "qty": 1.0,
+          "location": "unknown"
+        },
+        {
+          "line": "30 bottles",
+          "qty": 30.0,
+          "location": "unknown"
+        }
+      ],
+      "Bar Mix, Mojito": [
+        {
+          "line": "four bottles mojito",
+          "qty": 4.0,
+          "location": "unknown"
+        },
+        {
+          "line": "5 bottles of Mojito",
+          "qty": 5.0,
+          "location": "unknown"
+        }
+      ],
+      "Bar Mix, Margarita": [
+        {
+          "line": "eight bottles margarita",
+          "qty": 8.0,
+          "location": "unknown"
+        },
+        {
+          "line": "5 bottles of Margarita",
+          "qty": 5.0,
+          "location": "unknown"
+        }
+      ],
+      "Aperol Aperitivo": [
+        {
+          "line": "three bottles of Aperol",
+          "qty": 3.0,
+          "location": "unknown"
+        }
+      ],
+      "Bar Mix, Cosmopolitan": [
+        {
+          "line": "full bottle of Mojito Mix",
+          "qty": 1.0,
+          "location": "unknown"
+        },
+        {
+          "line": "1 bottle of Margarita Mix, 75% of a bottle of, scratch that",
+          "qty": 0.75,
+          "location": "unknown"
+        }
+      ],
+      "Blue Curacao": [
+        {
+          "line": "1 bottle of Mr.",
+          "qty": 1.0,
+          "location": "unknown"
+        },
+        {
+          "line": "2 bottles of Blue Agave Syrup",
+          "qty": 2.0,
+          "location": "unknown"
+        }
+      ],
+      "Farmers Organic Gin": [
+        {
+          "line": "1 Ginger Beer",
+          "qty": 1.0,
+          "location": "unknown"
+        }
+      ]
+    },
+    "n_a_beverage_cost": {},
+    "grocery_and_dry_goods": {
+      "15mm/.006\" Nickel Brass Anti-Drip Body SS Disc 10/24 Thread, Cleanable": [
+        {
+          "line": "three 24-packs yingling",
+          "qty": 3.0,
+          "location": "unknown"
+        },
+        {
+          "line": "three 24-packs",
+          "qty": 3.0,
+          "location": "unknown"
+        }
+      ],
+      "One Time Maintenance for non-member-Advantage HPE": [
+        {
+          "line": "one four-pack",
+          "qty": 1.0,
+          "location": "unknown"
+        }
+      ],
+      "Papa Sun-Pope Hat": [
+        {
+          "line": "half of",
+          "qty": 0.5,
+          "location": "unknown"
+        }
+      ],
+      "Chicken, Wings": [
+        {
+          "line": "8 Yinglings",
+          "qty": 8.0,
+          "location": "unknown"
+        },
+        {
+          "line": "6 Yinglings",
+          "qty": 6.0,
+          "location": "unknown"
+        }
+      ],
+      "Shrimp, 16/20": [
+        {
+          "line": "16 Yinglings",
+          "qty": 16.0,
+          "location": "unknown"
+        }
+      ],
+      "10\" Sediment Filter 10 Micron 2.5\"": [
+        {
+          "line": "25% of",
+          "qty": 0.25,
+          "location": "unknown"
+        }
+      ]
+    }
+  }
+}

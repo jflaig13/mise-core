@@ -1,0 +1,960 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inventory Breakdown - 1/31/2026</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: #F9F6F1;
+            color: #1B2A4E;
+            padding: 16px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        header {
+            text-align: center;
+            padding: 20px 0;
+            border-bottom: 3px solid #1B2A4E;
+            margin-bottom: 20px;
+        }
+        h1 {
+            font-size: 24px;
+            color: #1B2A4E;
+            margin-bottom: 8px;
+        }
+        .date {
+            font-size: 16px;
+            color: #666;
+        }
+        .category {
+            margin-bottom: 24px;
+        }
+        .category-header {
+            background: #1B2A4E;
+            color: white;
+            padding: 12px 16px;
+            font-size: 18px;
+            font-weight: 600;
+            border-radius: 8px 8px 0 0;
+            position: sticky;
+            top: 0;
+        }
+        .item {
+            background: white;
+            border: 1px solid #ddd;
+            border-top: none;
+            padding: 16px;
+        }
+        .item:last-child {
+            border-radius: 0 0 8px 8px;
+        }
+        .item-name {
+            font-weight: 600;
+            font-size: 16px;
+            color: #1B2A4E;
+            margin-bottom: 8px;
+        }
+        .final-count {
+            font-size: 20px;
+            color: #B5402F;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+        .breakdown {
+            font-size: 14px;
+            color: #666;
+            background: #f5f5f5;
+            padding: 8px 12px;
+            border-radius: 4px;
+            font-family: monospace;
+        }
+        .breakdown-label {
+            font-weight: 600;
+            color: #1B2A4E;
+        }
+        .summary {
+            background: #1B2A4E;
+            color: white;
+            padding: 16px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .summary-number {
+            font-size: 32px;
+            font-weight: 700;
+        }
+        .summary-label {
+            font-size: 14px;
+            opacity: 0.8;
+        }
+        footer {
+            text-align: center;
+            padding: 20px;
+            color: #999;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Inventory Breakdown</h1>
+        <div class="date">1/31/2026</div>
+    </header>
+
+    <div class="summary">
+        <div class="summary-number">117</div>
+        <div class="summary-label">Total Products Counted</div>
+    </div>
+
+    <div class="category">
+        <div class="category-header">Beer (Cans)</div>
+        <div class="item">
+            <div class="item-name">Athletic N/A 12oz Can</div>
+            <div class="final-count">87 Cans</div>
+            <div class="breakdown">
+                <span class="breakdown-label">Breakdown:</span> 14 (Inside Bar) + 60 (The Office) + 13 (Back Bar)
+            </div>
+        </div>
+        <div class="item">
+            <div class="item-name">Canoe Ridge Merlot</div>
+            <div class="final-count">16.75 Bottles</div>
+            <div class="breakdown">
+                <span class="breakdown-label">Breakdown:</span> 1 (Inside Bar) + 14 (The Office) + 1 (Back Bar) + 0.75 (Back Bar)
+            </div>
+        </div>
+        <div class="item">
+            <div class="item-name">Coors Light 12oz Can</div>
+            <div class="final-count">81 Cans</div>
+            <div class="breakdown">
+                <span class="breakdown-label">Breakdown:</span> 26 (Inside Bar) + 12 (The Office) + 7 (Back Bar) + 24 (Back Bar) + 12 (Back Bar)
+            </div>
+        </div>
+        <div class="item">
+            <div class="item-name">D9 High Rise Blueberry 12oz Can</div>
+            <div class="final-count">5 Cans</div>
+            <div class="breakdown">
+                <span class="breakdown-label">Breakdown:</span> 1 (Inside Bar) + 2 (Back Bar) + 2 (Back Bar)
+            </div>
+        </div>
+        <div class="item">
+            <div class="item-name">D9 High Rise Pineapple 12oz Can</div>
+            <div class="final-count">15 Cans</div>
+            <div class="breakdown">
+                <span class="breakdown-label">Breakdown:</span> 4 (Back Bar) + 2 (Back Bar) + 9 (Back Bar)
+            </div>
+        </div>
+        <div class="item">
+            <div class="item-name">Grayton 30A IPA 12oz Can</div>
+            <div class="final-count">5 Cans</div>
+            <div class="breakdown">
+                <span class="breakdown-label">Breakdown:</span> 5 (Back Bar)
+            </div>
+        </div>
+        <div class="item">
+            <div class="item-name">Grayton 30A Rose Gose 12oz Can</div>
+            <div class="final-count">13 Cans</div>
+            <div class="breakdown">
+                <span class="breakdown-label">Breakdown:</span> 13 (Back Bar)
+            </div>
+        </div>
+        <div class="item">
+            <div class="item-name">High Noon Pineapple 12oz Can</div>
+            <div class="final-count">55 Cans</div>
+            <div class="breakdown">
+                <span class="breakdown-label">Breakdown:</span> 4 (Inside Bar) + 48 (The Office) + 3 (Back Bar)
+            </div>
+        </div>
+        <div class="item">
+            <div class="item-name">High Noon Watermelon 12oz Can</div>
+            <div class="final-count">36 Cans</div>
+            <div class="breakdown">
+                <span class="breakdown-label">Breakdown:</span> 4 (Inside Bar) + 5 (Inside Bar) + 16 (Back Bar) + 11 (Back Bar)
+            </div>
+        </div>
+        <div class="item">
+            <div class="item-name">Michelob Ultra 12oz Can</div>
+            <div class="final-count">69 Cans</div>
+            <div class="breakdown">
+                <span class="breakdown-label">Breakdown:</span> 33 (Inside Bar) + 12 (Back Bar) + 24 (Back Bar)
+            </div>
+        </div>
+        <div class="item">
+            <div class="item-name">Miller Lite 12oz Can</div>
+            <div class="final-count">71 Cans</div>
+            <div class="breakdown">
+                <span class="breakdown-label">Breakdown:</span> 18 (Inside Bar) + 24 (The Office) + 17 (Back Bar) + 12 (Back Bar)
+            </div>
+        </div>
+        <div class="item">
+            <div class="item-name">Mom Water Assorted 12oz Can</div>
+            <div class="final-count">24 Cans</div>
+            <div class="breakdown">
+                <span class="breakdown-label">Breakdown:</span> 16 (Back Bar) + 1 (Back Bar) + 7 (Back Bar)
+            </div>
+        </div>
+        <div class="item">
+            <div class="item-name">Pacifico 12oz Can</div>
+            <div class="final-count">75 Cans</div>
+            <div class="breakdown">
+                <span class="breakdown-label">Breakdown:</span> 21 (Inside Bar) + 24 (The Office) + 6 (Back Bar) + 24 (Back Bar)
+            </div>
+        </div>
+        <div class="item">
+            <div class="item-name">Red Bull 8.4oz Can</div>
+            <div class="final-count">59 Cans</div>
+            <div class="breakdown">
+                <span class="breakdown-label">Breakdown:</span> 24 (The Office) + 8 (Back Bar) + 6 (Back Bar) + 6 (Back Bar) + 7 (Back Bar) + 8 (Back Bar)
+            </div>
+        </div>
+        <div class="item">
+            <div class="item-name">Red Bull Sugar Free 8.4oz Can</div>
+            <div class="final-count">25 Cans</div>
+            <div class="breakdown">
+                <span class="breakdown-label">Breakdown:</span> 24 (The Office) + 1 (Back Bar)
+            </div>
+        </div>
+        <div class="item">
+            <div class="item-name">Yuengling 12oz Can</div>
+            <div class="final-count">126 Cans</div>
+            <div class="breakdown">
+                <span class="breakdown-label">Breakdown:</span> 8 (Inside Bar) + 72 (The Office) + 16 (Back Bar) + 24 (Back Bar) + 6 (Back Bar)
+            </div>
+        </div>
+    </div>
+
+    <div class="category">
+        <div class="category-header">Beer (Kegs)</div>
+        <div class="item">
+            <div class="item-name">Grayton 30A Beach Blonde Ale Keg</div>
+            <div class="final-count">1.50 Kegs</div>
+            <div class="breakdown">
+                <span class="breakdown-label">Breakdown:</span> 0.50 (Walk In) + 1 (Walk In)
+            </div>
+        </div>
+        <div class="item">
+            <div class="item-name">Kona Big Wave Keg</div>
+            <div class="final-count">5.50 Kegs</div>
+            <div class="breakdown">
+                <span class="breakdown-label">Breakdown:</span> 5 (Walk In) + 0.50 (Walk In)
+            </div>
+        </div>
+        <div class="item">
+            <div class="item-name">Stella Artois Keg</div>
+            <div class="final-count">3.75 Kegs</div>
+            <div class="breakdown">
+                <span class="breakdown-label">Breakdown:</span> 0.25 (Walk In) + 3 (Walk In) + 0.50 (Walk In)
+            </div>
+        </div>
+        <div class="item">
+            <div class="item-name">Urban South Holy Roller Keg</div>
+            <div class="final-count">2.50 Kegs</div>
+            <div class="breakdown">
+                <span class="breakdown-label">Breakdown:</span> 0.50 (Walk In) + 2 (Walk In)
+            </div>
+        </div>
+        <div class="item">
+            <div class="item-name">Urban South Paradise Park Keg</div>
+            <div class="final-count">1.50 Kegs</div>
+            <div class="breakdown">
+                <span class="breakdown-label">Breakdown:</span> 1 (Walk In) + 0.50 (Walk In)
+            </div>
+        </div>
+        <div class="item">
+            <div class="item-name">kegs</div>
+            <div class="final-count">3 Kegs</div>
+            <div class="breakdown">
+                <span class="breakdown-label">Breakdown:</span> 3 (Walk In)
+            </div>
+        </div>
+    </div>
+
+    <div class="category">
+        <div class="category-header">Wine</div>
+        <div class="item">
+            <div class="item-name">30A Chardonnay</div>
+            <div class="final-count">51 Bottles</div>
+            <div class="breakdown">
+                <span class="breakdown-label">Breakdown:</span> 12 (The Office) + 38 (Storage) + 1 (Back Bar)
+            </div>
+        </div>
+        <div class="item">
+            <div class="item-name">30A Pinot Noir</div>
+            <div class="final-count">26 Bottles</div>
+            <div class="breakdown">
+                <span class="breakdown-label">Breakdown:</span> 26 (Storage)
+            </div>
+        </div>
+        <div class="item">
+            <div class="item-name">30A Rose</div>
+            <div class="final-count">11 Bottles</div>
+            <div class="breakdown">
+                <span class="breakdown-label">Breakdown:</span> 2 (Inside Bar) + 7 (Storage) + 2 (Back Bar)
+            </div>
+        </div>
+        <div class="item">
+            <div class="item-name">30A Sauvignon Blanc</div>
+            <div class="final-count">34 Bottles</div>
+            <div class="breakdown">
+                <span class="breakdown-label">Breakdown:</span> 34 (Storage)
+            </div>
+        </div>
+        <div class="item">
+            <div class="item-name">Carter's Lot Rose</div>
+            <div class="final-count">3.50 Bottles</div>
+            <div class="breakdown">
+                <span class="breakdown-label">Breakdown:</span> 3.50 (Back Bar)
+            </div>
+        </div>
+        <div class="item">
+            <div class="item-name">Charles De Fere Brut</div>
+            <div class="final-count">19 Bottles</div>
+            <div class="breakdown">
+                <span class="breakdown-label">Breakdown:</span> 1 (Inside Bar) + 12 (The Office) + 5 (Back Bar) + 1 (Back Bar)
+            </div>
+        </div>
+        <div class="item">
+            <div class="item-name">Gearbox Pinot Noir</div>
+            <div class="final-count">3.75 Bottles</div>
+            <div class="breakdown">
+                <span class="breakdown-label">Breakdown:</span> 1 (Inside Bar) + 0.75 (Inside Bar) + 2 (Back Bar)
+            </div>
+        </div>
+        <div class="item">
+            <div class="item-name">Marca De Caceres Cava Brut</div>
+            <div class="final-count">13 Bottles</div>
+            <div class="breakdown">
+                <span class="breakdown-label">Breakdown:</span> 2 (Inside Bar) + 11 (The Office)
+            </div>
+        </div>
+        <div class="item">
+            <div class="item-name">Scarpetta Pinot Grigio</div>
+            <div class="final-count">9.50 Bottles</div>
+            <div class="breakdown">
+                <span class="breakdown-label">Breakdown:</span> 2 (Inside Bar) + 2 (Inside Bar) + 1 (Inside Bar) + 4.50 (Back Bar)
+            </div>
+        </div>
+        <div class="item">
+            <div class="item-name">Shaker Red Blend</div>
+            <div class="final-count">1 Bottle</div>
+            <div class="breakdown">
+                <span class="breakdown-label">Breakdown:</span> 1 (Back Bar)
+            </div>
+        </div>
+        <div class="item">
+            <div class="item-name">Squealing Pig Sauvignon Blanc</div>
+            <div class="final-count">10 Bottles</div>
+            <div class="breakdown">
+                <span class="breakdown-label">Breakdown:</span> 1 (Inside Bar) + 1 (Inside Bar) + 1 (Inside Bar) + 7 (Back Bar)
+            </div>
+        </div>
+        <div class="item">
+            <div class="item-name">Windstorm Cabernet Sauvignon</div>
+            <div class="final-count">0.75 Bottles</div>
+            <div class="breakdown">
+                <span class="breakdown-label">Breakdown:</span> 0.75 (Back Bar)
+            </div>
+        </div>
+        <div class="item">
+            <div class="item-name">Windstorm Chardonnay</div>
+            <div class="final-count">8 Bottles</div>
+            <div class="breakdown">
+                <span class="breakdown-label">Breakdown:</span> 1 (Inside Bar) + 1 (Inside Bar) + 1 (Inside Bar) + 1 (Inside Bar) + 4 (Back Bar)
+            </div>
+        </div>
+    </div>
+
+    <div class="category">
+        <div class="category-header">Liquor</div>
+        <div class="item">
+            <div class="item-name">Aperol</div>
+            <div class="final-count">4.25 Bottles</div>
+            <div class="breakdown">
+                <span class="breakdown-label">Breakdown:</span> 0.75 (Inside Bar) + 3 (The Office) + 0.50 (Back Bar)
+            </div>
+        </div>
+        <div class="item">
+            <div class="item-name">Aradura</div>
+            <div class="final-count">0.50 Bottles</div>
+            <div class="breakdown">
+                <span class="breakdown-label">Breakdown:</span> 0.50 (Inside Bar)
+            </div>
+        </div>
+        <div class="item">
+            <div class="item-name">Blanton's</div>
+            <div class="final-count">1 Bottle</div>
+            <div class="breakdown">
+                <span class="breakdown-label">Breakdown:</span> 1 (Back Bar)
+            </div>
+        </div>
+        <div class="item">
+            <div class="item-name">Boll's Elderflower Liqueur</div>
+            <div class="final-count">0.40 Bottles</div>
+            <div class="breakdown">
+                <span class="breakdown-label">Breakdown:</span> 0.40 (Back Bar)
+            </div>
+        </div>
+        <div class="item">
+            <div class="item-name">Bowls Elderflower Liqueur</div>
+            <div class="final-count">1 Bottle</div>
+            <div class="breakdown">
+                <span class="breakdown-label">Breakdown:</span> 1 (Back Bar)
+            </div>
+        </div>
+        <div class="item">
+            <div class="item-name">Bowls elderflower liqueur</div>
+            <div class="final-count">11 Bottles</div>
+            <div class="breakdown">
+                <span class="breakdown-label">Breakdown:</span> 11 (The Office)
+            </div>
+        </div>
+        <div class="item">
+            <div class="item-name">Bowls elderflower liqueur 750 milliliters</div>
+            <div class="final-count">3 Bottles</div>
+            <div class="breakdown">
+                <span class="breakdown-label">Breakdown:</span> 3 (The Office)
+            </div>
+        </div>
+        <div class="item">
+            <div class="item-name">Campari</div>
+            <div class="final-count">3.40 Bottles</div>
+            <div class="breakdown">
+                <span class="breakdown-label">Breakdown:</span> 2.60 (The Office) + 0.80 (The Office)
+            </div>
+        </div>
+        <div class="item">
+            <div class="item-name">Campesino</div>
+            <div class="final-count">1 Bottle</div>
+            <div class="breakdown">
+                <span class="breakdown-label">Breakdown:</span> 1 (The Office)
+            </div>
+        </div>
+        <div class="item">
+            <div class="item-name">Campesino Aged Rum</div>
+            <div class="final-count">0.50 Bottles</div>
+            <div class="breakdown">
+                <span class="breakdown-label">Breakdown:</span> 0.50 (Back Bar)
+            </div>
+        </div>
+        <div class="item">
+            <div class="item-name">Campesino Silver Rum</div>
+            <div class="final-count">1 Bottle</div>
+            <div class="breakdown">
+                <span class="breakdown-label">Breakdown:</span> 1 (Back Bar)
+            </div>
+        </div>
+        <div class="item">
+            <div class="item-name">Campesino silver rum</div>
+            <div class="final-count">0.90 Bottles</div>
+            <div class="breakdown">
+                <span class="breakdown-label">Breakdown:</span> 0.90 (The Office)
+            </div>
+        </div>
+        <div class="item">
+            <div class="item-name">Caravella Limoncello</div>
+            <div class="final-count">2 Bottles</div>
+            <div class="breakdown">
+                <span class="breakdown-label">Breakdown:</span> 2 (Back Bar)
+            </div>
+        </div>
+        <div class="item">
+            <div class="item-name">Caravella Limoncillo</div>
+            <div class="final-count">0.05 Bottles</div>
+            <div class="breakdown">
+                <span class="breakdown-label">Breakdown:</span> 0.05 (Inside Bar)
+            </div>
+        </div>
+        <div class="item">
+            <div class="item-name">Casamigos Blanco</div>
+            <div class="final-count">0.85 Bottles</div>
+            <div class="breakdown">
+                <span class="breakdown-label">Breakdown:</span> 0.35 (Inside Bar) + 0.50 (Back Bar)
+            </div>
+        </div>
+        <div class="item">
+            <div class="item-name">Chambord</div>
+            <div class="final-count">1 Bottle</div>
+            <div class="breakdown">
+                <span class="breakdown-label">Breakdown:</span> 1 (Back Bar)
+            </div>
+        </div>
+        <div class="item">
+            <div class="item-name">Colonel E.H. Taylor</div>
+            <div class="final-count">0.50 Bottles</div>
+            <div class="breakdown">
+                <span class="breakdown-label">Breakdown:</span> 0.50 (Inside Bar)
+            </div>
+        </div>
+        <div class="item">
+            <div class="item-name">Crop Organic Cucumber Vodka</div>
+            <div class="final-count">2 Bottles</div>
+            <div class="breakdown">
+                <span class="breakdown-label">Breakdown:</span> 1 (Back Bar) + 1 (Back Bar)
+            </div>
+        </div>
+        <div class="item">
+            <div class="item-name">Crown Royal</div>
+            <div class="final-count">6.55 Bottles</div>
+            <div class="breakdown">
+                <span class="breakdown-label">Breakdown:</span> 0.15 (Inside Bar) + 5 (The Office) + 0.40 (Back Bar) + 1 (Back Bar)
+            </div>
+        </div>
+        <div class="item">
+            <div class="item-name">Eagle Rare</div>
+            <div class="final-count">1 Bottle</div>
+            <div class="breakdown">
+                <span class="breakdown-label">Breakdown:</span> 0.10 (Back Bar) + 0.90 (Back Bar)
+            </div>
+        </div>
+        <div class="item">
+            <div class="item-name">Farmer's Gin</div>
+            <div class="final-count">0.70 Bottles</div>
+            <div class="breakdown">
+                <span class="breakdown-label">Breakdown:</span> 0.70 (Inside Bar)
+            </div>
+        </div>
+        <div class="item">
+            <div class="item-name">Farmer's gin</div>
+            <div class="final-count">5 Bottles</div>
+            <div class="breakdown">
+                <span class="breakdown-label">Breakdown:</span> 5 (The Office)
+            </div>
+        </div>
+        <div class="item">
+            <div class="item-name">Fireball</div>
+            <div class="final-count">10 Bottles</div>
+            <div class="breakdown">
+                <span class="breakdown-label">Breakdown:</span> 8 (The Office) + 2 (Back Bar)
+            </div>
+        </div>
+        <div class="item">
+            <div class="item-name">Grand Gala Orange Liqueur</div>
+            <div class="final-count">1 Bottle</div>
+            <div class="breakdown">
+                <span class="breakdown-label">Breakdown:</span> 1 (Back Bar)
+            </div>
+        </div>
+        <div class="item">
+            <div class="item-name">Grand Gala orange liqueur</div>
+            <div class="final-count">7 Bottles</div>
+            <div class="breakdown">
+                <span class="breakdown-label">Breakdown:</span> 7 (The Office)
+            </div>
+        </div>
+        <div class="item">
+            <div class="item-name">Grey Goose Vodka 1L</div>
+            <div class="final-count">4.40 Bottles</div>
+            <div class="breakdown">
+                <span class="breakdown-label">Breakdown:</span> 0.40 (Inside Bar) + 2 (The Office) + 2 (Back Bar)
+            </div>
+        </div>
+        <div class="item">
+            <div class="item-name">Hendrick's Gin</div>
+            <div class="final-count">9 Bottles</div>
+            <div class="breakdown">
+                <span class="breakdown-label">Breakdown:</span> 9 (The Office)
+            </div>
+        </div>
+        <div class="item">
+            <div class="item-name">Jack Daniel's</div>
+            <div class="final-count">17 Bottles</div>
+            <div class="breakdown">
+                <span class="breakdown-label">Breakdown:</span> 1 (Inside Bar) + 16 (The Office)
+            </div>
+        </div>
+        <div class="item">
+            <div class="item-name">Jagermeister</div>
+            <div class="final-count">10.50 Bottles</div>
+            <div class="breakdown">
+                <span class="breakdown-label">Breakdown:</span> 0.50 (Inside Bar) + 10 (The Office)
+            </div>
+        </div>
+        <div class="item">
+            <div class="item-name">Jim Beam</div>
+            <div class="final-count">5 Bottles</div>
+            <div class="breakdown">
+                <span class="breakdown-label">Breakdown:</span> 0.50 (Inside Bar) + 0.90 (The Office) + 1 (The Office) + 0.60 (Back Bar) + 2 (Back Bar)
+            </div>
+        </div>
+        <div class="item">
+            <div class="item-name">Maker's Mark</div>
+            <div class="final-count">2.10 Bottles</div>
+            <div class="breakdown">
+                <span class="breakdown-label">Breakdown:</span> 0.10 (Inside Bar) + 2 (The Office)
+            </div>
+        </div>
+        <div class="item">
+            <div class="item-name">Meyer's Dark Rum</div>
+            <div class="final-count">2 Bottles</div>
+            <div class="breakdown">
+                <span class="breakdown-label">Breakdown:</span> 2 (Back Bar)
+            </div>
+        </div>
+        <div class="item">
+            <div class="item-name">Meyer's Original</div>
+            <div class="final-count">0.50 Bottles</div>
+            <div class="breakdown">
+                <span class="breakdown-label">Breakdown:</span> 0.50 (Inside Bar)
+            </div>
+        </div>
+        <div class="item">
+            <div class="item-name">Meyer's original dark rum</div>
+            <div class="final-count">8 Bottles</div>
+            <div class="breakdown">
+                <span class="breakdown-label">Breakdown:</span> 8 (The Office)
+            </div>
+        </div>
+        <div class="item">
+            <div class="item-name">Michter's</div>
+            <div class="final-count">0.95 Bottles</div>
+            <div class="breakdown">
+                <span class="breakdown-label">Breakdown:</span> 0.95 (Inside Bar)
+            </div>
+        </div>
+        <div class="item">
+            <div class="item-name">Milagro Reposado</div>
+            <div class="final-count">0.70 Bottles</div>
+            <div class="breakdown">
+                <span class="breakdown-label">Breakdown:</span> 0.70 (Back Bar)
+            </div>
+        </div>
+        <div class="item">
+            <div class="item-name">Milagro Silver</div>
+            <div class="final-count">0.30 Bottles</div>
+            <div class="breakdown">
+                <span class="breakdown-label">Breakdown:</span> 0.30 (Inside Bar)
+            </div>
+        </div>
+        <div class="item">
+            <div class="item-name">Milagros Silver</div>
+            <div class="final-count">0.60 Bottles</div>
+            <div class="breakdown">
+                <span class="breakdown-label">Breakdown:</span> 0.60 (Back Bar)
+            </div>
+        </div>
+        <div class="item">
+            <div class="item-name">Mr. Boston Blue Curacao</div>
+            <div class="final-count">0.10 Bottles</div>
+            <div class="breakdown">
+                <span class="breakdown-label">Breakdown:</span> 0.10 (Back Bar)
+            </div>
+        </div>
+        <div class="item">
+            <div class="item-name">Mr. Boston Blue Curaçao</div>
+            <div class="final-count">1 Bottle</div>
+            <div class="breakdown">
+                <span class="breakdown-label">Breakdown:</span> 1 (Back Bar)
+            </div>
+        </div>
+        <div class="item">
+            <div class="item-name">Mr. Boston peach schnapps</div>
+            <div class="final-count">21 Bottles</div>
+            <div class="breakdown">
+                <span class="breakdown-label">Breakdown:</span> 21 (The Office)
+            </div>
+        </div>
+        <div class="item">
+            <div class="item-name">Mr. Boston's Blue Curacao</div>
+            <div class="final-count">0.50 Bottles</div>
+            <div class="breakdown">
+                <span class="breakdown-label">Breakdown:</span> 0.50 (Inside Bar)
+            </div>
+        </div>
+        <div class="item">
+            <div class="item-name">Nocello</div>
+            <div class="final-count">1 Bottle</div>
+            <div class="breakdown">
+                <span class="breakdown-label">Breakdown:</span> 1 (Back Bar)
+            </div>
+        </div>
+        <div class="item">
+            <div class="item-name">Papa's Pilar</div>
+            <div class="final-count">0.10 Bottles</div>
+            <div class="breakdown">
+                <span class="breakdown-label">Breakdown:</span> 0.10 (Inside Bar)
+            </div>
+        </div>
+        <div class="item">
+            <div class="item-name">Parrot Bay White Rum</div>
+            <div class="final-count">2.35 Bottles</div>
+            <div class="breakdown">
+                <span class="breakdown-label">Breakdown:</span> 0.85 (Inside Bar) + 0.50 (Back Bar) + 1 (Back Bar)
+            </div>
+        </div>
+        <div class="item">
+            <div class="item-name">Parrot Bay white rum</div>
+            <div class="final-count">0.10 Bottles</div>
+            <div class="breakdown">
+                <span class="breakdown-label">Breakdown:</span> 0.10 (The Office)
+            </div>
+        </div>
+        <div class="item">
+            <div class="item-name">Peach</div>
+            <div class="final-count">0.60 Bottles</div>
+            <div class="breakdown">
+                <span class="breakdown-label">Breakdown:</span> 0.60 (Inside Bar)
+            </div>
+        </div>
+        <div class="item">
+            <div class="item-name">Peach Schnapps</div>
+            <div class="final-count">0.10 Bottles</div>
+            <div class="breakdown">
+                <span class="breakdown-label">Breakdown:</span> 0.10 (Back Bar)
+            </div>
+        </div>
+        <div class="item">
+            <div class="item-name">Pueblo Viejo Tequila</div>
+            <div class="final-count">4.60 Bottles</div>
+            <div class="breakdown">
+                <span class="breakdown-label">Breakdown:</span> 0.50 (Inside Bar) + 1 (Back Bar) + 0.10 (Back Bar) + 1 (Back Bar) + 2 (Back Bar)
+            </div>
+        </div>
+        <div class="item">
+            <div class="item-name">Redwood Empire</div>
+            <div class="final-count">0.90 Bottles</div>
+            <div class="breakdown">
+                <span class="breakdown-label">Breakdown:</span> 0.90 (Inside Bar)
+            </div>
+        </div>
+        <div class="item">
+            <div class="item-name">Romana Amaro</div>
+            <div class="final-count">0.80 Bottles</div>
+            <div class="breakdown">
+                <span class="breakdown-label">Breakdown:</span> 0.80 (The Office)
+            </div>
+        </div>
+        <div class="item">
+            <div class="item-name">Rumple Mints</div>
+            <div class="final-count">0.10 Bottles</div>
+            <div class="breakdown">
+                <span class="breakdown-label">Breakdown:</span> 0.10 (Back Bar)
+            </div>
+        </div>
+        <div class="item">
+            <div class="item-name">Siete Mestadios mezcal</div>
+            <div class="final-count">0.75 Bottles</div>
+            <div class="breakdown">
+                <span class="breakdown-label">Breakdown:</span> 0.75 (The Office)
+            </div>
+        </div>
+        <div class="item">
+            <div class="item-name">Siete Mysterios</div>
+            <div class="final-count">1 Bottle</div>
+            <div class="breakdown">
+                <span class="breakdown-label">Breakdown:</span> 1 (Back Bar)
+            </div>
+        </div>
+        <div class="item">
+            <div class="item-name">Siete Mysterios Mezcal</div>
+            <div class="final-count">0.25 Bottles</div>
+            <div class="breakdown">
+                <span class="breakdown-label">Breakdown:</span> 0.25 (Inside Bar)
+            </div>
+        </div>
+        <div class="item">
+            <div class="item-name">Tahin</div>
+            <div class="final-count">0.25 Bottles</div>
+            <div class="breakdown">
+                <span class="breakdown-label">Breakdown:</span> 0.25 (Inside Bar)
+            </div>
+        </div>
+        <div class="item">
+            <div class="item-name">Tanqueray Gin</div>
+            <div class="final-count">5.60 Bottles</div>
+            <div class="breakdown">
+                <span class="breakdown-label">Breakdown:</span> 5 (The Office) + 0.60 (Back Bar)
+            </div>
+        </div>
+        <div class="item">
+            <div class="item-name">Tia Maria Cold Brew Coffee Liqueur</div>
+            <div class="final-count">0.60 Bottles</div>
+            <div class="breakdown">
+                <span class="breakdown-label">Breakdown:</span> 0.60 (Back Bar)
+            </div>
+        </div>
+        <div class="item">
+            <div class="item-name">Tia Maria cold brew coffee liqueur</div>
+            <div class="final-count">1 Bottle</div>
+            <div class="breakdown">
+                <span class="breakdown-label">Breakdown:</span> 1 (The Office)
+            </div>
+        </div>
+        <div class="item">
+            <div class="item-name">Tito's Vodka</div>
+            <div class="final-count">4.50 Bottles</div>
+            <div class="breakdown">
+                <span class="breakdown-label">Breakdown:</span> 4 (The Office) + 0.50 (Back Bar)
+            </div>
+        </div>
+        <div class="item">
+            <div class="item-name">Tullamore Dew</div>
+            <div class="final-count">0.10 Bottles</div>
+            <div class="breakdown">
+                <span class="breakdown-label">Breakdown:</span> 0.10 (Inside Bar)
+            </div>
+        </div>
+        <div class="item">
+            <div class="item-name">Wheatley's Vodka</div>
+            <div class="final-count">12.70 Bottles</div>
+            <div class="breakdown">
+                <span class="breakdown-label">Breakdown:</span> 1 (Inside Bar) + 0.10 (Inside Bar) + 0.60 (The Office) + 8 (The Office) + 1 (Back Bar) + 2 (Back Bar)
+            </div>
+        </div>
+        <div class="item">
+            <div class="item-name">Woodford Reserve</div>
+            <div class="final-count">7.40 Bottles</div>
+            <div class="breakdown">
+                <span class="breakdown-label">Breakdown:</span> 0.40 (Inside Bar) + 4 (The Office) + 1 (Back Bar) + 1 (Back Bar) + 1 (Back Bar)
+            </div>
+        </div>
+        <div class="item">
+            <div class="item-name">Yahweh Jalapeno tequila</div>
+            <div class="final-count">0.80 Bottles</div>
+            <div class="breakdown">
+                <span class="breakdown-label">Breakdown:</span> 0.80 (Inside Bar)
+            </div>
+        </div>
+        <div class="item">
+            <div class="item-name">crop organic Meyer lemon flavored vodka</div>
+            <div class="final-count">5 Bottles</div>
+            <div class="breakdown">
+                <span class="breakdown-label">Breakdown:</span> 5 (The Office)
+            </div>
+        </div>
+        <div class="item">
+            <div class="item-name">crop organic cucumber vodka</div>
+            <div class="final-count">1.25 Bottles</div>
+            <div class="breakdown">
+                <span class="breakdown-label">Breakdown:</span> 0.25 (The Office) + 1 (The Office)
+            </div>
+        </div>
+        <div class="item">
+            <div class="item-name">liter bottle</div>
+            <div class="final-count">3 Bottles</div>
+            <div class="breakdown">
+                <span class="breakdown-label">Breakdown:</span> 1 (Inside Bar) + 1 (Back Bar) + 1 (Back Bar)
+            </div>
+        </div>
+        <div class="item">
+            <div class="item-name">liter bottle of Michter's</div>
+            <div class="final-count">1 Bottle</div>
+            <div class="breakdown">
+                <span class="breakdown-label">Breakdown:</span> 1 (Back Bar)
+            </div>
+        </div>
+        <div class="item">
+            <div class="item-name">rumple mints</div>
+            <div class="final-count">9 Bottles</div>
+            <div class="breakdown">
+                <span class="breakdown-label">Breakdown:</span> 9 (The Office)
+            </div>
+        </div>
+    </div>
+
+    <div class="category">
+        <div class="category-header">Mixers & N/A</div>
+        <div class="item">
+            <div class="item-name">Blue Agave Syrup</div>
+            <div class="final-count">2 Bottles</div>
+            <div class="breakdown">
+                <span class="breakdown-label">Breakdown:</span> 2 (Back Bar)
+            </div>
+        </div>
+        <div class="item">
+            <div class="item-name">Cream of Coconut</div>
+            <div class="final-count">5 Bottles</div>
+            <div class="breakdown">
+                <span class="breakdown-label">Breakdown:</span> 1 (Back Bar) + 4 (Back Bar)
+            </div>
+        </div>
+        <div class="item">
+            <div class="item-name">Ginger Beer</div>
+            <div class="final-count">1 Bottle</div>
+            <div class="breakdown">
+                <span class="breakdown-label">Breakdown:</span> 1 (Back Bar)
+            </div>
+        </div>
+        <div class="item">
+            <div class="item-name">Grenadine</div>
+            <div class="final-count">0.50 Bottles</div>
+            <div class="breakdown">
+                <span class="breakdown-label">Breakdown:</span> 0.50 (Back Bar)
+            </div>
+        </div>
+        <div class="item">
+            <div class="item-name">Margarita Mix</div>
+            <div class="final-count">2.50 Bottles</div>
+            <div class="breakdown">
+                <span class="breakdown-label">Breakdown:</span> 1 (Inside Bar) + 1.50 (Back Bar)
+            </div>
+        </div>
+        <div class="item">
+            <div class="item-name">Mojito Mix</div>
+            <div class="final-count">4.50 Bottles</div>
+            <div class="breakdown">
+                <span class="breakdown-label">Breakdown:</span> 4.50 (Back Bar)
+            </div>
+        </div>
+        <div class="item">
+            <div class="item-name">Parrot Bay Coconut</div>
+            <div class="final-count">0.70 Bottles</div>
+            <div class="breakdown">
+                <span class="breakdown-label">Breakdown:</span> 0.70 (Inside Bar)
+            </div>
+        </div>
+        <div class="item">
+            <div class="item-name">Parrot Bay Coconut Rum</div>
+            <div class="final-count">1.40 Bottles</div>
+            <div class="breakdown">
+                <span class="breakdown-label">Breakdown:</span> 0.40 (Back Bar) + 1 (Back Bar)
+            </div>
+        </div>
+        <div class="item">
+            <div class="item-name">Parrot Bay coconut rum</div>
+            <div class="final-count">0.90 Bottles</div>
+            <div class="breakdown">
+                <span class="breakdown-label">Breakdown:</span> 0.90 (The Office)
+            </div>
+        </div>
+        <div class="item">
+            <div class="item-name">Strawberry Puree</div>
+            <div class="final-count">1 Bottle</div>
+            <div class="breakdown">
+                <span class="breakdown-label">Breakdown:</span> 1 (Back Bar)
+            </div>
+        </div>
+        <div class="item">
+            <div class="item-name">Watermelon Mix</div>
+            <div class="final-count">6.50 Bottles</div>
+            <div class="breakdown">
+                <span class="breakdown-label">Breakdown:</span> 2 (Inside Bar) + 4.50 (Back Bar)
+            </div>
+        </div>
+        <div class="item">
+            <div class="item-name">Yahweh Coconut</div>
+            <div class="final-count">0.10 Bottles</div>
+            <div class="breakdown">
+                <span class="breakdown-label">Breakdown:</span> 0.10 (Inside Bar)
+            </div>
+        </div>
+        <div class="item">
+            <div class="item-name">Yave Coconut Tequila</div>
+            <div class="final-count">2 Bottles</div>
+            <div class="breakdown">
+                <span class="breakdown-label">Breakdown:</span> 1 (Back Bar) + 1 (Back Bar)
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        Generated by Mise &middot; 2026-02-05 19:44
+    </footer>
+</body>
+</html>

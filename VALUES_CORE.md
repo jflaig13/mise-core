@@ -156,6 +156,17 @@ Brain Ingest Protocol Reference
 
 ---
 
+OFFICIAL BRAND COPY (CANON)
+
+Tagline: The Voice-First Operating System for Hospitality
+One-liner: Mise helps restaurant managers handle payroll, inventory, and ops just by talking.
+Follow-up: What used to take hours of paperwork, counting, and data entry now takes a 30-second voice memo.
+Brand voice: Casual, conversational, like talking in a restaurant. No startup jargon. No "leverage," "optimize," "streamline," "empower." Direct and warm.
+
+These are the official external-facing descriptions of Mise. Use them consistently across all materials.
+
+---
+
 FOUNDER STORY PILLAR (FOUNDATIONAL — NEVER FORGET)
 
 The origin of Mise is not a market opportunity or a technology insight.

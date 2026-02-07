@@ -19,6 +19,7 @@ DEMO_USERS = {
         "name": "Papa Surf",
         "location": "Panama City Beach, FL",
         "restaurant_id": "papasurf",
+        "email": "jonathan@papasurf.com",
     }
 }
 

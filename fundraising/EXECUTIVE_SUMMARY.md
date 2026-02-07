@@ -1,6 +1,6 @@
 # Mise — Executive Summary
 
-**The Voice-First Virtual Executive Assistant for Restaurants**
+**The Voice-First Operating System for Hospitality**
 
 ---
 

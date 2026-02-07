@@ -219,7 +219,34 @@ Examples:
 
 013126_Inventory_MEExport.csv
 
-3.5 Folders (Recommended)
+3.5 Inventory Breakdown Report
+
+A mobile-friendly HTML report showing per-item breakdown by shelfy location:
+
+<MMDDYY>_Inventory_Breakdown.html
+
+
+Purpose: Allow operators to verify counts on their phone by seeing exactly how each item's final count was calculated from individual shelfies.
+
+Format for each item:
+- Product name
+- Final Count (total)
+- Shelfy Breakdown: X (Location A) + Y (Location B) + Z (Location C)
+
+Example:
+
+    Coors Light 12oz Can
+    Final Count: 36
+    Breakdown: 12 (The Office) + 12 (Inside Bar) + 12 (Back Bar)
+
+Rules:
+- Only items with count > 0 are included
+- Items grouped by category (Beer, Wine, Liquor, Mixers, Food)
+- Sorted alphabetically within each category
+- Mobile-responsive design for phone viewing
+- Can be emailed or texted to operator for review
+
+3.6 Folders (Recommended)
 
 Inside ~/mise-core (or the project root), LIM assets should be stored as:
 
@@ -230,6 +257,7 @@ mise-core/
       transcripts/              # <MMDDYY>_Inventory.txt
       parsed/                   # <MMDDYY>_Inventory.json
       exports/                  # <MMDDYY>_Inventory_MEExport.csv
+      breakdowns/               # <MMDDYY>_Inventory_Breakdown.html
       logs/                     # lim_*.log
 
 

@@ -249,7 +249,10 @@ You must return JSON matching this schema:
       "product_name": "canonical product name from catalog",
       "quantity": <number or null>,
       "unit": "bottles|cases|kegs|lbs|oz|each|etc",
-      "notes": "optional notes if ambiguous"
+      "notes": "optional notes if ambiguous",
+      "confidence": <0.0-1.0 match confidence>,
+      "spoken_name": "what was actually said in transcript",
+      "needs_review": <true if confidence < 0.8, false otherwise>
     }}
   ],
   "counted_by": "person who did inventory (if mentioned)",
@@ -258,22 +261,38 @@ You must return JSON matching this schema:
 ```
 
 **Critical**:
-- `product_name` MUST be the canonical name from the catalog (or manual mapping)
-- DO NOT use the spoken name from the transcript
+- `product_name` MUST be your best guess at the canonical name from the catalog
+- NEVER set product_name to "Unknown" - always provide your best match
+- If you match spoken "30A Beach Blonde" to catalog "Grayton 30A Beach Blonde Ale Keg", use "Grayton 30A Beach Blonde Ale Keg" as product_name
 - DO NOT invent products not in the transcript
 - DO NOT assume quantities not stated
+
+### Confidence Scoring
+
+For EVERY item, you MUST include:
+- `confidence`: Float 0.0-1.0 indicating how confident you are in the product_name match
+  - 1.0 = Exact match or manual mapping hit
+  - 0.8-0.99 = High confidence (clear keyword match, well-known product)
+  - 0.5-0.79 = Medium confidence (partial match, could be multiple products)
+  - 0.0-0.49 = Low confidence (guessing, unclear transcription)
+- `spoken_name`: The exact text from the transcript (before normalization)
+- `needs_review`: Set to `true` if confidence < 0.8, otherwise `false`
+
+This allows users to verify uncertain matches.
 
 ### What NOT to Do
 
 ❌ DO NOT add products not mentioned in transcript
 ❌ DO NOT guess quantities if not stated (use null instead)
 ❌ DO NOT use spoken names (e.g., "margarita mix") - use canonical names (e.g., "Bar Mix, Margarita")
+❌ DO NOT set product_name to "Unknown" - always use the matched canonical catalog name
+❌ DO NOT put the canonical name in notes - put it in product_name
 ❌ DO NOT include reasoning or chain-of-thought in your response
 
 ## Example
 
 **Transcript:**
-"Front bar inventory. We have 12 bottles of margarita mix, those 750 milliliter ones from Stirrings. And about half a case of Coors Light cans left."
+"Front bar inventory. We have 12 bottles of margarita mix, those 750 milliliter ones from Stirrings. And about half a case of Coors Light cans left. Also got some stella kegs."
 
 **Your output:**
 ```json
@@ -285,13 +304,28 @@ You must return JSON matching this schema:
       "product_name": "Bar Mix, Margarita",
       "quantity": 12,
       "unit": "bottles",
-      "notes": "750ml Stirrings brand"
+      "notes": "750ml Stirrings brand",
+      "confidence": 1.0,
+      "spoken_name": "margarita mix",
+      "needs_review": false
     }},
     {{
       "product_name": "Coors Light 12oz Can",
       "quantity": 0.5,
       "unit": "cases",
-      "notes": "Approximate - 'about half a case'"
+      "notes": "Approximate - 'about half a case'",
+      "confidence": 0.95,
+      "spoken_name": "Coors Light cans",
+      "needs_review": false
+    }},
+    {{
+      "product_name": "Stella Artois Keg",
+      "quantity": null,
+      "unit": "kegs",
+      "notes": "Quantity not specified",
+      "confidence": 0.7,
+      "spoken_name": "stella kegs",
+      "needs_review": true
     }}
   ],
   "counted_by": null,
@@ -300,8 +334,9 @@ You must return JSON matching this schema:
 ```
 
 **Why this works:**
-- "margarita mix" → "Bar Mix, Margarita" (from manual mapping)
-- "Coors Light cans" → "Coors Light 12oz Can" (from catalog keywords)
+- "margarita mix" → "Bar Mix, Margarita" (from manual mapping, confidence=1.0)
+- "Coors Light cans" → "Coors Light 12oz Can" (from catalog keywords, confidence=0.95)
+- "stella kegs" → "Stella Artois Keg" (partial match, confidence=0.7, needs_review=true)
 - "about half a case" → 0.5 (fraction inference)
 - Added notes for clarity
 

@@ -147,12 +147,7 @@ async function toggleRecording() {
             mediaRecorder = new MediaRecorder(stream, { mimeType });
             chunks = [];
 
-            mediaRecorder.ondataavailable = e => {
-                console.log('Data available:', e.data ? e.data.size : 0, 'bytes');
-                if (e.data && e.data.size > 0) {
-                    chunks.push(e.data);
-                }
-            };
+            mediaRecorder.ondataavailable = e => chunks.push(e.data);
             mediaRecorder.onstop = () => {
                 console.log('Recording stopped. Chunks:', chunks.length);
                 if (chunks.length === 0) {
@@ -176,13 +171,23 @@ async function toggleRecording() {
                 resetRecordButton();
             };
 
-            // Use timeslice to collect data every 500ms for more reliable capture
-            mediaRecorder.start(500);
+            // Show countdown before starting to record
             btn.classList.add('recording');
             btn.classList.remove('bg-mise-green');
             btn.classList.add('bg-red-500');
             audiowaveIcon.classList.add('hidden');
             btnText.classList.remove('hidden');
+
+            // 3 second countdown
+            for (let i = 3; i > 0; i--) {
+                btnText.innerHTML = i.toString();
+                status.textContent = `Starting in ${i}...`;
+                await new Promise(resolve => setTimeout(resolve, 1000));
+            }
+
+            // NOW start recording
+            mediaRecorder.start();
+
             btnText.innerHTML = 'Tap to<br>Stop';
             status.textContent = 'Recording...';
             timer.classList.remove('hidden');

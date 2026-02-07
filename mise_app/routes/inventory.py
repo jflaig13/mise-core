@@ -656,22 +656,20 @@ async def approve_shelfy(request: Request):
     # For demo, we'll require looking it up by parsing the shelfy_id
     # shelfy_id format: shelfy_{timestamp}_{area}
 
-    # Try to find in all period directories
-    storage_dir = storage.storage_dir / "inventory"
-    if not storage_dir.exists():
-        return JSONResponse(
-            {"status": "error", "error": f"Shelfy not found: {shelfy_id}"},
-            status_code=404
-        )
+    # Try to find in recent periods (last 12 months)
+    from datetime import date
+    from dateutil.relativedelta import relativedelta
+    from mise_app.shelfy_storage import get_last_day_of_month
 
+    today = date.today()
     found_period = None
-    for period_dir in storage_dir.iterdir():
-        if period_dir.is_dir():
-            period_id = period_dir.name
-            shelfy = storage.get_shelfy(period_id, shelfy_id)
-            if shelfy:
-                found_period = period_id
-                break
+    for i in range(12):
+        month_date = today - relativedelta(months=i)
+        period_id = get_last_day_of_month(month_date.year, month_date.month).isoformat()
+        shelfy = storage.get_shelfy(period_id, shelfy_id)
+        if shelfy:
+            found_period = period_id
+            break
 
     if not found_period:
         return JSONResponse(
@@ -692,6 +690,97 @@ async def approve_shelfy(request: Request):
     else:
         return JSONResponse(
             {"status": "error", "error": f"Failed to approve shelfy: {shelfy_id}"},
+            status_code=500
+        )
+
+
+@router.post("/accept_match")
+async def accept_match(request: Request):
+    """Accept a suggested product match for an inventory item.
+
+    When parsing can't confidently match a product, this endpoint lets users
+    confirm the suggested match is correct.
+
+    Request body:
+        - shelfy_id: The shelfy containing the item
+        - item_index: Index of the item in the items array
+        - accepted_name: The product name being accepted
+
+    Response:
+        - success: true/false
+        - message: Status message
+    """
+    storage = get_shelfy_storage()
+
+    try:
+        body = await request.json()
+        shelfy_id = body.get("shelfy_id")
+        item_index = body.get("item_index")
+        accepted_name = body.get("accepted_name")
+    except Exception:
+        return JSONResponse(
+            {"status": "error", "error": "Invalid JSON body"},
+            status_code=400
+        )
+
+    if not shelfy_id or item_index is None:
+        return JSONResponse(
+            {"status": "error", "error": "Missing shelfy_id or item_index"},
+            status_code=400
+        )
+
+    # Find the shelfy across recent periods
+    from datetime import date
+    from dateutil.relativedelta import relativedelta
+    from mise_app.shelfy_storage import get_last_day_of_month
+
+    today = date.today()
+    found_period = None
+    shelfy = None
+
+    for i in range(12):
+        month_date = today - relativedelta(months=i)
+        period_id = get_last_day_of_month(month_date.year, month_date.month).isoformat()
+        shelfy = storage.get_shelfy(period_id, shelfy_id)
+        if shelfy:
+            found_period = period_id
+            break
+
+    if not found_period or not shelfy:
+        return JSONResponse(
+            {"status": "error", "error": f"Shelfy not found: {shelfy_id}"},
+            status_code=404
+        )
+
+    # Update the item to mark it as matched
+    inventory_json = shelfy.get("inventory_json", {})
+    items = inventory_json.get("items", [])
+
+    if item_index < 0 or item_index >= len(items):
+        return JSONResponse(
+            {"status": "error", "error": f"Invalid item_index: {item_index}"},
+            status_code=400
+        )
+
+    # Mark the item as no longer needing review
+    items[item_index]["needs_review"] = False
+    items[item_index]["confidence"] = 1.0  # User confirmed
+    items[item_index]["user_confirmed"] = True
+    if accepted_name:
+        items[item_index]["product_name"] = accepted_name
+
+    # Save the updated shelfy
+    success = storage.update_shelfy_inventory(found_period, shelfy_id, inventory_json)
+
+    if success:
+        log.info(f"🗄️ Accepted match for item {item_index} in shelfy {shelfy_id}: {accepted_name}")
+        return JSONResponse({
+            "success": True,
+            "message": f"Match accepted for '{accepted_name}'",
+        })
+    else:
+        return JSONResponse(
+            {"status": "error", "error": "Failed to save match"},
             status_code=500
         )
 
@@ -727,21 +816,19 @@ async def get_shelfy(request: Request, shelfy_id: str):
     """
     storage = get_shelfy_storage()
 
-    # Search across all periods
-    storage_dir = storage.storage_dir / "inventory"
-    if not storage_dir.exists():
-        return JSONResponse(
-            {"status": "error", "error": f"Shelfy not found: {shelfy_id}"},
-            status_code=404
-        )
+    # Search across recent periods (last 12 months)
+    from datetime import date
+    from dateutil.relativedelta import relativedelta
+    from mise_app.shelfy_storage import get_last_day_of_month
 
-    for period_dir in storage_dir.iterdir():
-        if period_dir.is_dir():
-            period_id = period_dir.name
-            shelfy = storage.get_shelfy(period_id, shelfy_id)
-            if shelfy:
-                log.info(f"🗄️ Retrieved shelfy {shelfy_id} from period {period_id}")
-                return JSONResponse(shelfy)
+    today = date.today()
+    for i in range(12):
+        month_date = today - relativedelta(months=i)
+        period_id = get_last_day_of_month(month_date.year, month_date.month).isoformat()
+        shelfy = storage.get_shelfy(period_id, shelfy_id)
+        if shelfy:
+            log.info(f"🗄️ Retrieved shelfy {shelfy_id} from period {period_id}")
+            return JSONResponse(shelfy)
 
     return JSONResponse(
         {"status": "error", "error": f"Shelfy not found: {shelfy_id}"},
@@ -771,15 +858,20 @@ async def get_inventory_periods(request: Request):
         - periods: List of period objects with summary stats
     """
     storage = get_shelfy_storage()
-    storage_dir = storage.storage_dir / "inventory"
 
+    # Search last 12 months for periods with data
+    from datetime import date
+    from dateutil.relativedelta import relativedelta
+    from mise_app.shelfy_storage import get_last_day_of_month
+
+    today = date.today()
     periods = []
-    if storage_dir.exists():
-        for period_dir in sorted(storage_dir.iterdir(), reverse=True):
-            if period_dir.is_dir():
-                period_id = period_dir.name
-                summary = storage.get_period_summary(period_id)
-                periods.append(summary)
+    for i in range(12):
+        month_date = today - relativedelta(months=i)
+        period_id = get_last_day_of_month(month_date.year, month_date.month).isoformat()
+        summary = storage.get_period_summary(period_id)
+        if summary.get("shelfies_count", 0) > 0:
+            periods.append(summary)
 
     return JSONResponse({
         "periods": periods,
@@ -905,18 +997,20 @@ async def approve_shelfy_page(request: Request, shelfy_id: str):
     templates = request.app.state.templates
     storage = get_shelfy_storage()
 
-    # Search across all periods
-    storage_dir = storage.storage_dir / "inventory"
-    shelfy = None
+    # Search across recent periods (last 12 months)
+    from datetime import date
+    from dateutil.relativedelta import relativedelta
+    from mise_app.shelfy_storage import get_last_day_of_month
 
-    if storage_dir.exists():
-        for period_dir in storage_dir.iterdir():
-            if period_dir.is_dir():
-                period_id = period_dir.name
-                found = storage.get_shelfy(period_id, shelfy_id)
-                if found:
-                    shelfy = found
-                    break
+    today = date.today()
+    shelfy = None
+    for i in range(12):
+        month_date = today - relativedelta(months=i)
+        period_id = get_last_day_of_month(month_date.year, month_date.month).isoformat()
+        found = storage.get_shelfy(period_id, shelfy_id)
+        if found:
+            shelfy = found
+            break
 
     if not shelfy:
         return HTMLResponse(f"Shelfy not found: {shelfy_id}", status_code=404)
@@ -942,18 +1036,20 @@ async def approve_shelfy_form(request: Request, shelfy_id: str = Form(...)):
     """Handle form submission for approving a shelfy (HTML form version)."""
     storage = get_shelfy_storage()
 
-    # Search across all periods
-    storage_dir = storage.storage_dir / "inventory"
-    found_period = None
+    # Search across recent periods (last 12 months)
+    from datetime import date
+    from dateutil.relativedelta import relativedelta
+    from mise_app.shelfy_storage import get_last_day_of_month
 
-    if storage_dir.exists():
-        for period_dir in storage_dir.iterdir():
-            if period_dir.is_dir():
-                period_id = period_dir.name
-                shelfy = storage.get_shelfy(period_id, shelfy_id)
-                if shelfy:
-                    found_period = period_id
-                    break
+    today = date.today()
+    found_period = None
+    for i in range(12):
+        month_date = today - relativedelta(months=i)
+        period_id = get_last_day_of_month(month_date.year, month_date.month).isoformat()
+        shelfy = storage.get_shelfy(period_id, shelfy_id)
+        if shelfy:
+            found_period = period_id
+            break
 
     if not found_period:
         return HTMLResponse(f"Shelfy not found: {shelfy_id}", status_code=404)
@@ -1002,10 +1098,24 @@ async def inventory_totals_page(request: Request, period_id: str):
 
     log.info(f"📊 Totals for {period_id}: kitchen={len(kitchen_aggregated.get('items', []))} items, bar={len(bar_aggregated.get('items', []))} items")
 
+    # Generate available periods (last 6 months)
+    from datetime import date
+    from dateutil.relativedelta import relativedelta
+    from mise_app.shelfy_storage import get_last_day_of_month
+    available_periods = []
+    today = date.today()
+    for i in range(6):
+        month_date = today - relativedelta(months=i)
+        month_period_id = get_last_day_of_month(month_date.year, month_date.month).isoformat()
+        month_label = month_date.strftime("%B %Y")
+        available_periods.append({"id": month_period_id, "label": month_label})
+
     context = get_template_context(request)
     context.update({
         "period_id": period_id,
+        "current_period_id": period_id,
         "period_label": get_period_label_html(period_id),
+        "available_periods": available_periods,
         "shelfies": shelfies,
         "kitchen_shelfies": kitchen_shelfies,
         "bar_shelfies": bar_shelfies,
@@ -1023,18 +1133,20 @@ async def shelfy_detail_page(request: Request, shelfy_id: str):
     templates = request.app.state.templates
     storage = get_shelfy_storage()
 
-    # Search across all periods
-    storage_dir = storage.storage_dir / "inventory"
-    shelfy = None
+    # Search across recent periods (last 12 months)
+    from datetime import date
+    from dateutil.relativedelta import relativedelta
+    from mise_app.shelfy_storage import get_last_day_of_month
 
-    if storage_dir.exists():
-        for period_dir in storage_dir.iterdir():
-            if period_dir.is_dir():
-                period_id = period_dir.name
-                found = storage.get_shelfy(period_id, shelfy_id)
-                if found:
-                    shelfy = found
-                    break
+    today = date.today()
+    shelfy = None
+    for i in range(12):
+        month_date = today - relativedelta(months=i)
+        period_id = get_last_day_of_month(month_date.year, month_date.month).isoformat()
+        found = storage.get_shelfy(period_id, shelfy_id)
+        if found:
+            shelfy = found
+            break
 
     if not shelfy:
         return HTMLResponse(f"Shelfy not found: {shelfy_id}", status_code=404)

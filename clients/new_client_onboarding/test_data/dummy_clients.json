@@ -1,0 +1,702 @@
+{
+  "dummy_clients": [
+    {
+      "id": 1,
+      "restaurant": {
+        "restaurant_name": "The Brass Anchor",
+        "location": "742 Harbor Drive, Destin, FL 32541",
+        "days_open": "Wednesday - Monday",
+        "contact": {
+          "name": "Marcus Chen",
+          "phone": "8505551234",
+          "email": "marcus@thebrassanchor.com"
+        }
+      },
+      "pay_period": {
+        "starts_on": "Monday",
+        "ends_on": "Sunday"
+      },
+      "team": {
+        "servers": [
+          { "full_name": "Jessica Martinez", "nickname": "Jess", "toast_employee_id": "1001" },
+          { "full_name": "Tyler Brooks", "nickname": "T", "toast_employee_id": "1002" },
+          { "full_name": "Amanda Wilson", "nickname": "Mandy", "toast_employee_id": "1003" },
+          { "full_name": "Derek Foster", "nickname": "", "toast_employee_id": "1004" },
+          { "full_name": "Samantha Reed", "nickname": "Sam", "toast_employee_id": "1005" }
+        ],
+        "support_roles": [
+          { "name": "Busser", "tipout_pct": "2%" },
+          { "name": "Food Runner", "tipout_pct": "1.5%" },
+          { "name": "Host", "tipout_pct": "1%" }
+        ],
+        "support_staff": [
+          { "full_name": "Miguel Santos", "nickname": "Mike", "toast_employee_id": "1010", "typical_role": "Busser" },
+          { "full_name": "Brianna Cole", "nickname": "Bri", "toast_employee_id": "1011", "typical_role": "Host" },
+          { "full_name": "Jason Park", "nickname": "JP", "toast_employee_id": "1012", "typical_role": "Food Runner" }
+        ],
+        "kitchen_staff": [
+          { "full_name": "Carlos Mendez", "nickname": "Los", "toast_employee_id": "1020" }
+        ],
+        "recorders": [
+          { "name": "Marcus Chen", "role": "Owner", "phone": "8505551234", "email": "marcus@thebrassanchor.com" }
+        ]
+      },
+      "shifts": {
+        "am": { "start": "11:00 AM", "end": "3:00 PM" },
+        "pm": { "start": "4:00 PM", "end": "10:00 PM" },
+        "close_varies_by_day": false,
+        "close_times": {}
+      },
+      "tip_rules": {
+        "tipout_method": "total_sales",
+        "tipout_flow": "servers_to_support",
+        "tip_pooling": "pool",
+        "pool_unequal_hours": "pro_rate",
+        "support_tipout_unequal_hours": "full_tipout",
+        "notes": ""
+      },
+      "seasonality": {
+        "is_seasonal": true,
+        "busy_months": "March - September",
+        "slow_months": "October - February",
+        "seasonal_impact": "significant",
+        "hours_change_seasonally": true,
+        "hours_change_details": "Close Tuesdays in off-season, shorter lunch hours",
+        "staffing_changes_seasonally": true,
+        "staffing_change_details": "Cut 2 servers after Labor Day, bring back seasonal staff in March"
+      }
+    },
+    {
+      "id": 2,
+      "restaurant": {
+        "restaurant_name": "Rosemary & Vine",
+        "location": "189 Main Street, Seaside, FL 32459",
+        "days_open": "Tuesday - Sunday",
+        "contact": {
+          "name": "Elena Rossi",
+          "phone": "8505552345",
+          "email": "elena@rosemaryvine.com"
+        }
+      },
+      "pay_period": {
+        "starts_on": "Sunday",
+        "ends_on": "Saturday"
+      },
+      "team": {
+        "servers": [
+          { "full_name": "Olivia Thompson", "nickname": "Liv", "toast_employee_id": "2001" },
+          { "full_name": "Nathan Price", "nickname": "Nate", "toast_employee_id": "2002" },
+          { "full_name": "Rachel Kim", "nickname": "", "toast_employee_id": "2003" }
+        ],
+        "support_roles": [
+          { "name": "Barback", "tipout_pct": "2%" },
+          { "name": "Busser", "tipout_pct": "2%" }
+        ],
+        "support_staff": [
+          { "full_name": "David Nguyen", "nickname": "Dave", "toast_employee_id": "2010", "typical_role": "Busser" },
+          { "full_name": "Emily Walsh", "nickname": "Em", "toast_employee_id": "2011", "typical_role": "Barback" }
+        ],
+        "kitchen_staff": [],
+        "recorders": [
+          { "name": "Elena Rossi", "role": "Owner", "phone": "8505552345", "email": "elena@rosemaryvine.com" },
+          { "name": "Tom Bradley", "role": "GM", "phone": "8505552346", "email": "tom@rosemaryvine.com" }
+        ]
+      },
+      "shifts": {
+        "am": { "start": "11:30 AM", "end": "2:30 PM" },
+        "pm": { "start": "5:00 PM", "end": "10:00 PM" },
+        "close_varies_by_day": true,
+        "close_times": {
+          "sun": "9:00 PM",
+          "mon": "N/A",
+          "tue": "9:00 PM",
+          "wed": "9:00 PM",
+          "thu": "10:00 PM",
+          "fri": "11:00 PM",
+          "sat": "11:00 PM"
+        }
+      },
+      "tip_rules": {
+        "tipout_method": "total_sales",
+        "tipout_flow": "pool_to_support",
+        "tip_pooling": "pool",
+        "pool_unequal_hours": "equal_split",
+        "support_tipout_unequal_hours": "pro_rate",
+        "notes": "Bartenders keep their own bar tips, only pool floor tips"
+      },
+      "seasonality": {
+        "is_seasonal": true,
+        "busy_months": "May - August",
+        "slow_months": "November - February",
+        "seasonal_impact": "extreme",
+        "hours_change_seasonally": true,
+        "hours_change_details": "No lunch service in winter, dinner only Thu-Sun",
+        "staffing_changes_seasonally": true,
+        "staffing_change_details": "Skeleton crew of 2 servers in winter, full staff of 6 in summer"
+      }
+    },
+    {
+      "id": 3,
+      "restaurant": {
+        "restaurant_name": "Blue Moon Tavern",
+        "location": "456 College Avenue, Auburn, AL 36830",
+        "days_open": "Monday - Sunday",
+        "contact": {
+          "name": "Jake Morrison",
+          "phone": "3345553456",
+          "email": "jake@bluemoontavern.com"
+        }
+      },
+      "pay_period": {
+        "starts_on": "Monday",
+        "ends_on": "Sunday"
+      },
+      "team": {
+        "servers": [
+          { "full_name": "Brittany Hughes", "nickname": "Brit", "toast_employee_id": "3001" },
+          { "full_name": "Connor Murphy", "nickname": "", "toast_employee_id": "3002" },
+          { "full_name": "Ashley Green", "nickname": "Ash", "toast_employee_id": "3003" },
+          { "full_name": "Ryan Taylor", "nickname": "Ry", "toast_employee_id": "3004" },
+          { "full_name": "Megan Scott", "nickname": "Meg", "toast_employee_id": "3005" },
+          { "full_name": "Brandon Lee", "nickname": "B", "toast_employee_id": "3006" }
+        ],
+        "support_roles": [
+          { "name": "Barback", "tipout_pct": "3%" },
+          { "name": "Busser", "tipout_pct": "2%" },
+          { "name": "Door", "tipout_pct": "1%" }
+        ],
+        "support_staff": [
+          { "full_name": "Chris Evans", "nickname": "", "toast_employee_id": "3010", "typical_role": "Barback" },
+          { "full_name": "Jordan White", "nickname": "J", "toast_employee_id": "3011", "typical_role": "Busser" },
+          { "full_name": "Alex Turner", "nickname": "", "toast_employee_id": "3012", "typical_role": "Door" }
+        ],
+        "kitchen_staff": [],
+        "recorders": [
+          { "name": "Jake Morrison", "role": "Owner", "phone": "3345553456", "email": "jake@bluemoontavern.com" }
+        ]
+      },
+      "shifts": {
+        "am": { "start": "11:00 AM", "end": "4:00 PM" },
+        "pm": { "start": "4:00 PM", "end": "2:00 AM" },
+        "close_varies_by_day": true,
+        "close_times": {
+          "sun": "12:00 AM",
+          "mon": "12:00 AM",
+          "tue": "12:00 AM",
+          "wed": "12:00 AM",
+          "thu": "2:00 AM",
+          "fri": "2:00 AM",
+          "sat": "2:00 AM"
+        }
+      },
+      "tip_rules": {
+        "tipout_method": "total_sales",
+        "tipout_flow": "servers_to_support",
+        "tip_pooling": "individual",
+        "pool_unequal_hours": "",
+        "support_tipout_unequal_hours": "full_tipout",
+        "notes": "Game days are all hands on deck - everyone pools on football Saturdays"
+      },
+      "seasonality": {
+        "is_seasonal": true,
+        "busy_months": "August - November (football season)",
+        "slow_months": "May - July",
+        "seasonal_impact": "significant",
+        "hours_change_seasonally": false,
+        "hours_change_details": "",
+        "staffing_changes_seasonally": true,
+        "staffing_change_details": "Double staff on game weekends, hire extra barbacks in fall"
+      }
+    },
+    {
+      "id": 4,
+      "restaurant": {
+        "restaurant_name": "Coastal Kitchen",
+        "location": "1200 Gulf Shore Drive, Panama City Beach, FL 32408",
+        "days_open": "Thursday - Monday",
+        "contact": {
+          "name": "Sarah Mitchell",
+          "phone": "8505554567",
+          "email": "sarah@coastalkitchenpcb.com"
+        }
+      },
+      "pay_period": {
+        "starts_on": "Thursday",
+        "ends_on": "Wednesday"
+      },
+      "team": {
+        "servers": [
+          { "full_name": "Kayla Brown", "nickname": "Kay", "toast_employee_id": "4001" },
+          { "full_name": "Michael Davis", "nickname": "Mike", "toast_employee_id": "4002" },
+          { "full_name": "Lauren James", "nickname": "LJ", "toast_employee_id": "4003" },
+          { "full_name": "Daniel Wright", "nickname": "Dan", "toast_employee_id": "4004" }
+        ],
+        "support_roles": [
+          { "name": "Expo", "tipout_pct": "2%" },
+          { "name": "Runner", "tipout_pct": "1.5%" },
+          { "name": "Busser", "tipout_pct": "1.5%" }
+        ],
+        "support_staff": [
+          { "full_name": "Tony Garcia", "nickname": "", "toast_employee_id": "4010", "typical_role": "Expo" },
+          { "full_name": "Maria Lopez", "nickname": "", "toast_employee_id": "4011", "typical_role": "Runner, Busser" }
+        ],
+        "kitchen_staff": [
+          { "full_name": "Chef Roberto Silva", "nickname": "Rob", "toast_employee_id": "4020" },
+          { "full_name": "Ana Ramirez", "nickname": "", "toast_employee_id": "4021" }
+        ],
+        "recorders": [
+          { "name": "Sarah Mitchell", "role": "Owner", "phone": "8505554567", "email": "sarah@coastalkitchenpcb.com" },
+          { "name": "Kevin O'Brien", "role": "Manager", "phone": "8505554568", "email": "kevin@coastalkitchenpcb.com" }
+        ]
+      },
+      "shifts": {
+        "am": { "start": "11:00 AM", "end": "3:00 PM" },
+        "pm": { "start": "5:00 PM", "end": "10:00 PM" },
+        "close_varies_by_day": false,
+        "close_times": {}
+      },
+      "tip_rules": {
+        "tipout_method": "food_sales",
+        "tipout_flow": "house_handles",
+        "tip_pooling": "pool",
+        "pool_unequal_hours": "pro_rate",
+        "support_tipout_unequal_hours": "pro_rate",
+        "notes": "Kitchen gets 1% of food sales from tip pool"
+      },
+      "seasonality": {
+        "is_seasonal": true,
+        "busy_months": "March - August",
+        "slow_months": "September - February",
+        "seasonal_impact": "extreme",
+        "hours_change_seasonally": true,
+        "hours_change_details": "Closed Tue-Wed in off-season, lunch only on weekends",
+        "staffing_changes_seasonally": true,
+        "staffing_change_details": "Cut to 2 servers in winter, full team of 6 in summer with extra runners"
+      }
+    },
+    {
+      "id": 5,
+      "restaurant": {
+        "restaurant_name": "The Oak Table",
+        "location": "88 Commerce Street, Montgomery, AL 36104",
+        "days_open": "Tuesday - Saturday",
+        "contact": {
+          "name": "William Patterson",
+          "phone": "3345555678",
+          "email": "will@theoaktable.com"
+        }
+      },
+      "pay_period": {
+        "starts_on": "Saturday",
+        "ends_on": "Friday"
+      },
+      "team": {
+        "servers": [
+          { "full_name": "Catherine Hayes", "nickname": "Cat", "toast_employee_id": "5001" },
+          { "full_name": "Robert Franklin", "nickname": "Rob", "toast_employee_id": "5002" },
+          { "full_name": "Patricia Young", "nickname": "Trish", "toast_employee_id": "5003" }
+        ],
+        "support_roles": [
+          { "name": "Sommelier Assistant", "tipout_pct": "2%" },
+          { "name": "Busser", "tipout_pct": "2%" },
+          { "name": "Food Runner", "tipout_pct": "1%" }
+        ],
+        "support_staff": [
+          { "full_name": "James Cooper", "nickname": "", "toast_employee_id": "5010", "typical_role": "Sommelier Assistant" },
+          { "full_name": "Linda Martinez", "nickname": "", "toast_employee_id": "5011", "typical_role": "Busser" },
+          { "full_name": "Steven Clark", "nickname": "Steve", "toast_employee_id": "5012", "typical_role": "Food Runner" }
+        ],
+        "kitchen_staff": [],
+        "recorders": [
+          { "name": "William Patterson", "role": "Owner", "phone": "3345555678", "email": "will@theoaktable.com" }
+        ]
+      },
+      "shifts": {
+        "am": { "start": "", "end": "" },
+        "pm": { "start": "5:00 PM", "end": "10:00 PM" },
+        "close_varies_by_day": true,
+        "close_times": {
+          "sun": "N/A",
+          "mon": "N/A",
+          "tue": "9:00 PM",
+          "wed": "9:00 PM",
+          "thu": "10:00 PM",
+          "fri": "11:00 PM",
+          "sat": "11:00 PM"
+        }
+      },
+      "tip_rules": {
+        "tipout_method": "total_sales",
+        "tipout_flow": "pool_to_support",
+        "tip_pooling": "pool",
+        "pool_unequal_hours": "pro_rate",
+        "support_tipout_unequal_hours": "pro_rate",
+        "notes": "Fine dining - all tips pooled including bar. Wine sales have higher tipout to sommelier assistant."
+      },
+      "seasonality": {
+        "is_seasonal": false,
+        "busy_months": "",
+        "slow_months": "",
+        "seasonal_impact": "",
+        "hours_change_seasonally": false,
+        "hours_change_details": "",
+        "staffing_changes_seasonally": false,
+        "staffing_change_details": ""
+      }
+    },
+    {
+      "id": 6,
+      "restaurant": {
+        "restaurant_name": "Pier 41 Seafood",
+        "location": "41 Fisherman's Wharf, Apalachicola, FL 32320",
+        "days_open": "Wednesday - Sunday",
+        "contact": {
+          "name": "Bobby Crane",
+          "phone": "8505556789",
+          "email": "bobby@pier41seafood.com"
+        }
+      },
+      "pay_period": {
+        "starts_on": "Wednesday",
+        "ends_on": "Tuesday"
+      },
+      "team": {
+        "servers": [
+          { "full_name": "Heather Stone", "nickname": "", "toast_employee_id": "6001" },
+          { "full_name": "Mark Johnson", "nickname": "MJ", "toast_employee_id": "6002" },
+          { "full_name": "Nicole Adams", "nickname": "Nic", "toast_employee_id": "6003" },
+          { "full_name": "Greg Phillips", "nickname": "", "toast_employee_id": "6004" },
+          { "full_name": "Amber Russell", "nickname": "", "toast_employee_id": "6005" }
+        ],
+        "support_roles": [
+          { "name": "Shucker", "tipout_pct": "3%" },
+          { "name": "Busser", "tipout_pct": "2%" },
+          { "name": "Host", "tipout_pct": "1%" }
+        ],
+        "support_staff": [
+          { "full_name": "Tommy Oyster", "nickname": "Shucks", "toast_employee_id": "6010", "typical_role": "Shucker" },
+          { "full_name": "Billy Waters", "nickname": "", "toast_employee_id": "6011", "typical_role": "Shucker, Busser" },
+          { "full_name": "Jenny Ray", "nickname": "", "toast_employee_id": "6012", "typical_role": "Host" }
+        ],
+        "kitchen_staff": [
+          { "full_name": "Chef Darnell Washington", "nickname": "D", "toast_employee_id": "6020" }
+        ],
+        "recorders": [
+          { "name": "Bobby Crane", "role": "Owner", "phone": "8505556789", "email": "bobby@pier41seafood.com" },
+          { "name": "Lisa Crane", "role": "Co-Owner", "phone": "8505556790", "email": "lisa@pier41seafood.com" }
+        ]
+      },
+      "shifts": {
+        "am": { "start": "11:00 AM", "end": "3:00 PM" },
+        "pm": { "start": "5:00 PM", "end": "9:00 PM" },
+        "close_varies_by_day": true,
+        "close_times": {
+          "sun": "8:00 PM",
+          "mon": "N/A",
+          "tue": "N/A",
+          "wed": "9:00 PM",
+          "thu": "9:00 PM",
+          "fri": "10:00 PM",
+          "sat": "10:00 PM"
+        }
+      },
+      "tip_rules": {
+        "tipout_method": "total_sales",
+        "tipout_flow": "servers_to_support",
+        "tip_pooling": "individual",
+        "pool_unequal_hours": "",
+        "support_tipout_unequal_hours": "full_tipout",
+        "notes": "Shuckers get extra tipout on raw bar sales - 5% instead of 3%"
+      },
+      "seasonality": {
+        "is_seasonal": true,
+        "busy_months": "April - October",
+        "slow_months": "November - March",
+        "seasonal_impact": "significant",
+        "hours_change_seasonally": true,
+        "hours_change_details": "No lunch in winter, dinner Thu-Sun only",
+        "staffing_changes_seasonally": true,
+        "staffing_change_details": "2 servers in winter, 5 in summer, extra shucker on weekends"
+      }
+    },
+    {
+      "id": 7,
+      "restaurant": {
+        "restaurant_name": "Magnolia Grill",
+        "location": "225 Dauphin Street, Mobile, AL 36602",
+        "days_open": "Monday - Saturday",
+        "contact": {
+          "name": "Denise Williams",
+          "phone": "2515557890",
+          "email": "denise@magnoliagrill.com"
+        }
+      },
+      "pay_period": {
+        "starts_on": "Monday",
+        "ends_on": "Sunday"
+      },
+      "team": {
+        "servers": [
+          { "full_name": "Tiffany Moore", "nickname": "Tiff", "toast_employee_id": "7001" },
+          { "full_name": "Charles Jackson", "nickname": "CJ", "toast_employee_id": "7002" },
+          { "full_name": "Monica Bell", "nickname": "Mo", "toast_employee_id": "7003" },
+          { "full_name": "Andre Williams", "nickname": "Dre", "toast_employee_id": "7004" }
+        ],
+        "support_roles": [
+          { "name": "Busser", "tipout_pct": "2.5%" },
+          { "name": "Expo", "tipout_pct": "2%" },
+          { "name": "Barback", "tipout_pct": "1.5%" }
+        ],
+        "support_staff": [
+          { "full_name": "Marcus Thompson", "nickname": "", "toast_employee_id": "7010", "typical_role": "Busser" },
+          { "full_name": "Keisha Brown", "nickname": "K", "toast_employee_id": "7011", "typical_role": "Expo" },
+          { "full_name": "Darius Jones", "nickname": "", "toast_employee_id": "7012", "typical_role": "Barback, Busser" }
+        ],
+        "kitchen_staff": [],
+        "recorders": [
+          { "name": "Denise Williams", "role": "Owner", "phone": "2515557890", "email": "denise@magnoliagrill.com" },
+          { "name": "Raymond Carter", "role": "GM", "phone": "2515557891", "email": "ray@magnoliagrill.com" }
+        ]
+      },
+      "shifts": {
+        "am": { "start": "10:30 AM", "end": "2:30 PM" },
+        "pm": { "start": "5:00 PM", "end": "10:00 PM" },
+        "close_varies_by_day": false,
+        "close_times": {}
+      },
+      "tip_rules": {
+        "tipout_method": "total_sales",
+        "tipout_flow": "house_handles",
+        "tip_pooling": "pool",
+        "pool_unequal_hours": "equal_split",
+        "support_tipout_unequal_hours": "full_tipout",
+        "notes": "Management calculates everything end of night. Servers just split what's left after tipouts."
+      },
+      "seasonality": {
+        "is_seasonal": false,
+        "busy_months": "",
+        "slow_months": "",
+        "seasonal_impact": "",
+        "hours_change_seasonally": false,
+        "hours_change_details": "",
+        "staffing_changes_seasonally": false,
+        "staffing_change_details": ""
+      }
+    },
+    {
+      "id": 8,
+      "restaurant": {
+        "restaurant_name": "Salt & Pepper Bistro",
+        "location": "567 Palafox Street, Pensacola, FL 32502",
+        "days_open": "Tuesday - Sunday",
+        "contact": {
+          "name": "Angela Foster",
+          "phone": "8505558901",
+          "email": "angela@saltpepperbistro.com"
+        }
+      },
+      "pay_period": {
+        "starts_on": "Tuesday",
+        "ends_on": "Monday"
+      },
+      "team": {
+        "servers": [
+          { "full_name": "Stephanie Cruz", "nickname": "Steph", "toast_employee_id": "8001" },
+          { "full_name": "Brian Kelly", "nickname": "", "toast_employee_id": "8002" },
+          { "full_name": "Christina Patel", "nickname": "Chris", "toast_employee_id": "8003" },
+          { "full_name": "Joshua Hart", "nickname": "Josh", "toast_employee_id": "8004" },
+          { "full_name": "Rebecca Long", "nickname": "Becca", "toast_employee_id": "8005" },
+          { "full_name": "Timothy Shaw", "nickname": "Tim", "toast_employee_id": "8006" }
+        ],
+        "support_roles": [
+          { "name": "Runner", "tipout_pct": "2%" },
+          { "name": "Busser", "tipout_pct": "2%" },
+          { "name": "Host", "tipout_pct": "0.5%" }
+        ],
+        "support_staff": [
+          { "full_name": "Omar Hassan", "nickname": "", "toast_employee_id": "8010", "typical_role": "Runner" },
+          { "full_name": "Taylor Swift", "nickname": "Not that one", "toast_employee_id": "8011", "typical_role": "Busser" },
+          { "full_name": "Chelsea Gordon", "nickname": "", "toast_employee_id": "8012", "typical_role": "Host" },
+          { "full_name": "Victor Reyes", "nickname": "Vic", "toast_employee_id": "8013", "typical_role": "Busser, Runner" }
+        ],
+        "kitchen_staff": [
+          { "full_name": "Chef Pierre Dubois", "nickname": "Pierre", "toast_employee_id": "8020" }
+        ],
+        "recorders": [
+          { "name": "Angela Foster", "role": "Owner", "phone": "8505558901", "email": "angela@saltpepperbistro.com" }
+        ]
+      },
+      "shifts": {
+        "am": { "start": "11:00 AM", "end": "3:00 PM" },
+        "pm": { "start": "5:00 PM", "end": "10:00 PM" },
+        "close_varies_by_day": true,
+        "close_times": {
+          "sun": "9:00 PM",
+          "mon": "N/A",
+          "tue": "9:00 PM",
+          "wed": "9:00 PM",
+          "thu": "10:00 PM",
+          "fri": "11:00 PM",
+          "sat": "11:00 PM"
+        }
+      },
+      "tip_rules": {
+        "tipout_method": "total_sales",
+        "tipout_flow": "servers_to_support",
+        "tip_pooling": "pool",
+        "pool_unequal_hours": "pro_rate",
+        "support_tipout_unequal_hours": "pro_rate",
+        "notes": "Chef gets 0.5% of food sales as a bonus, not technically a tipout"
+      },
+      "seasonality": {
+        "is_seasonal": true,
+        "busy_months": "October - April (snowbirds)",
+        "slow_months": "May - September",
+        "seasonal_impact": "moderate",
+        "hours_change_seasonally": false,
+        "hours_change_details": "",
+        "staffing_changes_seasonally": true,
+        "staffing_change_details": "Add 2 extra servers in winter season, back to core 4 in summer"
+      }
+    },
+    {
+      "id": 9,
+      "restaurant": {
+        "restaurant_name": "The Rooftop at Grand",
+        "location": "100 Grand Boulevard, Miramar Beach, FL 32550",
+        "days_open": "Wednesday - Sunday",
+        "contact": {
+          "name": "Victoria Chase",
+          "phone": "8505559012",
+          "email": "victoria@rooftopgrand.com"
+        }
+      },
+      "pay_period": {
+        "starts_on": "Sunday",
+        "ends_on": "Saturday"
+      },
+      "team": {
+        "servers": [
+          { "full_name": "Alexander Reid", "nickname": "Alex", "toast_employee_id": "9001" },
+          { "full_name": "Isabella Torres", "nickname": "Izzy", "toast_employee_id": "9002" },
+          { "full_name": "Maxwell Grant", "nickname": "Max", "toast_employee_id": "9003" },
+          { "full_name": "Sophia Bennett", "nickname": "Soph", "toast_employee_id": "9004" }
+        ],
+        "support_roles": [
+          { "name": "Cocktail Server", "tipout_pct": "1%" },
+          { "name": "Busser", "tipout_pct": "2%" },
+          { "name": "Runner", "tipout_pct": "1.5%" },
+          { "name": "Host", "tipout_pct": "1%" }
+        ],
+        "support_staff": [
+          { "full_name": "Justin Blake", "nickname": "", "toast_employee_id": "9010", "typical_role": "Cocktail Server" },
+          { "full_name": "Natasha Volkov", "nickname": "Tasha", "toast_employee_id": "9011", "typical_role": "Busser" },
+          { "full_name": "Derek Miles", "nickname": "", "toast_employee_id": "9012", "typical_role": "Runner" },
+          { "full_name": "Amanda Pierce", "nickname": "", "toast_employee_id": "9013", "typical_role": "Host" }
+        ],
+        "kitchen_staff": [],
+        "recorders": [
+          { "name": "Victoria Chase", "role": "GM", "phone": "8505559012", "email": "victoria@rooftopgrand.com" },
+          { "name": "Howard Grand", "role": "Owner", "phone": "8505559000", "email": "howard@rooftopgrand.com" }
+        ]
+      },
+      "shifts": {
+        "am": { "start": "", "end": "" },
+        "pm": { "start": "4:00 PM", "end": "11:00 PM" },
+        "close_varies_by_day": true,
+        "close_times": {
+          "sun": "10:00 PM",
+          "mon": "N/A",
+          "tue": "N/A",
+          "wed": "10:00 PM",
+          "thu": "11:00 PM",
+          "fri": "12:00 AM",
+          "sat": "12:00 AM"
+        }
+      },
+      "tip_rules": {
+        "tipout_method": "total_sales",
+        "tipout_flow": "pool_to_support",
+        "tip_pooling": "pool",
+        "pool_unequal_hours": "pro_rate",
+        "support_tipout_unequal_hours": "pro_rate",
+        "notes": "Rooftop bar and dining area split - bar staff pools separately from dining servers"
+      },
+      "seasonality": {
+        "is_seasonal": true,
+        "busy_months": "March - September",
+        "slow_months": "November - February",
+        "seasonal_impact": "extreme",
+        "hours_change_seasonally": true,
+        "hours_change_details": "Closed January, limited hours in winter (Fri-Sat only)",
+        "staffing_changes_seasonally": true,
+        "staffing_change_details": "2 servers in winter, 8 in peak summer, plus extra cocktail servers for events"
+      }
+    },
+    {
+      "id": 10,
+      "restaurant": {
+        "restaurant_name": "Hank's BBQ Pit",
+        "location": "890 Highway 98, Point Clear, AL 36564",
+        "days_open": "Thursday - Sunday",
+        "contact": {
+          "name": "Hank Peterson",
+          "phone": "2515550123",
+          "email": "hank@hanksbbqpit.com"
+        }
+      },
+      "pay_period": {
+        "starts_on": "Thursday",
+        "ends_on": "Wednesday"
+      },
+      "team": {
+        "servers": [
+          { "full_name": "Tammy Jo Richardson", "nickname": "TJ", "toast_employee_id": "0001" },
+          { "full_name": "Bobby Ray Jenkins", "nickname": "Bobby Ray", "toast_employee_id": "0002" },
+          { "full_name": "Daisy Mae Collins", "nickname": "Daisy", "toast_employee_id": "0003" }
+        ],
+        "support_roles": [
+          { "name": "Pit Helper", "tipout_pct": "3%" },
+          { "name": "Busser", "tipout_pct": "2%" }
+        ],
+        "support_staff": [
+          { "full_name": "Junior Williams", "nickname": "June", "toast_employee_id": "0010", "typical_role": "Pit Helper" },
+          { "full_name": "Clyde Tucker", "nickname": "", "toast_employee_id": "0011", "typical_role": "Busser" }
+        ],
+        "kitchen_staff": [
+          { "full_name": "Hank Peterson Jr.", "nickname": "Little Hank", "toast_employee_id": "0020" }
+        ],
+        "recorders": [
+          { "name": "Hank Peterson", "role": "Owner", "phone": "2515550123", "email": "hank@hanksbbqpit.com" },
+          { "name": "Mary Peterson", "role": "Co-Owner", "phone": "2515550124", "email": "mary@hanksbbqpit.com" }
+        ]
+      },
+      "shifts": {
+        "am": { "start": "11:00 AM", "end": "3:00 PM" },
+        "pm": { "start": "5:00 PM", "end": "9:00 PM" },
+        "close_varies_by_day": false,
+        "close_times": {}
+      },
+      "tip_rules": {
+        "tipout_method": "other",
+        "tipout_method_other_description": "Flat $20 per shift to pit helper and busser each",
+        "tipout_flow": "other",
+        "tipout_flow_other_description": "Servers put $20 each into a jar, Hank distributes at end of night",
+        "tip_pooling": "individual",
+        "pool_unequal_hours": "",
+        "support_tipout_unequal_hours": "full_tipout",
+        "notes": "Simple operation - we've done it this way for 30 years. If it ain't broke don't fix it."
+      },
+      "seasonality": {
+        "is_seasonal": false,
+        "busy_months": "",
+        "slow_months": "",
+        "seasonal_impact": "",
+        "hours_change_seasonally": false,
+        "hours_change_details": "",
+        "staffing_changes_seasonally": false,
+        "staffing_change_details": ""
+      }
+    }
+  ]
+}

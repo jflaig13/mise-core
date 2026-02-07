@@ -35,7 +35,7 @@ def transcribe_large_audio_from_gcs(gcs_path: str) -> str:
 
     config = speech_v1.RecognitionConfig(
         encoding=speech_v1.RecognitionConfig.AudioEncoding.LINEAR16,
-        sample_rate_hertz=16000,
+        sample_rate_hertz=48000,
         language_code="en-US",
         enable_automatic_punctuation=True,
         model="default",
@@ -96,23 +96,33 @@ OUTPUT FORMAT:
       "conversion": "4-pack",
       "converted_quantity": 40,
       "base_unit": "cans",
-      "notes": ""
+      "notes": "",
+      "confidence": 0.95,
+      "spoken_name": "what was said",
+      "needs_review": false
     }}
   ]
 }}
 
 RULES:
 1. Extract product names, quantities, and units from the transcript
-2. For conversions (e.g., "6 4-packs"), include:
+2. ALWAYS use clear product names - NEVER set product_name to "Unknown"
+3. Use the spoken product name with proper capitalization (e.g., "Stella Artois Keg", "Kona Big Wave Keg", "30A Beach Blonde Ale Keg")
+4. For conversions (e.g., "6 4-packs"), include:
    - quantity: outer quantity (6)
    - unit: outer unit (4-pack)
    - conversion: conversion factor (4-pack)
    - converted_quantity: total base units (24)
    - base_unit: base unit (cans)
-3. If no conversion, set converted_quantity = quantity and base_unit = unit
-4. Handle ASR errors (e.g., "cab sauv" → "Cabernet Sauvignon")
-5. If quantity unclear, set to null and add note
-6. DO NOT invent products not in transcript
+5. If no conversion, set converted_quantity = quantity and base_unit = unit
+6. Handle ASR errors (e.g., "cab sauv" → "Cabernet Sauvignon")
+7. If quantity unclear, set to null and add note
+8. DO NOT invent products not in transcript
+9. DO NOT use "Unknown" as product_name - always use the actual product name from the transcript
+10. CONFIDENCE SCORING - For EVERY item include:
+    - confidence: 0.0-1.0 (1.0=exact match, 0.8+=high, 0.5-0.79=medium, <0.5=low)
+    - spoken_name: exact text from transcript
+    - needs_review: true if confidence < 0.8
 
 Respond ONLY with the JSON, no other text."""
 

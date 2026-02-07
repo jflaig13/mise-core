@@ -11,6 +11,9 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copy transrouter code
 COPY transrouter/ ./transrouter/
 
+# Copy workflow specs (for brain sync - roster, LPM, etc.)
+COPY workflow_specs/ ./workflow_specs/
+
 # Copy inventory catalog (for product normalization)
 COPY inventory_agent/inventory_catalog.json ./data/inventory_catalog.json
 

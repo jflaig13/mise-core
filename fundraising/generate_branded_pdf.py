@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Generate branded PDFs for Mise fundraising documents.
+Generate branded PDFs for Internal Mise Documents (IMDs).
 Uses Inter font, Mise brand colors, and includes logo.
 """
 
@@ -16,7 +16,7 @@ CREAM = "#F9F6F1"
 
 # Paths
 SCRIPT_DIR = Path(__file__).parent
-LOGO_PATH = Path.home() / "mise-core/Branding/Logo Files/Updated Mise Logo Pronunciation.png"
+LOGO_PATH = Path.home() / "mise-core/Branding/Logo Files/Mise Logo No BG.png"
 ICON_PATH = Path.home() / "mise-core/Branding/Logo Files/Icon No Background.png"
 OUTPUT_DIR = Path.home() / "mise-core/fundraising"
 
@@ -54,7 +54,7 @@ def get_css(icon_base64=None):
             content: '';
             position: absolute;
             left: -24px;
-            top: 2px;
+            top: 5px;
             width: 16px;
             height: 16px;
             background-image: url('{icon_base64}');
@@ -82,7 +82,7 @@ def get_css(icon_base64=None):
             font-size: 11pt;
             line-height: 1.6;
             color: {NAVY};
-            background-color: white;
+            background-color: {CREAM};
         }}
 
         .logo-header {{
@@ -433,6 +433,10 @@ def get_css(icon_base64=None):
             page-break-after: avoid;
         }}
 
+        h3 {{
+            page-break-after: avoid;
+        }}
+
         table, figure, .callout, .pull-quote, .stat-box, .diagram {{
             page-break-inside: avoid;
         }}
@@ -566,6 +570,33 @@ def main():
         "TRILLION_DOLLAR_AI_BUILDOUT.md",
         "Trillion_Dollar_AI_Buildout.pdf",
         "Inside the Trillion-Dollar AI Buildout"
+    )
+    print()
+
+    # Generate Family Investment Ask PDF
+    print("-" * 50)
+    generate_pdf(
+        "FAMILY_INVESTMENT_ASK.md",
+        "Family_Investment_Ask.pdf",
+        "Mise - Family Investment Proposal"
+    )
+    print()
+
+    # Generate YC Startup School Master Guide PDF
+    print("-" * 50)
+    generate_pdf(
+        "YC_STARTUP_SCHOOL_MASTER_GUIDE.md",
+        "YC_Startup_School_Master_Guide.pdf",
+        "YC Startup School — Master Guide"
+    )
+    print()
+
+    # Generate Mise Moat Memo PDF
+    print("-" * 50)
+    generate_pdf(
+        "MISE_MOAT_MEMO.md",
+        "Mise_Moat_Memo.pdf",
+        "Mise Moat Memo"
     )
     print()
 
