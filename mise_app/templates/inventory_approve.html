@@ -16,7 +16,7 @@
 
     <!-- Parsed Items (if available) -->
     {% if shelfy.inventory_json and shelfy.inventory_json['items'] %}
-    <div class="bg-white rounded-xl border border-green-500/20 p-4 mb-6 shadow-sm">
+    <div class="mise-card rounded-xl p-4 mb-6">
         <h2 class="text-sm font-semibold text-mise-navy/60 mb-3">📦 Parsed Inventory</h2>
         <div class="space-y-2 max-h-96 overflow-y-auto">
             {% for item in shelfy.inventory_json['items'] %}
@@ -88,7 +88,7 @@
     {% endif %}
 
     <!-- Transcript Box -->
-    <div class="bg-white rounded-xl border border-mise-red/20 p-4 mb-6 shadow-sm">
+    <div class="mise-card mise-accent-left-red rounded-xl p-4 mb-6">
         <h2 class="text-sm font-semibold text-mise-navy/60 mb-3">Transcript</h2>
         <div class="text-mise-navy leading-relaxed max-h-64 overflow-y-auto">
             {{ shelfy.transcript }}
@@ -109,7 +109,7 @@
             <input type="hidden" name="shelfy_id" value="{{ shelfy.shelfy_id }}">
             <button type="submit"
                     class="w-full p-4 bg-mise-red hover:bg-mise-red-dark rounded-xl text-white font-semibold
-                           transition-all duration-200 active:scale-98 shadow-lg">
+                           transition-all duration-200 active:scale-98 mise-btn-primary">
                 Approve & Save
             </button>
         </form>

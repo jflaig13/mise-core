@@ -29,66 +29,27 @@
             }
         }
     </script>
+    <link rel="stylesheet" href="/static/css/mise.css">
     <script src="https://unpkg.com/htmx.org@1.9.10"></script>
-    <style>
-        /* Custom scrollbar */
-        ::-webkit-scrollbar { width: 4px; }
-        ::-webkit-scrollbar-track { background: #E8E4DF; }
-        ::-webkit-scrollbar-thumb { background: #1B2A4E; border-radius: 2px; }
-
-        /* Pulsing animation for recording */
-        @keyframes pulse-red {
-            0%, 100% { box-shadow: 0 0 0 0 rgba(181, 64, 47, 0.7); }
-            50% { box-shadow: 0 0 0 20px rgba(181, 64, 47, 0); }
-        }
-        .recording { animation: pulse-red 1.5s infinite; }
-
-        /* Loading spinner */
-        .spinner {
-            border: 4px solid #E8E4DF;
-            border-top: 4px solid #B5402F;
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            animation: spin 1s linear infinite;
-        }
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-    </style>
     {% block head %}{% endblock %}
 </head>
-<body class="bg-mise-cream text-mise-navy min-h-screen">
+<body class="bg-mise-cream text-mise-navy min-h-screen mise-texture">
     <!-- Header -->
-    <header class="bg-mise-cream border-b border-mise-navy/10 px-4 py-3">
-        <div class="flex items-center justify-center relative">
+    <header class="sticky top-0 z-30 bg-mise-cream/80 mise-header px-4 py-3">
+        <div class="mise-container flex items-center justify-center relative">
             <!-- Back Button (top left) -->
             {% block back_button %}
-            <button onclick="history.back()" class="absolute left-0 group flex items-center" title="Go back">
-                <svg width="70" height="32" viewBox="0 0 70 32" class="drop-shadow-sm">
-                    <!-- Hexagon pointing left -->
-                    <polygon
-                        points="8,16 16,2 58,2 66,16 58,30 16,30"
-                        fill="#1B2A4E"
-                        class="group-hover:fill-[#2a3d6e] transition-colors"/>
-                    <!-- Left arrow -->
-                    <path d="M14 16 L22 10 L22 13 L26 13 L26 19 L22 19 L22 22 Z"
-                          fill="white"/>
-                    <!-- "back" text -->
-                    <text x="44" y="20"
-                          font-family="system-ui, sans-serif"
-                          font-size="12"
-                          font-weight="600"
-                          fill="white"
-                          text-anchor="middle">back</text>
+            <button onclick="history.back()" class="absolute left-0 group flex items-center px-3 py-1.5 bg-mise-navy/8 hover:bg-mise-navy/15 rounded-full transition-colors" title="Go back">
+                <svg class="w-4 h-4 text-mise-navy/60 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
                 </svg>
+                <span class="text-sm font-medium text-mise-navy/60">Back</span>
             </button>
             {% endblock %}
 
             <!-- Mise Logo (centered) -->
             <a href="/" class="flex items-center space-x-2">
-                <span class="text-2xl font-serif font-bold text-mise-navy">Mise</span>
+                <span class="text-2xl font-bold tracking-tight text-mise-navy">Mise</span>
                 <!-- Soundwave icon -->
                 <svg class="w-6 h-6" viewBox="0 0 28 24" fill="#B5402F">
                     <rect x="1" y="10" width="2.5" height="4" rx="1.25"/>
@@ -104,12 +65,12 @@
     {% block subheader %}{% endblock %}
 
     <!-- Main content -->
-    <main class="pb-20">
+    <main class="pb-20 mise-container mise-animate-in">
         {% block content %}{% endblock %}
     </main>
 
     <!-- Bottom nav -->
-    <nav class="fixed bottom-0 left-0 right-0 bg-white border-t border-mise-navy/10">
+    <nav class="fixed bottom-0 left-0 right-0 mise-bottom-nav">
         <div class="flex justify-around py-2">
             <a href="{% if period %}/period/{{ period.id }}{% else %}/{% endif %}" class="flex flex-col items-center p-2 text-mise-navy/50 hover:text-mise-red">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">

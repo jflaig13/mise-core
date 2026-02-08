@@ -1,0 +1,396 @@
+/* ==========================================================================
+   Mise Design System
+   Version: 1.0
+   Everything in its place.
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. FONT IMPORT
+   -------------------------------------------------------------------------- */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+/* --------------------------------------------------------------------------
+   2. CSS CUSTOM PROPERTIES
+   -------------------------------------------------------------------------- */
+:root {
+    /* Brand Colors */
+    --mise-navy: #1B2A4E;
+    --mise-red: #B5402F;
+    --mise-red-dark: #922F21;
+    --mise-green: #2D8A4E;
+    --mise-green-dark: #236B3C;
+    --mise-cream: #F9F6F1;
+    --mise-cream-payroll: #F0FAF0;
+    --mise-cream-inventory: #FEF2F2;
+
+    /* Shadows */
+    --mise-shadow-sm: 0 1px 2px rgba(27, 42, 78, 0.06);
+    --mise-shadow: 0 2px 8px rgba(27, 42, 78, 0.08);
+    --mise-shadow-md: 0 4px 16px rgba(27, 42, 78, 0.10);
+    --mise-shadow-lg: 0 8px 32px rgba(27, 42, 78, 0.12);
+    --mise-shadow-hover: 0 8px 24px rgba(27, 42, 78, 0.14);
+
+    /* Radii */
+    --mise-radius: 12px;
+    --mise-radius-sm: 8px;
+    --mise-radius-lg: 16px;
+    --mise-radius-full: 9999px;
+
+    /* Transitions */
+    --mise-transition: 200ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    --mise-transition-slow: 400ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+/* --------------------------------------------------------------------------
+   3. GLOBAL STYLES
+   -------------------------------------------------------------------------- */
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* --------------------------------------------------------------------------
+   4. SCROLLBAR
+   -------------------------------------------------------------------------- */
+::-webkit-scrollbar {
+    width: 4px;
+}
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+::-webkit-scrollbar-thumb {
+    background: var(--mise-navy);
+    border-radius: 2px;
+    opacity: 0.3;
+}
+
+/* Payroll-themed scrollbar */
+.scrollbar-payroll::-webkit-scrollbar-track { background: #E0F0E0; }
+.scrollbar-payroll::-webkit-scrollbar-thumb { background: var(--mise-green); }
+
+/* Inventory-themed scrollbar */
+.scrollbar-inventory::-webkit-scrollbar-track { background: #FECACA; }
+.scrollbar-inventory::-webkit-scrollbar-thumb { background: var(--mise-red); }
+
+/* --------------------------------------------------------------------------
+   5. FROSTED GLASS - Header & Bottom Nav
+   -------------------------------------------------------------------------- */
+.mise-header {
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(27, 42, 78, 0.08);
+}
+
+.mise-bottom-nav {
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    background: rgba(255, 255, 255, 0.85);
+    border-top: 1px solid rgba(27, 42, 78, 0.06);
+}
+
+/* --------------------------------------------------------------------------
+   6. CARD COMPONENTS
+   -------------------------------------------------------------------------- */
+.mise-card {
+    background: white;
+    border-radius: var(--mise-radius);
+    box-shadow: var(--mise-shadow);
+    border: 1px solid rgba(27, 42, 78, 0.06);
+    transition: box-shadow var(--mise-transition), transform var(--mise-transition);
+}
+
+.mise-card-interactive {
+    background: white;
+    border-radius: var(--mise-radius);
+    box-shadow: var(--mise-shadow);
+    border: 1px solid rgba(27, 42, 78, 0.06);
+    transition: box-shadow var(--mise-transition), transform var(--mise-transition);
+    cursor: pointer;
+}
+
+.mise-card-interactive:hover {
+    box-shadow: var(--mise-shadow-hover);
+    transform: translateY(-1px);
+}
+
+.mise-card-interactive:active {
+    transform: translateY(0) scale(0.98);
+    box-shadow: var(--mise-shadow-sm);
+}
+
+/* --------------------------------------------------------------------------
+   7. ACCENT LEFT BORDERS
+   -------------------------------------------------------------------------- */
+.mise-accent-left-navy {
+    border-left: 3px solid var(--mise-navy);
+}
+
+.mise-accent-left-red {
+    border-left: 3px solid var(--mise-red);
+}
+
+.mise-accent-left-green {
+    border-left: 3px solid var(--mise-green);
+}
+
+/* --------------------------------------------------------------------------
+   8. BUTTON
+   -------------------------------------------------------------------------- */
+.mise-btn-primary {
+    transition: box-shadow var(--mise-transition), transform var(--mise-transition);
+}
+
+.mise-btn-primary:hover {
+    box-shadow: var(--mise-shadow-md);
+    transform: translateY(-1px);
+}
+
+.mise-btn-primary:active {
+    transform: translateY(0) scale(0.98);
+    box-shadow: var(--mise-shadow-sm);
+}
+
+/* --------------------------------------------------------------------------
+   9. BADGES
+   -------------------------------------------------------------------------- */
+.mise-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 2px 10px;
+    border-radius: var(--mise-radius-full);
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+}
+
+.mise-badge-green {
+    background: rgba(45, 138, 78, 0.1);
+    color: var(--mise-green);
+}
+
+.mise-badge-yellow {
+    background: rgba(234, 179, 8, 0.15);
+    color: #92400e;
+}
+
+.mise-badge-gray {
+    background: rgba(27, 42, 78, 0.08);
+    color: rgba(27, 42, 78, 0.5);
+}
+
+/* --------------------------------------------------------------------------
+   10. ANIMATIONS
+   -------------------------------------------------------------------------- */
+
+/* Page entrance: fade up */
+@keyframes mise-fade-up {
+    from {
+        opacity: 0;
+        transform: translateY(12px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.mise-animate-in {
+    animation: mise-fade-up 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+}
+
+/* Breathing animation for idle record button */
+@keyframes mise-breathe {
+    0%, 100% {
+        transform: scale(1);
+        box-shadow: 0 4px 24px rgba(27, 42, 78, 0.15);
+    }
+    50% {
+        transform: scale(1.03);
+        box-shadow: 0 8px 32px rgba(27, 42, 78, 0.2);
+    }
+}
+
+.mise-breathe {
+    animation: mise-breathe 3s ease-in-out infinite;
+}
+
+/* Staggered list entrance */
+.mise-stagger > * {
+    opacity: 0;
+    animation: mise-fade-up 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+.mise-stagger > *:nth-child(1) { animation-delay: 0.05s; }
+.mise-stagger > *:nth-child(2) { animation-delay: 0.1s; }
+.mise-stagger > *:nth-child(3) { animation-delay: 0.15s; }
+.mise-stagger > *:nth-child(4) { animation-delay: 0.2s; }
+.mise-stagger > *:nth-child(5) { animation-delay: 0.25s; }
+.mise-stagger > *:nth-child(6) { animation-delay: 0.3s; }
+.mise-stagger > *:nth-child(7) { animation-delay: 0.35s; }
+.mise-stagger > *:nth-child(8) { animation-delay: 0.4s; }
+.mise-stagger > *:nth-child(9) { animation-delay: 0.45s; }
+.mise-stagger > *:nth-child(10) { animation-delay: 0.5s; }
+.mise-stagger > *:nth-child(11) { animation-delay: 0.55s; }
+.mise-stagger > *:nth-child(12) { animation-delay: 0.6s; }
+.mise-stagger > *:nth-child(13) { animation-delay: 0.65s; }
+.mise-stagger > *:nth-child(14) { animation-delay: 0.7s; }
+
+/* --------------------------------------------------------------------------
+   11. RECORDING PULSE
+   -------------------------------------------------------------------------- */
+@keyframes pulse-green {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(45, 138, 78, 0.7); }
+    50% { box-shadow: 0 0 0 20px rgba(45, 138, 78, 0); }
+}
+
+@keyframes pulse-red {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(181, 64, 47, 0.7); }
+    50% { box-shadow: 0 0 0 20px rgba(181, 64, 47, 0); }
+}
+
+.recording-green { animation: pulse-green 1.5s infinite; }
+.recording-red { animation: pulse-red 1.5s infinite; }
+/* Legacy class name — payroll uses .recording */
+.recording { animation: pulse-green 1.5s infinite; }
+
+/* --------------------------------------------------------------------------
+   12. SPINNER
+   -------------------------------------------------------------------------- */
+.spinner {
+    border: 3px solid rgba(27, 42, 78, 0.1);
+    border-top: 3px solid var(--mise-green);
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+    animation: spin 0.8s linear infinite;
+}
+
+.spinner-red {
+    border: 3px solid rgba(27, 42, 78, 0.1);
+    border-top: 3px solid var(--mise-red);
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+    animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* --------------------------------------------------------------------------
+   13. PROCESSING OVERLAY
+   -------------------------------------------------------------------------- */
+.mise-overlay {
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+}
+
+/* --------------------------------------------------------------------------
+   14. FOCUS RINGS
+   -------------------------------------------------------------------------- */
+input:focus, select:focus, textarea:focus, button:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(27, 42, 78, 0.12);
+}
+
+/* --------------------------------------------------------------------------
+   15. CONTENT CONTAINER
+   -------------------------------------------------------------------------- */
+.mise-container {
+    max-width: 640px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* --------------------------------------------------------------------------
+   16. KITCHEN TEXTURE BACKGROUND
+   Hand-drawn cooking ingredient illustrations as a subtle watermark.
+   Inspired by the Mise pitch deck's warm, illustrated margins.
+   Uses warm tan strokes on cream — visible but never competing with content.
+   -------------------------------------------------------------------------- */
+.mise-texture {
+    position: relative;
+}
+
+.mise-texture::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.45;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='800' height='800' viewBox='0 0 800 800'%3E%3Cg fill='none' stroke='%23C4B49E' stroke-width='1.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M520 30 C530 25 545 28 580 55 C610 78 635 100 645 112 C652 122 650 135 642 140 C632 148 618 142 585 118 C555 96 535 78 525 65 C518 55 512 38 520 30Z'/%3E%3Cpath d='M545 48 C555 56 565 64 572 72'/%3E%3Cpath d='M565 60 C575 68 585 78 592 86'/%3E%3Cpath d='M585 76 C595 84 605 94 612 102'/%3E%3Cpath d='M600 92 C608 98 618 108 624 115'/%3E%3Cpath d='M680 170 C658 145 625 135 608 152 C592 170 598 200 618 218 L682 218 C698 200 702 185 680 170Z'/%3E%3Cpath d='M645 218 L645 255'/%3E%3Cpath d='M655 218 L655 252'/%3E%3Cpath d='M635 180 L650 195'/%3E%3Cpath d='M645 172 L660 188'/%3E%3Cpath d='M658 168 L672 185'/%3E%3Cpath d='M80 60 C100 30 140 35 130 70 C118 58 88 62 80 60Z'/%3E%3Cpath d='M105 48 L112 85'/%3E%3Cpath d='M165 22 C182 8 205 14 198 42 C185 32 170 30 165 22Z'/%3E%3Cpath d='M182 18 L186 52'/%3E%3Cpath d='M240 65 C255 45 278 52 272 75 C260 68 245 68 240 65Z'/%3E%3Cpath d='M258 55 L260 88'/%3E%3Cpath d='M35 280 L55 380'/%3E%3Cpath d='M35 295 C22 282 18 265 30 258 C38 265 38 282 35 295'/%3E%3Cpath d='M40 318 C50 305 62 300 60 315 C54 322 44 322 40 318'/%3E%3Cpath d='M42 342 C30 328 26 312 38 308 C44 316 44 335 42 342'/%3E%3Cpath d='M48 362 C58 350 68 348 65 360 C58 368 52 368 48 362'/%3E%3Cpath d='M52 378 C42 365 40 350 50 348 C54 355 54 372 52 378'/%3E%3Cpath d='M90 560 C78 538 82 515 95 508 C108 518 112 540 100 560 C95 568 90 568 90 560Z'/%3E%3Cpath d='M100 560 C112 538 108 515 95 508'/%3E%3Cpath d='M82 552 C68 530 75 508 95 500 C88 492 92 480 98 486 L95 508'/%3E%3Cpath d='M108 552 C120 530 115 508 95 500'/%3E%3Cpath d='M95 500 L95 485'/%3E%3Cpath d='M90 490 C95 480 100 488 97 486'/%3E%3Cpath d='M695 360 C708 338 702 305 685 282 C672 268 660 275 665 295 C672 318 678 348 670 372 C668 382 678 388 695 360Z'/%3E%3Cpath d='M685 282 C692 270 700 264 706 272'/%3E%3Ccircle cx='650' cy='580' r='40'/%3E%3Cpath d='M650 540 C638 552 632 568 636 585 C638 598 644 610 650 620'/%3E%3Cpath d='M650 540 C662 552 668 568 664 585 C662 598 656 610 650 620'/%3E%3Cpath d='M625 558 C638 565 650 562 650 580'/%3E%3Cpath d='M675 558 C662 565 650 562 650 580'/%3E%3Cpath d='M630 602 C640 596 650 598 650 580'/%3E%3Cpath d='M670 602 C660 596 650 598 650 580'/%3E%3Cpath d='M350 650 L350 695'/%3E%3Cpath d='M344 658 C338 650 332 642 338 638 C344 642 346 652 344 658'/%3E%3Cpath d='M356 658 C362 650 368 642 362 638 C356 642 354 652 356 658'/%3E%3Cpath d='M344 672 C338 664 332 656 338 652 C344 656 346 666 344 672'/%3E%3Cpath d='M356 672 C362 664 368 656 362 652 C356 656 354 666 356 672'/%3E%3Cpath d='M344 685 C338 678 332 670 338 666 C344 670 346 680 344 685'/%3E%3Cpath d='M356 685 C362 678 368 670 362 666 C356 670 354 680 356 685'/%3E%3Ccircle cx='200' cy='100' r='2.5'/%3E%3Ccircle cx='212' cy='112' r='2'/%3E%3Ccircle cx='195' cy='115' r='2.5'/%3E%3Ccircle cx='550' cy='450' r='2.5'/%3E%3Ccircle cx='562' cy='442' r='2'/%3E%3Ccircle cx='545' cy='438' r='2'/%3E%3Ccircle cx='300' cy='520' r='2.5'/%3E%3Ccircle cx='312' cy='530' r='2'/%3E%3Ccircle cx='295' cy='535' r='2.5'/%3E%3Ccircle cx='450' cy='180' r='2'/%3E%3Ccircle cx='460' cy='172' r='2.5'/%3E%3Ccircle cx='442' cy='175' r='2'/%3E%3Cpath d='M110 420 C88 398 88 365 110 352 C132 365 132 398 110 420Z'/%3E%3Cpath d='M110 352 C105 340 110 328 118 338 L110 352'/%3E%3Cpath d='M98 385 C105 372 115 372 122 385'/%3E%3Cpath d='M215 620 C220 615 226 608 222 575 C218 552 212 530 208 518 C206 514 202 516 205 522 C210 540 214 562 212 582 C208 595 212 615 215 620Z'/%3E%3Cpath d='M210 518 C214 506 220 502 218 512'/%3E%3Cpath d='M206 520 C202 508 206 498 210 510'/%3E%3Cpath d='M430 290 C448 268 475 275 468 300 C455 290 438 292 430 290Z'/%3E%3Cpath d='M450 278 L448 315'/%3E%3Cpath d='M720 450 C735 432 755 438 748 462 C738 455 725 455 720 450Z'/%3E%3Cpath d='M738 442 L740 475'/%3E%3Cpath d='M750 680 L750 740 M744 680 L744 705 Q744 712 750 712 M750 680 L750 705 M756 680 L756 705 Q756 712 750 712'/%3E%3Ccircle cx='480' cy='720' r='10'/%3E%3Ccircle cx='492' cy='714' r='9'/%3E%3Cpath d='M486 705 Q492 692 498 700'/%3E%3C/g%3E%3C/svg%3E");
+    background-repeat: repeat;
+    background-size: 800px 800px;
+}
+
+.mise-texture > * {
+    position: relative;
+    z-index: 1;
+}
+
+/* Warmer tint for landing/login pages */
+.mise-texture-warm::before {
+    opacity: 0.55;
+}
+
+/* --------------------------------------------------------------------------
+   17. DECORATIVE DIVIDER
+   A little flourish between sections
+   -------------------------------------------------------------------------- */
+.mise-divider {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: rgba(27, 42, 78, 0.2);
+}
+
+.mise-divider::before,
+.mise-divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: currentColor;
+}
+
+/* --------------------------------------------------------------------------
+   18. GREETING / WARM TEXT STYLES
+   -------------------------------------------------------------------------- */
+.mise-greeting {
+    font-size: 1.5rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+}
+
+.mise-subtitle {
+    font-size: 0.9rem;
+    color: rgba(27, 42, 78, 0.5);
+    line-height: 1.5;
+}
+
+/* --------------------------------------------------------------------------
+   19. AGENT CARD ICONS (inline SVG styling)
+   -------------------------------------------------------------------------- */
+.mise-agent-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+/* --------------------------------------------------------------------------
+   20. TAGLINE FLOURISH
+   -------------------------------------------------------------------------- */
+.mise-tagline {
+    font-style: italic;
+    color: rgba(27, 42, 78, 0.35);
+    font-size: 0.8rem;
+    letter-spacing: 0.05em;
+}

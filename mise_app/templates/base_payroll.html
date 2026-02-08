@@ -30,40 +30,14 @@
             }
         }
     </script>
+    <link rel="stylesheet" href="/static/css/mise.css">
     <script src="https://unpkg.com/htmx.org@1.9.10"></script>
-    <style>
-        /* Custom scrollbar */
-        ::-webkit-scrollbar { width: 4px; }
-        ::-webkit-scrollbar-track { background: #E0F0E0; }
-        ::-webkit-scrollbar-thumb { background: #2D8A4E; border-radius: 2px; }
-
-        /* Pulsing animation for recording */
-        @keyframes pulse-green {
-            0%, 100% { box-shadow: 0 0 0 0 rgba(45, 138, 78, 0.7); }
-            50% { box-shadow: 0 0 0 20px rgba(45, 138, 78, 0); }
-        }
-        .recording { animation: pulse-green 1.5s infinite; }
-
-        /* Loading spinner */
-        .spinner {
-            border: 4px solid #E0F0E0;
-            border-top: 4px solid #2D8A4E;
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            animation: spin 1s linear infinite;
-        }
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-    </style>
     {% block head %}{% endblock %}
 </head>
-<body class="bg-mise-cream text-mise-navy min-h-screen">
+<body class="bg-mise-cream text-mise-navy min-h-screen mise-texture">
     <!-- Header -->
-    <header class="bg-mise-cream border-b border-mise-green/20 px-4 py-3">
-        <div class="flex items-center justify-between">
+    <header class="sticky top-0 z-30 bg-mise-cream/80 mise-header px-4 py-3">
+        <div class="mise-container flex items-center justify-between">
             <!-- Audiowave back button (left) -->
             <a href="/" class="p-1 rounded-lg hover:bg-mise-green/10 transition-colors" title="Back to Home">
                 <svg class="w-7 h-7" viewBox="0 0 28 24" fill="#2D8A4E">
@@ -77,8 +51,8 @@
 
             <!-- Mise: Payroll Logo (centered) -->
             <div class="flex items-center space-x-2">
-                <span class="text-xl font-serif font-bold text-mise-navy">Mise:</span>
-                <span class="text-xl font-serif font-bold text-mise-green">Payroll</span>
+                <span class="text-xl font-bold tracking-tight text-mise-navy">Mise:</span>
+                <span class="text-xl font-bold tracking-tight text-mise-green">Payroll</span>
             </div>
 
             <!-- Restaurant Logo (right) -->
@@ -94,12 +68,12 @@
     {% block subheader %}{% endblock %}
 
     <!-- Main content -->
-    <main class="pb-20">
+    <main class="pb-20 mise-container mise-animate-in">
         {% block content %}{% endblock %}
     </main>
 
     <!-- Bottom nav - Payroll tabs -->
-    <nav class="fixed bottom-0 left-0 right-0 bg-white border-t border-mise-green/20">
+    <nav class="fixed bottom-0 left-0 right-0 mise-bottom-nav">
         <div class="flex justify-around py-2">
             <a href="{% if period %}/payroll/period/{{ period.id }}{% else %}/payroll{% endif %}"
                class="flex flex-col items-center p-2 {% if active_tab == 'shifties' %}text-mise-green{% else %}text-mise-navy/50 hover:text-mise-green{% endif %}">

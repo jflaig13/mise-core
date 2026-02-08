@@ -12,7 +12,7 @@
     </div>
 
     <!-- Transcript -->
-    <div class="mb-6 bg-white border border-mise-green/20 rounded-lg p-4">
+    <div class="mb-6 mise-card mise-accent-left-green rounded-xl p-4">
         <h2 class="text-sm font-semibold text-mise-navy/60 mb-2">Transcript</h2>
         <p class="text-sm text-mise-navy/80 italic">"{{ transcript }}"</p>
     </div>
@@ -60,7 +60,7 @@
             {% if rows %}
             <div class="space-y-3">
                 {% for row in rows %}
-                <div class="bg-white border border-mise-green/20 rounded-lg p-4 flex items-center justify-between">
+                <div class="mise-card rounded-xl p-4 flex items-center justify-between">
                     <div>
                         <p class="font-semibold">{{ row.Employee or row.employee }}</p>
                         <p class="text-sm text-mise-navy/60">{{ row.Role or row.role }}</p>
@@ -89,7 +89,7 @@
         <div class="space-y-3">
             {% if rows %}
             <button type="submit"
-                    class="w-full py-4 bg-mise-green hover:bg-mise-green-dark rounded-lg font-semibold text-lg text-white transition-colors">
+                    class="w-full py-4 bg-mise-green hover:bg-mise-green-dark rounded-xl font-semibold text-lg text-white transition-colors mise-btn-primary">
                 Approve & Save
             </button>
             {% endif %}

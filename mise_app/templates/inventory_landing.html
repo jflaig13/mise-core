@@ -5,8 +5,8 @@
 {% block content %}
 <div class="p-4 flex flex-col items-center justify-center min-h-[70vh]">
     <!-- Explanation -->
-    <div class="mb-8 px-4 py-4 bg-mise-red/5 rounded-lg max-w-sm">
-        <p class="text-sm text-mise-navy/70 leading-relaxed text-center">
+    <div class="mb-8 mise-card mise-accent-left-red px-4 py-4 max-w-sm">
+        <p class="text-sm text-mise-navy/60 leading-relaxed text-center">
             A <em>shelfy</em> is a voice recording of your inventory count for one area.
             Just tap the button, say the date, and read your count like you're telling a coworker
             who's writing it down. Mise will transcribe it and let you review before saving.
@@ -15,7 +15,7 @@
 
     <!-- Record Button -->
     <a href="/inventory/select-category"
-       class="w-44 h-44 rounded-full bg-mise-red hover:bg-mise-red-dark flex items-center justify-center
+       class="mise-breathe w-44 h-44 rounded-full bg-mise-red hover:bg-mise-red-dark flex items-center justify-center
               transition-all duration-200 active:scale-95 shadow-lg">
         <div class="text-center text-white">
             <svg class="w-16 h-16 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -25,6 +25,8 @@
             <span class="text-lg font-semibold">Record a<br>Shelfy</span>
         </div>
     </a>
+
+    <p class="mt-4 mise-tagline">Walk, talk, done.</p>
 
     <!-- View Totals Link (if shelfies exist) -->
     {% if has_shelfies %}

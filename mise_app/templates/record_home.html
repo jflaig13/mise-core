@@ -5,8 +5,8 @@
 {% block content %}
 <div class="p-4 flex flex-col items-center justify-center min-h-[70vh]">
     <!-- What's a shifty? -->
-    <div class="mb-6 px-4 py-3 bg-mise-green/5 rounded-lg max-w-sm">
-        <p class="text-xs text-mise-navy/40 leading-relaxed text-center">
+    <div class="mb-6 mise-card mise-accent-left-green px-4 py-3 max-w-sm">
+        <p class="text-xs text-mise-navy/50 leading-relaxed text-center">
             A <em>shifty</em> = one shift's payroll data: date, AM/PM, support staff, servers, tips &amp; food sales.<br>
             7 days &times; 2 shifts = 14 shifties per week.
         </p>
@@ -16,7 +16,7 @@
     <div id="recorder" class="text-center w-full flex flex-col items-center">
         <!-- Tappable Audiowave Logo -->
         <button id="record-btn"
-                class="w-40 h-40 rounded-full bg-mise-green hover:bg-mise-green-dark flex items-center justify-center
+                class="mise-breathe w-40 h-40 rounded-full bg-mise-green hover:bg-mise-green-dark flex items-center justify-center
                        transition-all duration-200 active:scale-95 shadow-lg"
                 onclick="toggleRecording()">
             <svg id="audiowave-icon" class="w-20 h-20" viewBox="0 0 24 24" fill="white">
@@ -30,6 +30,7 @@
         </button>
 
         <p id="status" class="mt-6 text-mise-navy/60 text-lg">Tap to record a shifty</p>
+        <p class="mt-1 mise-tagline" id="encouragement">Just talk like you're telling a coworker.</p>
         <p id="timer" class="mt-2 text-2xl font-mono text-mise-navy/50 hidden">00:00</p>
     </div>
 
@@ -69,7 +70,7 @@
     <div class="mt-8 text-center">
         <div class="relative inline-block">
             <p class="text-mise-navy/40 mb-3 text-sm">or upload a recording</p>
-            <label class="inline-block px-4 py-2 bg-white border border-mise-green/20 hover:border-mise-green/40 rounded-lg cursor-pointer transition-colors">
+            <label class="inline-block px-5 py-3 mise-card hover:border-mise-green/30 rounded-xl cursor-pointer transition-all border-2 border-dashed border-mise-navy/15">
                 <span class="text-sm text-mise-navy/60">Choose File</span>
                 <input type="file" accept="audio/*,.wav,.m4a,.mp3"
                        class="hidden" onchange="uploadFile(this)">
@@ -78,7 +79,7 @@
     </div>
 
     <!-- Processing overlay -->
-    <div id="processing-overlay" class="hidden fixed inset-0 bg-mise-cream/95 flex items-center justify-center z-50">
+    <div id="processing-overlay" class="hidden fixed inset-0 bg-mise-cream/90 mise-overlay flex items-center justify-center z-50">
         <div class="text-center">
             <div class="spinner mx-auto mb-4"></div>
             <p class="text-xl font-semibold mb-2">Processing...</p>
@@ -172,6 +173,7 @@ async function toggleRecording() {
             };
 
             // Show countdown before starting to record
+            btn.classList.remove('mise-breathe');
             btn.classList.add('recording');
             btn.classList.remove('bg-mise-green');
             btn.classList.add('bg-red-500');
@@ -281,7 +283,7 @@ function resetRecordButton() {
     const timer = document.getElementById('timer');
 
     btn.classList.remove('recording', 'bg-red-500');
-    btn.classList.add('bg-mise-green');
+    btn.classList.add('bg-mise-green', 'mise-breathe');
     audiowaveIcon.classList.remove('hidden');
     btnText.classList.add('hidden');
     status.textContent = 'Tap to record a shifty';
