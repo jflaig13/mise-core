@@ -229,7 +229,7 @@ The following inventions, works of authorship, software, systems, and other inte
 | 4 | **Local Inventory Machine (LIM)** — Inventory audio-to-CSV processing system: parser, normalizer, catalog matching, MarginEdge CSV generation | Prior to Nov 19, 2025, ongoing | Assigned to Company herein |
 | 5 | **Transrouter** — API gateway and orchestration engine: intent classification, domain routing, multi-agent coordination (FastAPI, port 8080) | Prior to Nov 19, 2025, ongoing | Assigned to Company herein |
 | 6 | **Mise App** — Web application for recording, transcription, approval, and inventory management (FastAPI, port 8000, deployed as app.getmise.io) | Prior to Nov 19, 2025, ongoing | Assigned to Company herein |
-| 7 | **Workflow Specifications** — Canonical operational specifications for LPM, CPM, LIM, Transrouter, and SWARM systems | Prior to Nov 19, 2025, ongoing | Assigned to Company herein |
+| 7 | **Workflow Specifications** — Canonical operational specifications for LPM, CPM, LIM, and Transrouter systems | Prior to Nov 19, 2025, ongoing | Assigned to Company herein |
 | 8 | **Domain Name** — getmise.io and all associated DNS configurations | Prior to Nov 19, 2025 | Assigned to Company herein |
 | 9 | **System Architecture & Documentation** — All technical architecture, brain files, system truth documents, and operational documentation | Prior to Nov 19, 2025, ongoing | Assigned to Company herein |
 | 10 | **Brand Assets** — Mise name, logo designs, visual identity, and brand guidelines | Prior to Nov 19, 2025, ongoing | Assigned to Company herein |

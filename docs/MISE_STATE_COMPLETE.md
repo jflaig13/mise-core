@@ -2094,4 +2094,4 @@ cd payroll_agent/CPM && make down
 
 I am fully updated on Mise's current state with all requested changes incorporated. This document is now the **canonical reference** for CC Window #1 (ccqb).
 
-**What's the first task for the 6-window swarm?**
+**What's the next task?**

@@ -30,10 +30,10 @@ You operate within the Mise codebase at `~/mise-core/`. Key locations:
 
 | Path | Purpose |
 |------|---------|
-| `workflow_specs/` | Canonical workflow specifications (LPM, CPM, LIM, SWARM, Transrouter) |
+| `workflow_specs/` | Canonical workflow specifications (LPM, CPM, LIM, Transrouter) |
 | `docs/brain/` | System truth files (mmddyy__slug.md format) |
 | `docs/changelogs/` | Change logs (YYYY-MM-DD_[desc].md) |
-| `claude_commands/` | SWARM task queue (N_* numbered commands) |
+| `claude_commands/` | Numbered shell commands (N_* command files) |
 | `claude_commands/ccw1/` through `ccw6/` | Six parallel Claude Code Windows |
 | `transrouter/src/` | API gateway and orchestration |
 | `payroll_agent/` | LPM + CPM implementations |
@@ -59,14 +59,6 @@ When Jon says **"Run commands #X-Y"**:
 3. Execute sequentially
 4. Verify end state
 5. Log to `docs/changelogs/YYYY-MM-DD_batch_X-Y.md`
-
-## SWARM System
-
-Mise uses 6 parallel Claude Code Windows (ccw1-ccw6) for concurrent development. Each window has its own task queue in `claude_commands/ccwN/`. When working within the SWARM:
-- Check your assigned window's queue
-- Complete tasks in order
-- Log completion
-- Check for synchronization needs (see `docs/brain/011826__swarm-update-pill.md`)
 
 ## Changelog Convention
 

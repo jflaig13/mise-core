@@ -12,10 +12,11 @@ Before responding to ANY user message, read these files IN FULL using the Read t
 6. `CLAUDE_PLAYBOOKS.md`
 7. `docs/brain/020626__atomic-codebase-exploration-guide.md`
 8. `docs/brain/020726__engineering-risk-classification.md`
+9. `docs/cc_execs/MISE_CC_EXEC_MASTER_SPEC.md`
 
 **Do not summarize. Do not skim. Read each file completely and internalize the rules before proceeding.**
 
-The summaries below are fallback context — they are NOT a substitute for reading the full documents. If you have not read all 8 files, you are not initialized. Stop and read them.
+The summaries below are fallback context — they are NOT a substitute for reading the full documents. If you have not read all 9 files, you are not initialized. Stop and read them.
 
 ---
 
@@ -146,6 +147,32 @@ This prevents old plans from stacking up and ensures nothing gets forgotten.
 
 ---
 
+## CC Executive Governance (Binding Authority)
+
+Claude Code behavior within the Mise repository is governed by the **CC Executive system** as defined in `docs/cc_execs/MISE_CC_EXEC_MASTER_SPEC.md`.
+
+**Key rules:**
+- CC Executives (CCRO, CCFO, CCTO, CCPO, CCMO, CCLO, CCGO, CCCO) are the defined executive roles for AI-assisted decision-making.
+- Claude Code Skills are subordinate to, provisional under, and subject to CC Exec authority. A skill may not invent executive authority.
+- No alternative execution model exists. The CC Exec system is the single paradigm for executive-level AI assistance.
+- The CC Exec Master Spec does NOT override VALUES_CORE.md, AGI_STANDARD.md, SEARCH_FIRST.md, AGENT_POLICY.md, CLAUDE.md, MISE_MASTER_SPEC.md, or workflow specifications. Higher-layer documents always win.
+
+**Authority hierarchy (from highest to lowest):**
+1. VALUES_CORE.md
+2. AGI_STANDARD.md
+3. SEARCH_FIRST.md / AGENT_POLICY.md / CLAUDE.md
+4. MISE_MASTER_SPEC.md
+5. Workflow specs
+6. CC Exec Master Spec (`docs/cc_execs/MISE_CC_EXEC_MASTER_SPEC.md`)
+7. Individual CC Exec registry files
+8. Skills (SKILL.md)
+9. Codebase
+10. External sources
+
+**Canonical reference:** `docs/cc_execs/MISE_CC_EXEC_MASTER_SPEC.md`
+
+---
+
 ## Before Making File Changes
 - State what you're changing and why
 - Wait for my approval
@@ -177,7 +204,6 @@ ANTHROPIC_API_KEY="$KEY" .venv/bin/python -m pytest tests/test_tier2_payroll_pip
 - `workflow_specs/LPM/LPM_Workflow_Master.txt` — Local Payroll Machine
 - `workflow_specs/CPM/CPM_Workflow_Master.txt` — Cloud Payroll Machine
 - `workflow_specs/LIM/LIM_Workflow_Master.txt` — Local Inventory Machine
-- `workflow_specs/SWARM/SWARM_Workflow_Master.txt` — Multi-Window Task Management
 
 **Architecture:**
 Mise is a multi-agent restaurant ops system for Papa Surf Burger Bar. Transrouter coordinates domain agents (Payroll, Inventory, Ordering, Scheduling, Forecasting, General Ops). Each agent has its own brain with Claude integration.

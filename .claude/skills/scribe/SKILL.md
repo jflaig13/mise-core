@@ -71,7 +71,6 @@ The canonical business logic for each domain agent. These are executable truth â
 | LPM Master | `workflow_specs/LPM/LPM_Workflow_Master.txt` | Local Payroll Machine |
 | CPM Master | `workflow_specs/CPM/CPM_Workflow_Master.txt` | Cloud Payroll Machine |
 | LIM Master | `workflow_specs/LIM/LIM_Workflow_Master.txt` | Local Inventory Machine |
-| SWARM Master | `workflow_specs/SWARM/SWARM_Workflow_Master.txt` | Multi-Window Task Mgmt |
 | Transrouter | `workflow_specs/transrouter/Transrouter_Workflow_Master.txt` | Agent Orchestration |
 
 **Workflow Change Logs:** Every spec modification is logged in `workflow_specs/{DOMAIN}/workflow_changes/MMDDYY_description.txt`. These are the audit trail. They must exist for every change.
@@ -89,7 +88,6 @@ Append-only knowledge base. The brain is the sum of all files in `/mise-core`, b
 | `011326__lpm-shift-hours.md` | Shift duration calculations (AM/PM/DST) |
 | `011326__lpm-tipout-from-food-sales.md` | Tipout percentages (utility 5%, busser 4%, expo 1%) |
 | `011826__founder-story-pitch-pillar.md` | Origin story + pitch architecture |
-| `011826__swarm-update-pill.md` | Multi-window sync protocol |
 | `020626__atomic-codebase-exploration-guide.md` | Deep codebase exploration methodology |
 | `020626__api-keys-reference.md` | API keys storage and Cloud Run env var status |
 | `LEARNING_BANKS_ARCHITECTURE.md` | Learning system architecture |

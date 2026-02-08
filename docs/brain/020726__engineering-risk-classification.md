@@ -114,7 +114,7 @@ SUBSYSTEM TIER ASSIGNMENTS
 | Documentation | `docs/` (non-brain), `docs/internal_mise_docs/`, `fundraising/` | Documents and IMDs. Important for institutional knowledge but not for system behavior. |
 | Claude Code Skills | `.claude/skills/` | Agent skill definitions. Affect agent behavior but not production code directly. |
 | AI Configs | `AI_Configs/` | Model configuration. Affects AI behavior in development but production prompts live in `transrouter/src/prompts/`. |
-| SWARM / Command Queue | `claude_commands/` | Multi-window task management. Internal tooling only. |
+| Command Queue | `claude_commands/` | Numbered shell commands. Internal tooling only. |
 
 ENGINEERING DIFFICULTY GRADES
 

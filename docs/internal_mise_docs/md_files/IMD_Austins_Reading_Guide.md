@@ -29,7 +29,7 @@ They're ordered deliberately. Each one builds on the last. Read them in this ord
 
 **What You'll Learn**
 
-Everything about the company in one place. The legal entity (Delaware C-Corp, EIN, registered agent), cap table (you: 3,000,000 shares, 30%), financial infrastructure (Mercury banking, pending Chase and UBS applications), legal formation status (what's done, what's missing), every service account and API we use, insurance gaps, production status at Papa Surf (20+ weeks of zero-error payroll), the full technical architecture (how the app and transrouter work together), codebase structure (every directory and what it does), all workflow specifications (LPM, CPM, LIM, SWARM), safety and governance protocols, fundraising status ($250K at $3M pre-money), market positioning ($149-$249/mo, 500K+ target restaurants), and the action items that still need attention.
+Everything about the company in one place. The legal entity (Delaware C-Corp, EIN, registered agent), cap table (you: 3,000,000 shares, 30%), financial infrastructure (Mercury banking, pending Chase and UBS applications), legal formation status (what's done, what's missing), every service account and API we use, insurance gaps, production status at Papa Surf (20+ weeks of zero-error payroll), the full technical architecture (how the app and transrouter work together), codebase structure (every directory and what it does), all workflow specifications (LPM, CPM, LIM), safety and governance protocols, fundraising status ($250K at $3M pre-money), market positioning ($149-$249/mo, 500K+ target restaurants), and the action items that still need attention.
 
 **Why It Matters For You**
 

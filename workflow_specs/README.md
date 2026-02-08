@@ -1,6 +1,6 @@
 # Workflow Specs and Change Log Rules (All Workflows)
 
-Applies to: CPM, LIM, LPM, SWARM, and any future workflows.
+Applies to: CPM, LIM, LPM, and any future workflows.
 
 For each workflow:
 - Location: workflow_specs/<WORKFLOW>/

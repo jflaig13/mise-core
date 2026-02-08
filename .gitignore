@@ -48,5 +48,11 @@ folder.txt
 # Cowork sandbox (working files)
 cowork_sandbox/
 
-# Swarm task queues (working files - task files and archives)
+# Claude command window queues (working files - task files and archives)
 claude_commands/ccw*/
+
+# API keys reference (contains real keys)
+docs/brain/020626__api-keys-reference.md
+
+# Conversation logs
+mise_app/data/conversations/

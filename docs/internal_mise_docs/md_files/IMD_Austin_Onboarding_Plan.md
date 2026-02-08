@@ -292,7 +292,6 @@ Read these workflow specs (or ask Claude Code to explain them):
 - `workflow_specs\LIM\LIM_Workflow_Master.txt` — Local Inventory Machine
 - `workflow_specs\CPM\CPM_Workflow_Master.txt` — Cloud Payroll Machine
 - `workflow_specs\transrouter\Transrouter_Workflow_Master.txt` — How audio gets routed
-- `workflow_specs\SWARM\SWARM_Workflow_Master.txt` — How Jon runs multiple Claude Code windows in parallel
 
 **What to understand:**
 - What triggers each workflow?
@@ -447,7 +446,6 @@ All paths below are relative to your mise-core folder (`C:\Users\Austin\mise-cor
 | Inventory workflow | `workflow_specs\LIM\LIM_Workflow_Master.txt` |
 | Cloud payroll workflow | `workflow_specs\CPM\CPM_Workflow_Master.txt` |
 | Transrouter workflow | `workflow_specs\transrouter\Transrouter_Workflow_Master.txt` |
-| SWARM workflow | `workflow_specs\SWARM\SWARM_Workflow_Master.txt` |
 | Web app code | `mise_app\` |
 | Transrouter code | `transrouter\` |
 | Payroll agent code | `payroll_agent\` |
@@ -478,7 +476,6 @@ This is a complete reference of terms you'll encounter. Don't memorize these —
 | **LPM (Local Payroll Machine)** | The version of the payroll system that runs on Jon's computer. Jon records one audio file covering the entire week, and LPM processes it locally. This is what Jon uses weekly at Papa Surf. |
 | **CPM (Cloud Payroll Machine)** | The cloud version of the payroll system. This is what runs behind the web app — it processes individual shifts in real time as managers record them. |
 | **LIM (Local Inventory Machine)** | The local version of the inventory system. Processes inventory audio recordings and generates structured count sheets. |
-| **SWARM** | A workflow for running multiple Claude Code windows in parallel. Jon uses this to work on different parts of Mise simultaneously (one window for code, one for testing, one for docs, etc.). |
 | **IMD (Internal Mise Document)** | A branded PDF document generated using our PDF generator — pitch decks, investment proposals, strategy docs, onboarding plans. Uses Mise colors, logo, and fonts. When someone says "make this an IMD," this is what they mean. |
 | **Mise Doc** | A report or summary that the Mise product generates for a restaurant manager — weekly payroll summary, monthly inventory report, tip report. This is product output, not internal. |
 | **Tip Pool** | When 2+ servers work the same shift, their tips are combined and split evenly. Mise detects this automatically. |

@@ -71,7 +71,6 @@ MISE System
 │   ├── Domain Router — transrouter/src/domain_router.py
 │   ├── ASR Adapter — transrouter/src/asr_adapter.py
 │   └── Prompts — transrouter/src/prompts/
-├── SWARM (Task Queue) — claude_commands/ccw1-6/
 ├── Mise App (Web UI) — mise_app/ (port 8000)
 └── Clients — clients/{papasurf,downisland,sowalhouse}/
 ```
@@ -87,7 +86,6 @@ MISE System
 | Payroll rules | `workflow_specs/LPM/LPM_Workflow_Master.txt`, `docs/brain/011326__lpm-*` |
 | Inventory rules | `workflow_specs/LIM/LIM_Workflow_Master.txt` |
 | Cloud payroll | `workflow_specs/CPM/CPM_Workflow_Master.txt` |
-| SWARM/multi-window | `workflow_specs/SWARM/SWARM_Workflow_Master.txt` |
 | API routing | `workflow_specs/transrouter/Transrouter_Workflow_Master.txt` |
 | Brain protocol | `docs/brain/121224__brain-ingest-protocol.md` |
 | Fundraising | `fundraising/BUDGET_BREAKDOWN_250K.md` |

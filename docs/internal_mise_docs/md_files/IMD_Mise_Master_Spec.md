@@ -241,13 +241,11 @@ This axiom governs ALL decisions including product design, marketing, growth mec
                     │               │               │
                     └───────────────┼───────────────┘
                                     │
-              ┌─────────────────────┴─────────────────────┐
-              │                                           │
-        ┌───────────────────┐               ┌──────────────────┐
-        │   Transrouter     │               │      SWARM       │
-        │  (API Gateway +   │               │   (Task Queue)   │
-        │   Orchestration)  │               └──────────────────┘
-        └─────────┬─────────┘
+                      ┌───────────────────┐
+                      │   Transrouter     │
+                      │  (API Gateway +   │
+                      │   Orchestration)  │
+                      └─────────┬─────────┘
                   │
         ┌─────────┴─────────┐
         │                   │
@@ -298,7 +296,7 @@ mise-core/
 │   ├── downisland/
 │   ├── sowalhouse/
 │   └── new_client_onboarding/
-├── claude_commands/         # SWARM task queue system (ccw1-6)
+├── claude_commands/         # Numbered shell commands (see CLAUDE_PLAYBOOKS.md)
 ├── config/                  # Configuration files
 ├── data/                    # Data files
 ├── docs/                    # Documentation hub
@@ -324,7 +322,6 @@ mise-core/
 │   ├── CPM/
 │   ├── LIM/
 │   ├── LPM/
-│   ├── SWARM/
 │   ├── transrouter/
 │   └── roster/
 └── [Root Files]
@@ -392,7 +389,6 @@ mise-core/
 | **LPM** | `workflow_specs/LPM/LPM_Workflow_Master.txt` | Local Payroll Machine |
 | **CPM** | `workflow_specs/CPM/CPM_Workflow_Master.txt` | Cloud Payroll Machine |
 | **LIM** | `workflow_specs/LIM/LIM_Workflow_Master.txt` | Local Inventory Machine |
-| **SWARM** | `workflow_specs/SWARM/SWARM_Workflow_Master.txt` | Multi-window task management |
 | **Transrouter** | `workflow_specs/transrouter/Transrouter_Workflow_Master.txt` | API Gateway |
 
 ### LPM (Local Payroll Machine)
@@ -414,11 +410,6 @@ mise-core/
 - **Purpose:** Convert inventory audio into MarginEdge-ready CSV
 - **Pipeline:** Record → Whisper transcribe → Parse → Normalize → Validate → Generate CSV
 - **Key Feature:** Fuzzy matching to product catalog
-
-### SWARM (Multi-Window Task Management)
-- **Purpose:** File-based task coordination across multiple Claude Code windows
-- **Architecture:** 6 parallel task queues (ccw1-6)
-- **Mechanism:** User creates .md task files in ccwN/ directory → Claude executes → archives
 
 ---
 
@@ -466,7 +457,6 @@ mise-core/
 | `011326__lpm-shift-hours.md` | LPM shift hour calculations |
 | `011326__lpm-tipout-from-food-sales.md` | Tipout percentage rules |
 | `011826__founder-story-pitch-pillar.md` | Origin story + pitch architecture (CANONICAL) |
-| `011826__swarm-update-pill.md` | Multi-window development synchronization |
 | `LEARNING_BANKS_ARCHITECTURE.md` | Learning system architecture |
 
 ### Brain File Naming Convention

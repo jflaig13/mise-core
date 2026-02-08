@@ -710,7 +710,6 @@ payroll/
 
 **Brain Files**:
 - `docs/brain/011326__lpm-shift-hours.md` (114 lines) ← **CRITICAL**
-- `docs/brain/011826__swarm-update-pill.md` (searched)
 - `docs/brain/011826__founder-story-pitch-pillar.md` (searched)
 
 **Code Files**:
