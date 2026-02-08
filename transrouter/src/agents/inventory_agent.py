@@ -14,6 +14,7 @@ import re
 from pathlib import Path
 from typing import Any, Dict, Optional, List
 
+from ..asr_adapter import get_asr_provider
 from ..claude_client import ClaudeClient, ClaudeConfig, ClaudeResponse
 from ..prompts.inventory_prompt import (
     build_inventory_system_prompt,
@@ -30,11 +31,19 @@ class InventoryAgentError(Exception):
 
 
 def _load_catalog() -> Dict[str, Any]:
-    """Load the inventory catalog JSON."""
-    catalog_path = Path(__file__).parent.parent.parent.parent / "inventory_agent" / "inventory_catalog.json"
+    """Load the inventory catalog JSON.
+
+    Tries two paths:
+    1. inventory_agent/inventory_catalog.json (local dev)
+    2. data/inventory_catalog.json (Docker / production)
+    """
+    primary_path = Path(__file__).parent.parent.parent.parent / "inventory_agent" / "inventory_catalog.json"
+    fallback_path = Path(__file__).parent.parent.parent.parent / "data" / "inventory_catalog.json"
+
+    catalog_path = primary_path if primary_path.exists() else fallback_path
 
     if not catalog_path.exists():
-        log.warning("Inventory catalog not found at %s", catalog_path)
+        log.warning("Inventory catalog not found at %s or %s", primary_path, fallback_path)
         return {}
 
     try:
@@ -52,7 +61,7 @@ def _extract_pack_multiplier(unit: str) -> Optional[tuple[int, str]]:
         "4-pack" -> (4, "pack")
         "6-pack" -> (6, "pack")
         "12-pack" -> (12, "pack")
-        "case" -> (24, "case")  # Standard case size
+        "cases" -> None  # No assumed conversion — case sizes vary by product
         "bottles" -> None
 
     Returns:
@@ -64,10 +73,6 @@ def _extract_pack_multiplier(unit: str) -> Optional[tuple[int, str]]:
     pack_match = re.match(r"(\d+)[\s\-]?packs?", unit_lower)
     if pack_match:
         return (int(pack_match.group(1)), "pack")
-
-    # Case (standard 24 count for cans/bottles)
-    if "case" in unit_lower:
-        return (24, "case")
 
     return None
 
@@ -96,7 +101,7 @@ def _find_catalog_unit(product_name: str, catalog: Dict[str, Any]) -> Optional[s
             if not isinstance(item, dict):
                 continue
 
-            item_name = item.get("name", "").lower()
+            item_name = item.get("item", "").lower()
 
             # Exact match or fuzzy match
             if item_name == product_lower or product_lower in item_name or item_name in product_lower:
@@ -377,6 +382,74 @@ class InventoryAgent:
                 log.debug("Added conversion for %s: %s", product_name, conversion_display)
 
         return inventory_json
+
+    # ========================================================================
+    # Self-contained pipelines (ASR → parse → dict)
+    # ========================================================================
+
+    def process_audio(
+        self,
+        audio_bytes: bytes,
+        category: str = "bar",
+        area: str = "",
+    ) -> Dict[str, Any]:
+        """Full pipeline: ASR → parse → structured result dict.
+
+        Args:
+            audio_bytes: Raw audio data.
+            category: Inventory category (bar, food, supplies).
+            area: Optional area hint.
+
+        Returns:
+            Dict with {status, transcript, approval_json} matching route expectations.
+        """
+        log.info("InventoryAgent.process_audio: processing %d bytes (category=%s)", len(audio_bytes), category)
+
+        # Step 1: Transcribe
+        asr = get_asr_provider()
+        asr_result = asr.transcribe(audio_bytes, "wav", sample_rate_hz=16000)
+        transcript = asr_result.transcript
+
+        if not transcript:
+            return {"status": "error", "error": "Transcription returned empty result"}
+
+        log.info("InventoryAgent.process_audio: transcript (%d chars)", len(transcript))
+
+        # Step 2: Parse and return
+        return self.process_text(transcript, category, area)
+
+    def process_text(
+        self,
+        transcript: str,
+        category: str = "bar",
+        area: str = "",
+    ) -> Dict[str, Any]:
+        """Parse-only pipeline for pre-transcribed text.
+
+        Args:
+            transcript: Already-transcribed text.
+            category: Inventory category (bar, food, supplies).
+            area: Optional area hint.
+
+        Returns:
+            Dict with {status, transcript, approval_json} matching route expectations.
+        """
+        log.info("InventoryAgent.process_text: parsing %d chars (category=%s)", len(transcript), category)
+
+        result = self.parse_transcript(transcript, category, area)
+
+        if result.get("status") == "success":
+            return {
+                "status": "success",
+                "transcript": transcript,
+                "approval_json": result.get("inventory_json", {}),
+            }
+        else:
+            return {
+                "status": "error",
+                "error": result.get("error", "Inventory parsing failed"),
+                "transcript": transcript,
+            }
 
 
 # Module-level instance for simple usage
