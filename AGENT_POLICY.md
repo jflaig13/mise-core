@@ -12,8 +12,9 @@ First: **Learn my rules.** Before coding, read:
 - Transcribe depends on .venv/bin/whisper; if missing, run .venv/bin/pip install openai-whisper
 
 Scope & Boundaries
-- Touch only the workflow you’re assigned; read its doc first.
+- Touch only the workflow you're assigned; read its doc first.
 - Do not change schemas/workflows unless explicitly directed.
+- Classify all changes by Tier and EDG before implementation — see `docs/brain/020726__engineering-risk-classification.md`.
 - Keep base paths and env overrides intact (e.g., LPM_TRANSCRIPTS_BASE).
 - Log workflow changes in the correct workflow_changes folder.
 - Apply the same rules to all workflows (CPM/LIM/LPM/future): spec + critical paths + change log in workflow_specs/<WORKFLOW>/.

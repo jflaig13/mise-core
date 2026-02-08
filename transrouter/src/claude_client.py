@@ -27,7 +27,7 @@ class ClaudeConfig:
     """Configuration for Claude API calls."""
 
     model: str = "claude-sonnet-4-20250514"
-    max_tokens: int = 8000  # Max OUTPUT tokens
+    max_tokens: int = 16000  # Max OUTPUT tokens
     max_input_tokens: int = 15000  # Max INPUT tokens (warn if exceeded)
     timeout_seconds: float = 120.0
 

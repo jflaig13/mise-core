@@ -97,9 +97,9 @@ class PayPeriod:
 class ShiftyConfig:
     """Configuration for the Shifty app."""
 
-    # API endpoints
-    transrouter_url: str = "http://localhost:8080"
-    transrouter_api_key: str = "mise-core"
+    # API endpoints (unused in direct-call architecture — kept for backward compat)
+    transrouter_url: str = "http://localhost:8080"  # Dormant: agents called directly via Python imports
+    transrouter_api_key: str = "mise-core"  # Dormant: agents called directly via Python imports
 
     # Google Sheets
     approval_sheet_id: str = ""

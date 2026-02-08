@@ -339,26 +339,16 @@ async def process_audio(
             status_code=400
         )
 
-    # Call transrouter API
-    log.info(f"Calling transrouter at {config.transrouter_url}/api/v1/audio/process")
+    # Call payroll agent directly (bypasses transrouter HTTP)
+    log.info(f"Calling payroll agent directly for period {period_id}")
     try:
-        response = requests.post(
-            f"{config.transrouter_url}/api/v1/audio/process",
-            headers={
-                "X-API-Key": config.transrouter_api_key,
-                "X-Restaurant-ID": restaurant_id,
-            },
-            files={"file": ("recording.wav", audio_bytes, "audio/wav")},
-            timeout=120,
-        )
-        log.info(f"Transrouter response status: {response.status_code}")
-        response.raise_for_status()
-        result = response.json()
-        log.info(f"Transrouter result status: {result.get('status')}")
-    except requests.RequestException as e:
-        log.error(f"Transrouter API error: {e}")
+        from transrouter.src.agents.payroll_agent import get_agent as get_payroll_agent
+        result = get_payroll_agent().process_audio(audio_bytes)
+        log.info(f"Agent result status: {result.get('status')}")
+    except Exception as e:
+        log.error(f"Agent service error: {e}")
         return JSONResponse(
-            {"status": "error", "error": f"API error: {e}"},
+            {"status": "error", "error": f"Agent error: {e}"},
             status_code=500
         )
 
@@ -495,23 +485,14 @@ async def process_shifty(
             status_code=400
         )
 
-    # Call transrouter API
+    # Call payroll agent directly (bypasses transrouter HTTP)
     try:
-        response = requests.post(
-            f"{config.transrouter_url}/api/v1/audio/process",
-            headers={
-                "X-API-Key": config.transrouter_api_key,
-                "X-Restaurant-ID": restaurant_id,
-            },
-            files={"file": (f"{shifty_code}.wav", audio_bytes, "audio/wav")},
-            timeout=120,
-        )
-        response.raise_for_status()
-        result = response.json()
-    except requests.RequestException as e:
-        log.error(f"Transrouter API error: {e}")
+        from transrouter.src.agents.payroll_agent import get_agent as get_payroll_agent
+        result = get_payroll_agent().process_audio(audio_bytes, shift_code=shifty_code)
+    except Exception as e:
+        log.error(f"Agent service error: {e}")
         return JSONResponse(
-            {"status": "error", "error": f"API error: {e}"},
+            {"status": "error", "error": f"Agent error: {e}"},
             status_code=500
         )
 
@@ -924,25 +905,15 @@ async def submit_clarification(
             for r in responses
         ]
 
-        # Call transrouter with clarifications
-        response = requests.post(
-            f"{config.transrouter_url}/api/v1/payroll/parse_with_clarification",
-            headers={
-                "X-API-Key": config.transrouter_api_key,
-                "X-Restaurant-ID": restaurant_id,
-            },
-            json={
-                "transcript": transcript,
-                "pay_period_hint": pay_period_hint,
-                "shift_code": shift_code,
-                "clarifications": clarifications_data,
-                "conversation_id": conversation_id,
-            },
-            timeout=120,
+        # Call payroll agent directly with clarifications (bypasses transrouter HTTP)
+        from transrouter.src.agents.payroll_agent import get_agent as get_payroll_agent
+        result = get_payroll_agent().process_with_clarification_dict(
+            transcript=transcript,
+            pay_period_hint=pay_period_hint,
+            shift_code=shift_code,
+            clarifications=clarifications_data,
+            conversation_id=conversation_id,
         )
-
-        response.raise_for_status()
-        result = response.json()
 
         # Check if still needs more clarification
         if result.get("status") == "needs_clarification":
@@ -997,9 +968,9 @@ async def submit_clarification(
             status_code=400
         )
 
-    except requests.RequestException as e:
-        log.error(f"Transrouter API error during clarification: {e}")
+    except Exception as e:
+        log.error(f"Agent service error during clarification: {e}")
         return JSONResponse(
-            {"status": "error", "error": f"API error: {e}"},
+            {"status": "error", "error": f"Agent error: {e}"},
             status_code=500
         )

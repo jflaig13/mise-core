@@ -309,17 +309,11 @@ def _process_inventory_background(
             inventory_json = result.get("approval_json", {})
 
         else:
-            log.info(f"[{job_id}] Small file ({len(audio_bytes):,} bytes), using transrouter")
+            log.info(f"[{job_id}] Small file ({len(audio_bytes):,} bytes), using agent service")
 
-            # Process through transrouter (transcribe + parse)
-            response = requests.post(
-                f"{transrouter_url}/api/v1/audio/process",
-                headers={"X-API-Key": transrouter_api_key},
-                files={"file": ("recording.wav", audio_bytes, "audio/wav")},
-                timeout=600,  # 10 minute timeout for large files
-            )
-            response.raise_for_status()
-            result = response.json()
+            # Process through inventory agent directly (bypasses transrouter HTTP)
+            from transrouter.src.agents.inventory_agent import get_agent as get_inventory_agent
+            result = get_inventory_agent().process_audio(audio_bytes, category=category, area=area)
 
             if result.get("status") != "success":
                 error = result.get("error", "Processing failed")
@@ -552,18 +546,12 @@ async def record_shelfy(
 
     log.info(f"🗄️ Processing shelfy for {area} ({category}) from file {file.filename}")
 
-    # Call transrouter API to process inventory (transcript + parsing)
+    # Call inventory agent directly (bypasses transrouter HTTP)
     try:
-        response = requests.post(
-            f"{config.transrouter_url}/api/v1/audio/process",
-            headers={"X-API-Key": config.transrouter_api_key},
-            files={"file": ("recording.wav", audio_bytes, "audio/wav")},
-            timeout=120,
-        )
-        response.raise_for_status()
-        result = response.json()
-    except requests.RequestException as e:
-        log.error(f"🗄️ Transrouter API error: {e}")
+        from transrouter.src.agents.inventory_agent import get_agent as get_inventory_agent
+        result = get_inventory_agent().process_audio(audio_bytes, category=category, area=area)
+    except Exception as e:
+        log.error(f"🗄️ Agent service error: {e}")
         return JSONResponse(
             {"status": "error", "error": f"Processing failed: {e}"},
             status_code=500
@@ -1095,6 +1083,12 @@ async def inventory_totals_page(request: Request, period_id: str):
     # Get aggregated totals
     kitchen_aggregated = storage.get_aggregated_totals(period_id, category="kitchen")
     bar_aggregated = storage.get_aggregated_totals(period_id, category="bar")
+
+    # Consolidation pass: Claude-powered cleanup (merge duplicates, fix categories, flag issues)
+    from transrouter.src.agents.inventory_consolidator import InventoryConsolidator
+    consolidator = InventoryConsolidator()
+    kitchen_aggregated = consolidator.consolidate(kitchen_aggregated, category="kitchen")
+    bar_aggregated = consolidator.consolidate(bar_aggregated, category="bar")
 
     log.info(f"📊 Totals for {period_id}: kitchen={len(kitchen_aggregated.get('items', []))} items, bar={len(bar_aggregated.get('items', []))} items")
 

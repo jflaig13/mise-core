@@ -1,5 +1,24 @@
 # Claude Code Initialization — Mise
 
+## MANDATORY INITIALIZATION (Do This First — Every Session, No Exceptions)
+
+Before responding to ANY user message, read these files IN FULL using the Read tool:
+
+1. `VALUES_CORE.md`
+2. `SEARCH_FIRST.md`
+3. `AGI_STANDARD.md`
+4. `AGENT_POLICY.md`
+5. `MISE_MASTER_SPEC.md`
+6. `CLAUDE_PLAYBOOKS.md`
+7. `docs/brain/020626__atomic-codebase-exploration-guide.md`
+8. `docs/brain/020726__engineering-risk-classification.md`
+
+**Do not summarize. Do not skim. Read each file completely and internalize the rules before proceeding.**
+
+The summaries below are fallback context — they are NOT a substitute for reading the full documents. If you have not read all 8 files, you are not initialized. Stop and read them.
+
+---
+
 ## Core Principles
 1. **Safety over speed.** No vibe coding. If unsure, stop and ask.
 2. **Repo is truth.** Search this repo for answers before asking me.
@@ -102,10 +121,46 @@ Full policy: `AGENT_POLICY.md`
 
 ---
 
+## Pending Plans Check (Every Session Start)
+
+At the start of every session, check `~/.claude/plans/` for `.md` files.
+
+If plan files exist:
+1. Read each plan file
+2. Determine the goal/desired outcome of each plan
+3. Check the codebase to assess whether that goal has ALREADY been achieved
+4. Present to the user:
+   - Plan name
+   - Brief, non-technical explanation of what the plan aims to do
+   - Whether the goal appears to already be done or still pending
+   - Recommendation: delete (if done/stale) or execute (if still relevant)
+5. Ask the user what they want to do with each plan
+
+This prevents old plans from stacking up and ensures nothing gets forgotten.
+
+---
+
 ## Before Making File Changes
 - State what you're changing and why
 - Wait for my approval
 - Log the change appropriately
+
+## Automated Testing (MANDATORY)
+
+After modifying Python files in `mise_app/` or `transrouter/`, **always run the Tier 1 test suite before presenting results to the user:**
+
+```bash
+.venv/bin/python -m pytest tests/test_tier1_payroll_logic.py tests/test_tier1_inventory_logic.py tests/test_tier1_agent_pipelines.py -v --tb=short
+```
+
+- **Tier 1 tests** (55 tests, <1s, no API keys): validation, auto-correction, flattening, shift detection, pack multipliers, conversion math, agent pipelines (mocked). Run these every time.
+- **Tier 2 tests** (15 tests, ~4min, real Claude API calls): Run only when explicitly asked or when modifying agent parsing logic. Requires `ANTHROPIC_API_KEY` env var.
+
+```bash
+ANTHROPIC_API_KEY="$KEY" .venv/bin/python -m pytest tests/test_tier2_payroll_pipeline.py tests/test_tier2_inventory_pipeline.py -v --tb=short -m live
+```
+
+**If any test fails: fix it before moving on.** Do not present broken code to the user.
 
 ## Key Documentation (read when relevant)
 **Company Context:**
@@ -131,94 +186,54 @@ Example: "48 cans total" aggregated from The Office (24 cans) + Walk-in (24 cans
 
 **Important:** Conversion calculations (e.g., "6 × 4 = 24 cans") should be shown next to subfinal counts so users can verify the math before the count is added to the final aggregated total.
 
-## Testing & Debugging
+## Engineering Risk Classification
 
-### Watcher Logs
-When testing components that use file watchers, check these logs to see real-time output:
+All engineering work must be classified by Subsystem Tier (S, A, B, C) and Engineering Difficulty Grade (EDG-0 through EDG-4) before implementation. The full classification system, tier assignments, decision matrix, and enforcement rules live in `docs/brain/020726__engineering-risk-classification.md` — that is the single source of truth.
 
-| Component | Log File | Start Command |
-|-----------|----------|---------------|
-| CPM (Cloud Payroll Machine) | `logs/cpm-approval-watcher.log` | `~/mise-core/scripts/watch-cpm-approval` |
+## Misessessment Protocol
 
-**CPM Testing Workflow:**
-When testing audio file processing for the Cloud Payroll Machine:
-1. I will drop `.wav` files into "Payroll Voice Recordings" (Google Drive)
-2. The watcher detects them, sends to the payroll engine, shows preview
-3. **You must check `logs/cpm-approval-watcher.log`** to see:
-   - Parse results from `/parse_only`
-   - Preview output (shifts, amounts, transcript)
-   - Any errors from the engine
-4. Use `tail -n 50 logs/cpm-approval-watcher.log` to see recent output
-5. Use `cat logs/cpm-approval-watcher.log` to see full log
+When the user says **"misessess [source material]"**, execute this full pipeline:
 
-## Command Runner Convention
+**Spec:** `docs/brain/020726__misessessment-master-spec.md` — read it before starting. Follow the canonical structure exactly.
 
-When I say **"Run command #N"** (e.g., "Run command #1", "Run command #42"):
+### Step 1: Find the Source Material
+- Search the web for the source (talk, article, paper, interview, podcast)
+- Identify the full, original version — not a summary or recap
 
-1. Look in `claude_commands/`
-2. Find the file starting with `N_` (e.g., `1_setup_drive_symlinks`)
-3. Read the file contents
-4. Execute the shell commands contained in it
-5. Report results
+### Step 2: Ingest the ENTIRE Source
+- Get the full content: transcript, full text, or complete article
+- Use WebFetch, WebSearch, or any available method to capture ALL of it
+- Do NOT work from partial content or summaries — the whole thing or stop and tell the user you can't access it
+- If the source is a video/podcast and no transcript is available, say so and ask the user to provide one
 
-Example: "Run command #1" → read and execute `claude_commands/1_setup_drive_symlinks`
+### Step 3: Create the Misessessment
+- Follow the canonical structure from the master spec exactly
+- Write the Mise State Snapshot as Star Wars opening crawl (short declarative paragraphs, no bullets)
+- Treat it as an IMD — save markdown, generate branded PDF, copy to Google Drive
+- Category: `research`
+- Naming: `IMD_Misessessment_[Descriptive_Slug].md`
 
-## Batch Command Runner
+### Step 4: Persist the Learning (NEVER LOST)
+After the Misessessment is created, extract durable knowledge and persist it:
 
-When I say **"Run commands #X-Y"** (e.g., "Run commands #2-7"):
+1. **Brain file** — If the source reveals a new principle, rule, or insight that should affect how Mise builds, operates, or decides, create or update a brain file in `docs/brain/`. Use standard naming: `mmddyy__<slug>.md`
+2. **Memory update** — If the insight affects how Claude Code sessions should behave (e.g., a new engineering heuristic, a changed assumption), update `~/.claude/projects/-Users-jonathanflaig-mise-core/memory/MEMORY.md`
+3. **Spec updates** — If the insight directly contradicts or extends an existing workflow spec, flag it to the user with the specific spec and the specific conflict. Do NOT auto-update specs.
 
-### Phase 1: Plan (MANDATORY)
-Before executing anything, output a plan showing:
-1. **Command list** — Each command number, filename, and one-line purpose
-2. **Dependency chain** — Which commands must complete before others
-3. **Reference impact** — Files that will need import/path updates after moves/renames
-4. **Approval gates** — Which commands require per-change approval (pause points)
-5. **Risk assessment** — What could break, what's irreversible
-6. **Expected end state** — What the repo looks like after all commands complete
+**What counts as "durable knowledge":**
+- Concrete principles that change how Mise should build or decide
+- Market shifts that affect strategy or positioning
+- Technical insights that affect architecture or tool choices
+- Risks or blind spots that should be tracked
 
-Format:
-```
-BATCH PLAN: Commands #X-Y
-================================
-| # | Command | Purpose | Depends On | Approval? |
-|---|---------|---------|------------|-----------|
-| 2 | ... | ... | — | No |
-| 3 | ... | ... | #2 | No |
-...
+**What does NOT get persisted:**
+- Generic advice ("move fast", "stay focused")
+- Hype or speculation without grounding
+- Anything the Misessessment itself already captures (don't duplicate)
 
-REFERENCE IMPACT:
-- [ ] Files with imports to update: [list]
-- [ ] Files with path references to update: [list]
-- [ ] Config files affected: [list]
+Present a summary of what was persisted and where.
 
-RISK ASSESSMENT:
-- [list risks]
+---
 
-END STATE:
-- [describe final structure]
-
-Approve this plan? (yes/no/modify)
-```
-
-### Phase 2: Execute
-Only after plan approval:
-1. Run commands sequentially
-2. Report result after each command
-3. Stop at any approval-gate command and wait for per-change approvals
-4. If any command fails, STOP and report — do not continue
-5. After file moves/renames, automatically queue reference updates for approval
-
-### Phase 3: Verify
-After all commands complete:
-1. Show final directory structure
-2. Confirm expected end state matches actual
-3. Flag any anomalies (broken imports, dangling references)
-
-### Phase 4: Log
-Create a changelog entry at `docs/changelogs/YYYY-MM-DD_batch_X-Y.md` containing:
-- Timestamp
-- Commands executed
-- Files created/moved/renamed/deleted
-- References updated (old → new)
-- Any errors encountered
-- Final verification status
+## Operational Playbooks
+When I say "Run command #N", "Run commands #X-Y", or when working with CPM watcher logs — read `CLAUDE_PLAYBOOKS.md` for the full protocol.

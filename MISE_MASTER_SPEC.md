@@ -3,7 +3,7 @@
 **The Complete Context Document for Mise, Inc.**
 
 **Version:** 1.0
-**Last Updated:** February 5, 2026
+**Last Updated:** February 7, 2026
 **Purpose:** Enable any new team member, AI agent, or stakeholder to understand the complete state of Mise — business, legal, technical, and operational — from a single document.
 
 ---
@@ -131,9 +131,9 @@ This axiom governs ALL decisions including product design, marketing, growth mec
 | EIN Confirmation (SS-4) | ✅ Present | Nov 21, 2025 | EIN: 41-2726158 |
 | Shareholder Agreement | ✅ Present | Jan 22, 2026 | Signed via DocuSign |
 | Corporate Operating Agreement | ✅ Present | | |
-| Initial Board Resolutions | ❌ MISSING | | **ACTION REQUIRED** |
+| Initial Board Resolutions | ✅ Present | | `legal/documents/Initial_Board_Resolutions_Mise.pdf` |
 | Stock Ledger/Certificates | ❌ MISSING | | **ACTION REQUIRED** |
-| Founder IP Assignment | ❌ MISSING | | **ACTION REQUIRED** |
+| Founder IP Assignment | ✅ Present | | `legal/documents/IP_Assignment_Jonathan_Flaig.pdf`, `IP_Assignment_Austin_Miett.pdf` |
 | 83(b) Elections | ❓ Verify | | May not be needed (fully vested) |
 | Written Consent Actions | ❌ MISSING | | Template needed |
 
@@ -146,10 +146,10 @@ This axiom governs ALL decisions including product design, marketing, growth mec
 | Mutual NDA | Boyd Barrow | | fundraising/NDA_Boyd_Barrow.md |
 
 ### Missing Legal Documents (HIGH PRIORITY)
-1. **Terms of Service** — Required for mise_app users
-2. **Privacy Policy** — Required for data handling (CCPA/GDPR considerations)
-3. **Initial Board Resolutions** — Authorizes share issuance, officer appointments
-4. **Founder IP Assignment** — Ensures company owns all IP
+1. **Terms of Service** — ✅ Created (`legal/documents/Terms_of_Service_Mise.pdf`)
+2. **Privacy Policy** — ✅ Created (`legal/documents/Privacy_Policy_Mise.pdf`)
+3. **Initial Board Resolutions** — ✅ Created (`legal/documents/Initial_Board_Resolutions_Mise.pdf`)
+4. **Founder IP Assignment** — ✅ Created (`legal/documents/IP_Assignment_Jonathan_Flaig.pdf`, `IP_Assignment_Austin_Miett.pdf`)
 
 ---
 
@@ -206,7 +206,7 @@ This axiom governs ALL decisions including product design, marketing, growth mec
 
 | Client | Status | Since | Workflows Active |
 |--------|--------|-------|------------------|
-| Papa Surf | ✅ PRODUCTION | Q3 2025 | Payroll (LPM) |
+| Papa Surf | ✅ PRODUCTION | Q3 2025 | Payroll (LPM), Inventory (LIM — testing) |
 
 ### Production Metrics
 - **Consecutive Payroll Runs:** 20+ weeks
@@ -261,7 +261,7 @@ This axiom governs ALL decisions including product design, marketing, growth mec
 
 | Port | Service | Purpose |
 |------|---------|---------|
-| 8000 | mise_app | Web UI (Flask/FastAPI) |
+| 8000 | mise_app | Web UI (FastAPI) |
 | 8080 | Transrouter | API Gateway |
 | 5432 | PostgreSQL | Database (optional) |
 
@@ -301,6 +301,8 @@ mise-core/
 ├── claude_commands/         # SWARM task queue system (ccw1-6)
 ├── config/                  # Configuration files
 ├── data/                    # Data files
+├── .claude/                 # Claude Code configuration
+│   └── skills/              # 14 custom slash-command skills
 ├── docs/                    # Documentation hub
 │   ├── brain/               # System truth, memory rules
 │   ├── changelogs/          # Version history
@@ -309,6 +311,8 @@ mise-core/
 ├── fundraising/             # Investor materials
 ├── inventory_agent/         # LIM implementation
 ├── legal/                   # Legal documents (local copies)
+│   ├── documents/           # Generated legal PDFs (Board Resolutions, IP, ToS, Privacy)
+│   └── templates/           # Legal document generation scripts
 ├── logs/                    # Application logs
 ├── mise_app/                # Web UI (Flask/FastAPI)
 ├── payroll_agent/           # CPM & LPM implementations
@@ -329,6 +333,7 @@ mise-core/
 │   └── roster/
 └── [Root Files]
     ├── CLAUDE.md            # Agent initialization
+    ├── CLAUDE_PLAYBOOKS.md  # Operational playbooks (command runner, CPM watcher)
     ├── ONBOARDING.md        # Session onboarding
     ├── SEARCH_FIRST.md      # Mandatory search protocol
     ├── AGI_STANDARD.md      # Reasoning framework
@@ -376,7 +381,7 @@ mise-core/
 #### Web Application
 | File | Purpose |
 |------|---------|
-| `mise_app/main.py` | Flask app entrypoint (port 8000) |
+| `mise_app/main.py` | FastAPI app entrypoint (port 8000) |
 | `mise_app/routes/` | Route handlers |
 | `mise_app/templates/` | Jinja2 HTML templates |
 | `mise_app/storage_backend.py` | Multi-tenant storage abstraction |
@@ -433,6 +438,9 @@ mise-core/
 | `AGI_STANDARD.md` | AGI-level reasoning framework (5 questions) | MANDATORY |
 | `VALUES_CORE.md` | Primary axiom, immutable constraints | MANDATORY |
 | `AGENT_POLICY.md` | Agent scope, boundaries, safety rules | READ |
+| `CLAUDE_PLAYBOOKS.md` | Operational playbooks (command runner, CPM watcher) | MANDATORY |
+| `docs/brain/020626__atomic-codebase-exploration-guide.md` | Deep codebase exploration methodology + snapshot | MANDATORY |
+| `docs/brain/020726__engineering-risk-classification.md` | Engineering risk tiers and difficulty grades | MANDATORY |
 | `ONBOARDING.md` | New session onboarding checklist | READ |
 
 ### Key Safety Principles
@@ -463,10 +471,16 @@ mise-core/
 | `121224__absolute-memory-rule.md` | NO EPHEMERAL LEARNING |
 | `121224__brain-ingest-protocol.md` | How to create brain documents |
 | `121224__claude-code-onboarding.md` | Claude Code initialization |
+| `121725__new-trigger-initialization.md` | New trigger initialization protocol |
 | `011326__lpm-shift-hours.md` | LPM shift hour calculations |
 | `011326__lpm-tipout-from-food-sales.md` | Tipout percentage rules |
 | `011826__founder-story-pitch-pillar.md` | Origin story + pitch architecture (CANONICAL) |
 | `011826__swarm-update-pill.md` | Multi-window development synchronization |
+| `020626__api-keys-reference.md` | API keys storage reference |
+| `020626__atomic-codebase-exploration-guide.md` | Deep codebase exploration methodology + dated snapshot |
+| `020726__engineering-risk-classification.md` | Engineering risk tiers (S/A/B/C) and difficulty grades (EDG-0–4) |
+| `020726__misessessment-master-spec.md` | Misessessment format spec — standardized research output for media analysis |
+| `020726__scribe-enforcement-protocol.md` | Scribe skill enforcement rules |
 | `LEARNING_BANKS_ARCHITECTURE.md` | Learning system architecture |
 
 ### Brain File Naming Convention
@@ -481,6 +495,7 @@ Example: `011826__founder-story-pitch-pillar.md` = January 18, 2026
 
 ### Current Round
 - **Target:** $250,000
+- **Verbal Commitment:** $50,000 received (as of Feb 2026)
 - **Valuation:** $3M pre-money (7.7% equity) or $2.5M (10% if pushed)
 - **Structure:** Common stock, advisory role (non-voting)
 - **Use of Funds:**
@@ -570,7 +585,7 @@ Example: `011826__founder-story-pitch-pillar.md` = January 18, 2026
 **Austin Miett** — Co-founder, Secretary & Treasurer
 - Equity partner (30%)
 - Operations and business development
-- Technical onboarding in progress (see `AUSTIN_ONBOARDING_PLAN.md`)
+- Technical onboarding in progress (see `docs/internal_mise_docs/md_files/IMD_Austin_Onboarding_Plan.md`)
 
 ### Hiring Plan
 - **First Hire:** Senior Full-Stack Engineer ($130K allocated in budget)
@@ -585,6 +600,7 @@ Example: `011826__founder-story-pitch-pillar.md` = January 18, 2026
 | File | Purpose |
 |------|---------|
 | `CLAUDE.md` | Agent initialization, command runner |
+| `CLAUDE_PLAYBOOKS.md` | Operational playbooks (command runner, CPM watcher) |
 | `ONBOARDING.md` | Session onboarding checklist |
 | `SEARCH_FIRST.md` | Mandatory search protocol |
 | `AGI_STANDARD.md` | Reasoning framework |
@@ -619,10 +635,10 @@ Example: `011826__founder-story-pitch-pillar.md` = January 18, 2026
 ## 17. ACTION ITEMS & GAPS
 
 ### Legal (HIGH PRIORITY)
-- [ ] Create Initial Board Resolutions template
-- [ ] Create Founder IP Assignment agreements (Jon & Austin)
-- [ ] Create Terms of Service for mise_app
-- [ ] Create Privacy Policy (CCPA/GDPR compliant)
+- [x] Create Initial Board Resolutions template — `legal/documents/Initial_Board_Resolutions_Mise.pdf`
+- [x] Create Founder IP Assignment agreements (Jon & Austin) — `legal/documents/IP_Assignment_*.pdf`
+- [x] Create Terms of Service for mise_app — `legal/documents/Terms_of_Service_Mise.pdf`
+- [x] Create Privacy Policy (CCPA/GDPR compliant) — `legal/documents/Privacy_Policy_Mise.pdf`
 - [ ] Create Written Consent template for future board actions
 - [ ] Verify 83(b) election requirements
 

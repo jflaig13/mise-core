@@ -12,6 +12,7 @@ import logging
 from typing import Any, Dict, Optional, List
 import uuid
 
+from ..asr_adapter import get_asr_provider
 from ..claude_client import ClaudeClient, ClaudeConfig, ClaudeResponse
 from ..prompts.payroll_prompt import (
     build_payroll_system_prompt,
@@ -423,6 +424,128 @@ class PayrollAgent:
             if field_identifier in response.question_id:
                 return response
         return None
+
+    # ========================================================================
+    # Self-contained pipelines (ASR → parse → dict)
+    # ========================================================================
+
+    def process_audio(
+        self,
+        audio_bytes: bytes,
+        pay_period_hint: str = "",
+        shift_code: str = "",
+    ) -> Dict[str, Any]:
+        """Full pipeline: ASR → parse → structured result dict.
+
+        Args:
+            audio_bytes: Raw audio data.
+            pay_period_hint: Optional pay period hint.
+            shift_code: Optional shift code (e.g., "ThAM", "FPM").
+
+        Returns:
+            Dict with {status, transcript, approval_json, ...} matching route expectations.
+        """
+        log.info("PayrollAgent.process_audio: processing %d bytes", len(audio_bytes))
+
+        # Step 1: Transcribe
+        asr = get_asr_provider()
+        asr_result = asr.transcribe(audio_bytes, "wav", sample_rate_hz=16000)
+        transcript = asr_result.transcript
+
+        if not transcript:
+            return {"status": "error", "error": "Transcription returned empty result"}
+
+        log.info("PayrollAgent.process_audio: transcript (%d chars): %s", len(transcript), transcript[:200])
+
+        # Step 2: Parse with clarification support
+        result = self.parse_with_clarification(
+            transcript=transcript,
+            pay_period_hint=pay_period_hint,
+            shift_code=shift_code,
+        )
+
+        # Step 3: Convert ParseResult → dict format expected by routes
+        if result.status == "needs_clarification":
+            return {
+                "status": "needs_clarification",
+                "transcript": transcript,
+                "conversation_id": result.conversation_id,
+                "clarifications": [q.model_dump() for q in result.clarifications],
+            }
+        elif result.status == "success":
+            return {
+                "status": "success",
+                "transcript": transcript,
+                "approval_json": result.approval_json or {},
+                "corrections": None,
+            }
+        else:
+            return {
+                "status": "error",
+                "error": result.error or "Unknown parsing error",
+                "transcript": transcript,
+            }
+
+    def process_with_clarification_dict(
+        self,
+        transcript: str,
+        pay_period_hint: str = "",
+        shift_code: str = "",
+        clarifications: Optional[List[Dict[str, Any]]] = None,
+        conversation_id: Optional[str] = None,
+    ) -> Dict[str, Any]:
+        """Resume parsing with clarification responses (dict-based input).
+
+        Converts raw dicts → ClarificationResponse objects, calls
+        parse_with_clarification(), and returns a dict.
+
+        Args:
+            transcript: Original payroll transcript.
+            pay_period_hint: Optional pay period hint.
+            shift_code: Optional shift code.
+            clarifications: List of clarification response dicts.
+            conversation_id: Existing conversation ID.
+
+        Returns:
+            Dict with {status, approval_json, ...} matching route expectations.
+        """
+        log.info("PayrollAgent.process_with_clarification_dict: conversation=%s", conversation_id)
+
+        # Convert raw dicts to ClarificationResponse objects
+        clarification_objects = []
+        if clarifications:
+            for c in clarifications:
+                clarification_objects.append(ClarificationResponse(
+                    question_id=c["question_id"],
+                    answer=c["answer"],
+                    notes=c.get("notes"),
+                    confidence=c.get("confidence", 1.0),
+                ))
+
+        result = self.parse_with_clarification(
+            transcript=transcript,
+            pay_period_hint=pay_period_hint,
+            shift_code=shift_code,
+            clarifications=clarification_objects if clarification_objects else None,
+            conversation_id=conversation_id,
+        )
+
+        if result.status == "needs_clarification":
+            return {
+                "status": "needs_clarification",
+                "conversation_id": result.conversation_id,
+                "clarifications": [q.model_dump() for q in result.clarifications],
+            }
+        elif result.status == "success":
+            return {
+                "status": "success",
+                "approval_json": result.approval_json or {},
+            }
+        else:
+            return {
+                "status": "error",
+                "error": result.error or "Unknown parsing error",
+            }
 
     # ========================================================================
     # End of Phase 1 additions
