@@ -121,6 +121,12 @@ Full policy: `AGENT_POLICY.md`
 
 ---
 
+## ChatGPT-Marked Prompts
+
+Jon sometimes sends prompts written by ChatGPT Desktop (watching his terminal). These are clearly marked with `[CHATGPT-DIRECTIVE]` or similar. When you see a marked prompt, follow the rules in `MEMORY.md` under "ChatGPT-Marked Prompt Agreement" — follow exactly as written, no scope creep, ask if unclear, don't touch unrelated code, safety over speed.
+
+---
+
 ## Pending Plans Check (Every Session Start)
 
 At the start of every session, check `~/.claude/plans/` for `.md` files.
